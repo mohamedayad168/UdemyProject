@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities;
 public class Course : BaseEntity
@@ -7,7 +8,7 @@ public class Course : BaseEntity
     public string Title { get; set; }
     [StringLength(50)]
     public string Description { get; set; }
-    public string Status { get; set; }
+    public CourseStatus Status { get; set; }
     public string Level { get; set; }
     public decimal Discount { get; set; }
     public decimal Price { get; set; }

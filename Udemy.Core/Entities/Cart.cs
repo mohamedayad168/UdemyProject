@@ -11,7 +11,7 @@ namespace Udemy.Core.Entities
     public class Cart
     {
        
-    [Key]
+        [Key]
         public int CartId { get; set; }
 
         [ForeignKey("Student")]
