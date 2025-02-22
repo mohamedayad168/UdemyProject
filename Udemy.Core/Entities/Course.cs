@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Core.Entities;
-public class Course
+public class Course : BaseEntity
 {
     [StringLength(20)]
     public string Title { get; set; }
