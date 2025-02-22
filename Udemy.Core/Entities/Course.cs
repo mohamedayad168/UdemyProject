@@ -23,6 +23,9 @@ public class Course : BaseEntity
     public bool IsPaid { get; set; }
     public bool IsApproved { get; set; }
 
-    public int CourseId { get; set; }
     public int InstructorId { get; set; }
+    public Instructor Instructor { get; set; }
+
+    public List<Question> Questions { get; set; }
+    public List<CourseGoals> CourseGoals { get; set; }
 }
