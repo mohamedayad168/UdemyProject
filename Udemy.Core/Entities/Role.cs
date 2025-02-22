@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Udemy.Core.Entities
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
-        [Key]
-        public int RoleId { get; set; }
 
-        [Required]
-        public string RoleName { get; set; }
         public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
     }
 }
