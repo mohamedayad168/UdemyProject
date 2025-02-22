@@ -2,16 +2,13 @@
 
 namespace Udemy.Core.Entities
 {
-    public class Notifaction
+    public class Role
     {
         [Key]
-        public int NotifactionId { get; set; }
+        public int RoleId { get; set; }
 
-
-        [Required(ErrorMessage = "Content is Required")]
-
-        public string NotifactionContent { get; set; }
-
+        [Required]
+        public string RoleName { get; set; }
         public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
     }
 }
