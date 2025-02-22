@@ -6,6 +6,7 @@ public class ApplicationUser : IdentityUser<int>
 {
     [Required(ErrorMessage = "First Name Is Required")]
     [StringLength(20)]
+
     public string FirstName { get; set; }
 
     [Required(ErrorMessage = "Last Name Is Required")]
@@ -33,5 +34,5 @@ public class ApplicationUser : IdentityUser<int>
     public string Gender { get; set; }
 
     public ICollection<Notifaction> Notifactions { get; set; } = new List<Notifaction>();
-    public ICollection<Role> Roles { get; set; } = new List<Role>();
+
 }
