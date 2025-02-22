@@ -11,7 +11,10 @@
     <Folder Include="ErrorModels\" />
     <Folder Include="Exceptions\" />
     <Folder Include="IRepository\" />
-    <Folder Include="Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
