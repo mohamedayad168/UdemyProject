@@ -20,6 +20,17 @@ namespace Udemy.Core.Entities
         public string QuestionText { get; set; }
         [StringLength(50)]
         [Column(TypeName = "Answer_Text")]
-        public string AnswerText { get; set; }
+       
+        public List<QuestionOption> QuestionOptions { get; set; } = new List<QuestionOption>();
+
+    }
+
+    public class QuestionOption
+    {
+        public int QuestionOptionId { get; set; }
+        [StringLength(50)]
+        [Column(TypeName = "Option_Text")]
+        public string OptionText { get; set; }
+        public bool IsCorrect { get; set; }=false;
     }
 }

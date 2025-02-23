@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities
 {
-   public class Order
+    public class Order
     {
         [Key]
         public int OrderId { get; set; }
@@ -32,20 +33,5 @@ namespace Udemy.Core.Entities
 
         // Navigation Property
         public Student Student { get; set; }
-    }
-
-    public enum PaymentMethod
-    {
-        CreditCard,
-        PayPal,
-        BankTransfer,
-        Cash
-    }
-
-    public enum OrderStatus
-    {
-        Pending,
-        Completed,
-        Cancelled
     }
 }

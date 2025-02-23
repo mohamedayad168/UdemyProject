@@ -29,4 +29,10 @@ public class Course : BaseEntity
 
     public List<Question> Questions { get; set; }
     public List<CourseGoals> CourseGoals { get; set; }
+
+    public int QuizId { get; set; }
+    public Quiz Quiz { get; set; }
+
+
+
 }

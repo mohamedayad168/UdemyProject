@@ -11,6 +11,9 @@ public class Instructor : BaseEntity
     public int TotalReviews { get; set; }
     public int TotalStudents { get; set; }
 
+    public int ApplicationUserId { get; set; }
+    public ApplicationUser ApplicationUser { get; set; }
+
     public List<Answer> Answers { get; set; }
     public List<Course> Courses { get; set; }
 }

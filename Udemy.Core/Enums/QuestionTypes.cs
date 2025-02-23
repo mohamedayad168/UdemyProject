@@ -8,6 +8,9 @@ namespace Udemy.Core.Enums
 {
     public enum QuestionTypes
     {
-        None = 0,
+        SingleChoice=1,
+        TrueFalse,
+        MultipleChoice
+
     }
 }

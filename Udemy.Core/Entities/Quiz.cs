@@ -15,5 +15,7 @@ namespace Udemy.Core.Entities
         public int CourseId { get; set; }
         [StringLength(50)]
         public string Title { get; set; }
+
+        public List<QuizQuestion> QuizQuestion { get; set; } = new List<QuizQuestion>();
     }
 }

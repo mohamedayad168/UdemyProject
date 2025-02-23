@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities
 {
@@ -27,19 +28,20 @@ namespace Udemy.Core.Entities
 
         public DateTime? CompletionDate { get; set; }
 
+
+        public decimal? ProgressPercentage { get; set; } = 0; //Added new property
+
         [Required]
         public ProgressStatus Progress { get; set; }
+
+        public List<Progress> Progresses { get; set; } = new List<Progress>(); //Added new property>
+
+
+
 
         // Navigation Properties
         public Student Student { get; set; }
         public Course Course { get; set; }
-    }
-
-    public enum ProgressStatus
-    {
-        NotStarted,
-        InProgress,
-        Completed
     }
 
 }

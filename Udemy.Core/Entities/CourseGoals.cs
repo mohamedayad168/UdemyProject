@@ -5,5 +5,5 @@ public class CourseGoals
 {
     public int CourseId { get; set; }
     [StringLength(50)]
-    public string CourseGoal { get; set; }
+    public required string CourseGoal { get; set; }
 }
