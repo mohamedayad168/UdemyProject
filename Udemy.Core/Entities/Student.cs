@@ -9,10 +9,9 @@ namespace Udemy.Core.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Student
+    public class Student:BaseEntity
     {
-        [Key]
-        public int StudentId { get; set; }
+        
 
         [Required, MaxLength(20)]
         public string StudentTitle { get; set; }
@@ -21,8 +20,12 @@ namespace Udemy.Core.Entities
         public string StudentBio { get; set; }
 
         // Navigation Properties
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
+
+
     }
 
 }

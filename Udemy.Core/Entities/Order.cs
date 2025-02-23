@@ -9,12 +9,12 @@ using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities
 {
-    public class Order
+    public class Order:BaseEntity
     {
-        [Key]
-        public int OrderId { get; set; }
+     
 
-        [ForeignKey("Student")]
+        [Required]
+
         public int StudentId { get; set; }
 
         [Required]
@@ -33,5 +33,6 @@ namespace Udemy.Core.Entities
 
         // Navigation Property
         public Student Student { get; set; }
+    
     }
 }

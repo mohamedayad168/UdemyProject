@@ -1,10 +1,18 @@
-﻿namespace Udemy.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Udemy.Core.Entities
 {
     public class CartCourse:BaseEntity
     {
+        [Required]
         public int CartId { get; set; }
-        public Cart Cart { get; set; }
+        [Required]
+
         public int CourseId { get; set; }
+       
+        // Navigation Properties
         public Course Course { get; set; }
+        public Cart Cart { get; set; }
     }
 }

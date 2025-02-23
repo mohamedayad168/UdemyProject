@@ -13,14 +13,12 @@ namespace Udemy.Core.Entities
 
     public class Enrollment
     {
-        [Key]
+       
 
         [ForeignKey("Student")]
         public int StudentId { get; set; }
 
-        [Key]
-
-        [ForeignKey("Course")]
+         [ForeignKey("Course")]
         public int CourseId { get; set; }
 
         [Required]
@@ -34,7 +32,7 @@ namespace Udemy.Core.Entities
         [Required]
         public ProgressStatus Progress { get; set; }
 
-        public List<Progress> Progresses { get; set; } = new List<Progress>(); //Added new property>
+      
 
 
 
@@ -42,6 +40,7 @@ namespace Udemy.Core.Entities
         // Navigation Properties
         public Student Student { get; set; }
         public Course Course { get; set; }
+        public List<Progress> Progresses { get; set; } = new List<Progress>(); //Added new property>
     }
 
 }

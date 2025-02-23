@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Udemy.Core.Entities
 {
-    public class Cart
+    public class Cart:BaseEntity
     {
-       
-        [Key]
-        public int CartId { get; set; }
 
-        [ForeignKey("Student")]
+
+
+        [Required]
         public int StudentId { get; set; }
 
         [Required]

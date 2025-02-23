@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Udemy.Core.Entities
 {
-   public class Rating
+   public class Rating:BaseEntity
     {
-        [Key]
-        [Column(Order = 1)]
-        [ForeignKey("Course")]
+
+        [Required]
         public int CourseId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [ForeignKey("Student")]
+
+
+        [Required]
         public int StudentId { get; set; }
 
         [Required]
         [Range(0, 10)]
+        [Column(TypeName = "decimal(8,2)")]
         public decimal RatingValue { get; set; }
 
         [Required, MaxLength(50)]
