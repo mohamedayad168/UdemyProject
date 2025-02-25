@@ -1,22 +1,19 @@
-﻿using Udemy.Core.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Udemy.Core.Enums;
+using Udemy.Core.Utils;
 
 namespace Udemy.Core.Entities
 {
-    public class Progress:BaseEntity
+    public class Progress : BaseEntity
     {
-        public int ProgressPercentage { get; set; } //0-100
+        public string Status { get; set; } = ProgressStatus.NOT_STARTED;
 
-        public ProgressStatus Status { get; set; }
-
-        public int EnrollmentId { get; set; }
-        public Enrollment Enrollment { get; set; }
         public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
 
         public int LessonId { get; set; }
+        [ForeignKey("LessonId")]
         public Lesson Lesson { get; set; }
-
-
-
     }
 }

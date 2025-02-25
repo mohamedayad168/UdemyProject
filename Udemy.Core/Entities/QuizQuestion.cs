@@ -11,26 +11,20 @@ namespace Udemy.Core.Entities
 {
     public class QuizQuestion
     {
-        public Quiz Quiz { get; set; }
-        [Column(TypeName ="Quiz_Id")]
-        public int QuizId { get; set; }
         public QuestionTypes QuestionType { get; set; }
+
         [StringLength(50)]
         [Column(TypeName = "Question_Text")]
         public string QuestionText { get; set; }
-        [StringLength(50)]
-        [Column(TypeName = "Answer_Text")]
-       
-        public List<QuestionOption> QuestionOptions { get; set; } = new List<QuestionOption>();
 
-    }
+        public string? Choise1 { get; set; }
+        public string? Choise2 { get; set; }
+        public string? Choise3 { get; set; }
 
-    public class QuestionOption
-    {
-        public int QuestionOptionId { get; set; }
-        [StringLength(50)]
-        [Column(TypeName = "Option_Text")]
-        public string OptionText { get; set; }
-        public bool IsCorrect { get; set; }=false;
+        public string AnswerText { get; set; }
+
+        public Quiz Quiz { get; set; }
+        [Column(TypeName = "Quiz_Id")]
+        public int QuizId { get; set; }
     }
 }

@@ -24,8 +24,8 @@ namespace Udemy.Core.Entities
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
-
-
+        // new table 'progress' navigational property
+        public List<Progress> Progresses { get; set; }
     }
 
 }

@@ -40,7 +40,6 @@ namespace Udemy.Core.Entities
         // Navigation Properties
         public Student Student { get; set; }
         public Course Course { get; set; }
-        public List<Progress> Progresses { get; set; } = new List<Progress>(); //Added new property>
     }
 
 }
