@@ -25,6 +25,7 @@ namespace Udemy.Core.Entities
         public DateTime StartDate { get; set; }
 
         public DateTime? CompletionDate { get; set; }
+        
         public decimal? ProgressPercentage { get; set; } = 0; //Added new property
 
         // Navigation Properties
