@@ -11,7 +11,7 @@ namespace Udemy.Core.Entities
 {
 
 
-    public class Enrollment
+    public class Enrollment : BaseEntity
     {
        
 

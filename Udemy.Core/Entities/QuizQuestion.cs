@@ -9,7 +9,7 @@ using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities
 {
-    public class QuizQuestion
+    public class QuizQuestion : BaseEntity
     {
         public QuestionTypes QuestionType { get; set; }
 
