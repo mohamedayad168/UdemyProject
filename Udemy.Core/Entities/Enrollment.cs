@@ -20,6 +20,7 @@ namespace Udemy.Core.Entities
         public DateTime StartDate { get; set; }
 
         public DateTime? CompletionDate { get; set; }
+<<<<<<< HEAD
 
         public CourseStatus CourseStatus { get; set; }
         public decimal? Rating { get; set; }
@@ -29,6 +30,9 @@ namespace Udemy.Core.Entities
 
         [MaxLength(50)]
         public string? comment { get; set; }
+=======
+        
+>>>>>>> be133051c75e59a83283caae166ed9280c71f0c0
         public decimal? ProgressPercentage { get; set; } = 0; //Added new property
 
         // Navigation Properties
