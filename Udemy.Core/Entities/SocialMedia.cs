@@ -1,20 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
-    public class SocialMedia
+    public class SocialMedia : BaseEntity
     {
-        [Key]
-        public int SocialMediaId { get; set; }
-
-        [Required]
         [StringLength(20)]
-        public string SocialMediaName { get; set; }
+        public string Name { get; set; }
 
-        [Required]
-        public byte[] SocialMediaImage { get; set; }
+        [StringLength(20)]
+        public string Link { get; set; }
 
-
-        public ICollection<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
+        public int UserId { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
