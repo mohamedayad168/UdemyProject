@@ -11,18 +11,23 @@ namespace Udemy.Core.Entities
 {
     public class QuizQuestion : BaseEntity
     {
+        public int QuizId { get; set; }
+        [Required]
         public QuestionTypes Type { get; set; }
 
-        [StringLength(50)]
-        public string QuestionText { get; set; }
+
+        [Required]
+        public string QuestionTxt { get; set; } = string.Empty;
+
 
         public string? ChoiseA { get; set; }
         public string? ChoiseB { get; set; }
         public string? ChoiseC { get; set; }
 
-        public string AnswerTxt { get; set; }
-
+        [Required]
+        public string AnswerTxt { get; set; } = string.Empty; 
+        [Required]
+       
         public Quiz Quiz { get; set; }
-        public int QuizId { get; set; }
     }
 }

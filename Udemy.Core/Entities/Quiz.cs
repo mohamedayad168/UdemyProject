@@ -14,10 +14,7 @@ namespace Udemy.Core.Entities
         [Column(TypeName ="Course_Id")]
         public int CourseId { get; set; }
         [StringLength(50)]
-        public string Title { get; set; }
-
+     
         public List<QuizQuestion> QuizQuestion { get; set; } = new List<QuizQuestion>();
-        public ICollection<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
-
     }
 }
