@@ -12,7 +12,7 @@ namespace Udemy.Core.Entities
     {
 
 
-
+     
         [Required]
         public int StudentId { get; set; }
 
@@ -21,7 +21,7 @@ namespace Udemy.Core.Entities
 
         public DateTime? LastModified { get; set; }
 
-        public decimal? Amount { get; set; }
+        public int  Amount { get; set; }
 
         // Navigation Property
         public Student Student { get; set; }
