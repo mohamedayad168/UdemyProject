@@ -14,8 +14,7 @@ namespace Udemy.Core.Entities
         public QuestionTypes Type { get; set; }
 
         [StringLength(50)]
-        //[Column(TypeName = "Question_Text")]
-        public string QuestionTxt { get; set; }
+        public string QuestionText { get; set; }
 
         public string? ChoiceA { get; set; }
         public string? ChoiceB { get; set; }

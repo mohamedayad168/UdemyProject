@@ -7,6 +7,6 @@ public class CourseGoalsConfiguration : IEntityTypeConfiguration<CourseGoals>
 {
     public void Configure(EntityTypeBuilder<CourseGoals> builder)
     {
-        builder.HasKey(k => new {k.CourseId , k.CourseGoal});
+        builder.HasKey(k => new {k.CourseId , k.Goal});
     }
 }

@@ -33,6 +33,12 @@ public class ApplicationUser : IdentityUser<int>
     [StringLength(1)]
     public string Gender { get; set; }
 
-    public ICollection<Notifaction> Notifactions { get; set; } = new List<Notifaction>();
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ModifiedDate { get; set; }
+    public bool? IsDeleted { get; set; }
+
+
+    public ICollection<Notifiaction> Notifactions { get; set; } = new List<Notifiaction>();
+    public ICollection<SocialMedia> SocialMedia { get; set; } = new List<SocialMedia>();
 
 }
