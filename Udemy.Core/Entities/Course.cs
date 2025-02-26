@@ -7,9 +7,11 @@ public class Course : BaseEntity
 {
     [StringLength(20)]
     public string Title { get; set; }
+
+    
     public string Description { get; set; }
     public CourseStatus Status { get; set; }
-    public string Level { get; set; }
+    public string Level { get; set; }="All Levels";
     public decimal Discount { get; set; }
     public decimal Price { get; set; }
     public int Duration { get; set; }

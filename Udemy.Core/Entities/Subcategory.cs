@@ -1,14 +1,20 @@
-﻿namespace Udemy.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Udemy.Core.Entities
 {
     public class Subcategory : BaseEntity
     {
-        public string Name { get; set; }
+        [StringLength(20)]
+        public required string Name { get; set; }
 
 
         //Navigation Properties
+
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public List<CourseSubcategory> CourseSubcategories { get; set; } = new();
+        public List<Course> Courses { get; set; } = new();
     }
 }
