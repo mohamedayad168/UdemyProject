@@ -11,7 +11,7 @@ public class Course : BaseEntity
     
     public string Description { get; set; }
     public CourseStatus Status { get; set; }
-    public string Level { get; set; }="All Levels";
+    public string Level { get; set; }
     public decimal Discount { get; set; }
     public decimal Price { get; set; }
     public int Duration { get; set; }

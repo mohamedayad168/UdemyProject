@@ -38,7 +38,7 @@ public class ApplicationUser : IdentityUser<int>
     public bool? IsDeleted { get; set; }
 
 
-    public ICollection<Notifiaction> Notifactions { get; set; } = new List<Notifiaction>();
+    public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     public ICollection<SocialMedia> SocialMedia { get; set; } = new List<SocialMedia>();
 
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
-    public class Notifiaction : BaseEntity
+    public class Notification : BaseEntity
     {
 
 

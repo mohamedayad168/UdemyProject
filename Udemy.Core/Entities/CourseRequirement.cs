@@ -11,6 +11,7 @@ namespace Udemy.Core.Entities
     public class CourseRequirement:BaseEntity
     {
         [ForeignKey("Course")]
+        [Required]
         public int CourseId { get; set; }
 
         [StringLength(50)]
