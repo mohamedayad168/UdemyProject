@@ -9,10 +9,8 @@ namespace Udemy.Core.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Student:BaseEntity
+    public class Student: ApplicationUser
     {
-        
-
         [Required, MaxLength(20)]
         public string StudentTitle { get; set; }
 
@@ -24,8 +22,8 @@ namespace Udemy.Core.Entities
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
-
-
+        // new table 'progress' navigational property
+        public List<Progress> Progresses { get; set; }
     }
 
 }

@@ -3,7 +3,9 @@
 namespace Udemy.Core.Entities;
 public class CourseGoals
 {
-    public int CourseId { get; set; }
     [StringLength(50)]
-    public required string CourseGoal { get; set; }
+    public string CourseGoal { get; set; }
+
+    public int CourseId { get; set; }
+    public Course Course { get; set; }
 }

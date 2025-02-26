@@ -1,11 +1,15 @@
-﻿namespace Udemy.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Udemy.Core.Entities;
 public class Answer : BaseEntity
 {
-    public string AnswerContent { get; set; }
+    public string Content { get; set; }
 
     public int QuestionId { get; set; }
-    public Question Question { get; set; }
+    [ForeignKey("QuestionId")]
+    public Ask Question { get; set; }
 
     public int UserId { get; set; }
+    [ForeignKey("UserId")]
     public ApplicationUser User { get; set; }
 }

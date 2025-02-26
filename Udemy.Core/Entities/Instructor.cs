@@ -1,19 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Core.Entities;
-public class Instructor : BaseEntity
+public class Instructor : ApplicationUser
 {
     [StringLength(20)]
-    public string InstructorTitle { get; set; }
+    public string? Title { get; set; }
     [StringLength(50)]
-    public string InstructorBio { get; set; }
-    public int TotalCourses { get; set; }
-    public int TotalReviews { get; set; }
-    public int TotalStudents { get; set; }
+    public string? Bio { get; set; }
+    public int? TotalCourses { get; set; }
+    public int? TotalReviews { get; set; }
+    public int? TotalStudents { get; set; }
 
-    public int ApplicationUserId { get; set; }
-    public ApplicationUser ApplicationUser { get; set; }
-
-    public List<Answer> Answers { get; set; }
     public List<Course> Courses { get; set; }
 }

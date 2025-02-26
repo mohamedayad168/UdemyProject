@@ -11,7 +11,7 @@ namespace Udemy.Core.Entities
 {
 
 
-    public class Enrollment
+    public class Enrollment : BaseEntity
     {
        
 
@@ -25,22 +25,11 @@ namespace Udemy.Core.Entities
         public DateTime StartDate { get; set; }
 
         public DateTime? CompletionDate { get; set; }
-
-
         public decimal? ProgressPercentage { get; set; } = 0; //Added new property
-
-        [Required]
-        public ProgressStatus Progress { get; set; }
-
-      
-
-
-
 
         // Navigation Properties
         public Student Student { get; set; }
         public Course Course { get; set; }
-        public List<Progress> Progresses { get; set; } = new List<Progress>(); //Added new property>
     }
 
 }

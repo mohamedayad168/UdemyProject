@@ -10,11 +10,14 @@ namespace Udemy.Core.Entities
         public LessonType Type { get; set; }
         public required string Url { get; set; }
         public string? ArticleContent { get; set; }
-        public bool IsPreview { get; set; }= false;
 
 
         // Navigation Properties
         public int SectionId { get; set; }
         public Section Section { get; set; }
+
+
+        // new table 'progress' navigational property
+        public List<Progress> Progresses { get; set; }
     }
 }
