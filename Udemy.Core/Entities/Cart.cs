@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Core.Entities
 {
-    public class Cart:BaseEntity
+    public class Cart : BaseEntity
     {
 
 
@@ -25,10 +19,7 @@ namespace Udemy.Core.Entities
         // Navigation Property
         public Student Student { get; set; }
 
-
-        
-
-
-    } 
+        public List<Course> Courses { get; set; }
+    }
 }
 
