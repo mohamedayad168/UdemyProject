@@ -12,7 +12,6 @@ namespace Udemy.Core.Entities
     {
 
 
-     
         [Required]
         public int StudentId { get; set; }
 
