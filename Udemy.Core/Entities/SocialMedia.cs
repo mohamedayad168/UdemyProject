@@ -2,10 +2,10 @@
 
 namespace Udemy.Core.Entities
 {
-    public class SocialMedia
+    public class SocialMedia : BaseEntity
     {
-        [Key]
-        public int SocialMediaId { get; set; }
+        public int UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -15,6 +15,6 @@ namespace Udemy.Core.Entities
         public byte[] SocialMediaImage { get; set; }
 
 
-        public ICollection<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
+
     }
 }
