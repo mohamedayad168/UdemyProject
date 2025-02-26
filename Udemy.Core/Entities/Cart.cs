@@ -20,10 +20,7 @@ namespace Udemy.Core.Entities
         // Navigation Property
         public Student Student { get; set; }
 
-
-        public List<CartCourse> CartCourses { get; set; } = new List<CartCourse>(); // navigation property Added
         public List<Course> Courses { get; set; }
-
     }
 }
 
