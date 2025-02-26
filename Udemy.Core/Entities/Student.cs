@@ -9,10 +9,8 @@ namespace Udemy.Core.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Student:BaseEntity
+    public class Student: ApplicationUser
     {
-        
-
         [Required, MaxLength(20)]
         public string StudentTitle { get; set; }
 
