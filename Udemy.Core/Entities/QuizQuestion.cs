@@ -11,20 +11,18 @@ namespace Udemy.Core.Entities
 {
     public class QuizQuestion : BaseEntity
     {
-        public QuestionTypes QuestionType { get; set; }
+        public QuestionTypes Type { get; set; }
 
         [StringLength(50)]
-        [Column(TypeName = "Question_Text")]
         public string QuestionText { get; set; }
 
-        public string? Choise1 { get; set; }
-        public string? Choise2 { get; set; }
-        public string? Choise3 { get; set; }
+        public string? ChoiseA { get; set; }
+        public string? ChoiseB { get; set; }
+        public string? ChoiseC { get; set; }
 
-        public string AnswerText { get; set; }
+        public string AnswerTxt { get; set; }
 
         public Quiz Quiz { get; set; }
-        [Column(TypeName = "Quiz_Id")]
         public int QuizId { get; set; }
     }
 }
