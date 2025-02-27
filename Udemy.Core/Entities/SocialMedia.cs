@@ -12,7 +12,7 @@ namespace Udemy.Core.Entities
         public string Link { get; set; }
 
         public int UserId { get; set; }
-        [ForeignKey("ApplicationUser")]
+        [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
     }
 }
