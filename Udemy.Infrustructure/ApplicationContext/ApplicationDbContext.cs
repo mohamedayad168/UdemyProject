@@ -30,7 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<SocialMedia> SocialMedias { get; set; }
-    public DbSet<StudentQuiz> StudentQuizzes { get; set; }
+    public DbSet<StudentGrade> StudentGrades { get; set; }
     public DbSet<Subcategory> Subcategories { get; set; }
 
 
