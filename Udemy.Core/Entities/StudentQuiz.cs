@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Udemy.Core.Entities
 {
-    public class StudentQuiz
+    public class StudentGrade
     {
         public Quiz Quiz { get; set; }
         [Key]
         [Column(TypeName ="Quiz_Id")]
         public int QuizId { get; set; }
-        public Course Course { get; set; }
+        public Student Student { get; set; }
         [Key]
-        [Column(TypeName = "Course_Id")]
-        public int CourseId { get; set; }
+        [Column(TypeName = "Student_Id")]
+        public int StudentId { get; set; }
         [Column(TypeName ="decimal(8,2)")]
         public decimal Grade { get; set; }
     }
