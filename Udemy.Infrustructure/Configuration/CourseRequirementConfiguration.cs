@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Udemy.Core.Entities;
 
-namespace Udemy.Infrustructure.Configuration;
+namespace Udemy.Infrastructure.Configuration;
 public class CourseRequirementConfiguration : IEntityTypeConfiguration<CourseRequirement>
 {
     public void Configure(EntityTypeBuilder<CourseRequirement> builder)

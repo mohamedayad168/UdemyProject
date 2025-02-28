@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
-using Udemy.Infrustructure.ApplicationContext;
-
 namespace Udemy.Extensions;
 
 public static class ServiceExtensions

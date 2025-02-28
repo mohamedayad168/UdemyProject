@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Udemy.Core.Entities;
 
-namespace Udemy.Infrustructure.Configuration;
+namespace Udemy.Infrastructure.Configuration;
 public class SubcategoryConfiguration : IEntityTypeConfiguration<Subcategory>
 {
     public void Configure(EntityTypeBuilder<Subcategory> builder)
