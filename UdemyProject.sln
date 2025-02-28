@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Core", "Udemy.Core\Udemy.Core.csproj", "{D28EEB7D-4EDD-4601-ADE8-0DC6900A341C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Infrustructure", "Udemy.Infrustructure\Udemy.Infrustructure.csproj", "{435CB882-11F7-42FD-A112-94AC5E674739}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Infrastructure", "Udemy.Infrustructure\Udemy.Infrastructure.csproj", "{435CB882-11F7-42FD-A112-94AC5E674739}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Service", "Udemy.Service\Udemy.Service.csproj", "{A25E733C-66F2-4794-8FF8-D4B48DE62B72}"
 EndProject

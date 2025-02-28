@@ -22,20 +22,35 @@ namespace Udemy.Infrustructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ApplicationUserNotification", b =>
+                {
+                    b.Property<int>("NotificationsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserNotification");
+                });
+
             modelBuilder.Entity("CartCourse", b =>
                 {
                     b.Property<int>("CoursesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CartsStudentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CartsId")
                         .HasColumnType("int");
 
-                    b.HasKey("CoursesId", "CartsStudentId", "CartsId");
+                    b.Property<int>("CartsStudentId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CartsStudentId", "CartsId");
+                    b.HasKey("CoursesId", "CartsId", "CartsStudentId");
+
+                    b.HasIndex("CartsId", "CartsStudentId");
 
                     b.ToTable("CartCourse");
                 });
@@ -66,9 +81,12 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<int>("SubcategoriesId")
                         .HasColumnType("int");
 
-                    b.HasKey("CoursesId", "SubcategoriesId");
+                    b.Property<int>("SubcategoriesCategoryId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("SubcategoriesId");
+                    b.HasKey("CoursesId", "SubcategoriesId", "SubcategoriesCategoryId");
+
+                    b.HasIndex("SubcategoriesId", "SubcategoriesCategoryId");
 
                     b.ToTable("CourseSubcategory");
                 });
@@ -270,7 +288,7 @@ namespace Udemy.Infrustructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -397,31 +415,27 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Cart", b =>
                 {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Amount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StudentId", "Id");
+                    b.HasKey("Id", "StudentId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Carts");
                 });
@@ -468,8 +482,8 @@ namespace Udemy.Infrustructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Discount")
+                        .HasColumnType("DECIMAL(8, 2)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -501,14 +515,11 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("No_Subscribers")
+                    b.Property<int>("NoSubscribers")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("int");
+                        .HasColumnType("DECIMAL(8, 2)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -524,9 +535,6 @@ namespace Udemy.Infrustructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InstructorId");
-
-                    b.HasIndex("QuizId")
-                        .IsUnique();
 
                     b.ToTable("Courses");
                 });
@@ -556,11 +564,9 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseRequirement", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Requirement")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -574,12 +580,7 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Requirement")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
+                    b.HasKey("Requirement", "CourseId");
 
                     b.HasIndex("CourseId");
 
@@ -588,27 +589,20 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Enrollment", b =>
                 {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CertificationUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CourseStatus")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
@@ -617,21 +611,24 @@ namespace Udemy.Infrustructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("ProgressPercentage")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<decimal?>("Rating")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("DECIMAL(8, 2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("comment")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("CourseId", "StudentId");
+                    b.HasKey("StudentId", "CourseId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Enrollments");
                 });
@@ -639,13 +636,13 @@ namespace Udemy.Infrustructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.Lesson", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ArticleContent")
-                        .HasColumnType("varchar(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -659,7 +656,7 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SectionId")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -673,7 +670,7 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<string>("VideoUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "SectionId");
 
                     b.HasIndex("SectionId");
 
@@ -698,20 +695,10 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -752,38 +739,34 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Progress", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPreview")
-                        .HasColumnType("bit");
 
                     b.Property<int>("LessonId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LessonProgress")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LessonSectionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentId", "LessonId");
 
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("StudentId");
+                    b.HasIndex("LessonId", "LessonSectionId");
 
                     b.ToTable("Progresses");
                 });
@@ -791,13 +774,10 @@ namespace Udemy.Infrustructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("CourseId")
-                        .HasColumnType("Course_Id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -808,7 +788,9 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "CourseId");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Quizzes");
                 });
@@ -816,15 +798,14 @@ namespace Udemy.Infrustructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.QuizQuestion", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("QuizId")
+                        .HasColumnType("Quiz_Id");
 
                     b.Property<string>("AnswerTxt")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Answer_Txt");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChoiceA")
                         .HasMaxLength(50)
@@ -849,17 +830,17 @@ namespace Udemy.Infrustructure.Migrations
 
                     b.Property<string>("QuestionTxt")
                         .IsRequired()
-                        .HasColumnType("Question_Txt");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuizId")
-                        .HasColumnType("Quiz_Id");
+                    b.Property<int>("QuizCourseId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "QuizId");
 
-                    b.HasIndex("QuizId");
+                    b.HasIndex("QuizId", "QuizCourseId");
 
                     b.ToTable("QuizQuestions");
                 });
@@ -948,10 +929,10 @@ namespace Udemy.Infrustructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.SocialMedia", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -961,8 +942,7 @@ namespace Udemy.Infrustructure.Migrations
 
                     b.Property<string>("Link")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -972,10 +952,7 @@ namespace Udemy.Infrustructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("Id", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -1002,9 +979,12 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("QuizCourseId")
+                        .HasColumnType("int");
+
                     b.HasKey("StudentId", "QuizId");
 
-                    b.HasIndex("QuizId");
+                    b.HasIndex("QuizId", "QuizCourseId");
 
                     b.ToTable("StudentGrades");
                 });
@@ -1012,10 +992,7 @@ namespace Udemy.Infrustructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.Subcategory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -1034,7 +1011,7 @@ namespace Udemy.Infrustructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "CategoryId");
 
                     b.HasIndex("CategoryId");
 
@@ -1072,15 +1049,27 @@ namespace Udemy.Infrustructure.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("ApplicationUserNotification", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Notification", null)
+                        .WithMany()
+                        .HasForeignKey("NotificationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CartCourse", b =>
@@ -1093,7 +1082,7 @@ namespace Udemy.Infrustructure.Migrations
 
                     b.HasOne("Udemy.Core.Entities.Cart", null)
                         .WithMany()
-                        .HasForeignKey("CartsStudentId", "CartsId")
+                        .HasForeignKey("CartsId", "CartsStudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1123,7 +1112,7 @@ namespace Udemy.Infrustructure.Migrations
 
                     b.HasOne("Udemy.Core.Entities.Subcategory", null)
                         .WithMany()
-                        .HasForeignKey("SubcategoriesId")
+                        .HasForeignKey("SubcategoriesId", "SubcategoriesCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1236,15 +1225,7 @@ namespace Udemy.Infrustructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Udemy.Core.Entities.Quiz", "Quiz")
-                        .WithOne("Course")
-                        .HasForeignKey("Udemy.Core.Entities.Course", "QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Instructor");
-
-                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseGoals", b =>
@@ -1299,17 +1280,6 @@ namespace Udemy.Infrustructure.Migrations
                     b.Navigation("Section");
                 });
 
-            modelBuilder.Entity("Udemy.Core.Entities.Notification", b =>
-                {
-                    b.HasOne("Udemy.Core.Entities.ApplicationUser", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Udemy.Core.Entities.Order", b =>
                 {
                     b.HasOne("Udemy.Core.Entities.Student", "Student")
@@ -1323,15 +1293,15 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Progress", b =>
                 {
-                    b.HasOne("Udemy.Core.Entities.Lesson", "Lesson")
-                        .WithMany("Progresses")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Udemy.Core.Entities.Student", "Student")
                         .WithMany("Progresses")
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Lesson", "Lesson")
+                        .WithMany("Progresses")
+                        .HasForeignKey("LessonId", "LessonSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1340,11 +1310,22 @@ namespace Udemy.Infrustructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("Udemy.Core.Entities.QuizQuestion", b =>
                 {
                     b.HasOne("Udemy.Core.Entities.Quiz", "Quiz")
                         .WithMany("QuizQuestion")
-                        .HasForeignKey("QuizId")
+                        .HasForeignKey("QuizId", "QuizCourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1394,15 +1375,15 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.StudentGrade", b =>
                 {
-                    b.HasOne("Udemy.Core.Entities.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Udemy.Core.Entities.Student", "Student")
                         .WithMany("StudentGrades")
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Quiz", "Quiz")
+                        .WithMany()
+                        .HasForeignKey("QuizId", "QuizCourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1442,8 +1423,6 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Notifications");
-
                     b.Navigation("SocialMedia");
                 });
 
@@ -1477,9 +1456,6 @@ namespace Udemy.Infrustructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
                 {
-                    b.Navigation("Course")
-                        .IsRequired();
-
                     b.Navigation("QuizQuestion");
                 });
 

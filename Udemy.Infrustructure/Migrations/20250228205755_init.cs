@@ -39,7 +39,7 @@ namespace Udemy.Infrustructure.Migrations
                     State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -79,19 +79,19 @@ namespace Udemy.Infrustructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Quizzes",
+                name: "Notifications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CourseId = table.Column<int>(type: "Course_Id", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Quizzes", x => x.Id);
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,45 +223,20 @@ namespace Udemy.Infrustructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Link = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SocialMedias",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Link = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SocialMedias", x => x.Id);
+                    table.PrimaryKey("PK_SocialMedias", x => new { x.Id, x.UserId });
                     table.ForeignKey(
                         name: "FK_SocialMedias_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -276,8 +251,7 @@ namespace Udemy.Infrustructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -294,17 +268,16 @@ namespace Udemy.Infrustructure.Migrations
                 name: "Subcategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subcategories", x => x.Id);
+                    table.PrimaryKey("PK_Subcategories", x => new { x.Id, x.CategoryId });
                     table.ForeignKey(
                         name: "FK_Subcategories_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -314,29 +287,25 @@ namespace Udemy.Infrustructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuizQuestions",
+                name: "ApplicationUserNotification",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    QuizId = table.Column<int>(type: "Quiz_Id", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    QuestionTxt = table.Column<string>(type: "Question_Txt", nullable: false),
-                    ChoiceA = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ChoiceB = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ChoiceC = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Answer_Txt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    NotificationsId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizQuestions", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationUserNotification", x => new { x.NotificationsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_QuizQuestions_Quizzes_QuizId",
-                        column: x => x.QuizId,
-                        principalTable: "Quizzes",
+                        name: "FK_ApplicationUserNotification_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserNotification_Notifications_NotificationsId",
+                        column: x => x.NotificationsId,
+                        principalTable: "Notifications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -351,17 +320,16 @@ namespace Udemy.Infrustructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Discount = table.Column<decimal>(type: "DECIMAL(8,2)", nullable: true),
+                    Price = table.Column<decimal>(type: "DECIMAL(8,2)", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     Language = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    No_Subscribers = table.Column<int>(type: "int", nullable: false),
+                    NoSubscribers = table.Column<int>(type: "int", nullable: false),
                     IsFree = table.Column<bool>(type: "bit", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
                     InstructorId = table.Column<int>(type: "int", nullable: false),
-                    QuizId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -375,12 +343,6 @@ namespace Udemy.Infrustructure.Migrations
                         principalTable: "Instructors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Courses_Quizzes_QuizId",
-                        column: x => x.QuizId,
-                        principalTable: "Quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -389,16 +351,14 @@ namespace Udemy.Infrustructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carts", x => new { x.StudentId, x.Id });
+                    table.PrimaryKey("PK_Carts", x => new { x.Id, x.StudentId });
                     table.ForeignKey(
                         name: "FK_Carts_Students_StudentId",
                         column: x => x.StudentId,
@@ -426,34 +386,6 @@ namespace Udemy.Infrustructure.Migrations
                     table.PrimaryKey("PK_Orders", x => new { x.StudentId, x.Id });
                     table.ForeignKey(
                         name: "FK_Orders_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentGrades",
-                columns: table => new
-                {
-                    StudentId = table.Column<int>(type: "Student_Id", nullable: false),
-                    QuizId = table.Column<int>(type: "int", nullable: false),
-                    Grade = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentGrades", x => new { x.StudentId, x.QuizId });
-                    table.ForeignKey(
-                        name: "FK_StudentGrades_Quizzes_QuizId",
-                        column: x => x.QuizId,
-                        principalTable: "Quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentGrades_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -516,17 +448,15 @@ namespace Udemy.Infrustructure.Migrations
                 name: "CourseRequirements",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
                     Requirement = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseRequirements", x => x.Id);
+                    table.PrimaryKey("PK_CourseRequirements", x => new { x.Requirement, x.CourseId });
                     table.ForeignKey(
                         name: "FK_CourseRequirements_Courses_CourseId",
                         column: x => x.CourseId,
@@ -540,11 +470,12 @@ namespace Udemy.Infrustructure.Migrations
                 columns: table => new
                 {
                     CoursesId = table.Column<int>(type: "int", nullable: false),
-                    SubcategoriesId = table.Column<int>(type: "int", nullable: false)
+                    SubcategoriesId = table.Column<int>(type: "int", nullable: false),
+                    SubcategoriesCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseSubcategory", x => new { x.CoursesId, x.SubcategoriesId });
+                    table.PrimaryKey("PK_CourseSubcategory", x => new { x.CoursesId, x.SubcategoriesId, x.SubcategoriesCategoryId });
                     table.ForeignKey(
                         name: "FK_CourseSubcategory_Courses_CoursesId",
                         column: x => x.CoursesId,
@@ -552,10 +483,10 @@ namespace Udemy.Infrustructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseSubcategory_Subcategories_SubcategoriesId",
-                        column: x => x.SubcategoriesId,
+                        name: "FK_CourseSubcategory_Subcategories_SubcategoriesId_SubcategoriesCategoryId",
+                        columns: x => new { x.SubcategoriesId, x.SubcategoriesCategoryId },
                         principalTable: "Subcategories",
-                        principalColumn: "Id",
+                        principalColumns: new[] { "Id", "CategoryId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -567,19 +498,18 @@ namespace Udemy.Infrustructure.Migrations
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompletionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CourseStatus = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    CertificationUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<decimal>(type: "DECIMAL(8,2)", nullable: true),
                     comment = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ProgressPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    CertificationUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
+                    ProgressPercentage = table.Column<decimal>(type: "decimal(8,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Enrollments", x => new { x.CourseId, x.StudentId });
+                    table.PrimaryKey("PK_Enrollments", x => new { x.StudentId, x.CourseId });
                     table.ForeignKey(
                         name: "FK_Enrollments_Courses_CourseId",
                         column: x => x.CourseId,
@@ -590,6 +520,27 @@ namespace Udemy.Infrustructure.Migrations
                         name: "FK_Enrollments_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Quizzes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quizzes", x => new { x.Id, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_Quizzes_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -656,17 +607,17 @@ namespace Udemy.Infrustructure.Migrations
                 columns: table => new
                 {
                     CoursesId = table.Column<int>(type: "int", nullable: false),
-                    CartsStudentId = table.Column<int>(type: "int", nullable: false),
-                    CartsId = table.Column<int>(type: "int", nullable: false)
+                    CartsId = table.Column<int>(type: "int", nullable: false),
+                    CartsStudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartCourse", x => new { x.CoursesId, x.CartsStudentId, x.CartsId });
+                    table.PrimaryKey("PK_CartCourse", x => new { x.CoursesId, x.CartsId, x.CartsStudentId });
                     table.ForeignKey(
-                        name: "FK_CartCourse_Carts_CartsStudentId_CartsId",
-                        columns: x => new { x.CartsStudentId, x.CartsId },
+                        name: "FK_CartCourse_Carts_CartsId_CartsStudentId",
+                        columns: x => new { x.CartsId, x.CartsStudentId },
                         principalTable: "Carts",
-                        principalColumns: new[] { "StudentId", "Id" },
+                        principalColumns: new[] { "Id", "StudentId" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CartCourse_Courses_CoursesId",
@@ -732,24 +683,81 @@ namespace Udemy.Infrustructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lessons",
+                name: "QuizQuestions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    QuizId = table.Column<int>(type: "Quiz_Id", nullable: false),
+                    QuizCourseId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ArticleContent = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    QuestionTxt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChoiceA = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ChoiceB = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ChoiceC = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AnswerTxt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lessons", x => x.Id);
+                    table.PrimaryKey("PK_QuizQuestions", x => new { x.Id, x.QuizId });
+                    table.ForeignKey(
+                        name: "FK_QuizQuestions_Quizzes_QuizId_QuizCourseId",
+                        columns: x => new { x.QuizId, x.QuizCourseId },
+                        principalTable: "Quizzes",
+                        principalColumns: new[] { "Id", "CourseId" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentGrades",
+                columns: table => new
+                {
+                    StudentId = table.Column<int>(type: "Student_Id", nullable: false),
+                    QuizId = table.Column<int>(type: "int", nullable: false),
+                    Grade = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    QuizCourseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentGrades", x => new { x.StudentId, x.QuizId });
+                    table.ForeignKey(
+                        name: "FK_StudentGrades_Quizzes_QuizId_QuizCourseId",
+                        columns: x => new { x.QuizId, x.QuizCourseId },
+                        principalTable: "Quizzes",
+                        principalColumns: new[] { "Id", "CourseId" },
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentGrades_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lessons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ArticleContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lessons", x => new { x.Id, x.SectionId });
                     table.ForeignKey(
                         name: "FK_Lessons_Sections_SectionId",
                         column: x => x.SectionId,
@@ -762,24 +770,23 @@ namespace Udemy.Infrustructure.Migrations
                 name: "Progresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     LessonId = table.Column<int>(type: "int", nullable: false),
-                    LessonProgress = table.Column<int>(type: "int", nullable: true),
-                    IsPreview = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LessonSectionId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Progresses", x => x.Id);
+                    table.PrimaryKey("PK_Progresses", x => new { x.StudentId, x.LessonId });
                     table.ForeignKey(
-                        name: "FK_Progresses_Lessons_LessonId",
-                        column: x => x.LessonId,
+                        name: "FK_Progresses_Lessons_LessonId_LessonSectionId",
+                        columns: x => new { x.LessonId, x.LessonSectionId },
                         principalTable: "Lessons",
-                        principalColumn: "Id",
+                        principalColumns: new[] { "Id", "SectionId" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Progresses_Students_StudentId",
@@ -798,6 +805,11 @@ namespace Udemy.Infrustructure.Migrations
                 name: "IX_Answers_UserId",
                 table: "Answers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserNotification_UsersId",
+                table: "ApplicationUserNotification",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Asks_CourseId",
@@ -849,9 +861,14 @@ namespace Udemy.Infrustructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartCourse_CartsStudentId_CartsId",
+                name: "IX_CartCourse_CartsId_CartsStudentId",
                 table: "CartCourse",
-                columns: new[] { "CartsStudentId", "CartsId" });
+                columns: new[] { "CartsId", "CartsStudentId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_StudentId",
+                table: "Carts",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CourseOrder_OrdersStudentId_OrdersId",
@@ -869,20 +886,14 @@ namespace Udemy.Infrustructure.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_QuizId",
-                table: "Courses",
-                column: "QuizId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CourseSubcategory_SubcategoriesId",
+                name: "IX_CourseSubcategory_SubcategoriesId_SubcategoriesCategoryId",
                 table: "CourseSubcategory",
-                column: "SubcategoriesId");
+                columns: new[] { "SubcategoriesId", "SubcategoriesCategoryId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_StudentId",
+                name: "IX_Enrollments_CourseId",
                 table: "Enrollments",
-                column: "StudentId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lessons_SectionId",
@@ -890,24 +901,19 @@ namespace Udemy.Infrustructure.Migrations
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_UserId",
-                table: "Notifications",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Progresses_LessonId",
+                name: "IX_Progresses_LessonId_LessonSectionId",
                 table: "Progresses",
-                column: "LessonId");
+                columns: new[] { "LessonId", "LessonSectionId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Progresses_StudentId",
-                table: "Progresses",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuizQuestions_QuizId",
+                name: "IX_QuizQuestions_QuizId_QuizCourseId",
                 table: "QuizQuestions",
-                column: "QuizId");
+                columns: new[] { "QuizId", "QuizCourseId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_CourseId",
+                table: "Quizzes",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ratings_CourseId",
@@ -930,9 +936,9 @@ namespace Udemy.Infrustructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentGrades_QuizId",
+                name: "IX_StudentGrades_QuizId_QuizCourseId",
                 table: "StudentGrades",
-                column: "QuizId");
+                columns: new[] { "QuizId", "QuizCourseId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subcategories_CategoryId",
@@ -945,6 +951,9 @@ namespace Udemy.Infrustructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Answers");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserNotification");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -980,9 +989,6 @@ namespace Udemy.Infrustructure.Migrations
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "Notifications");
-
-            migrationBuilder.DropTable(
                 name: "Progresses");
 
             migrationBuilder.DropTable(
@@ -1001,6 +1007,9 @@ namespace Udemy.Infrustructure.Migrations
                 name: "Asks");
 
             migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -1016,6 +1025,9 @@ namespace Udemy.Infrustructure.Migrations
                 name: "Lessons");
 
             migrationBuilder.DropTable(
+                name: "Quizzes");
+
+            migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
@@ -1029,9 +1041,6 @@ namespace Udemy.Infrustructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Instructors");
-
-            migrationBuilder.DropTable(
-                name: "Quizzes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
