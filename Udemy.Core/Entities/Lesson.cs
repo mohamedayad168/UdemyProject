@@ -13,7 +13,7 @@ namespace Udemy.Core.Entities
         public string? VideoUrl { get; set; }
 
         public string? ArticleContent { get; set; }
-        public int Order { get; set; }
+        //public int Order { get; set; }
 
 
         // Navigation Properties
