@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Udemy.Infrustructure.ApplicationContext;
 
 #nullable disable
 
-namespace Udemy.Infrustructure.Migrations
+namespace Udemy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -119,6 +118,26 @@ namespace Udemy.Infrustructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Instructor",
+                            NormalizedName = "INSTRUCTOR"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Student",
+                            NormalizedName = "STUDENT"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -203,6 +222,23 @@ namespace Udemy.Infrustructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -370,6 +406,32 @@ namespace Udemy.Infrustructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.UseTptMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            Age = 30,
+                            City = "New York",
+                            ConcurrencyStamp = "29bdcf66-e783-474e-a2b8-3aaf91eaded9",
+                            CountryName = "United States",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            Gender = "M",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@gmail.com",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAENf0CInspJ8pSYyOmdEDJiTgpUL9etKfT0309rsU7bLnvIBLDLThFYpckXSfkw5Sfw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ce58fa3d-dbbc-428e-a75a-0ef839a541d3",
+                            State = "New York",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Ask", b =>
@@ -1040,6 +1102,32 @@ namespace Udemy.Infrustructure.Migrations
                         .HasColumnType("int");
 
                     b.ToTable("Instructors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            Age = 30,
+                            City = "New York",
+                            ConcurrencyStamp = "a99ddbfe-becf-48e9-aa78-be040fd77e05",
+                            CountryName = "United States",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "instructor@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            Gender = "M",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "INSTRUCTOR@gmail.com",
+                            NormalizedUserName = "INSTRUCTOR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO5Hn1F17TTFJ8ZL+9TI3PdoMh8+EiqsLdLfhdc7xiHoHoHXWtlKruIyT5s6rMNqEQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "168adf73-18ab-4f81-9ad9-84c85587b1bf",
+                            State = "New York",
+                            TwoFactorEnabled = false,
+                            UserName = "instructor"
+                        });
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Student", b =>
@@ -1055,6 +1143,33 @@ namespace Udemy.Infrustructure.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.ToTable("Students");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            AccessFailedCount = 0,
+                            Age = 30,
+                            City = "New York",
+                            ConcurrencyStamp = "12e22f20-aa08-4c4c-aeb6-6de258acccc5",
+                            CountryName = "United States",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "student@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            Gender = "M",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "STUDENT@gmail.com",
+                            NormalizedUserName = "STUDENT",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIr3EaGDV9KcO0O5dMh6sPalUK/ngO7ZeJ3KQTBYDC0dudP52B8G1sG7ALgmW3B53w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5ad14472-359a-43b7-8d39-2219fb3e563e",
+                            State = "New York",
+                            TwoFactorEnabled = false,
+                            UserName = "student",
+                            Title = "Student"
+                        });
                 });
 
             modelBuilder.Entity("ApplicationUserNotification", b =>

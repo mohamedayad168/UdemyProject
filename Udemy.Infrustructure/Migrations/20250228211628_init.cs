@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Udemy.Infrustructure.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace Udemy.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration
@@ -795,6 +797,46 @@ namespace Udemy.Infrustructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, null, "Admin", "ADMIN" },
+                    { 2, null, "Instructor", "INSTRUCTOR" },
+                    { 3, null, "Student", "STUDENT" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Age", "City", "ConcurrencyStamp", "CountryName", "CreatedDate", "Email", "EmailConfirmed", "FirstName", "Gender", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "ModifiedDate", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "State", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, 30, "New York", "29bdcf66-e783-474e-a2b8-3aaf91eaded9", "United States", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Admin", "M", null, "Admin", false, null, null, "ADMIN@gmail.com", "ADMIN", "AQAAAAIAAYagAAAAENf0CInspJ8pSYyOmdEDJiTgpUL9etKfT0309rsU7bLnvIBLDLThFYpckXSfkw5Sfw==", null, false, "ce58fa3d-dbbc-428e-a75a-0ef839a541d3", "New York", false, "admin" },
+                    { 2, 0, 30, "New York", "a99ddbfe-becf-48e9-aa78-be040fd77e05", "United States", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "instructor@gmail.com", true, "Admin", "M", null, "Admin", false, null, null, "INSTRUCTOR@gmail.com", "INSTRUCTOR", "AQAAAAIAAYagAAAAEO5Hn1F17TTFJ8ZL+9TI3PdoMh8+EiqsLdLfhdc7xiHoHoHXWtlKruIyT5s6rMNqEQ==", null, false, "168adf73-18ab-4f81-9ad9-84c85587b1bf", "New York", false, "instructor" },
+                    { 3, 0, 30, "New York", "12e22f20-aa08-4c4c-aeb6-6de258acccc5", "United States", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "student@gmail.com", true, "Admin", "M", null, "Admin", false, null, null, "STUDENT@gmail.com", "STUDENT", "AQAAAAIAAYagAAAAEIr3EaGDV9KcO0O5dMh6sPalUK/ngO7ZeJ3KQTBYDC0dudP52B8G1sG7ALgmW3B53w==", null, false, "5ad14472-359a-43b7-8d39-2219fb3e563e", "New York", false, "student" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Instructors",
+                columns: new[] { "Id", "Bio", "Title", "TotalCourses", "TotalReviews", "TotalStudents" },
+                values: new object[] { 2, null, null, null, null, null });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "Id", "Bio", "Title" },
+                values: new object[] { 3, null, "Student" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_QuestionId",

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
 
-namespace Udemy.Infrustructure.Configuration
+namespace Udemy.Infrastructure.Configuration
 {
     class OrderConfiguration : IEntityTypeConfiguration<Order>
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Udemy.Core.Entities;
 
-namespace Udemy.Infrustructure.Configuration;
+namespace Udemy.Infrastructure.Configuration;
 public class QuizQuestionConfiguration : IEntityTypeConfiguration<QuizQuestion>
 {
     public void Configure(EntityTypeBuilder<QuizQuestion> builder)

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
-using Udemy.Infrustructure.Configuration;
+using Udemy.Infrastructure.UserSeed;
+using Udemy.Infrastructure.Configuration;
 
-namespace Udemy.Infrustructure.ApplicationContext;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser , IdentityRole<int> , int>
 {
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -40,5 +40,35 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     {
         builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);
         base.OnModelCreating(builder);
+
+
+        builder.Entity<IdentityRole<int>>().HasData(
+            new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
+            new IdentityRole<int> { Id = 2, Name = "Instructor", NormalizedName = "INSTRUCTOR" },
+            new IdentityRole<int> { Id = 3, Name = "Student", NormalizedName = "STUDENT" }
+                );
+
+
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            var users = new UsersInit();
+
+            builder.Entity<ApplicationUser>().HasData(users.Admin);
+            builder.Entity<Instructor>().HasData(users.Instructor);
+            builder.Entity<Student>().HasData(users.Student);
+
+
+            //assign users roles
+            builder.Entity<IdentityUserRole<int>>().HasData(
+            new IdentityUserRole<int> { RoleId = 1, UserId = 1 },
+            new IdentityUserRole<int> { RoleId = 2, UserId = 2 },
+            new IdentityUserRole<int> { RoleId = 3, UserId = 3 }
+            );
+
+        }
+
+
+
+
     }
 }
