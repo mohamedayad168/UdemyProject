@@ -23,7 +23,7 @@ public class ApplicationUser : IdentityUser<int>
 
     [Required(ErrorMessage = "This Field Is Required")]
     [StringLength(20)]
-    public string State { get; set; }
+    public string? State { get; set; }
 
     [Required(ErrorMessage = "This Field Is Required")]
     [Range(minimum: 16, maximum: 65)]
@@ -33,7 +33,7 @@ public class ApplicationUser : IdentityUser<int>
     [StringLength(1)]
     public string Gender { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedDate { get; set; }
     public DateTime? ModifiedDate { get; set; }
     public bool? IsDeleted { get; set; }
 

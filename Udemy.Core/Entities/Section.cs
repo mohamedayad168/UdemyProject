@@ -7,16 +7,14 @@ namespace Udemy.Core.Entities
     {
         [StringLength(20)]
         public string Title { get; set; }
-
-        public int Order { get; set; } //newly Added
-
+        public int Order { get; set; } 
         public int Duration { get; set; }
         public int NoLessons { get; set; }
 
         [ForeignKey("Course")]
         public int CourseId { get; set; }
-
         public Course Course { get; set; }
+
         public List<Lesson> Lessons { get; set; } = new();
     }
 }

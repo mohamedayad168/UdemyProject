@@ -6,15 +6,14 @@ namespace Udemy.Core.Entities
 {
     public class Lesson : BaseEntity
     {
-
         [StringLength(100)]
         public required string Title { get; set; }
         public int Duration { get; set; }
         public LessonType Type { get; set; }
         public string? VideoUrl { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
         public string? ArticleContent { get; set; }
+        public int Order { get; set; }
 
 
         // Navigation Properties

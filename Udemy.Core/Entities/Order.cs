@@ -11,8 +11,6 @@ namespace Udemy.Core.Entities
 {
     public class Order:BaseEntity
     {
-
-
         public int StudentId { get; set; } 
         [Required] 
         public PaymentMethod PaymentMethod { get; set; } 
@@ -24,13 +22,10 @@ namespace Udemy.Core.Entities
         public int TotalAmount { get; set; }
 
         [Column(TypeName = "decimal(8,2)")] 
-        public decimal? Discount { get; set; } 
-        [Required] 
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime? ModifiedDate { get; set; }
+        public decimal? Discount { get; set; }
 
         // Navigation Property
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
         public ICollection<Course> courses { set; get; } = new List<Course>();
     

@@ -7,12 +7,9 @@ namespace Udemy.Core.Entities
 {
     public class Progress : BaseEntity
     {
-
         public int StudentId { get; set; }
         public int LessonId { get; set; }
-
-        public LessonProgress? LessonProgress { get; set; }
-        public bool IsPreview { get; set; }
+        public string Status { get; set; } = ProgressStatus.NOT_STARTED;
 
 
         // Navigation Properties

@@ -8,7 +8,6 @@ namespace Udemy.Core.Entities
         [StringLength(20)]
         public string Name { get; set; }
 
-        [StringLength(20)]
         public string Link { get; set; }
 
         public int UserId { get; set; }

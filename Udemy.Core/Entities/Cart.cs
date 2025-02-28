@@ -1,20 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
     public class Cart : BaseEntity
     {
-
-
         [Required]
+        [ForeignKey("Student")]
         public int StudentId { get; set; }
-
-        [Required]
-        public DateTime DateCreated { get; set; }
-
-        public DateTime? LastModified { get; set; }
-
-        public int  Amount { get; set; }
+        public int? Amount { get; set; }
 
         // Navigation Property
         public Student Student { get; set; }

@@ -18,7 +18,7 @@ public class StudentGrade
 
     public DateTime? ModifiedDate { get; set; } 
 
-    public bool IsDeleted { get; set; } 
+    public bool IsDeleted { get; set; } = false;
 
     // Navigation Properties (Assuming Student & Quiz Tables Exist)
     public Student Student { get; set; }

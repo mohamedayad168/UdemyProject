@@ -19,8 +19,8 @@ namespace Udemy.Core.Entities
         public QuestionTypes Type { get; set; }
 
 
-        [Required, Column(TypeName = "Question_Txt")]
-        public string QuestionTxt { get; set; } = string.Empty;
+        [Required]
+        public string QuestionTxt { get; set; }
 
         [StringLength(50)]
         public string? ChoiceA { get; set; }
@@ -29,8 +29,8 @@ namespace Udemy.Core.Entities
         [StringLength(50)]
         public string? ChoiceC { get; set; }
 
-        [Required, Column("Answer_Txt")]
-        public string AnswerTxt { get; set; } = string.Empty;
+        [Required]
+        public string AnswerTxt { get; set; }
 
     }
 }

@@ -9,7 +9,7 @@ using Udemy.Core.Entities;
 
 namespace Udemy.Infrustructure.Configuration
 {
-    class OrderConfig : IEntityTypeConfiguration<Order>
+    class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
