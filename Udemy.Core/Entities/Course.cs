@@ -28,10 +28,6 @@ public class Course : BaseEntity
     [ForeignKey("InstructorId")]
     public Instructor Instructor { get; set; }
 
-    public int QuizId { get; set; }
-    [ForeignKey("QuizId")]
-    public Quiz Quiz { get; set; }
-
     public List<Cart> Carts { get; set; }
     public List<Enrollment> Enrollments { get; set; }
     public List<Order> Orders { get; set; }
