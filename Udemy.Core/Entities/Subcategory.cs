@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
-    public class Subcategory : BaseEntity
+    public class SubCategory : BaseEntity
     {
         [StringLength(20)]
         public required string Name { get; set; }

@@ -9,7 +9,7 @@ namespace Udemy.Core.Entities
         [StringLength(100)]
         public required string Title { get; set; }
         public int Duration { get; set; }
-        public LessonType Type { get; set; }
+        public string Type { get; set; }
         public string? VideoUrl { get; set; }
 
         public string? ArticleContent { get; set; }
@@ -23,6 +23,6 @@ namespace Udemy.Core.Entities
 
 
         // new table 'progress' navigational property
-        public List<Progress> Progresses { get; set; }
+        public ICollection<Progress> Progresses { get; set; }
     }
 }

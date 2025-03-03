@@ -13,10 +13,10 @@ namespace Udemy.Core.Entities
     {
         public int StudentId { get; set; } 
         [Required] 
-        public PaymentMethod PaymentMethod { get; set; } 
+        public string PaymentMethod { get; set; } 
 
         [Required] 
-        public OrderStatus Status { get; set; } 
+        public string Status { get; set; } 
 
         [Required] 
         public int TotalAmount { get; set; }

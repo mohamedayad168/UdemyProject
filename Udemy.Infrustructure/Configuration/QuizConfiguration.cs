@@ -7,6 +7,6 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
 {
     public void Configure(EntityTypeBuilder<Quiz> builder)
     {
-        builder.HasKey(x => new {x.Id , x.CourseId});
+        
     }
 }

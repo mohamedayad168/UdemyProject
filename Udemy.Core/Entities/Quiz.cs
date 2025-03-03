@@ -9,5 +9,6 @@ namespace Udemy.Core.Entities
         public Course Course { get; set; }
 
         public List<QuizQuestion> QuizQuestion { get; set; } = new List<QuizQuestion>();
+        public List<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
     }
 }

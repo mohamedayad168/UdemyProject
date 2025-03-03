@@ -7,6 +7,9 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
 {
     public void Configure(EntityTypeBuilder<Cart> builder)
     {
-        builder.HasKey(x => new {x.Id, x.StudentId});
+       
+
+
+
     }
 }

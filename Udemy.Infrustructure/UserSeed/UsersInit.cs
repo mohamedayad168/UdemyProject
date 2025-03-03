@@ -51,8 +51,8 @@ namespace Udemy.Infrastructure.UserSeed
                 CountryName = "United States",
                 City = "New York",
                 State = "New York",
-                FirstName = "Admin",
-                LastName = "Admin",
+                FirstName = "Instructor",
+                LastName = "Instructor",
                 Age = 30,
                 Gender = "M"
             }
@@ -73,8 +73,8 @@ namespace Udemy.Infrastructure.UserSeed
                 CountryName = "United States",
                 City = "New York",
                 State = "New York",
-                FirstName = "Admin",
-                LastName = "Admin",
+                FirstName = "Student",
+                LastName = "Student",
                 Age = 30,
                 Gender = "M",
                 Title = "Student"

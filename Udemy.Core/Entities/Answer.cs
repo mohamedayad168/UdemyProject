@@ -5,11 +5,11 @@ public class Answer : BaseEntity
 {
     public string Content { get; set; }
 
-    public int QuestionId { get; set; }
-    [ForeignKey("QuestionId")]
-    public Ask Question { get; set; }
+    public int AskId { get; set; }
+    [ForeignKey("AskId")]
+    public Ask Ask { get; set; }
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
     [ForeignKey("UserId")]
     public ApplicationUser User { get; set; }
 }

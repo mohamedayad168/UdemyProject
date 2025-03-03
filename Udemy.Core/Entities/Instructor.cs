@@ -11,5 +11,9 @@ public class Instructor : ApplicationUser
     public int? TotalReviews { get; set; }
     public int? TotalStudents { get; set; }
 
+    public decimal Wallet { get; set; }
+
+
+
     public List<Course> Courses { get; set; }
 }

@@ -6,6 +6,6 @@ namespace Udemy.Core.Entities
     {
         [StringLength(20)]
         public required string Name { get; set; }
-        public List<Subcategory> Subcategories { get; set; } = new();
+        public List<SubCategory> Subcategories { get; set; } = new();
     }
 }

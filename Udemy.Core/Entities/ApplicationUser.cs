@@ -40,5 +40,7 @@ public class ApplicationUser : IdentityUser<int>
 
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     public ICollection<SocialMedia> SocialMedia { get; set; } = new List<SocialMedia>();
+    public ICollection<Ask> Asks { get; set; } = new List<Ask>();
+    public ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
 }

@@ -9,8 +9,8 @@ public class Course : BaseEntity
     [StringLength(20)]
     public string Title { get; set; }
     public string Description { get; set; }
-    public CourseStatus Status { get; set; }
-    public string Level { get; set; }
+    public string Status { get; set; }
+    public string? Level { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
     public decimal? Discount { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
@@ -24,16 +24,29 @@ public class Course : BaseEntity
     public bool IsFree { get; set; }
     public bool IsApproved { get; set; }
 
+    
+    public decimal CurrentPrice { get; private set; }
+
+    [Column(TypeName = "DECIMAL(2, 1)")]
+    [Range(0.0, 5.0)]
+    public decimal? Rating { get; set; }
+
+
+    public int SubCategoryId { get; set; }
+    [ForeignKey("SubCategoryId")]
+    public SubCategory SubCategory { get; set; }
+
+
+
+
     public int InstructorId { get; set; }
     [ForeignKey("InstructorId")]
     public Instructor Instructor { get; set; }
 
-    public List<Cart> Carts { get; set; }
+    
     public List<Enrollment> Enrollments { get; set; }
-    public List<Order> Orders { get; set; }
-    public List<Subcategory> Subcategories { get; set; }
     public List<Section> Sections { get; set; }
-    public List<Ask> Questions { get; set; }
+    public List<Ask> Asks { get; set; }
     public List<CourseRequirement> CourseRequirements { get; set; }
     public List<CourseGoals> CourseGoals { get; set; }
 }

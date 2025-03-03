@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Udemy.Core.Entities;
 public class StudentGrade
 {
-    [Column(TypeName = "Student_Id")]
+
     public int StudentId { get; set; } 
 
     public int QuizId { get; set; } 

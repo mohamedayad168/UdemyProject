@@ -11,12 +11,12 @@ namespace Udemy.Core.Entities
 {
     public class QuizQuestion : BaseEntity
     {
-        [Column(TypeName = "Quiz_Id")]
+       
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
 
         [Required]
-        public QuestionTypes Type { get; set; }
+        public string Type { get; set; }
 
 
         [Required]

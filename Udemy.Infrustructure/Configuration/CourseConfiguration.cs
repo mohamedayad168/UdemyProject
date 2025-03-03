@@ -9,12 +9,11 @@ using Udemy.Core.Entities;
 
 namespace Udemy.Infrastructure.Configuration
 {
-    class EnrollmentConfigration : IEntityTypeConfiguration<Enrollment>
+    public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
-        public void Configure(EntityTypeBuilder<Enrollment> builder)
+        public void Configure(EntityTypeBuilder<Course> builder)
         {
-            builder.HasKey(e => new { e.CourseId, e.StudentId });
-            
+           builder.Property(x => x.CurrentPrice).HasColumnType("decimal(18,2)").HasComputedColumnSql("[Price] * ([Discount]/100)",stored:true);
         }
     }
 }

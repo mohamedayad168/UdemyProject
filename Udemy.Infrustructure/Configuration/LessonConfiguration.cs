@@ -7,6 +7,6 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
 {
     public void Configure(EntityTypeBuilder<Lesson> builder)
     {
-        builder.HasKey(x => new {x.Id , x.SectionId});
+        builder.HasKey(x => x.Id);
     }
 }

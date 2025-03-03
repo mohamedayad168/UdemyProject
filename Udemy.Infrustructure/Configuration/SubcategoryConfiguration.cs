@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Udemy.Core.Entities;
 
 namespace Udemy.Infrastructure.Configuration;
-public class SubcategoryConfiguration : IEntityTypeConfiguration<Subcategory>
+public class SubcategoryConfiguration : IEntityTypeConfiguration<SubCategory>
 {
-    public void Configure(EntityTypeBuilder<Subcategory> builder)
+    public void Configure(EntityTypeBuilder<SubCategory> builder)
     {
-        builder.HasKey(x => new {x.Id , x.CategoryId});
     }
 }

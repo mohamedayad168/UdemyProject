@@ -24,11 +24,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     public DbSet<Progress> Progresses { get; set; }
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<QuizQuestion> QuizQuestions { get; set; }
-    public DbSet<Rating> Ratings { get; set; }
+    //public DbSet<Rating> Ratings { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<SocialMedia> SocialMedias { get; set; }
     public DbSet<StudentGrade> StudentGrades { get; set; }
-    public DbSet<Subcategory> Subcategories { get; set; }
+    public DbSet<SubCategory> Subcategories { get; set; }
 
 
 

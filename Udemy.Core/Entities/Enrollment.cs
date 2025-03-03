@@ -15,7 +15,7 @@ namespace Udemy.Core.Entities
         [Required]
         public DateTime StartDate { get; set; }
         public DateTime? CompletionDate { get; set; }
-        public CourseStatus Status { get; set; }
+        public string Status { get; set; }
         [Column(TypeName = "DECIMAL(8, 2)")]
         public decimal? Rating { get; set; }
         [MaxLength(50)]
