@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.IRepository;
+using Udemy.Infrastructure.Repository;
 namespace Udemy.Extensions;
 
 public static class ServiceExtensions
@@ -19,12 +21,15 @@ public static class ServiceExtensions
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
     }
-
     public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("Default"));
         });
+    }
+    public static void ConfigureRepositoryManager(this IServiceCollection services)
+    {
+        services.AddScoped<IRepositoryManager , RepositoryManager>();
     }
 }
