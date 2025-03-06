@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository;
+using Udemy.Service.IService;
+using Udemy.Service.Service;
 namespace Udemy.Extensions;
 
 public static class ServiceExtensions
@@ -32,4 +34,9 @@ public static class ServiceExtensions
     {
         services.AddScoped<IRepositoryManager , RepositoryManager>();
     }
+    public static void ConfigureServiceManager(this IServiceCollection services)
+    {
+        services.AddScoped<IServiceManager , ServiceManager>();
+    }
+
 }
