@@ -1,4 +1,5 @@
 ﻿using Udemy.Core.IRepository;
+using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects;
 using Udemy.Service.IService;
 
@@ -29,9 +30,9 @@ public class StudentService : IStudentService
 
         return studentDto;
     }
-    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges)
+    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
     {
-        var students = await repository.Student.GetAllStudentsAsync(trackChanges);
+        var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
         var stdudentsDto = new List<StudentDto>();
         foreach(var student in students)
         {
