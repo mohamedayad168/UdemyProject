@@ -27,7 +27,7 @@ namespace Udemy.Core.Entities
         // Navigation Property
         [ForeignKey("StudentId")]
         public Student Student { get; set; }
-        public ICollection<Course> courses { set; get; } = new List<Course>();
+        public ICollection<Course> Courses { set; get; } = new List<Course>();
     
     }
 }

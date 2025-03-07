@@ -10,7 +10,7 @@ public class Course : BaseEntity
     public string Title { get; set; }
     public string Description { get; set; }
     public string Status { get; set; }
-    public string? Level { get; set; }
+    public string Level { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
     public decimal? Discount { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
@@ -42,8 +42,8 @@ public class Course : BaseEntity
     public int InstructorId { get; set; }
     [ForeignKey("InstructorId")]
     public Instructor Instructor { get; set; }
-
-    
+    public List<Order> Orders { get; set; }
+    public List<Cart> Carts { get; set; }
     public List<Enrollment> Enrollments { get; set; }
     public List<Section> Sections { get; set; }
     public List<Ask> Asks { get; set; }

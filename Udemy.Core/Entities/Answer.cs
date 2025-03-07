@@ -9,7 +9,7 @@ public class Answer : BaseEntity
     [ForeignKey("AskId")]
     public Ask Ask { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
     [ForeignKey("UserId")]
     public ApplicationUser User { get; set; }
 }

@@ -23,6 +23,6 @@ namespace Udemy.Core.Entities
 
 
         // new table 'progress' navigational property
-        public ICollection<Progress> Progresses { get; set; }
+        public List<Progress> Progresses { get; set; }
     }
 }
