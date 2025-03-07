@@ -36,36 +36,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.ToTable("ApplicationUserNotification");
                 });
 
-            modelBuilder.Entity("CartCourse", b =>
-                {
-                    b.Property<int>("CartsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CartsId", "CoursesId");
-
-                    b.HasIndex("CoursesId");
-
-                    b.ToTable("CartCourse");
-                });
-
-            modelBuilder.Entity("CourseOrder", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("CourseOrder");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -390,7 +360,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "4b9885ca-34c0-45fc-95ba-d4ecca8f1850",
+                            ConcurrencyStamp = "c01b33ea-978e-4b2c-8e16-f27031a7acf9",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
@@ -401,9 +371,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@gmail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAh1HDCwOmBO0eDKbNlp4pw5pIxR7VOuFqOrlyYpyUdM8KKmitsDH9RbylMSco0l9g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENI+XgYs4kn0wN7JRU9dK/4u44U7lhFGzlEK2qGoFkNBJA6k+yzWjgGho2mpbhHZrw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8247017f-0303-41ce-b03d-1e477cdd0faa",
+                            SecurityStamp = "3918b87b-b44d-464f-828d-8ab9fe60f53d",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -480,6 +450,21 @@ namespace Udemy.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Udemy.Core.Entities.CartCourse", b =>
+                {
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CartCourse");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Category", b =>
@@ -616,6 +601,21 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasKey("CourseId", "Goal");
 
                     b.ToTable("CourseGoals");
+                });
+
+            modelBuilder.Entity("Udemy.Core.Entities.CourseOrder", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseOrder");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseRequirement", b =>
@@ -1076,7 +1076,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "8db67495-385b-4f3c-9a5d-c7f967c46559",
+                            ConcurrencyStamp = "c453d892-65bd-4bc6-8a8c-51880655b26f",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "instructor@gmail.com",
@@ -1087,9 +1087,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "INSTRUCTOR@gmail.com",
                             NormalizedUserName = "INSTRUCTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAENaRMm09AXZuA8y3hkjInhXrvkgdJ0lMZ7tqjU6Y8i/MlR3iHDfRfZxpaAIqy2wIFQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENDg50BJEkI/71xEfuJrMeJyGBTYWt7xXUqqhN+YaKY1/7fZ4E6TFYIjFY6n+g+kyQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "45784fc4-a104-4d17-8696-545850fc5f01",
+                            SecurityStamp = "1f4ee09e-055f-4b33-b467-59797552f0e5",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "instructor",
@@ -1121,7 +1121,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "d58e2701-2396-4f02-9d90-0d61d7ef14ba",
+                            ConcurrencyStamp = "6a893b69-9817-4ad4-ae4d-064b88128fc7",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student@gmail.com",
@@ -1132,9 +1132,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@gmail.com",
                             NormalizedUserName = "STUDENT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKnhCONsEBk2zZH687mbtK3WiJcjAP4IyOry/VtohNJpp+qGdCD9csSmx/Qa+J5U6g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGmn2R68Mu97mnxuS74CaR0zu2i5VQctCwjfXFzqF0HbXKIFpOQqPnTDlXDCVqBCuA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "322e74ed-1f6b-4e51-97e2-3e8f0544c8d6",
+                            SecurityStamp = "89d8aa13-9005-477b-bec0-7e0755d069ad",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "student",
@@ -1154,36 +1154,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasOne("Udemy.Core.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CartCourse", b =>
-                {
-                    b.HasOne("Udemy.Core.Entities.Cart", null)
-                        .WithMany()
-                        .HasForeignKey("CartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Udemy.Core.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CourseOrder", b =>
-                {
-                    b.HasOne("Udemy.Core.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Udemy.Core.Entities.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1284,6 +1254,25 @@ namespace Udemy.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("Udemy.Core.Entities.CartCourse", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Cart", "Cart")
+                        .WithMany("CartCourses")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Course", "Course")
+                        .WithMany("CartCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("Udemy.Core.Entities.Course", b =>
                 {
                     b.HasOne("Udemy.Core.Entities.Instructor", "Instructor")
@@ -1312,6 +1301,25 @@ namespace Udemy.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("Udemy.Core.Entities.CourseOrder", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Course", "Course")
+                        .WithMany("OrderCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Order", "Order")
+                        .WithMany("OrderCourses")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseRequirement", b =>
@@ -1489,6 +1497,11 @@ namespace Udemy.Infrastructure.Migrations
                     b.Navigation("Answers");
                 });
 
+            modelBuilder.Entity("Udemy.Core.Entities.Cart", b =>
+                {
+                    b.Navigation("CartCourses");
+                });
+
             modelBuilder.Entity("Udemy.Core.Entities.Category", b =>
                 {
                     b.Navigation("Subcategories");
@@ -1498,11 +1511,15 @@ namespace Udemy.Infrastructure.Migrations
                 {
                     b.Navigation("Asks");
 
+                    b.Navigation("CartCourses");
+
                     b.Navigation("CourseGoals");
 
                     b.Navigation("CourseRequirements");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("OrderCourses");
 
                     b.Navigation("Sections");
                 });
@@ -1510,6 +1527,11 @@ namespace Udemy.Infrastructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.Lesson", b =>
                 {
                     b.Navigation("Progresses");
+                });
+
+            modelBuilder.Entity("Udemy.Core.Entities.Order", b =>
+                {
+                    b.Navigation("OrderCourses");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
