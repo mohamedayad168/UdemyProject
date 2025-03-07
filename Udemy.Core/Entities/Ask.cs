@@ -12,7 +12,7 @@ public class Ask : BaseEntity
     [ForeignKey("CourseId")]
     public Course Course { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
     [ForeignKey("UserId")]
     public ApplicationUser User { get; set; }
 

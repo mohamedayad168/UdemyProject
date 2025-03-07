@@ -9,12 +9,13 @@ using Udemy.Core.Entities;
 
 namespace Udemy.Infrastructure.Configuration
 {
-    class EnrollmentConfigration : IEntityTypeConfiguration<Enrollment>
+    class CartConfiguration : IEntityTypeConfiguration<Cart>
     {
-        public void Configure(EntityTypeBuilder<Enrollment> builder)
+        public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey(e => new { e.CourseId, e.StudentId });
-            
+            //builder.HasKey(k => new { k.StudentId , k.Id });
         }
     }
+
+
 }

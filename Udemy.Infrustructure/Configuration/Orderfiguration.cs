@@ -13,7 +13,7 @@ namespace Udemy.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.HasKey(k => new { k.StudentId, k.Id });
+            //builder.HasKey(k => new { k.StudentId, k.Id });
         }
     }
 }

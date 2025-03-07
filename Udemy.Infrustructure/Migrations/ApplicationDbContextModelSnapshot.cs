@@ -36,6 +36,36 @@ namespace Udemy.Infrastructure.Migrations
                     b.ToTable("ApplicationUserNotification");
                 });
 
+            modelBuilder.Entity("CartCourse", b =>
+                {
+                    b.Property<int>("CartsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartsId", "CoursesId");
+
+                    b.HasIndex("CoursesId");
+
+                    b.ToTable("CartCourse");
+                });
+
+            modelBuilder.Entity("CourseOrder", b =>
+                {
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CourseOrder");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -224,13 +254,13 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -360,7 +390,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "de960cff-6d95-4c43-aec1-63afae1f87be",
+                            ConcurrencyStamp = "4b9885ca-34c0-45fc-95ba-d4ecca8f1850",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
@@ -371,9 +401,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@gmail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKzF3PThv8NhfaB406be+ltDYX/ubrvRAiYtoB9XOLWC4uCUiqnL3zL/9yll4YgzmA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAh1HDCwOmBO0eDKbNlp4pw5pIxR7VOuFqOrlyYpyUdM8KKmitsDH9RbylMSco0l9g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "70dbc38a-3b6a-4731-a322-92bd5de3c4cc",
+                            SecurityStamp = "8247017f-0303-41ce-b03d-1e477cdd0faa",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -398,7 +428,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -409,7 +439,7 @@ namespace Udemy.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -423,11 +453,11 @@ namespace Udemy.Infrastructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Cart", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Amount")
                         .HasColumnType("int");
@@ -435,13 +465,16 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StudentId", "Id");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("StudentId")
                         .IsUnique();
@@ -460,7 +493,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -483,12 +516,6 @@ namespace Udemy.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CartStudentId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -517,7 +544,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsFree")
@@ -529,18 +556,13 @@ namespace Udemy.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Level")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("NoSubscribers")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderStudentId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -569,10 +591,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasIndex("InstructorId");
 
                     b.HasIndex("SubCategoryId");
-
-                    b.HasIndex("CartStudentId", "CartId");
-
-                    b.HasIndex("OrderStudentId", "OrderId");
 
                     b.ToTable("Courses");
                 });
@@ -689,7 +707,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -732,7 +750,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -745,11 +763,11 @@ namespace Udemy.Infrastructure.Migrations
 
             modelBuilder.Entity("Udemy.Core.Entities.Order", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -757,7 +775,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<decimal?>("Discount")
                         .HasColumnType("decimal(8,2)");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -771,10 +789,15 @@ namespace Udemy.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
-                    b.HasKey("StudentId", "Id");
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Orders");
                 });
@@ -790,7 +813,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("LessonId")
@@ -829,7 +852,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -869,7 +892,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -907,7 +930,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -939,7 +962,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")
@@ -1002,7 +1025,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -1053,7 +1076,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "8f9415f0-bee2-4680-91bd-03a1bdcce519",
+                            ConcurrencyStamp = "8db67495-385b-4f3c-9a5d-c7f967c46559",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "instructor@gmail.com",
@@ -1064,9 +1087,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "INSTRUCTOR@gmail.com",
                             NormalizedUserName = "INSTRUCTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOWXb/RW1HVYfGAn7Qt7YiArpvtz5+2zWksGIhXxMWIj1tTFo5vkgl0CBtjol2fzPg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENaRMm09AXZuA8y3hkjInhXrvkgdJ0lMZ7tqjU6Y8i/MlR3iHDfRfZxpaAIqy2wIFQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3c3f26ea-190c-46aa-b092-bbac0402fc2b",
+                            SecurityStamp = "45784fc4-a104-4d17-8696-545850fc5f01",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "instructor",
@@ -1098,7 +1121,7 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "9dffd1f4-6003-4a46-b644-79c7f7af18d0",
+                            ConcurrencyStamp = "d58e2701-2396-4f02-9d90-0d61d7ef14ba",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student@gmail.com",
@@ -1109,9 +1132,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@gmail.com",
                             NormalizedUserName = "STUDENT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOKD6fiB+A1Qv/+LelcAenSr6m9eQ+OkFwCcllVaDwPOTLnhizKvq5UmlAHy1xQo7w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKnhCONsEBk2zZH687mbtK3WiJcjAP4IyOry/VtohNJpp+qGdCD9csSmx/Qa+J5U6g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f3f1cbad-f531-46f1-b976-ba5f7304fd1d",
+                            SecurityStamp = "322e74ed-1f6b-4e51-97e2-3e8f0544c8d6",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "student",
@@ -1131,6 +1154,36 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasOne("Udemy.Core.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CartCourse", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Cart", null)
+                        .WithMany()
+                        .HasForeignKey("CartsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseOrder", b =>
+                {
+                    b.HasOne("Udemy.Core.Entities.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Core.Entities.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1195,7 +1248,8 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasOne("Udemy.Core.Entities.ApplicationUser", "User")
                         .WithMany("Answers")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .IsRequired();
 
                     b.Navigation("Ask");
 
@@ -1211,7 +1265,8 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasOne("Udemy.Core.Entities.ApplicationUser", "User")
                         .WithMany("Asks")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .IsRequired();
 
                     b.Navigation("Course");
 
@@ -1242,14 +1297,6 @@ namespace Udemy.Infrastructure.Migrations
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Udemy.Core.Entities.Cart", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("CartStudentId", "CartId");
-
-                    b.HasOne("Udemy.Core.Entities.Order", null)
-                        .WithMany("courses")
-                        .HasForeignKey("OrderStudentId", "OrderId");
 
                     b.Navigation("Instructor");
 
@@ -1442,11 +1489,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("Udemy.Core.Entities.Cart", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
             modelBuilder.Entity("Udemy.Core.Entities.Category", b =>
                 {
                     b.Navigation("Subcategories");
@@ -1468,11 +1510,6 @@ namespace Udemy.Infrastructure.Migrations
             modelBuilder.Entity("Udemy.Core.Entities.Lesson", b =>
                 {
                     b.Navigation("Progresses");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Entities.Order", b =>
-                {
-                    b.Navigation("courses");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
