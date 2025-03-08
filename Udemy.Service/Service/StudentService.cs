@@ -1,4 +1,9 @@
-﻿using Udemy.Core.IRepository;
+
+using Udemy.Core.Entities;
+
+using Udemy.Core.Exceptions;
+
+using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects;
 using Udemy.Service.IService;
@@ -14,9 +19,11 @@ public class StudentService : IStudentService
 
     public async Task<StudentDto> GetStudentByIdAsync(int id, bool trackChanges)
     {
-        var student = await repository.Student.GetStudentAsync(id , trackChanges);
-        if(student is null)
+
+        var student = await repository.Student.GetStudentAsync(id, trackChanges);
+        if (student is null)
             throw new StudentNotFoundException($"Student With Id:{id} Not Found");
+
 
         var studentDto = new StudentDto()
         {
