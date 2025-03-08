@@ -55,8 +55,8 @@ namespace Udemy.Infrastructure.UserSeed
                 LastName = "Instructor",
                 Age = 30,
                 Gender = "M"
-            }
-           ;
+            };
+           
             Instructor.EmailConfirmed = true;
             Instructor.PasswordHash = new PasswordHasher<Instructor>().HashPassword(Instructor, "Instructor123");
             Instructor.SecurityStamp = Guid.NewGuid().ToString();

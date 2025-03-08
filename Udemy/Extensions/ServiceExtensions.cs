@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository;
+using Udemy.Service.AutoMapperConfigration;
 using Udemy.Service.IService;
 using Udemy.Service.Service;
 namespace Udemy.Extensions;
@@ -32,11 +33,15 @@ public static class ServiceExtensions
     }
     public static void ConfigureRepositoryManager(this IServiceCollection services)
     {
-        services.AddScoped<IRepositoryManager , RepositoryManager>();
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
     public static void ConfigureServiceManager(this IServiceCollection services)
     {
-        services.AddScoped<IServiceManager , ServiceManager>();
+        services.AddScoped<IServiceManager, ServiceManager>();
+    }
+    public static void ConfigureAutoMapperService(this IServiceCollection service)
+    {
+        service.AddAutoMapper(typeof(AutoMapperProfile));
     }
 
 }
