@@ -1,4 +1,4 @@
-repository , service , controller , dto , expetions
+repository , service , controller , dto , exeptions
 
 -category
 -course
