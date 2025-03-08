@@ -1,0 +1,5 @@
+repository , service , controller , dto , exeptions
+
+-category
+-course
+-CourseGoals
