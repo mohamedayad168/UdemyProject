@@ -10,7 +10,7 @@ public class Course : BaseEntity
     public string Title { get; set; }
     public string Description { get; set; }
     public string Status { get; set; }
-    public string Level { get; set; }
+    public string CourseLevel { get; set; } //change from level to courselevel to change database [level]
     [Column(TypeName = "DECIMAL(8, 2)")]
     public decimal? Discount { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
@@ -23,6 +23,11 @@ public class Course : BaseEntity
     public int NoSubscribers { get; set; }
     public bool IsFree { get; set; }
     public bool IsApproved { get; set; }
+
+    [StringLength(20)]
+    public string? BestSeller { get; set; }
+
+
 
     
     public decimal CurrentPrice { get; private set; }

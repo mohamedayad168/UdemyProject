@@ -30,8 +30,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     public DbSet<StudentGrade> StudentGrades { get; set; }
     public DbSet<SubCategory> Subcategories { get; set; }
 
-
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
 
@@ -60,9 +58,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
 
             //assign users roles
             builder.Entity<IdentityUserRole<int>>().HasData(
-            new IdentityUserRole<int> { RoleId = 1, UserId = 1 },
-            new IdentityUserRole<int> { RoleId = 2, UserId = 2 },
-            new IdentityUserRole<int> { RoleId = 3, UserId = 3 }
+            new IdentityUserRole<int> { RoleId = 1, UserId = 11111 },
+            new IdentityUserRole<int> { RoleId = 2, UserId = 22222 },
+            new IdentityUserRole<int> { RoleId = 3, UserId = 33333 }
             );
 
         }

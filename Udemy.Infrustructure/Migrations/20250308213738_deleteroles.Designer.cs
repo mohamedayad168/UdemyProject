@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Udemy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250308213738_deleteroles")]
+    partial class deleteroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,26 +67,6 @@ namespace Udemy.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Instructor",
-                            NormalizedName = "INSTRUCTOR"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -168,23 +151,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 11111,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            UserId = 22222,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 33333,
-                            RoleId = 3
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -352,32 +318,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.UseTptMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 11111,
-                            AccessFailedCount = 0,
-                            Age = 30,
-                            City = "New York",
-                            ConcurrencyStamp = "ec8fed8d-5b3e-449a-9786-2c2507a2176f",
-                            CountryName = "United States",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Admin",
-                            Gender = "M",
-                            LastName = "Admin",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@gmail.com",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELptlHr87XOMNoUOJ6H28Y9Y5c6NqvZlWF/bRw9599tRCWK8f0TrZ8N/bBki96qA3w==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "d59f451d-b9a2-4533-8b5f-ab00240ec1cd",
-                            State = "New York",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Ask", b =>
@@ -503,8 +443,8 @@ namespace Udemy.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BestSeller")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CourseLevel")
                         .IsRequired()
@@ -1072,33 +1012,6 @@ namespace Udemy.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.ToTable("Instructors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 22222,
-                            AccessFailedCount = 0,
-                            Age = 30,
-                            City = "New York",
-                            ConcurrencyStamp = "c9eda82e-332f-4c92-9326-cc2044b76e9b",
-                            CountryName = "United States",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "instructor@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Instructor",
-                            Gender = "M",
-                            LastName = "Instructor",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "INSTRUCTOR@gmail.com",
-                            NormalizedUserName = "INSTRUCTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBThkFxhSwiCmSD3glkmsvGjtEoYzYMZoVXnW8kQtFOqb7lOcO9nMNihbWbsD/Ziqw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5afa2791-5ba6-496e-bd26-0658089cc99c",
-                            State = "New York",
-                            TwoFactorEnabled = false,
-                            UserName = "instructor",
-                            Wallet = 0m
-                        });
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Student", b =>
@@ -1116,34 +1029,6 @@ namespace Udemy.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 33333,
-                            AccessFailedCount = 0,
-                            Age = 30,
-                            City = "New York",
-                            ConcurrencyStamp = "7bdffd32-3985-4d5c-9ad9-4d1dcdb46570",
-                            CountryName = "United States",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Student",
-                            Gender = "M",
-                            LastName = "Student",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "STUDENT@gmail.com",
-                            NormalizedUserName = "STUDENT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJnuytiMsa4IfZtbl3tBVPPtnceUGkiIMw544KG5g3xh06ygipSZWgn2As1u+ATl/g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d49504d-ea9d-44a9-b707-50f7bd1d96f7",
-                            State = "New York",
-                            TwoFactorEnabled = false,
-                            UserName = "student",
-                            Title = "Student",
-                            Wallet = 0m
-                        });
                 });
 
             modelBuilder.Entity("ApplicationUserNotification", b =>

@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Core", "Udemy.Core\Udemy.Core.csproj", "{D28EEB7D-4EDD-4601-ADE8-0DC6900A341C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.Core", "Udemy.Core\Udemy.Core.csproj", "{D28EEB7D-4EDD-4601-ADE8-0DC6900A341C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Infrastructure", "Udemy.Infrustructure\Udemy.Infrastructure.csproj", "{435CB882-11F7-42FD-A112-94AC5E674739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.Infrastructure", "Udemy.Infrustructure\Udemy.Infrastructure.csproj", "{435CB882-11F7-42FD-A112-94AC5E674739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Service", "Udemy.Service\Udemy.Service.csproj", "{A25E733C-66F2-4794-8FF8-D4B48DE62B72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.Service", "Udemy.Service\Udemy.Service.csproj", "{A25E733C-66F2-4794-8FF8-D4B48DE62B72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy", "Udemy\Udemy.csproj", "{D2452B20-4825-466C-9F96-734A8843D872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy", "Udemy\Udemy.csproj", "{D2452B20-4825-466C-9F96-734A8843D872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.Presentation", "Udemy.Presentation\Udemy.Presentation.csproj", "{4A0F29E0-4D65-471E-8F71-3ECAC2E1C588}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.Presentation", "Udemy.Presentation\Udemy.Presentation.csproj", "{4A0F29E0-4D65-471E-8F71-3ECAC2E1C588}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersSeeder", "UsersSeeder\UsersSeeder.csproj", "{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{4A0F29E0-4D65-471E-8F71-3ECAC2E1C588}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A0F29E0-4D65-471E-8F71-3ECAC2E1C588}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A0F29E0-4D65-471E-8F71-3ECAC2E1C588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
