@@ -19,7 +19,7 @@ namespace Udemy.Infrastructure.UserSeed
         {
             Admin = new ApplicationUser
             {
-                Id = 1,
+                Id = 11111,
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
                 Email = "admin@gmail.com",
@@ -41,7 +41,7 @@ namespace Udemy.Infrastructure.UserSeed
 
             Instructor = new Instructor
             {
-                Id = 2,
+                Id = 22222,
                 UserName = "instructor",
                 NormalizedUserName = "INSTRUCTOR",
                 Email = "instructor@gmail.com",
@@ -63,7 +63,7 @@ namespace Udemy.Infrastructure.UserSeed
 
             Student = new Student
             {
-                Id = 3,
+                Id = 33333,
                 UserName = "student",
                 NormalizedUserName = "STUDENT",
                 Email = "student@gmail.com",

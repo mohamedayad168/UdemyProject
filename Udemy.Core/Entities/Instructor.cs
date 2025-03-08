@@ -3,7 +3,7 @@
 namespace Udemy.Core.Entities;
 public class Instructor : ApplicationUser
 {
-    [StringLength(20)]
+    [StringLength(50)]
     public string? Title { get; set; }
     [StringLength(50)]
     public string? Bio { get; set; }

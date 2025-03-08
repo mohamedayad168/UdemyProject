@@ -21,6 +21,9 @@ namespace Udemy.Core.Entities
         [MaxLength(50)]
         public string? comment { get; set; }
         public string? CertificationUrl { get; set; }
+
+
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public bool? IsDeleted { get; set; } = false;

@@ -5,24 +5,24 @@ namespace Udemy.Core.Entities;
 public class ApplicationUser : IdentityUser<int>
 {
     [Required(ErrorMessage = "First Name Is Required")]
-    [StringLength(20)]
+    [StringLength(50)]
 
     public string FirstName { get; set; }
 
     [Required(ErrorMessage = "Last Name Is Required")]
-    [StringLength(20)]
+    [StringLength(50)]
     public string LastName { get; set; }
 
     [Required(ErrorMessage = "This Field Is Required")]
-    [StringLength(20)]
+    [StringLength(50)]
     public string CountryName { get; set; }
 
     [Required(ErrorMessage = "This Field Is Required")]
-    [StringLength(20)]
+    [StringLength(50)]
     public string City { get; set; }
 
     [Required(ErrorMessage = "This Field Is Required")]
-    [StringLength(20)]
+    [StringLength(50)]
     public string? State { get; set; }
 
     [Required(ErrorMessage = "This Field Is Required")]
