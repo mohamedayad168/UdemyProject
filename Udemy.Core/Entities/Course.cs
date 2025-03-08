@@ -42,8 +42,8 @@ public class Course : BaseEntity
     public int InstructorId { get; set; }
     [ForeignKey("InstructorId")]
     public Instructor Instructor { get; set; }
-    public List<Order> Orders { get; set; }
-    public List<Cart> Carts { get; set; }
+    public List<CourseOrder> OrderCourses { get; set; }
+    public List<CartCourse> CartCourses { get; set; }
     public List<Enrollment> Enrollments { get; set; }
     public List<Section> Sections { get; set; }
     public List<Ask> Asks { get; set; }
