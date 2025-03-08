@@ -10,8 +10,13 @@ using Udemy.Core.ReadOptions;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
-    public class CoursesRepo(ApplicationDbContext context) : RepositoryBase<Course>(context),ICoursesRepo
+    public class CoursesRepo(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepo
     {
+        public async Task<Course?> GetCourseByTitleAsync(string title, bool trackChanges)
+        {
+            return await FindByCondition(e => e.Title == title, trackChanges).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Course>> GetCoursesPageAsync(bool trackChanges, RequestParamter requestParamter)
         {
             return await FindAll(trackChanges)

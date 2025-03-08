@@ -15,6 +15,7 @@ public class RepositoryManager : IRepositoryManager
     }
 
     public IStudentRepository Student => studentRepository.Value;
+    public ICoursesRepo Courses => coursesRepo.Value;
     public async Task SaveAsync()
     {
         await applicationDbContext.SaveChangesAsync();
