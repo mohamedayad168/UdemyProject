@@ -10,7 +10,7 @@ using Udemy.Core.ReadOptions;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
-    public class CoursesRepo(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepo
+    public class CoursesRepository(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepository
     {
         public async Task<Course?> GetCourseByTitleAsync(string title, bool trackChanges)
         {

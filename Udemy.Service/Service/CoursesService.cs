@@ -18,6 +18,7 @@ namespace Udemy.Service.Service
         public async Task<IEnumerable<CourseRDTO>> GetPageAsync(bool trackChanges, RequestParamter requestParamter)
         {
             var courses = await repository.Courses.GetCoursesPageAsync(trackChanges, requestParamter);
+
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
