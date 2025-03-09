@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Udemy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250308205921_addusers")]
+    partial class addusers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,19 +71,19 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 11111,
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 22222,
                             Name = "Instructor",
                             NormalizedName = "INSTRUCTOR"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 33333,
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -172,18 +175,18 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 11111,
-                            RoleId = 1
+                            UserId = 1,
+                            RoleId = 11111
                         },
                         new
                         {
-                            UserId = 22222,
-                            RoleId = 2
+                            UserId = 2,
+                            RoleId = 22222
                         },
                         new
                         {
-                            UserId = 33333,
-                            RoleId = 3
+                            UserId = 3,
+                            RoleId = 33333
                         });
                 });
 
@@ -356,11 +359,11 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 11111,
+                            Id = 1,
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "ec8fed8d-5b3e-449a-9786-2c2507a2176f",
+                            ConcurrencyStamp = "c1faa765-9c11-4db4-ba3a-3b8adbef76a1",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
@@ -371,9 +374,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@gmail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELptlHr87XOMNoUOJ6H28Y9Y5c6NqvZlWF/bRw9599tRCWK8f0TrZ8N/bBki96qA3w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPR30Cqm4q+oYtkpCJ8EWoMg2VU9zeKmNRnfTHDjdbgHoZsaJAKKK/7Dm84bs3L9NA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d59f451d-b9a2-4533-8b5f-ab00240ec1cd",
+                            SecurityStamp = "3976843c-824e-48a6-bc48-b11e94accfa2",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -503,8 +506,8 @@ namespace Udemy.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BestSeller")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CourseLevel")
                         .IsRequired()
@@ -1076,11 +1079,11 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 22222,
+                            Id = 2,
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "c9eda82e-332f-4c92-9326-cc2044b76e9b",
+                            ConcurrencyStamp = "8255debc-5457-4a92-b8ad-eb67616ae4d0",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "instructor@gmail.com",
@@ -1091,9 +1094,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "INSTRUCTOR@gmail.com",
                             NormalizedUserName = "INSTRUCTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBThkFxhSwiCmSD3glkmsvGjtEoYzYMZoVXnW8kQtFOqb7lOcO9nMNihbWbsD/Ziqw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBj+6hRLdkslEKsnMt1Z1GpcejHfVsNurJdDDoeHBjzrdpW51ZCc2LzlnwtHN5bBOw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5afa2791-5ba6-496e-bd26-0658089cc99c",
+                            SecurityStamp = "3d629337-d4da-4acb-ae71-93720810da32",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "instructor",
@@ -1120,11 +1123,11 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 33333,
+                            Id = 3,
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "7bdffd32-3985-4d5c-9ad9-4d1dcdb46570",
+                            ConcurrencyStamp = "16c105f9-b746-4d9d-baec-a45988d89d92",
                             CountryName = "United States",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student@gmail.com",
@@ -1135,9 +1138,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@gmail.com",
                             NormalizedUserName = "STUDENT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJnuytiMsa4IfZtbl3tBVPPtnceUGkiIMw544KG5g3xh06ygipSZWgn2As1u+ATl/g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH7NcwmVK77qUCUaDo3z8q+Ckxm2yCQYhZ4LR3pjTIcBqrsp0VHOub2Y+Jyjxnx14w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d49504d-ea9d-44a9-b707-50f7bd1d96f7",
+                            SecurityStamp = "2416a6a1-ee57-4415-a70c-45766478cb7b",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "student",
