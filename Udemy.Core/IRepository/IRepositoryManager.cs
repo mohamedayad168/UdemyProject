@@ -6,5 +6,6 @@ public interface IRepositoryManager
     //public IRatingRepository Rating { get; }
     ICourseRequirementRepo CourseRequirements { get; }
     ISocialMediaRepository SocialMedia { get; }
+    IInstructorRepo Instructors { get; }
     Task SaveAsync();
 }
