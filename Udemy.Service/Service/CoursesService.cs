@@ -15,10 +15,10 @@ namespace Udemy.Service.Service
     public class CoursesService(IRepositoryManager repository, IMapper mapper) : ICoursesService
     {
 
-        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(bool trackChanges,RequestParamter requestParamter)
+        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(bool trackChanges, RequestParamter requestParamter)
         {
             var courses = await repository.Courses.GetCoursesPageAsync(trackChanges, requestParamter);
-            return  mapper.Map<IEnumerable<CourseRDTO>>(courses);
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
         public async Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges)
@@ -30,6 +30,11 @@ namespace Udemy.Service.Service
         public async Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges)
         {
             var courses = await repository.Courses.FindAll(trackChanges).ToArrayAsync();
+
+
+            if (courses is null) return [];
+
+
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
