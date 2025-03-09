@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
-    internal class CategoryRepo
+    internal class CategoriesRepository
     {
     }
 }
