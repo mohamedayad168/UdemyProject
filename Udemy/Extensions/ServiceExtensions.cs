@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository;
+using Udemy.Infrastructure.Repository.EntityRepos;
 using Udemy.Service.AutoMapperConfigration;
 using Udemy.Service.IService;
 using Udemy.Service.Service;
@@ -34,10 +35,13 @@ public static class ServiceExtensions
     public static void ConfigureRepositoryManager(this IServiceCollection services)
     {
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+        services.AddScoped<ICourseRequirementRepo, CourseRequirementRepo>();
     }
     public static void ConfigureServiceManager(this IServiceCollection services)
     {
         services.AddScoped<IServiceManager, ServiceManager>();
+
+
     }
     public static void ConfigureAutoMapperService(this IServiceCollection service)
     {

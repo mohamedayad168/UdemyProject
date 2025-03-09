@@ -20,6 +20,12 @@ namespace Udemy.Service.AutoMapperConfigration
             CreateMap<Category,CategoryRDTO>().ReverseMap();
             CreateMap<Category,CategoryCDTO>().ReverseMap();
             CreateMap<Category,CategoryUDTO>().ReverseMap();
+
+
+            CreateMap<CourseRequirement, CourseRequirementRDTO>().ReverseMap(); ;
+            CreateMap<CourseRequirementCTO, CourseRequirement>();
+            CreateMap<CourseRequirementUTO, CourseRequirement>();
         }
+
     }
 }

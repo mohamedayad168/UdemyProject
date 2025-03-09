@@ -5,6 +5,9 @@ namespace Udemy.Core.Entities
 {
     public class CourseRequirement
     {
+        [Key] // Primary key
+        public int Id { get; set; }
+
         [StringLength(50)]
         public string Requirement { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
