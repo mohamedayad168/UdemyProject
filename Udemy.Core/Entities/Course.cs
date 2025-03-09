@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities;
 public class Course : BaseEntity
@@ -24,7 +23,7 @@ public class Course : BaseEntity
     public bool IsFree { get; set; }
     public bool IsApproved { get; set; }
 
-    
+
     public decimal CurrentPrice { get; private set; }
 
     [Column(TypeName = "DECIMAL(2, 1)")]
