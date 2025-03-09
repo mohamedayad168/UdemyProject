@@ -7,15 +7,20 @@ public class RepositoryManager : IRepositoryManager
     private readonly ApplicationDbContext applicationDbContext;
     private readonly Lazy<IStudentRepository> studentRepository;
     private readonly Lazy<ICoursesRepo> coursesRepo;
+    private readonly Lazy<ICourseRequirementRepo> courseRequirementRepo;
+
     public RepositoryManager(ApplicationDbContext applicationDbContext)
     {
         this.applicationDbContext = applicationDbContext;
         studentRepository = new Lazy<IStudentRepository>(() => new StudentRepository(applicationDbContext));
         coursesRepo = new Lazy<ICoursesRepo>(() => new CoursesRepo(applicationDbContext));
+        courseRequirementRepo = new Lazy<ICourseRequirementRepo>(() => new CourseRequirementRepo(applicationDbContext));
     }
 
     public IStudentRepository Student => studentRepository.Value;
     public ICoursesRepo Courses => coursesRepo.Value;
+    public ICourseRequirementRepo CourseRequirements => courseRequirementRepo.Value;
+
     public async Task SaveAsync()
     {
         await applicationDbContext.SaveChangesAsync();
