@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Udemy.Infrastructure.Repository.EntityRepos
+namespace Udemy.Infrastructure.Repository
 {
-    internal class CategoriesRepository
+    public class CategoriesRepository
     {
     }
 }

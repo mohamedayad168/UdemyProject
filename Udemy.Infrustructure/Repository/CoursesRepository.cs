@@ -8,7 +8,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 
-namespace Udemy.Infrastructure.Repository.EntityRepos
+namespace Udemy.Infrastructure.Repository
 {
     public class CoursesRepository(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepository
     {
