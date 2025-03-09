@@ -35,6 +35,7 @@ public class StudentService : IStudentService
             State = student.State,
             Age = student.Age,
             Bio = student.Bio,
+            Wallet = student.Wallet,
             Title = student.Title,
         };
 
@@ -56,6 +57,7 @@ public class StudentService : IStudentService
                 State = student.State,
                 Age = student.Age,
                 Bio = student.Bio,
+                Wallet = student.Wallet,
                 Title = student.Title,
             });
         }
