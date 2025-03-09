@@ -54,7 +54,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstructorCTO instructorDto)
+        public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstractorCDTO instructorDto)
         {
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
