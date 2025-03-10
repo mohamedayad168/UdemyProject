@@ -52,7 +52,7 @@ namespace Udemy.Service.Service
                 : mapper.Map<CourseRDTO>(course);
         }
 
-        public async Task<int?> CreateAsync(CourseCDTO courseDto)
+        public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
             var courseWithSameTitle = await repository.Courses.GetCourseByTitleAsync(courseDto.Title, false);
 
@@ -93,15 +93,17 @@ namespace Udemy.Service.Service
             {
                 await repository.SaveAsync();
 
-            }catch (Exception ex)
-            {
-                throw new Exception(ex.Message +" at create course catch");
             }
-                return course.Id;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at create course");
+            }
+
+            return mapper.Map<CourseRDTO>(course);
 
         }
 
-        public async Task UpdateAsync(CourseUDTO courseDto)
+        public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
         {
             var courseWithSameTitle = await repository.Courses.GetCourseByTitleAsync(courseDto.Title, false);
 
@@ -112,9 +114,18 @@ namespace Udemy.Service.Service
 
             var course = mapper.Map<Course>(courseDto);
 
-            repository.Courses.Create(course);
+            repository.Courses.Update(course);
 
-            await repository.SaveAsync();
+            try
+            {
+                await repository.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at create update");
+            }
+
+            return mapper.Map<CourseRDTO>(course);
         }
 
         public async Task DeleteAsync(int id)
@@ -123,7 +134,31 @@ namespace Udemy.Service.Service
 
             repository.Courses.Delete(course);
 
-            await repository.SaveAsync();
+            try
+            {
+                await repository.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at course delete with id: " + id);
+            }
+        }
+
+        public async Task<bool> ToggleApprovedAsync(int id)
+        {
+            var course = await GetByIdAsync(id, true) ?? throw new NotFoundException($"with id: {id} not found");
+
+            try
+            {
+                course.IsApproved = !course.IsApproved;
+                await repository.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at course update with id: " + id);
+            }
+
+            return true;
         }
     }
 }

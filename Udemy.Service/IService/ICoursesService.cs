@@ -20,8 +20,9 @@ namespace Udemy.Service.IService
         public Task<CourseRDTO?> GetByIdAsync(int id, bool trackChanges);
 
         //write
-        public Task<int?> CreateAsync(CourseCDTO course);
-        public Task UpdateAsync(CourseUDTO course);
+        public Task<CourseRDTO> CreateAsync(CourseCDTO course);
+        public Task<CourseRDTO> UpdateAsync(CourseUDTO course);
+        public Task<bool> ToggleApprovedAsync(int id);
 
         //
         public Task DeleteAsync(int id);

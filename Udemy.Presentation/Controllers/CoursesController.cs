@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Udemy.Presentation.Controllers
     [Route("api/courses")]
     public class CoursesController(IServiceManager serviceManager) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet(Name = "GetAllAsync")]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllAsync()
         {
             var courses = await serviceManager.CoursesService.GetAllAsync(false);
@@ -24,7 +25,7 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpGet("page")]
+        [HttpGet("page", Name = "GetPageAsync")]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageAsync([FromQuery] RequestParamter requestParamter)
         {
             var courses = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
@@ -40,31 +41,48 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpGet("{title:alpha}")]
-        public async Task<ActionResult<CourseRDTO?>> GetByTitleAsync([FromRoute] string title)
+        [HttpGet("{title}", Name = "GetByTitleAsync")]
+        public async Task<ActionResult<CourseRDTO>> GetByTitleAsync(string title)
         {
             var course = await serviceManager.CoursesService.GetByTitleAsync(title, false);
             return Ok(course);
         }
 
 
-        [HttpPost]
+        [HttpPost(Name = "CreateAsync")]
         public async Task<IActionResult> CreateAsync([FromBody] CourseCDTO course)
         {
-            var id = await serviceManager.CoursesService.CreateAsync(course);
-            return Created("/api/courses/" + id, course);
+            var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
+
+            //var url = Url.Action(
+            //    action: "CreateAsync",
+            //    controller: "Courses", // Use "Courses" instead of nameof(CoursesController)
+            //    values: new { title = courseRDTO.Title }
+            //  );
+
+            return CreatedAtAction(nameof(GetByTitleAsync), new { courseRDTO.Title }, courseRDTO);
         }
 
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody] CourseUDTO course)
+        [HttpPut(Name = "UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync([FromBody] CourseUDTO courseUDTO)
         {
-            await serviceManager.CoursesService.UpdateAsync(course);
-            return Ok();
+            var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
+            return CreatedAtAction(nameof(GetByTitleAsync), new { courseRDTO.Title }, courseRDTO);
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpPut("ToggleApproved/{id}", Name = "ToggleApprovedAsync")]
+        public async Task<IActionResult> ToggleApprovedAsync([FromRoute] int id)
+        {
+            var updated = await serviceManager.CoursesService.ToggleApprovedAsync(id);
+
+            return updated ? Ok() : BadRequest();
+
+        }
+
+
+        [HttpDelete("{id}", Name = "DeleteAsync")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await serviceManager.CoursesService.DeleteAsync(id);
