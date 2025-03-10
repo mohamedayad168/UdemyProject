@@ -24,11 +24,7 @@ public class Course : BaseEntity
     public bool IsApproved { get; set; }
 
     [StringLength(20)]
-    public string? BestSeller { get; set; }
-
-
-
-    
+    public string? BestSeller { get; set; }  
     public decimal CurrentPrice { get; private set; }
 
     [Column(TypeName = "DECIMAL(2, 1)")]
