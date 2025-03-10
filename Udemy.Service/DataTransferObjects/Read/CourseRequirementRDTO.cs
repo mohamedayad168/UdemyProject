@@ -11,5 +11,8 @@ namespace Udemy.Service.DataTransferObjects.Read
         public int Id { get; set; }
         public string Requirement { get; set; } = string.Empty;
         public int CourseId { get; set; }
+        public string CourseTitle { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }
