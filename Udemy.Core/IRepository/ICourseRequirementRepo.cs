@@ -9,8 +9,7 @@ namespace Udemy.Core.IRepository
         Task<IEnumerable<CourseRequirement>> GetRequirementsByCourseIdAsync(int courseId, bool trackChanges);
         Task CreateRequirementAsync(CourseRequirement requirement);
         Task DeleteRequirementAsync(CourseRequirement requirement);
-        void CreateRequirement(CourseRequirement requirement);
-        void DeleteRequirement(CourseRequirement requirement);
+       
 
 
     }

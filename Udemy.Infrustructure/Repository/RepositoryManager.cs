@@ -1,4 +1,5 @@
-﻿using Udemy.Core.IRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
 
 namespace Udemy.Infrastructure.Repository;
@@ -10,6 +11,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ICourseRequirementRepo> courseRequirementRepo;
     private readonly Lazy<ISocialMediaRepository> socialMediaRepository;
     private readonly Lazy<IInstructorRepo> instructorRepo;
+    private readonly Lazy<IEnrollmentRepository> enrollmentRepo;
 
 
     public RepositoryManager(ApplicationDbContext applicationDbContext)
@@ -20,7 +22,10 @@ public class RepositoryManager : IRepositoryManager
         courseRequirementRepo = new Lazy<ICourseRequirementRepo>(() => new CourseRequirementRepo(applicationDbContext));
         socialMediaRepository = new Lazy<ISocialMediaRepository>(() => new SocialMediaRepository(applicationDbContext));
         instructorRepo = new Lazy<IInstructorRepo>(() => new InstructorRepo(applicationDbContext));
+        enrollmentRepo = new Lazy<IEnrollmentRepository>(() => new EnrollmentRepository(applicationDbContext));
     }
+
+    
 
     public IStudentRepository Student => studentRepository.Value;
     public ICoursesRepository Courses => coursesRepo.Value;
@@ -28,6 +33,8 @@ public class RepositoryManager : IRepositoryManager
     public ISocialMediaRepository SocialMedia => socialMediaRepository.Value;
 
     public IInstructorRepo Instructors => instructorRepo.Value;
+    public IEnrollmentRepository Enrollments => enrollmentRepo.Value; 
+
 
 
 

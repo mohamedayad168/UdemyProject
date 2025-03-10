@@ -12,7 +12,7 @@ public class ServiceManager : IServiceManager
 
     private readonly Lazy<ICourseRequirementService> courseRequirementService;
     private readonly Lazy<IInstructorService> instructorService;
-
+    private readonly Lazy<IEnrollmentService> enrollmentService;
     public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper)
     {
 
@@ -21,6 +21,7 @@ public class ServiceManager : IServiceManager
         socialMediaService = new Lazy<ISocialMediaService>(() => new SocialMediaService(repositoryManager));
         courseRequirementService = new Lazy<ICourseRequirementService>(() => new CourseRequirementService(repositoryManager, mapper));
         instructorService = new Lazy<IInstructorService>(() => new InstructorService(repositoryManager, mapper));
+        enrollmentService = new Lazy<IEnrollmentService>(() => new EnrollmentService(repositoryManager, mapper)); 
     }
 
     public IStudentService StudentService => studentService.Value;
@@ -28,5 +29,6 @@ public class ServiceManager : IServiceManager
     public ISocialMediaService SocialMediaService => socialMediaService.Value;
     public ICourseRequirementService CourseRequirementService => courseRequirementService.Value;
     public IInstructorService InstructorService => instructorService.Value;
+    public IEnrollmentService EnrollmentService => enrollmentService.Value;
 
 }

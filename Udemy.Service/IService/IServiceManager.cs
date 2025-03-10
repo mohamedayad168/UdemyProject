@@ -8,4 +8,5 @@ public interface IServiceManager
     //IMapper Mapper { get; }
     ICourseRequirementService CourseRequirementService { get; }
     IInstructorService InstructorService { get; }
+    IEnrollmentService EnrollmentService { get; }
 }

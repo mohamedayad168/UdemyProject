@@ -7,5 +7,7 @@ public interface IRepositoryManager
     ICourseRequirementRepo CourseRequirements { get; }
     ISocialMediaRepository SocialMedia { get; }
     IInstructorRepo Instructors { get; }
+
+    IEnrollmentRepository Enrollments { get; }
     Task SaveAsync();
 }
