@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Udemy.Core.Entities;
-using Udemy.Service.DataTransferObjects.UserDTOs;
+using Udemy.Service.DataTransferObjects.User;
 
 namespace Udemy.Service.AutoMapperConfigration;
 public class UserMappingProfile : Profile

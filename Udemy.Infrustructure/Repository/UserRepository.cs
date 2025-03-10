@@ -5,8 +5,9 @@ using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 
 namespace Udemy.Infrastructure.Repository;
-public class UserRepository(ApplicationDbContext dbContext,UserManager<ApplicationUser> userManager) 
-    : IUserRepository
+public class UserRepository(
+    ApplicationDbContext dbContext,
+    UserManager<ApplicationUser> userManager) : IUserRepository
 {
     public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(bool trackChanges , RequestParamter requestParamter)
     {
@@ -15,7 +16,7 @@ public class UserRepository(ApplicationDbContext dbContext,UserManager<Applicati
             : dbContext.Users.OfType<ApplicationUser>().AsNoTracking();
 
         return await users
-            .Where(x => x.IsDeleted == false)
+            .Where(x => x.IsDeleted != true)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
@@ -23,7 +24,7 @@ public class UserRepository(ApplicationDbContext dbContext,UserManager<Applicati
 
     public async Task<ApplicationUser?> GetUserByIdAsync(int id)
     {
-        return await userManager.Users.FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+        return await userManager.Users.FirstOrDefaultAsync(u => u.Id == id && u.IsDeleted != true);
     }
 
     public async Task<ApplicationUser?> GetUserByEmailAsync(string email)
@@ -43,6 +44,11 @@ public class UserRepository(ApplicationDbContext dbContext,UserManager<Applicati
     public async Task<IdentityResult> AddRolesToUser(ApplicationUser user , IEnumerable<string> roles)
     {
         return await userManager.AddToRolesAsync(user , roles);
+    }
+
+    public async Task<IdentityResult> AddRoleToUser(ApplicationUser user , string role)
+    {
+        return await userManager.AddToRoleAsync(user , role);
     }
 
     public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)

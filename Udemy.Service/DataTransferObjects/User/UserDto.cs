@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Udemy.Service.DataTransferObjects.UserDTOs;
+namespace Udemy.Service.DataTransferObjects.User;
 public class UserDto
 {
     public int Id { get; set; }

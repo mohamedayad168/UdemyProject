@@ -19,11 +19,10 @@ public class ServiceManager : IServiceManager
         IRepositoryManager repositoryManager, 
         IMapper mapper)
     {
-
         coursesService = new Lazy<ICoursesService>(() => new CoursesService(repositoryManager, mapper));
         socialMediaService = new Lazy<ISocialMediaService>(() => new SocialMediaService(repositoryManager));
 
-        //studentService = new Lazy<IStudentService>(() => new StudentService(repositoryManager));
+        studentService = new Lazy<IStudentService>(() => new StudentService(repositoryManager, mapper));
         userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper));
     }
 

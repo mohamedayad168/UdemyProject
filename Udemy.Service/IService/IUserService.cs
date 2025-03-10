@@ -1,5 +1,5 @@
 ﻿using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.UserDTOs;
+using Udemy.Service.DataTransferObjects.User;
 
 namespace Udemy.Service.IService;
 public interface IUserService

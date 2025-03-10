@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
@@ -12,13 +13,14 @@ public class StudentRepository(ApplicationDbContext context)
     public async Task<IEnumerable<Student>> GetAllStudentsAsync(bool trackChanges, RequestParamter requestParamter)
     {
         return await FindAll(trackChanges)
+            .Where(x => x.IsDeleted != true)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
     }
     public async Task<Student?> GetStudentByIdAsync(int id, bool trackChanges)
     {
-        return await FindByCondition(c => c.Id == id, trackChanges)
+        return await FindByCondition(c => c.Id == id && c.IsDeleted != true , trackChanges)
             .FirstOrDefaultAsync();
     }
     public async Task CreateStudent(Student student)
@@ -27,6 +29,6 @@ public class StudentRepository(ApplicationDbContext context)
     }
     public void DeleteStudent(Student student)
     {
-        Delete(student);
+        student.IsDeleted = true;
     }
 }

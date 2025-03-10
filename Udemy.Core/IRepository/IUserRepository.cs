@@ -6,6 +6,7 @@ namespace Udemy.Core.IRepository;
 public interface IUserRepository
 {
     Task<IdentityResult> AddRolesToUser(ApplicationUser user , IEnumerable<string> roles);
+    Task<IdentityResult> AddRoleToUser(ApplicationUser user , string role);
     Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password);
     void DeleteUser(ApplicationUser user);
     Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(bool trackChanges , RequestParamter requestParamter);

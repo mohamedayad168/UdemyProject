@@ -3,7 +3,8 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.UserDTOs;
+using Udemy.Core.Utils;
+using Udemy.Service.DataTransferObjects.User;
 using Udemy.Service.IService;
 
 namespace Udemy.Service.Service;
@@ -75,9 +76,9 @@ public class UserService(
 
         var result = await repository.User.CreateUserAsync(userEntity , userDto.Password);
 
-        if (result.Succeeded && userDto.Roles is not null)
+        if (result.Succeeded)
         {
-            await repository.User.AddRolesToUser(userEntity, userDto.Roles);
+            await repository.User.AddRoleToUser(userEntity , UserRole.User);
         }
 
         var userToReturn = mapper.Map<UserDto>(userEntity);
@@ -100,7 +101,7 @@ public class UserService(
 
         var userWithSameUsername = await repository.User.GetUserByUsernameAsync(userDto.UserName);
 
-        if(userWithSameUsername?.Id != userEntity.Id)
+        if(userWithSameUsername is not null && userWithSameUsername.Id != userEntity.Id)
         {
             throw new UsernameExistBadRequest(userDto.UserName);
         }

@@ -1,80 +1,104 @@
+using AutoMapper;
+using Udemy.Core.Entities;
+using Udemy.Core.Exceptions;
+using Udemy.Core.IRepository;
+using Udemy.Core.ReadOptions;
+using Udemy.Core.Utils;
+using Udemy.Service.DataTransferObjects.Student;
+using Udemy.Service.DataTransferObjects.User;
+using Udemy.Service.IService;
 
-//using Udemy.Core.Entities;
+namespace Udemy.Service.Service;
+public class StudentService(
+    IRepositoryManager repository ,
+    IMapper mapper) : IStudentService
+{
+    private readonly IRepositoryManager repository = repository;
+    private readonly IMapper mapper = mapper;
 
-//using Udemy.Core.Exceptions;
+    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
+    {
+        var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
 
-//using Udemy.Core.IRepository;
-//using Udemy.Core.ReadOptions;
-//using Udemy.Service.DataTransferObjects;
-//using Udemy.Service.IService;
+        var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
 
-//namespace Udemy.Service.Service;
-//public class StudentService : IStudentService
-//{
-//    private readonly IRepositoryManager repository;
-//    public StudentService(IRepositoryManager repository)
-//    {
-//        this.repository = repository;
-//    }
+        return studentsDto;
+    }
 
-//    public async Task<StudentDto> GetStudentByIdAsync(int id, bool trackChanges)
-//    {
+    public async Task<StudentDto> GetStudentByIdAsync(int id , bool trackChanges)
+    {
+        var student = await GetStudentAndCheckIfItExistsAsync(id, trackChanges);
 
-//        var student = await repository.Student.GetStudentAsync(id, trackChanges);
-//        if (student is null)
-//            throw new StudentNotFoundException($"Student With Id:{id} Not Found");
+        var studentDto = mapper.Map<StudentDto>(student);
 
+        return studentDto;
+    }
 
-//        var studentDto = new StudentDto()
-//        {
-//            FirstName = student.FirstName,
-//            LastName = student.LastName,
-//            Gender = student.Gender,
-//            CountryName = student.CountryName,
-//            City = student.City,
-//            State = student.State,
-//            Age = student.Age,
-//            Bio = student.Bio,
-//            Wallet = student.Wallet,
-//            Title = student.Title,
-//        };
+    public async Task<StudentDto> CreateStudentAsync(StudentForCreationDto studentDto)
+    {
+        bool isEmailExist = !string.IsNullOrEmpty(
+            (await repository.User.GetUserByEmailAsync(studentDto.Email))?.Email
+        );
 
-//        return studentDto;
-//    }
-//    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges, RequestParamter requestParamter)
-//    {
-//        var students = await repository.Student.GetAllStudentsAsync(trackChanges, requestParamter);
-//        var stdudentsDto = new List<StudentDto>();
-//        foreach (var student in students)
-//        {
-//            stdudentsDto.Add(new StudentDto
-//            {
-//                FirstName = student.FirstName,
-//                LastName = student.LastName,
-//                Gender = student.Gender,
-//                CountryName = student.CountryName,
-//                City = student.City,
-//                State = student.State,
-//                Age = student.Age,
-//                Bio = student.Bio,
-//                Wallet = student.Wallet,
-//                Title = student.Title,
-//            });
-//        }
+        if (isEmailExist)
+            throw new EmailExistBadRequest(studentDto.Email);
 
-//        return stdudentsDto;
-//    }
-//    public async Task CreateStudent(Student studentDto)
-//    {
-//        await repository.Student.Create(studentDto);
+        bool isUsernameExist = !string.IsNullOrEmpty(
+            (await repository.User.GetUserByUsernameAsync(studentDto.UserName))?.UserName
+        );
 
-//    }
-//    public void UpdateStudent(Student studentDto)
-//    {
-//        repository.Student.Update(studentDto);
-//    }
-//    public void DeleteStudent(Student studentDto)
-//    {
+        if (isUsernameExist)
+            throw new UsernameExistBadRequest(studentDto.UserName);
 
-//    }
-//}
+        var studentEntity = mapper.Map<Student>(studentDto);
+
+        // handle password validation (must contain at lead chararcter, ... etc)
+
+        var result = await repository.User.CreateUserAsync(studentEntity , studentDto.Password);
+
+        if (result.Succeeded)
+        {
+            await repository.User.AddRoleToUser(studentEntity , UserRole.Student);
+        }
+
+        var studentToReturn = mapper.Map<StudentDto>(studentEntity);
+
+        return studentToReturn;
+    }
+
+    public async Task UpdateStudentAsync(int id , StudentForUpdatingDto studentDto)
+    {
+        var studentEntity = await GetStudentAndCheckIfItExistsAsync(id, true);
+
+        var studentWithSameUsername = await repository.User.GetUserByUsernameAsync(studentDto.UserName);
+
+        if (studentWithSameUsername is not null && studentWithSameUsername.Id != studentEntity.Id)
+        {
+            throw new UsernameExistBadRequest(studentDto.UserName);
+        }
+
+        mapper.Map(studentDto , studentEntity);
+
+        await repository.SaveAsync();
+    }
+
+    public async Task DeleteStudentAsync(int id)
+    {
+        var student = await GetStudentAndCheckIfItExistsAsync(id, true);
+
+        repository.Student.DeleteStudent(student);
+
+        await repository.SaveAsync();
+    }
+
+    private async Task<Student> GetStudentAndCheckIfItExistsAsync(int id, bool trackChanges)
+    {
+        var user = await repository.Student.GetStudentByIdAsync(id, trackChanges);
+
+        if (user is null)
+            throw new UserNotFoundException($"Student With Id: {id} Deosn't Exist");
+
+        return user;
+    }
+
+}

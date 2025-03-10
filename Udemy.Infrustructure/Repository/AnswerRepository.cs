@@ -12,6 +12,7 @@ public class AnswerRepository(ApplicationDbContext dbContext)
     public async Task<IEnumerable<Answer>> GetAllAnswerAsync(bool trackChanges , RequestParamter requestParamter)
     {
         return await FindAll(trackChanges)
+            .Where(x => x.IsDeleted != true)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
@@ -19,7 +20,7 @@ public class AnswerRepository(ApplicationDbContext dbContext)
 
     public async Task<Answer?> GetAnswerByIdAsync(int id , bool trackChanges)
     {
-        return await FindByCondition(c => c.Id == id , trackChanges)
+        return await FindByCondition(c => c.Id == id && c.IsDeleted != true , trackChanges)
             .FirstOrDefaultAsync();
     }
 
@@ -30,6 +31,6 @@ public class AnswerRepository(ApplicationDbContext dbContext)
 
     public void DeleteAnswer(Answer answer)
     {
-        Delete(answer);
+        answer.IsDeleted = true;
     }
 }

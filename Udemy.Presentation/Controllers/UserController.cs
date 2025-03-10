@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.UserDTOs;
+using Udemy.Service.DataTransferObjects.User;
 using Udemy.Service.IService;
-using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers;
 
