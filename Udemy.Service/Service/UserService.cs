@@ -63,11 +63,7 @@ public class UserService(
 
         var result = await repository.User.CreateUserAsync(userEntity , userDto.Password);
 
-        if (result.Succeeded)
-        {
-            await repository.User.AddRoleToUser(userEntity , UserRole.Student);
-        }
-        else
+        if(!result.Succeeded)
         {
             StringBuilder sb = new StringBuilder();
             foreach(var error in result.Errors)
