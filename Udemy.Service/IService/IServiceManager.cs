@@ -5,5 +5,5 @@ public interface IServiceManager
 {
     IStudentService StudentService { get; }
     ICoursesService CoursesService { get; }
-    //IMapper Mapper { get; }
+    IUserService UserService { get; }
 }
