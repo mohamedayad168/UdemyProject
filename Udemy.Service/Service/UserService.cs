@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Text;
 using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
@@ -56,29 +57,23 @@ public class UserService(
 
     public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
     {
-        bool isEmailExist = !string.IsNullOrEmpty(
-            (await repository.User.GetUserByEmailAsync(userDto.Email))?.Email
-        );
-
-        if (isEmailExist)
-            throw new EmailExistBadRequest(userDto.Email);
-
-        bool isUsernameExist = !string.IsNullOrEmpty(
-            (await repository.User.GetUserByUsernameAsync(userDto.UserName))?.UserName
-        );
-
-        if (isUsernameExist)
-            throw new UsernameExistBadRequest(userDto.UserName);
-
         var userEntity = mapper.Map<ApplicationUser>(userDto);
 
-        // handle password validation (must contain at lead chararcter, ... etc)
+        // handle password validation (must contain at least chararcter, ... etc)
 
         var result = await repository.User.CreateUserAsync(userEntity , userDto.Password);
 
         if (result.Succeeded)
         {
-            await repository.User.AddRoleToUser(userEntity , UserRole.User);
+            await repository.User.AddRoleToUser(userEntity , UserRole.Student);
+        }
+        else
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(var error in result.Errors)
+                sb.Append(error.Description);
+
+            throw new UserCreatingBadRequest(sb.ToString());
         }
 
         var userToReturn = mapper.Map<UserDto>(userEntity);

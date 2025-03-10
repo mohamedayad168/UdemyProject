@@ -1,16 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Udemy.Core.Attribute;
 
 namespace Udemy.Service.DataTransferObjects.User;
 public class UserForCreationDto
 {
     [Required(ErrorMessage = "Email Is Required Field")]
     [EmailAddress]
+    [UniqueEmail]
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Username is Required Field")]
+    [UniquUsername]
     public string UserName { get; init; }
 
     [Required(ErrorMessage = "Password is Required Field")]
+    [IdentityPassword]
     public string Password { get; init; }
 
     [Phone]
