@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
@@ -11,6 +12,9 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ICoursesRepository> coursesRepo;
     private readonly Lazy<ICourseRequirementRepo> courseRequirementRepo;
     private readonly Lazy<ISocialMediaRepository> socialMediaRepository;
+    private readonly Lazy<IInstructorRepo> instructorRepo;
+    private readonly Lazy<IEnrollmentRepository> enrollmentRepo;
+
 
     private readonly Lazy<IAskRepository> askRepository;
     private readonly Lazy<IAnswerRepository> answerRepository;
@@ -24,6 +28,8 @@ public class RepositoryManager : IRepositoryManager
         coursesRepo = new Lazy<ICoursesRepository>(() => new CoursesRepository(applicationDbContext));
         courseRequirementRepo = new Lazy<ICourseRequirementRepo>(() => new CourseRequirementRepo(applicationDbContext));
         socialMediaRepository = new Lazy<ISocialMediaRepository>(() => new SocialMediaRepository(applicationDbContext));
+        instructorRepo = new Lazy<IInstructorRepo>(() => new InstructorRepo(applicationDbContext));
+        enrollmentRepo = new Lazy<IEnrollmentRepository>(() => new EnrollmentRepository(applicationDbContext));
 
         askRepository = new Lazy<IAskRepository>(() => new AskRepository(applicationDbContext));
         answerRepository = new Lazy<IAnswerRepository>(() => new AnswerRepository(applicationDbContext));
@@ -32,9 +38,16 @@ public class RepositoryManager : IRepositoryManager
         studentRepository = new Lazy<IStudentRepository>(() => new StudentRepository(applicationDbContext));
     }
 
+    
+
     public ICoursesRepository Courses => coursesRepo.Value;
     public ICourseRequirementRepo CourseRequirements => courseRequirementRepo.Value;
     public ISocialMediaRepository SocialMedia => socialMediaRepository.Value;
+
+    public IInstructorRepo Instructors => instructorRepo.Value;
+    public IEnrollmentRepository Enrollments => enrollmentRepo.Value; 
+
+
 
     public IStudentRepository Student => studentRepository.Value;
     public IAskRepository Ask => askRepository.Value;
