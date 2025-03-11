@@ -45,7 +45,9 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges)
         {
-            var course = await repository.Courses.GetCourseByTitleAsync(title, trackChanges);
+            var course = await repository.Courses
+                .FindByCondition(c=>c.Title==title, trackChanges)
+                .FirstOrDefaultAsync();
 
             return course is null ?
                 throw new NotFoundException($"Course with title: {title} doesn't exist")
@@ -54,7 +56,7 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
-            var courseWithSameTitle = await repository.Courses.GetCourseByTitleAsync(courseDto.Title, false);
+            var courseWithSameTitle = await GetByTitleAsync(courseDto.Title, false);
 
             //check if same title exists
             if (courseWithSameTitle is not null)
@@ -105,7 +107,7 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
         {
-            var courseWithSameTitle = await repository.Courses.GetCourseByTitleAsync(courseDto.Title, false);
+            var courseWithSameTitle = await GetByTitleAsync(courseDto.Title, false);
 
             //check if same new title exists BUT can rename same course with same title
             if (courseWithSameTitle is not null && courseDto.Id != courseWithSameTitle.Id)

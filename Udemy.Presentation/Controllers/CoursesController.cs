@@ -17,16 +17,16 @@ namespace Udemy.Presentation.Controllers
     [Route("api/courses")]
     public class CoursesController(IServiceManager serviceManager) : ControllerBase
     {
-        [HttpGet(Name = "GetAllAsync")]
-        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllAsync()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesAsync()
         {
             var courses = await serviceManager.CoursesService.GetAllAsync(false);
             return Ok(courses);
         }
 
 
-        [HttpGet("page", Name = "GetPageAsync")]
-        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageAsync([FromQuery] RequestParamter requestParamter)
+        [HttpGet("page")]
+        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
         {
             var courses = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
             return Ok(courses);
@@ -34,23 +34,23 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CourseRDTO?>> GetByIdAsync([FromRoute] int id)
+        public async Task<ActionResult<CourseRDTO?>> GetCourseByIdAsync([FromRoute] int id)
         {
             var course = await serviceManager.CoursesService.GetByIdAsync(id, false);
             return Ok(course);
         }
 
 
-        [HttpGet("{title}", Name = "GetByTitleAsync")]
-        public async Task<ActionResult<CourseRDTO>> GetByTitleAsync(string title)
+        [HttpGet("{title}")]
+        public async Task<ActionResult<CourseRDTO>> GetCourseByTitleAsync(string title)
         {
             var course = await serviceManager.CoursesService.GetByTitleAsync(title, false);
             return Ok(course);
         }
 
 
-        [HttpPost(Name = "CreateAsync")]
-        public async Task<IActionResult> CreateAsync([FromBody] CourseCDTO course)
+        [HttpPost]
+        public async Task<IActionResult> CreateCourseAsync([FromBody] CourseCDTO course)
         {
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
 
@@ -60,20 +60,20 @@ namespace Udemy.Presentation.Controllers
             //    values: new { title = courseRDTO.Title }
             //  );
 
-            return CreatedAtAction(nameof(GetByTitleAsync), new { courseRDTO.Title }, courseRDTO);
+            return CreatedAtAction(nameof(GetCourseByTitleAsync), new { courseRDTO.Title }, courseRDTO);
         }
 
 
-        [HttpPut(Name = "UpdateAsync")]
-        public async Task<IActionResult> UpdateAsync([FromBody] CourseUDTO courseUDTO)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCourseAsync([FromBody] CourseUDTO courseUDTO)
         {
             var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
-            return CreatedAtAction(nameof(GetByTitleAsync), new { courseRDTO.Title }, courseRDTO);
+            return CreatedAtAction(nameof(GetCourseByTitleAsync), new { courseRDTO.Title }, courseRDTO);
         }
 
 
-        [HttpPut("ToggleApproved/{id}", Name = "ToggleApprovedAsync")]
-        public async Task<IActionResult> ToggleApprovedAsync([FromRoute] int id)
+        [HttpPut("ToggleApproved/{id}")]
+        public async Task<IActionResult> ToggleCourseApprovedAsync([FromRoute] int id)
         {
             var updated = await serviceManager.CoursesService.ToggleApprovedAsync(id);
 
@@ -82,8 +82,8 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpDelete("{id}", Name = "DeleteAsync")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
             await serviceManager.CoursesService.DeleteAsync(id);
             return NoContent();
