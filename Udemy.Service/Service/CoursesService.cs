@@ -20,147 +20,79 @@ namespace Udemy.Service.Service
     {
         public async Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges)
         {
-            var courses = await repository.Courses?.FindAll(trackChanges).ToListAsync();
-
-            return courses is null ? [] : mapper.Map<IEnumerable<CourseRDTO>>(courses);
-        }
-
-        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
-        {
-            var courses = await repository.Courses.GetCoursesPageAsync(trackChanges, requestParamter);
+            var courses = await repository.Courses.GetAllAsync(false);
 
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
-        public async Task<CourseRDTO?> GetByIdAsync(int id, bool trackChanges)
+        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
         {
-            var course = await repository.Courses
-                .FindByCondition(c => c.Id == id, trackChanges)
-                .FirstOrDefaultAsync();
+            var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
-            return course is null ?
-                throw new NotFoundException($"Course with id: {id} doesn't exist")
-                : mapper.Map<CourseRDTO>(course);
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+        }
+
+        public async Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges)
+        {
+            var course = await repository.Courses.GetByIdAsync(id, false);
+
+            return mapper.Map<CourseRDTO>(course);
         }
 
         public async Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges)
         {
-            var course = await repository.Courses
-                .FindByCondition(c=>c.Title==title, trackChanges)
-                .FirstOrDefaultAsync();
+            var course = await repository.Courses.GetByTitleAsync(title, false)
+                ?? throw new NotFoundException($"couldn't find course with title: {title}");
 
-            return course is null ?
-                throw new NotFoundException($"Course with title: {title} doesn't exist")
-                : mapper.Map<CourseRDTO>(course);
+            return mapper.Map<CourseRDTO>(course);
         }
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
-            var courseWithSameTitle = await GetByTitleAsync(courseDto.Title, false);
-
-            //check if same title exists
-            if (courseWithSameTitle is not null)
-                throw new BadRequestException($"title: {courseDto.Title} already exists");
-
-
             var course = mapper.Map<Course>(courseDto);
 
-            //var testCourse = new Course
-            //{
-            //    Title = courseDto.Title,
-            //    InstructorId = 22222,
-            //    IsApproved = false,
-            //    IsFree = true,
-            //    CourseLevel = "string",
-            //    Price = 121212,
-            //    IsDeleted = false,
-            //    SubCategoryId = 1,
-            //    Description = "string",
-            //    ImageUrl = "string",
-            //    CreatedDate = DateTime.Now,
-            //    Duration = 0,
-            //    Discount = 0,
-            //    VideoUrl = "string",
-            //    Status = "string",
-            //    Rating = 1,
-            //    Language = "en",
-            //    NoSubscribers = 0,
-            //    BestSeller = "string",
-            //    ModifiedDate = DateTime.Now,
-            //};
+            var instructorExists = await repository.Instructors
+                .FindByCondition(i => i.Id == courseDto.InstructorId, false).AnyAsync();
+
+            if (!instructorExists)
+                throw new NotFoundException($"instructor doesnt exist with id: {courseDto.InstructorId}");
 
             repository.Courses.Create(course);
 
-            try
-            {
-                await repository.SaveAsync();
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message + " at create course");
-            }
+            await repository.SaveAsync();
 
             return mapper.Map<CourseRDTO>(course);
-
         }
 
         public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
         {
-            var courseWithSameTitle = await GetByTitleAsync(courseDto.Title, false);
-
-            //check if same new title exists BUT can rename same course with same title
-            if (courseWithSameTitle is not null && courseDto.Id != courseWithSameTitle.Id)
-                throw new BadRequestException($"title: {courseDto.Title} already exists");
-
-
             var course = mapper.Map<Course>(courseDto);
 
-            repository.Courses.Update(course);
+            var courseWithSameTitle = await GetByTitleAsync(course.Title, false);
 
-            try
-            {
-                await repository.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message + " at create update");
-            }
+            //check if same new title exists BUT can rename same course with same title
+            if (courseWithSameTitle is not null && course.Id != courseWithSameTitle.Id)
+                throw new BadRequestException($"title: {course.Title} already exists");
+
+            repository.Courses.Update(course);
+            await repository.SaveAsync();
 
             return mapper.Map<CourseRDTO>(course);
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            var course = await repository.Courses.FindByCondition(e => e.Id == id, false).FirstOrDefaultAsync() ?? throw new NotFoundException($"course with id: {id} doesn't exist");
-
-            repository.Courses.Delete(course);
-
-            try
-            {
-                await repository.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message + " at course delete with id: " + id);
-            }
-        }
-
         public async Task<bool> ToggleApprovedAsync(int id)
         {
-            var course = await GetByIdAsync(id, true) ?? throw new NotFoundException($"with id: {id} not found");
-
-            try
-            {
-                course.IsApproved = !course.IsApproved;
-                await repository.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message + " at course update with id: " + id);
-            }
+            await repository.Courses.ToggleApprovedAsync(id);
 
             return true;
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            await repository.Courses.DeleteAsync(id);
+
+        }
+
+
     }
 }

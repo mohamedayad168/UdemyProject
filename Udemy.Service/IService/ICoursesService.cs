@@ -17,7 +17,7 @@ namespace Udemy.Service.IService
         public Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges);
         public Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
-        public Task<CourseRDTO?> GetByIdAsync(int id, bool trackChanges);
+        public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
 
         //write
         public Task<CourseRDTO> CreateAsync(CourseCDTO course);
