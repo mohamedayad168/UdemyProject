@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Udemy.Core.Exceptions;
-public  class BadRequestException : Exception
+public class UserNotFoundException(string message): NotFoundException(message)
 {
-    public BadRequestException(string message) : base(message) { }
 }

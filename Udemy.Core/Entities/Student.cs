@@ -4,8 +4,8 @@ namespace Udemy.Core.Entities;
 
 public class Student: ApplicationUser
 {
-    [ MaxLength(50)]
-    public string? Title { get; set; }
+    [ MaxLength(20)]
+    public string Title { get; set; }
     public string? Bio { get; set; }
 
     public decimal Wallet { get; set; }
