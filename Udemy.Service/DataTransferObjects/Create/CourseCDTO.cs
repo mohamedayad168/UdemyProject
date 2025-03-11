@@ -10,7 +10,6 @@ namespace Udemy.Service.DataTransferObjects.Create
 {
     public class CourseCDTO
     {
-        public int? Id { get; set; }
         [StringLength(20)]
         public string Title { get; set; }
         [StringLength(1500)]
