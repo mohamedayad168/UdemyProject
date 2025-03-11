@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Udemy.Service.IService;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
-using Udemy.Infrastructure.Repository.EntityRepos;
+using Udemy.Service.IService;
 
 namespace Udemy.API.Controllers
 {
@@ -54,7 +51,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstructorCTO instructorDto)
+        public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstractorCDTO instructorDto)
         {
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
