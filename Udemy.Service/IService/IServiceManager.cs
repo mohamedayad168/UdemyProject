@@ -9,4 +9,5 @@ public interface IServiceManager
     ICourseRequirementService CourseRequirementService { get; }
     IInstructorService InstructorService { get; }
     IEnrollmentService EnrollmentService { get; }
+    IUserService UserService { get; }
 }

@@ -37,7 +37,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);
-        base.OnModelCreating(builder);
 
 
         builder.Entity<IdentityRole<int>>().HasData(
@@ -65,8 +64,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
 
         }
 
-
-
-
+        base.OnModelCreating(builder);
     }
 }

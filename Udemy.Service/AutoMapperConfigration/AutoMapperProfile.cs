@@ -11,8 +11,6 @@ namespace Udemy.Service.AutoMapperConfigration
     {
         public AutoMapperProfile()
         {
-            CreateMap<StudentDto, Student>();
-
             CreateMap<Course,CourseRDTO>().ReverseMap();
             CreateMap<Course,CourseCDTO>().ReverseMap();
             CreateMap<Course,CourseUDTO>().ReverseMap();

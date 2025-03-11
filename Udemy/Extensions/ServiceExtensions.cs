@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository;
@@ -15,12 +16,12 @@ public static class ServiceExtensions
     {
         var builder = services.AddIdentity<ApplicationUser, IdentityRole<int>>(o =>
         {
-            //o.Password.RequireDigit = true;
-            //o.Password.RequireLowercase = false;
-            //o.Password.RequireUppercase = false;
-            //o.Password.RequireNonAlphanumeric = false;
-            //o.Password.RequiredLength = 10;
-            //o.User.RequireUniqueEmail = true;
+            o.Password.RequiredLength = 8;
+            o.Password.RequireDigit = true;
+            o.Password.RequireLowercase = true;
+            o.Password.RequireUppercase = true;
+            o.Password.RequireNonAlphanumeric = true;
+            o.Password.RequiredUniqueChars = 1;
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();

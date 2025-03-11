@@ -1,40 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 
 namespace Udemy.Infrastructure.Repository;
-public class StudentRepository : RepositoryBase<Student>, IStudentRepository
+public class StudentRepository(ApplicationDbContext context) 
+    : RepositoryBase<Student>(context), IStudentRepository
 {
-    private readonly ApplicationDbContext dbContext;
-    public StudentRepository(ApplicationDbContext context) : base(context) { }
+    private readonly ApplicationDbContext dbContext = context;
 
     public async Task<IEnumerable<Student>> GetAllStudentsAsync(bool trackChanges, RequestParamter requestParamter)
     {
         return await FindAll(trackChanges)
+            .Where(x => x.IsDeleted != true)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
     }
-
-    public async Task<Student> GetStudentAsync(int id, bool trackChanges)
+    public async Task<Student?> GetStudentByIdAsync(int id, bool trackChanges)
     {
-        return await FindByCondition(c => c.Id == id, trackChanges)
+        return await FindByCondition(c => c.Id == id && c.IsDeleted != true , trackChanges)
             .FirstOrDefaultAsync();
     }
-    public async Task Create(Student student)
+    public async Task CreateStudent(Student student)
     {
-        await dbContext.Set<Student>().AddAsync(student);
-        await dbContext.SaveChangesAsync();
+        Create(student);
     }
-    public void Update(Student student)
+    public void DeleteStudent(Student student)
     {
-        dbContext.Set<Student>().Update(student);
-        dbContext.SaveChanges();
-    }
-    public void Delete(Student student)
-    {
-        dbContext.Set<Student>().Remove(student);
-        dbContext.SaveChanges();
+        student.IsDeleted = true;
     }
 }
