@@ -17,7 +17,7 @@ namespace Udemy.Service.DataTransferObjects.Update
     public string Title { get; set; }
     public string Description { get; set; }
     public string Status { get; set; }
-    public string Level { get; set; }
+    public string CourseLevel { get; set; }
     public decimal? Discount { get; set; }
     public decimal Price { get; set; }
     public int Duration { get; set; }

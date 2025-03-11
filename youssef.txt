@@ -3,3 +3,8 @@ repository , service , controller , dto , exeptions
 -category
 -course
 -CourseGoals
+
+1 animal style - double - beef
+1 animal style - trible - chicken 
+2 chicken hitch - trible - chicken
+1 chicken barbecue - tribe - chicken

@@ -50,17 +50,6 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
             await dbContext.SaveChangesAsync();
         }
 
-        void ICourseRequirementRepo.CreateRequirement(CourseRequirement requirement)
-        {
-            Create(requirement);
-        }
-
-        void ICourseRequirementRepo.DeleteRequirement(CourseRequirement requirement)
-        {
-            requirement.IsDeleted = true;
-            Update(requirement);
-        }
-
         
     }
 }

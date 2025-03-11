@@ -33,9 +33,9 @@ public class ApplicationUser : IdentityUser<int>
     [StringLength(1)]
     public string Gender { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime? ModifiedDate { get; set; }
-    public bool? IsDeleted { get; set; }
+    public bool? IsDeleted { get; set; } = false;
 
 
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();

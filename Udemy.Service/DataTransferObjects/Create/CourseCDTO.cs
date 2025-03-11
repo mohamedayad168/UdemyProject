@@ -17,17 +17,25 @@ namespace Udemy.Service.DataTransferObjects.Create
         [StringLength(100)]
         public string Status { get; set; }
         [StringLength(100)]
-        public string Level { get; set; }
-        [Range(0,100000)]
+        public string CourseLevel { get; set; }
+        [Range(0, 100000)]
         public decimal Price { get; set; }
+        public decimal CurrentPrice { get{ return Price; } }
         [StringLength(20)]
-        public string Language { get; set; }
+        public string Language { get; set; } = "en";
         [StringLength(500)]
         public string? ImageUrl { get; set; }
         [StringLength(500)]
         public string? VideoUrl { get; set; }
         public bool IsFree { get; set; }
+        public bool IsApproved { get { return false; } }
+        public bool IsDeleted { get { return false; } }
         public int SubCategoryId { get; set; }
         public int InstructorId { get; set; }
+        public decimal Rating { get { return 0; } }
+        public int NoSubscribers { get { return 0; } }
+        public DateTime CreatedDate { get { return DateTime.Now; } }
+        public decimal Discount { get { return 0; } }
+
     }
 }
