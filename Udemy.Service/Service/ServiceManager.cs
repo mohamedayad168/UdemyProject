@@ -19,7 +19,8 @@ public class ServiceManager : IServiceManager
 
     private readonly Lazy<IStudentService> studentService;
     private readonly Lazy<IUserService> userService;
-
+    private readonly Lazy<IAnswerService> answerService;
+    private readonly Lazy<IAskService> askService;
 
     public ServiceManager(
         IRepositoryManager repositoryManager, 
@@ -35,6 +36,8 @@ public class ServiceManager : IServiceManager
 
         studentService = new Lazy<IStudentService>(() => new StudentService(repositoryManager, mapper));
         userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper));
+        answerService = new Lazy<IAnswerService>(() =>  new AnswerService(repositoryManager,mapper));
+        askService = new Lazy<IAskService>(() =>  new AskService(repositoryManager,mapper));
     }
 
     public ICoursesService CoursesService => coursesService.Value;
@@ -46,5 +49,7 @@ public class ServiceManager : IServiceManager
 
     public IStudentService StudentService => studentService.Value;
     public IUserService UserService => userService.Value;
+    public IAnswerService AnswerService => answerService.Value;
+    public IAskService AskService => askService.Value;
 
 }
