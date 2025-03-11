@@ -6,6 +6,6 @@ public interface IAnswerRepository
 {
     void CreateAnswer(Answer answer);
     void DeleteAnswer(Answer answer);
-    Task<IEnumerable<Answer?>> GetAllAnswerAsync(bool trackChanges , RequestParamter requestParamter);
-    Task<Answer> GetAnswerByIdAsync(int id , bool trackChanges);
+    Task<IEnumerable<Answer>> GetAllUserAskAnswersAsync(int userId , int askId , bool trackChanges , RequestParamter requestParamter);
+    Task<Answer?> GetUserAskAnswerByIdAsync(int userId , int askId , int id , bool trackChanges);
 }

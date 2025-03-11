@@ -12,6 +12,5 @@ namespace Udemy.Core.IRepository
     {
         public Task<IEnumerable<Course>> GetCoursesPageAsync(bool trackChanges, RequestParamter requestParamter);
         public Task<Course?> GetCourseByTitleAsync(string title,bool trackChanges);
-
     }
 }
