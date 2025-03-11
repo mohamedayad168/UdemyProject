@@ -11,4 +11,6 @@ public interface IServiceManager
     IInstructorService InstructorService { get; }
     IEnrollmentService EnrollmentService { get; }
     IUserService UserService { get; }
+    IAnswerService AnswerService { get; }
+    IAskService AskService { get; }
 }
