@@ -42,7 +42,7 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpGet("{title}", Name = "GetCourseByTitleAsync")]
+        [HttpGet("{title}", Name = "GetCourseByTitle")]
         public async Task<ActionResult<CourseRDTO>> GetCourseByTitleAsync(string title)
         {
             var course = await serviceManager.CoursesService.GetByTitleAsync(title, false) ?? throw new NotFoundException($"couldnt find course with title: {title}");
@@ -57,9 +57,7 @@ namespace Udemy.Presentation.Controllers
         {
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
 
-            //var url = Url.Action("GetCourseByTitleAsync", "Courses", new { title = "ttsta" });
-            //Url.RouteUrl()
-            return CreatedAtAction("GetCourseByTitleAsync", new { title = courseRDTO.Title }, courseRDTO);
+            return CreatedAtAction("GetCourseByTitle", new { title = courseRDTO.Title }, courseRDTO);
         }
 
 
