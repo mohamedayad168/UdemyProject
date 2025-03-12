@@ -12,6 +12,8 @@ namespace Udemy.Service.DataTransferObjects.Update
         [Required]
         [StringLength(255)]
         public string Requirement { get; set; } = string.Empty;
+        [Required]
+        public int CourseId { get; set; }
 
     }
 }
