@@ -5,7 +5,9 @@ using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 using Udemy.Core.Utils;
-using Udemy.Service.DataTransferObjects.User;
+using Udemy.Service.DataTransferObjects.Create;
+using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
 
 namespace Udemy.Service.Service;

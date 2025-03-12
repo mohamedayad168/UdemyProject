@@ -1,5 +1,7 @@
 ﻿using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.User;
+using Udemy.Service.DataTransferObjects.Create;
+using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.DataTransferObjects.Update;
 
 namespace Udemy.Service.IService;
 public interface IUserService

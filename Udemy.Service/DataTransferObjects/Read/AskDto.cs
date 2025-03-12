@@ -1,4 +1,4 @@
-﻿namespace Udemy.Service.DataTransferObjects.Ask;
+﻿namespace Udemy.Service.DataTransferObjects.Read;
 public class AskDto
 {
     public int Id { get; set; }
