@@ -1,10 +1,10 @@
 ﻿namespace Udemy.Core.Entities
 {
-    public class BaseEntity
+    public class BaseEntity: BaseEntityWithoutId
     {
         public int Id { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime? ModifiedDate { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        //public DateTime CreatedDate { get; set; } = DateTime.Now;
+        //public DateTime? ModifiedDate { get; set; }
+        //public bool IsDeleted { get; set; } = false;
     }
 }

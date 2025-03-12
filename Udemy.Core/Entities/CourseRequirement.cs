@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
-    public class CourseRequirement
+    public class CourseRequirement: BaseEntityWithoutId
     {
         [Key] // Primary key
         public int Id { get; set; }
 
         [StringLength(50)]
         public string Requirement { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime? ModifiedDate { get; set; }
-        public bool? IsDeleted { get; set; } = false;
+        //public DateTime CreatedDate { get; set; } = DateTime.Now;
+        //public DateTime? ModifiedDate { get; set; }
+        //public bool? IsDeleted { get; set; } = false;
 
         [ForeignKey("Course")]
         public int CourseId { get; set; }

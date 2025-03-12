@@ -39,7 +39,7 @@ public class AnswersController(IServiceManager serviceManager) : ControllerBase
         AnswerForCreationDto answerForCreationDto , int userId , int courseId , int askId
     )
     {
-        var answerDto = serviceManager.AnswerService.CreateUserAskAnswerAsync(
+        var answerDto = await serviceManager.AnswerService.CreateUserAskAnswerAsync(
             answerForCreationDto , courseId , userId , askId
         );
 

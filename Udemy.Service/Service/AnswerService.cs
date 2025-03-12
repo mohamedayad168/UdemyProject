@@ -111,9 +111,7 @@ public class AnswerService(
 
     private async Task CheckIfCourseExistsAsync(int courseId)
     {
-        var course = await repository.Courses
-            .FindByCondition(c => c.Id == courseId , true)
-            .FirstOrDefaultAsync();
+        var course = await repository.Courses.GetByIdAsync(courseId, true);
 
         if (course is null)
             throw new NotFoundException($"Course With Id: {courseId} Deosn't Exist");
