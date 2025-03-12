@@ -9,20 +9,39 @@ public class AskRepository(ApplicationDbContext dbContext)
 {
     private readonly ApplicationDbContext dbContext = dbContext;
 
-    public async Task<IEnumerable<Ask>> GetAllAsksAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<Ask>> GetAllUserCourseAsksAsync(
+        int userId ,int courseId ,bool trackChanges ,RequestParamter requestParamter
+    )
     {
-        return await FindAll(trackChanges)
-            .Where(x => x.IsDeleted != true)
+        return await FindByCondition(x =>
+                x.UserId == userId &&
+                x.CourseId == courseId &&
+                x.IsDeleted != true ,
+                trackChanges)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
     }
 
-    public async Task<Ask?> GetAskByIdAsync(int id , bool trackChanges)
+    public async Task<Ask?> GetUserCourseAskByIdAsync(
+        int userId ,int courseId ,int id ,bool trackChanges
+    )
     {
-        return await FindByCondition(c => c.Id == id && c.IsDeleted != true , trackChanges)
+        return await FindByCondition(c => 
+                c.Id == id && 
+                c.CourseId == courseId &&
+                c.UserId == userId &&
+                c.IsDeleted != true ,
+                trackChanges)
             .FirstOrDefaultAsync();
     }
+
+
+    public async Task<Ask?> GetAskByIdAsync(int id, bool trackChanges)
+    {
+        return await FindByCondition(x => x.Id == id && x.IsDeleted != trackChanges , trackChanges)
+            .FirstOrDefaultAsync();
+    } 
 
     public void CreateAsk(Ask ask)
     {
