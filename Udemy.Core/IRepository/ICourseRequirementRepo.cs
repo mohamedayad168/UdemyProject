@@ -5,12 +5,9 @@ namespace Udemy.Core.IRepository
     public interface ICourseRequirementRepo : IRepositoryBase<CourseRequirement>
     {
         Task<IEnumerable<CourseRequirement>> GetAllRequirementsAsync(bool trackChanges);
-        Task<CourseRequirement?> GetRequirementByIdAsync(int id, bool trackChanges);
+        Task<CourseRequirement?> GetRequirementByIdAsync(string requirement, int courseId, bool trackChanges);
         Task<IEnumerable<CourseRequirement>> GetRequirementsByCourseIdAsync(int courseId, bool trackChanges);
         Task CreateRequirementAsync(CourseRequirement requirement);
-        Task DeleteRequirementAsync(CourseRequirement requirement);
-       
-
-
+        Task SoftDeleteRequirementAsync(string requirement, int courseId); 
     }
 }

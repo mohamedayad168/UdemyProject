@@ -5,8 +5,6 @@ namespace Udemy.Core.Entities
 {
     public class CourseRequirement: BaseEntityWithoutId
     {
-        [Key] // Primary key
-        public int Id { get; set; }
 
         [StringLength(50)]
         public string Requirement { get; set; }
