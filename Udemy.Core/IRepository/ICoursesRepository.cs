@@ -23,6 +23,6 @@ namespace Udemy.Core.IRepository
 
         //
         public Task DeleteAsync(int id);
-
+        Task<bool> CheckIfCourseExists(int id);
     }
 }
