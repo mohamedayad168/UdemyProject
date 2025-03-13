@@ -1,4 +1,6 @@
-﻿using Udemy.Core.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Udemy.Core.Entities;
 
 namespace Udemy.Core.IRepository
 {
@@ -8,6 +10,6 @@ namespace Udemy.Core.IRepository
         Task<CourseRequirement?> GetRequirementByIdAsync(string requirement, int courseId, bool trackChanges);
         Task<IEnumerable<CourseRequirement>> GetRequirementsByCourseIdAsync(int courseId, bool trackChanges);
         Task CreateRequirementAsync(CourseRequirement requirement);
-        Task SoftDeleteRequirementAsync(string requirement, int courseId); 
+        Task SoftDeleteRequirementAsync(string requirement, int courseId);
     }
 }

@@ -13,7 +13,7 @@ namespace Udemy.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-           builder.Property(x => x.CurrentPrice).HasColumnType("decimal(18,2)").HasComputedColumnSql("[Price] * ([Discount]/100)",stored:true);
+           builder.Property(x => x.CurrentPrice).HasColumnType("decimal(18,2)").HasComputedColumnSql("[Price] - [Price] * ([Discount]/100)" , stored:true);
         }
     }
 }

@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
-using Udemy.Service.DataTransferObjects.Create;
-using Udemy.Service.IService;
 
 namespace Udemy.Presentation.Controllers
 {
-   
     [Route("api/courserequirements")]
     [ApiController]
     public class CourseRequirementController : ControllerBase
@@ -30,18 +24,16 @@ namespace Udemy.Presentation.Controllers
             return Ok(requirements);
         }
 
-      
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetCourseRequirement(int id)
+        [HttpGet("{requirement}/{courseId:int}")]
+        public async Task<IActionResult> GetCourseRequirement(string requirement, int courseId)
         {
-            var requirement = await _courseRequirementRepository.GetRequirementByIdAsync(id, trackChanges: false);
-            if (requirement == null)
-                return NotFound($"No course requirement found with ID {id}.");
+            var req = await _courseRequirementRepository.GetRequirementByIdAsync(requirement, courseId, trackChanges: false);
+            if (req == null)
+                return NotFound($"No requirement '{requirement}' found for Course ID {courseId}.");
 
-            return Ok(requirement);
+            return Ok(req);
         }
 
-      
         [HttpGet("course/{courseId:int}")]
         public async Task<IActionResult> GetRequirementsByCourseId(int courseId)
         {
@@ -56,18 +48,19 @@ namespace Udemy.Presentation.Controllers
                 return BadRequest("Requirement data is null.");
 
             await _courseRequirementRepository.CreateRequirementAsync(requirement);
-            return CreatedAtAction(nameof(GetCourseRequirement), new { id = requirement.CourseId }, requirement);
+            return CreatedAtAction(nameof(GetCourseRequirement),
+                new { requirement = requirement.Requirement, courseId = requirement.CourseId },
+                requirement);
         }
 
-     
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteCourseRequirement(int id)
+        [HttpDelete("{requirement}/{courseId:int}")]
+        public async Task<IActionResult> DeleteCourseRequirement(string requirement, int courseId)
         {
-            var requirement = await _courseRequirementRepository.GetRequirementByIdAsync(id, trackChanges: true);
-            if (requirement == null)
-                return NotFound($"No course requirement found with ID {id}.");
+            var req = await _courseRequirementRepository.GetRequirementByIdAsync(requirement, courseId, trackChanges: true);
+            if (req == null)
+                return NotFound($"No requirement '{requirement}' found for Course ID {courseId}.");
 
-            await _courseRequirementRepository.DeleteRequirementAsync(requirement);
+            await _courseRequirementRepository.SoftDeleteRequirementAsync(requirement, courseId);
             return NoContent();
         }
     }

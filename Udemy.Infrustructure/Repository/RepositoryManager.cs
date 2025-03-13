@@ -15,8 +15,6 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ISocialMediaRepository> socialMediaRepository;
     private readonly Lazy<IInstructorRepo> instructorRepo;
     private readonly Lazy<IEnrollmentRepository> enrollmentRepo;
-
-
     private readonly Lazy<IAskRepository> askRepository;
     private readonly Lazy<IAnswerRepository> answerRepository;
     private readonly Lazy<ICartRepository> cartRepository;
@@ -32,26 +30,18 @@ public class RepositoryManager : IRepositoryManager
         socialMediaRepository = new Lazy<ISocialMediaRepository>(() => new SocialMediaRepository(applicationDbContext));
         instructorRepo = new Lazy<IInstructorRepo>(() => new InstructorRepo(applicationDbContext));
         enrollmentRepo = new Lazy<IEnrollmentRepository>(() => new EnrollmentRepository(applicationDbContext));
-
         askRepository = new Lazy<IAskRepository>(() => new AskRepository(applicationDbContext));
         answerRepository = new Lazy<IAnswerRepository>(() => new AnswerRepository(applicationDbContext));
         cartRepository = new Lazy<ICartRepository>(() => new CartRepository(applicationDbContext));
-        userRepository = new Lazy<IUserRepository>(() => new UserRepository(applicationDbContext,userManager));
-        studentRepository = new Lazy<IStudentRepository>(() => new StudentRepository(applicationDbContext));
+        userRepository = new Lazy<IUserRepository>(() => new UserRepository(applicationDbContext, userManager));
     }
-
-    
 
     public ICoursesRepository Courses => coursesRepo.Value;
     public ICategoriesRepository Categories => categoriesRepo.Value;
-    public ICourseRequirementRepo CourseRequirements => courseRequirementRepo.Value;
+    public ICourseRequirementRepo CourseRequirement => courseRequirementRepo.Value;
     public ISocialMediaRepository SocialMedia => socialMediaRepository.Value;
-
     public IInstructorRepo Instructors => instructorRepo.Value;
-    public IEnrollmentRepository Enrollments => enrollmentRepo.Value; 
-
-
-
+    public IEnrollmentRepository Enrollments => enrollmentRepo.Value;
     public IStudentRepository Student => studentRepository.Value;
     public IAskRepository Ask => askRepository.Value;
     public IAnswerRepository Answer => answerRepository.Value;

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Udemy.Service.DataTransferObjects.User;
 
-namespace Udemy.Service.DataTransferObjects.Student;
-public class StudentForUpdatingDto: UserForUpdatingDto
+namespace Udemy.Service.DataTransferObjects.Create;
+public class StudentForCreationDto : UserForCreationDto
 {
     [Required(ErrorMessage = "Title is Required Field.")]
     [MaxLength(20 , ErrorMessage = "Maximum length for the Title is 20 characters.")]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Udemy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312224021_fixCurrentPriceCompoutedFormula")]
+    partial class fixCurrentPriceCompoutedFormula
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ApplicationUserNotification", (string)null);
+                    b.ToTable("ApplicationUserNotification");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -239,7 +242,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.ApplicationUser", b =>
@@ -419,7 +422,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Asks", (string)null);
+                    b.ToTable("Asks");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Cart", b =>
@@ -450,7 +453,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasIndex("StudentId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CartCourse", b =>
@@ -465,7 +468,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CartCourse", (string)null);
+                    b.ToTable("CartCourse");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Category", b =>
@@ -492,7 +495,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Course", b =>
@@ -582,7 +585,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseGoals", b =>
@@ -605,7 +608,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasKey("CourseId", "Goal");
 
-                    b.ToTable("CourseGoals", (string)null);
+                    b.ToTable("CourseGoals");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseOrder", b =>
@@ -620,7 +623,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseOrder", (string)null);
+                    b.ToTable("CourseOrder");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.CourseRequirement", b =>
@@ -648,7 +651,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseRequirements", (string)null);
+                    b.ToTable("CourseRequirements");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Enrollment", b =>
@@ -695,7 +698,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Enrollments", (string)null);
+                    b.ToTable("Enrollments");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Lesson", b =>
@@ -740,7 +743,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Notification", b =>
@@ -766,7 +769,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Order", b =>
@@ -807,7 +810,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Progress", b =>
@@ -843,7 +846,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Progresses", (string)null);
+                    b.ToTable("Progresses");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Quiz", b =>
@@ -870,7 +873,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.QuizQuestion", b =>
@@ -918,7 +921,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizQuestions", (string)null);
+                    b.ToTable("QuizQuestions");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Section", b =>
@@ -956,7 +959,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Sections", (string)null);
+                    b.ToTable("Sections");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.SocialMedia", b =>
@@ -989,7 +992,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SocialMedias", (string)null);
+                    b.ToTable("SocialMedias");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.StudentGrade", b =>
@@ -1016,7 +1019,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("StudentGrades", (string)null);
+                    b.ToTable("StudentGrades");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.SubCategory", b =>
@@ -1048,7 +1051,7 @@ namespace Udemy.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Subcategories", (string)null);
+                    b.ToTable("Subcategories");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Instructor", b =>
@@ -1075,7 +1078,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<decimal>("Wallet")
                         .HasColumnType("decimal(18,2)");
 
-                    b.ToTable("Instructors", (string)null);
+                    b.ToTable("Instructors");
 
                     b.HasData(
                         new
@@ -1119,7 +1122,7 @@ namespace Udemy.Infrastructure.Migrations
                     b.Property<decimal>("Wallet")
                         .HasColumnType("decimal(18,2)");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
 
                     b.HasData(
                         new

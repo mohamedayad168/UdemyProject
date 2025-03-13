@@ -13,4 +13,5 @@ public interface IServiceManager
     IUserService UserService { get; }
     IAnswerService AnswerService { get; }
     IAskService AskService { get; }
+    ICartService CartService { get; }
 }

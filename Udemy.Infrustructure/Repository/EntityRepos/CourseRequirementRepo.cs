@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
-   {
     public class CourseRequirementRepo : RepositoryBase<CourseRequirement>, ICourseRequirementRepo
     {
         private readonly ApplicationDbContext dbContext;
@@ -53,3 +50,4 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
             }
         }
     }
+}

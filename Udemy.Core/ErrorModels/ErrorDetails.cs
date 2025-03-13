@@ -12,6 +12,6 @@ public class ErrorDetails
     public string? Message { get; set; }
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this);
+        return JsonSerializer.Serialize(this); //This makes the JSON output more readable by adding indentation (pretty-print).
     }
 }
