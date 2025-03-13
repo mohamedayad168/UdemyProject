@@ -4,7 +4,7 @@ using Udemy.Core.Enums;
 
 namespace Udemy.Core.Entities
 {
-    public class Enrollment
+    public class Enrollment: BaseEntityWithoutId
     {
         [ForeignKey("Student")]
         public int StudentId { get; set; }
@@ -24,9 +24,10 @@ namespace Udemy.Core.Entities
 
 
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime? ModifiedDate { get; set; }
-        public bool? IsDeleted { get; set; } = false;
+        //public DateTime CreatedDate { get; set; } = DateTime.Now;
+        //public DateTime? ModifiedDate { get; set; }
+        //public bool? IsDeleted { get; set; } = false;
+
         [Column(TypeName = "decimal(8,2)")]
         public decimal? ProgressPercentage { get; set; } = 0; //Added new property
 

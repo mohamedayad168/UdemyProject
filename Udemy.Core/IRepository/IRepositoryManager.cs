@@ -4,7 +4,8 @@ public interface IRepositoryManager
     ICoursesRepository Courses { get; }
     ICategoriesRepository Categories { get; }
     //public IRatingRepository Rating { get; }
-    ICourseRequirementRepo CourseRequirements { get; }
+    ICourseRequirementRepo CourseRequirement { get; }
+
     ISocialMediaRepository SocialMedia { get; }
     IInstructorRepo Instructors { get; }
 

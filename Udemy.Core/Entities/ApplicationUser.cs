@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Udemy.Core.Interface;
 
 namespace Udemy.Core.Entities;
-public class ApplicationUser : IdentityUser<int>
+public class ApplicationUser : IdentityUser<int>, IBaseEntityWithoutId
 {
     [Required(ErrorMessage = "First Name Is Required")]
     [StringLength(50)]
@@ -35,7 +36,7 @@ public class ApplicationUser : IdentityUser<int>
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime? ModifiedDate { get; set; }
-    public bool? IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; } = false;
 
 
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();

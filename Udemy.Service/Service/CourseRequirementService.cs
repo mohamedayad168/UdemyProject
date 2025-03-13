@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
+using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -14,46 +15,101 @@ using Udemy.Service.IService;
 
 namespace Udemy.Service.Service
 {
-  
-    
-        public class CourseRequirementService(IRepositoryManager repository, IMapper mapper) : ICourseRequirementService
+    public class CourseRequirementService(IRepositoryManager repository, IMapper mapper) : ICourseRequirementService
+    {
+        public async Task<IEnumerable<CourseRequirementRDTO>> GetAllRequirementsAsync(bool trackChanges)
         {
-            public async Task<IEnumerable<CourseRequirementRDTO>> GetAllAsync(bool trackChanges)
-            {
-            var courseRequirements = await repository.CourseRequirements.FindAll(trackChanges).ToListAsync();
-                return mapper.Map<IEnumerable<CourseRequirementRDTO>>(courseRequirements);
-            }
+            var requirements = await repository.CourseRequirement.FindAll(trackChanges).ToListAsync();
+            return requirements is null ? [] : mapper.Map<IEnumerable<CourseRequirementRDTO>>(requirements);
+        }
 
-            public async Task<CourseRequirementRDTO?> GetByIdAsync(int id, bool trackChanges)
-            {
-            var courseRequirement = await repository.CourseRequirements.FindByCondition(cr => cr.Id == id, trackChanges).FirstOrDefaultAsync();
-                return mapper.Map<CourseRequirementRDTO?>(courseRequirement);
-            }
+        public async Task<IEnumerable<CourseRequirementRDTO>> GetRequirementsByCourseIdAsync(int courseId, bool trackChanges)
+        {
+            var requirements = await repository.CourseRequirement
+                .FindByCondition(r => r.CourseId == courseId, trackChanges)
+                .ToListAsync();
 
-            public async Task<CourseRequirementRDTO> CreateAsync(CourseRequirementCTO courseRequirementCTO)
+            return requirements is null ? [] : mapper.Map<IEnumerable<CourseRequirementRDTO>>(requirements);
+        }
+
+        public async Task<CourseRequirementRDTO?> GetRequirementAsync(string requirement, int courseId, bool trackChanges)
+        {
+            var req = await repository.CourseRequirement
+                .FindByCondition(r => r.Requirement == requirement && r.CourseId == courseId, trackChanges)
+                .FirstOrDefaultAsync();
+
+            return req is null ? throw new NotFoundException($"Requirement '{requirement}' for Course ID {courseId} doesn't exist")
+                               : mapper.Map<CourseRequirementRDTO>(req);
+        }
+
+        public async Task<CourseRequirementRDTO> CreateRequirementAsync(CourseRequirementCTO requirementDTO)
+        {
+            // تحقق مما إذا كان المتطلب موجودًا بالفعل
+            var existingRequirement = await repository.CourseRequirement
+                .FindByCondition(r => r.Requirement == requirementDTO.Requirement && r.CourseId == requirementDTO.CourseId, false)
+                .FirstOrDefaultAsync();
+
+            if (existingRequirement is not null)
+                throw new BadRequestException($"Requirement '{requirementDTO.Requirement}' already exists for Course ID {requirementDTO.CourseId}");
+
+            var requirementEntity = mapper.Map<CourseRequirement>(requirementDTO);
+            repository.CourseRequirement.Create(requirementEntity);
+
+            try
             {
-                var courseRequirement = mapper.Map<CourseRequirement>(courseRequirementCTO);
-                repository.CourseRequirements.Create(courseRequirement);
                 await repository.SaveAsync();
-                return mapper.Map<CourseRequirementRDTO>(courseRequirement);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at creating course requirement");
             }
 
-            public async Task UpdateAsync(int id, CourseRequirementUTO courseRequirementUTO)
-            {
-            var existingRequirement = await repository.CourseRequirements.FindByCondition(cr => cr.Id == id, true).FirstOrDefaultAsync();
-                if (existingRequirement == null) throw new Exception("Course requirement not found!");
+            return mapper.Map<CourseRequirementRDTO>(requirementEntity);
+        }
 
-                mapper.Map(courseRequirementUTO, existingRequirement);
+        public async Task<CourseRequirementRDTO> UpdateRequirementAsync(CourseRequirementUTO requirementDTO)
+        {
+            var requirement = await repository.CourseRequirement
+                .FindByCondition(r => r.Requirement == requirementDTO.Requirement && r.CourseId == requirementDTO.CourseId, false)
+                .FirstOrDefaultAsync();
+
+            if (requirement is null)
+                throw new NotFoundException($"Requirement '{requirementDTO.Requirement}' for Course ID {requirementDTO.CourseId} doesn't exist");
+
+            mapper.Map(requirementDTO, requirement);
+            repository.CourseRequirement.Update(requirement);
+
+            try
+            {
                 await repository.SaveAsync();
             }
-
-            public async Task DeleteAsync(int id)
+            catch (Exception ex)
             {
-                var courseRequirement = await repository.CourseRequirements.FindByCondition(cr => cr.Id == id, true).FirstOrDefaultAsync();
-                if (courseRequirement == null) throw new Exception("Course requirement not found!");
+                throw new Exception(ex.Message + " at updating course requirement");
+            }
 
-                repository.CourseRequirements.Delete(courseRequirement);
+            return mapper.Map<CourseRequirementRDTO>(requirement);
+        }
+
+        public async Task DeleteRequirementAsync(string requirement, int courseId)
+        {
+            var existingRequirement = await repository.CourseRequirement
+                .FindByCondition(r => r.Requirement == requirement && r.CourseId == courseId, false)
+                .FirstOrDefaultAsync();
+
+            if (existingRequirement is null)
+                throw new NotFoundException($"Requirement '{requirement}' for Course ID {courseId} doesn't exist");
+
+            repository.CourseRequirement.Delete(existingRequirement);
+
+            try
+            {
                 await repository.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " at deleting course requirement");
             }
         }
     }
+}

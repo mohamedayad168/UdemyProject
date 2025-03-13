@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -14,7 +15,7 @@ using Udemy.Service.IService;
 namespace Udemy.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/courses")]
+    [Route("api/[controller]")]
     public class CoursesController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet]
@@ -41,11 +42,13 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpGet("{title}")]
+        [HttpGet("{title}", Name = "GetCourseByTitle")]
         public async Task<ActionResult<CourseRDTO>> GetCourseByTitleAsync(string title)
         {
-            var course = await serviceManager.CoursesService.GetByTitleAsync(title, false);
+            var course = await serviceManager.CoursesService.GetByTitleAsync(title, false) ?? throw new NotFoundException($"couldnt find course with title: {title}");
+
             return Ok(course);
+
         }
 
 
@@ -54,13 +57,7 @@ namespace Udemy.Presentation.Controllers
         {
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
 
-            //var url = Url.Action(
-            //    action: "CreateAsync",
-            //    controller: "Courses", // Use "Courses" instead of nameof(CoursesController)
-            //    values: new { title = courseRDTO.Title }
-            //  );
-
-            return CreatedAtAction(nameof(GetCourseByTitleAsync), new { courseRDTO.Title }, courseRDTO);
+            return CreatedAtAction("GetCourseByTitle", new { title = courseRDTO.Title }, courseRDTO);
         }
 
 

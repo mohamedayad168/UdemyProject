@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities;
-public class StudentGrade
+public class StudentGrade: BaseEntityWithoutId
 {
 
     public int StudentId { get; set; } 
@@ -13,12 +13,12 @@ public class StudentGrade
     [Column(TypeName = "decimal(8,2)")] 
     public decimal Grade { get; set; }
 
-    [Required] 
-    public DateTime CreatedDate { get; set; }
+    //[Required] 
+    //public DateTime CreatedDate { get; set; }
 
-    public DateTime? ModifiedDate { get; set; } 
+    //public DateTime? ModifiedDate { get; set; } 
 
-    public bool IsDeleted { get; set; } = false;
+    //public bool IsDeleted { get; set; } = false;
 
     // Navigation Properties (Assuming Student & Quiz Tables Exist)
     public Student Student { get; set; }

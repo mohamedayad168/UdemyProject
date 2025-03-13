@@ -7,7 +7,7 @@ namespace Udemy.Presentation.Controllers;
 
 [ApiController]
 [Route("api/Users")]
-public class UserController(IServiceManager serviceManager): ControllerBase
+public class UsersController(IServiceManager serviceManager): ControllerBase
 {
     private readonly IServiceManager serviceManager = serviceManager;
 

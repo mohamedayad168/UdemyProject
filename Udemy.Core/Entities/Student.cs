@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities;
 
 public class Student: ApplicationUser
 {
-    [ MaxLength(20)]
-    public string Title { get; set; }
+    public string? Title { get; set; }
+
     public string? Bio { get; set; }
 
+    [Required(ErrorMessage = "Wallet Is Required Field")]
     public decimal Wallet { get; set; }
 
 
