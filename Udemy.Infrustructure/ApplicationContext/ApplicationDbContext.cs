@@ -29,6 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     public DbSet<SocialMedia> SocialMedias { get; set; }
     public DbSet<StudentGrade> StudentGrades { get; set; }
     public DbSet<SubCategory> Subcategories { get; set; }
+    public DbSet<CartCourse> CartCourse { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Udemy.Core.Entities;
+using Udemy.Core.Extensions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 
@@ -9,25 +11,47 @@ public class CartRepository(ApplicationDbContext dbContext)
 {
     private readonly ApplicationDbContext dbContext = dbContext;
 
-    public async Task<IEnumerable<Cart>> GetAllCartsAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<Cart>> GetAllCartsAsync(
+        bool trackChanges , RequestParamter requestParamter ,
+        params Func<IQueryable<Cart> , IQueryable<Cart>>[] includes
+    )
     {
         return await FindAll(trackChanges)
-            .Where(x => x.IsDeleted != true)
+            .IncludeRelated(includes)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
     }
-    public async Task<Cart?> GetCartByIdAsync(int id , bool trackChanges)
+
+
+    public async Task<Cart?> GetStudentCartByIdAsync(
+        int studentId , bool trackChanges ,
+        params Func<IQueryable<Cart> , IQueryable<Cart>>[] includes
+    )
     {
-        return await FindByCondition(c => c.Id == id && c.IsDeleted != true , trackChanges)
+        return await FindByCondition(c => c.StudentId == studentId , trackChanges)
+            .IncludeRelated(includes)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> CheckIfStudentCartExist(int studentId)
+    {
+        return await dbContext.Carts.AnyAsync(x => x.StudentId == studentId);
+    }
+
     public void CreateCart(Cart cart)
     {
         Create(cart);
     }
+
+
     public void DeleteCart(Cart cart)
     {
-        cart.IsDeleted = true;
+        Delete(cart);
+    }
+
+    public void DeleteCartCourse(CartCourse cartCourse)
+    {
+        dbContext.CartCourse.Remove(cartCourse);
     }
 }
