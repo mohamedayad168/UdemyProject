@@ -1,0 +1,39 @@
+import * as one from '@angular/material/autocomplete';
+import * as two from '@angular/material/badge';
+import * as three from '@angular/material/bottom-sheet';
+import * as four from '@angular/material/button';
+import * as five from '@angular/material/button-toggle';
+import * as six from '@angular/material/card';
+import * as seven from '@angular/material/checkbox';
+import * as eight from '@angular/material/chips';
+import * as nine from '@angular/material/core';
+
+import * as one1 from '@angular/material/datepicker';
+import * as two1 from '@angular/material/dialog';
+import * as three1 from '@angular/material/divider';
+import * as four1 from '@angular/material/expansion';
+import * as five1 from '@angular/material/form-field';
+import * as six1 from '@angular/material/grid-list';
+import * as seven1 from '@angular/material/icon';
+import * as eight1 from '@angular/material/input';
+import * as nine1 from '@angular/material/list';
+
+import * as one2 from '@angular/material/menu';
+import * as two2 from '@angular/material/paginator';
+import * as three2 from '@angular/material/progress-bar';
+import * as four2 from '@angular/material/progress-spinner';
+import * as five2 from '@angular/material/radio';
+import * as six2 from '@angular/material/select';
+import * as seven2 from '@angular/material/sidenav';
+import * as eight2 from '@angular/material/slide-toggle';
+import * as nine2 from '@angular/material/slider';
+
+import * as one3 from '@angular/material/snack-bar';
+import * as two3 from '@angular/material/sort';
+import * as three3 from '@angular/material/stepper';
+import * as four3 from '@angular/material/table';
+import * as five3 from '@angular/material/tabs';
+import * as six3 from '@angular/material/timepicker';
+import * as seven3 from '@angular/material/toolbar';
+import * as eight3 from '@angular/material/tooltip';
+import * as nine3 from '@angular/material/tree';
