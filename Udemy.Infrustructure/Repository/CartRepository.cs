@@ -36,7 +36,8 @@ public class CartRepository(ApplicationDbContext dbContext)
 
     public async Task<bool> CheckIfStudentCartExist(int studentId)
     {
-        return await dbContext.Carts.AnyAsync(x => x.StudentId == studentId);
+        return await FindByCondition(x => x.StudentId == studentId, true)
+            .AnyAsync();
     }
 
     public void CreateCart(Cart cart)
