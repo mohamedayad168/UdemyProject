@@ -1,0 +1,165 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-family: udemy sans, sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1c1c1c;
+    color: #f1f1f1;
+}
+
+.headersection {
+    display: flex;
+    position: relative;
+    height: 75px;
+    background-color: white;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .headersection {
+    background-color: #333;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.nav {
+    display: flex;
+}
+
+/* Navbar Links */
+.headersection li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .navbar-light .navbar-nav .nav-link {
+    color: #f1f1f1;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #5a057a;
+}
+
+body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
+    color: #5a057a;
+}
+
+/* Button Styles */
+.btn-primary, .btn-outline-primary {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Log In and Sign Up Button Styles */
+.btn-outline-primary {
+    background-color: #fdfcfe;
+    color:  #74079b;;
+    border-color: #5a057a;
+}
+
+.btn-outline-primary:hover {
+    background-color: #f5f2f7;
+    border-color: #4a0464;
+}
+
+.btn-primary {
+    background-color:   #74079b;
+    border-color:   #74079b;
+}
+
+.btn-primary:hover {
+   
+    background-color:  #74079b;
+    border-color:  #74079b;
+}
+
+/* Dark Mode Button */
+.dark-mode-toggle {
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.dark-mode-toggle:hover {
+    opacity: 0.8;
+}
+
+/* Udemy Logo */
+.logo img {
+    display: block;
+    padding: 20px 0 20px 25px;
+    width: 200px;
+}
+
+/* Search, Cart, and Worldwide Icons */
+.headersection .search-icon,
+.headersection .cart-icon,
+.headersection .world-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+
+/* Search Bar */
+.headersection .search-bar input {
+    width: 400px; /* Increased default width */
+    max-width: 100%;
+    margin-left: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    transition: width 0.3s ease;
+}
+
+.headersection .search-bar input:focus {
+    width: 500px; /* Expand on focus */
+    outline: none;
+    border-color: #5a057a;
+}
+
+/* Category Dropdown */
+.dropdown-menu {
+    background-color: white;
+    color: #333;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f5f2f7;
+}
+
+/* Improved Button Hover */
+.btn-primary:hover {
+    background-color: #5a057a;
+    border-color: #5a057a;
+}
+
+.btn-outline-primary:hover {
+    background-color: #e4d4ed;
+    border-color: #4a0464;
+    color: #4a0464;
+}
+
+/* Teach on Udemy Hover Effect */
+.teach-udemy:hover::after {
+    content: "Turn what you know into an opportunity and reach millions around the world.";
+    display: block;
+    color: #74079b;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+}
