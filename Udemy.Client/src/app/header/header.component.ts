@@ -1,12 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CategoryService } from '../services/category.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [CommonModule,RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  categories!: string[] ;
+
+  constructor(private categoryservice:CategoryService) {}
+
+  ngOnInit() {
+    this.loadCategories()
+  }
+
+  loadCategories(): void {
+    this.categoryservice.getCategories().subscribe(
+      (data) => {
+        this.categories = data.categories;
+        console.log('Categories loaded:', this.categories);
+      },
+      (error) => {
+        console.error('Error loading categories:', error);
+      }
+    );
+  }
+
+
+  
   isDarkMode = false;
 
   toggleDarkMode() {
