@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		youssef.txt = youssef.txt
 	EndProjectSection
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Client", "Udemy.Client\Client.esproj", "{537756AE-4DBA-482F-BC55-279EE5CE1862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,12 @@ Global
 		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CED47FCB-72AB-4CDD-936A-5C1A10BD5ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537756AE-4DBA-482F-BC55-279EE5CE1862}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
