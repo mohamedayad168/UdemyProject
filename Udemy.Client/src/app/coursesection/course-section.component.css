@@ -1,0 +1,42 @@
+.container {
+  max-width: 1200px;
+}
+
+.btn {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.badge {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.7rem;
+}
+
+.btn-outline-primary {
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
