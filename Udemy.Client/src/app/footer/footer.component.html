@@ -1,0 +1,19 @@
+<!-- footer.component.html -->
+<footer class="udemy-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div *ngFor="let section of footerSections" class="footer-column">
+          <h3 class="footer-heading">{{section.title}}</h3>
+          <ul class="footer-links">
+            <li *ngFor="let link of section.links">
+              <a [routerLink]="link.url" class="footer-link">{{link.text}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo">Udemy</div>
+        <div class="footer-copyright">© {{currentYear}} Udemy, Inc.</div>
+      </div>
+    </div>
+  </footer>

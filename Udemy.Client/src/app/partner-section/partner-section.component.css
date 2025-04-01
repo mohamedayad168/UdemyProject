@@ -1,0 +1,13 @@
+.partner-logo {
+    max-width: 120px;
+    height: auto;
+    margin: 10px;
+    opacity: 0.8;
+    transition: transform 0.3s ease;
+  }
+  
+  .partner-logo:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  
