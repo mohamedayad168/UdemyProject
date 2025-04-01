@@ -1,0 +1,212 @@
+.container {
+  max-width: 1024px;
+}
+
+button:hover {
+  background-color: #1e40af;
+}
+
+   /* Basic custom styles inspired by Udemy */
+   body {
+    background-color: #f8f9fa;
+}
+.udemy-navbar {
+     background-color: #1c1d1f;
+     /* Add more styling for a realistic navbar */
+}
+.course-header-section {
+    background-color: #1c1d1f; /* Very dark background */
+    color: #ffffff;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.breadcrumb-item a {
+    color: #cec0fc;
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: #f8f9fa;
+}
+.rating-color { color: #f3ca8c; }
+.link-light-purple { color: #cec0fc; text-decoration: none; }
+.link-light-purple:hover { color: #ffffff; }
+
+.sidebar-card {
+    background-color: #ffffff; /* White card for sidebar */
+    color: #1c1d1f; /* Dark text inside sidebar */
+    border: 1px solid #d1d7dc;
+    box-shadow: 0 4px 8px rgba(0,0,0,.08);
+    position: sticky;
+    top: 20px;
+    max-width: 350px; /* Ensure it doesn't stretch the container */
+    /* Add position: sticky; top: 20px; for sticky effect (requires parent setup) */
+}
+.preview-placeholder {
+    background-color: #1c1d1f; /* Dark preview */
+    color: #fff;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+}
+ .preview-placeholder .play-icon { font-size: 4rem; color: rgba(255, 255, 255, 0.8); }
+ .preview-placeholder .preview-text { margin-top: 0.5rem; font-weight: bold; }
+
+.price-current { font-size: 2rem; font-weight: bold; color: #1c1d1f;}
+.price-original { color: #6a6f73; text-decoration: line-through; margin-left: 0.5rem; }
+.price-discount { color: #1c1d1f; font-weight: bold; margin-left: 0.5rem; }
+.time-left { color: #b32d0f; font-size: 0.9rem; font-weight: bold; }
+
+.btn-purchase { background-color: #a435f0; border-color: #a435f0; color: #fff; font-weight: bold; }
+.btn-purchase:hover { background-color: #8710d8; border-color: #8710d8; color: #fff; }
+.btn-outline-dark { border-color: #1c1d1f; color: #1c1d1f; font-weight: bold; }
+.btn-outline-dark:hover { background-color: #1c1d1f; color: #fff; }
+
+.section-box {
+    border: 1px solid #d1d7dc;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.section-box h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
+.course-content .accordion-button { font-weight: bold; }
+.course-content .accordion-body { background-color: #f8f9fa; }
+
+.instructor-img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; }
+.review-rating { display: flex; align-items: center; margin-bottom: 0.5rem; }
+.review-stars { color: #f3ca8c; margin-left: 0.5rem; }
+.metadata-icon { margin-right: 0.5rem; }
+.metadata-item { margin-right: 1rem; margin-bottom: 0.5rem; display: inline-block; }
+ul.checklist { list-style: none; padding-left: 0; }
+ul.checklist li::before { content: "\F26E"; /* Bootstrap Icons check */ font-family: bootstrap-icons !important; margin-right: 0.75rem; }
+.default-list {
+  list-style-type: disc;
+}
+
+/* Simple Footer */
+.footer { background-color: #1c1d1f; color: #fff; padding: 2rem 0; margin-top: 3rem; }
+.footer a { color: #cec0fc; }
+
+.text-light-purple { color: #cec0fc; }
+
+
+.reviews-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 25px;
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.rating-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.rating-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.review-card {
+  padding: 20px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.reviewer-initials {
+  background-color: #f1f1f1;
+  color: #333;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-content {
+  margin-left: 46px;
+}
+
+.stars {
+  color: #ffc107;
+  margin-bottom: 8px;
+}
+
+.review-date {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-left: 5px;
+}
+
+.review-text {
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.helpful-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.helpful-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.helpful-button:hover {
+  background-color: #f1f1f1;
+}
+
+.helpful-button i {
+  margin-right: 5px;
+}
+
+.show-more {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.show-all {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.show-all-btn {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 500;
+}
