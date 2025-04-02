@@ -1,4 +1,3 @@
-
 <div class="container my-5">
 
   <div class="d-flex justify-content-center mb-4 flex-wrap">
@@ -13,21 +12,18 @@
   </div>
 
   <div class="row">
-    <div class="col-md-4 mb-4" *ngFor="let course of courses">
+    <div class="col-md-4 mb-4" *ngFor="let course of filteredCourses">
       <div class="card h-100 shadow-sm">
         <img [src]="course.imageUrl" class="card-img-top" alt="{{ course.title }}">
         <div class="card-body">
           <h5 class="card-title">{{ course.title }}</h5>
           <p class="card-text">{{ course.description }}</p>
           <p class="card-text">
-            <strong>Instructor:</strong> {{ course.instructor }} <br>
+            <strong>Instructor:</strong> {{ course.instructor.name }} <br>
             <strong>Rating:</strong> {{ course.rating }} 
           </p>
-          
           <p class="card-text">
-            <strong>Price:</strong>
-           
-         
+            <strong>Price:</strong> {{ course.currentPrice | currency }} 
           </p>
           <a href="#" class="btn btn-primary">View Details</a>
         </div>
