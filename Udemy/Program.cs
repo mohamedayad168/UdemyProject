@@ -20,6 +20,7 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:4200") // Angular URL
                   .AllowAnyMethod()
+                  .AllowCredentials() // to accept credentials "Cookie" from different URL
                   .AllowAnyHeader();
         });
 });
