@@ -1,0 +1,15 @@
+<div class="container my-5">
+    <h2 class="text-center mb-4">What Learners Are Saying</h2>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let testimonial of testimonials">
+        <div class="card border rounded shadow p-3 mb-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ testimonial.name }}</h5>
+            <p class="card-text">{{ testimonial.review }}</p>
+            <p class="text-muted">Rating: {{ testimonial.rating }}/5</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

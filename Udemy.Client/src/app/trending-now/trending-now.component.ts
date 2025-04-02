@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../models/course.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-trending-now',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './trending-now.component.html',
   styleUrl: './trending-now.component.css'
 })

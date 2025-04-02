@@ -1,5 +1,5 @@
 <div class="container my-5">
-    <h2 class="text-center mb-4">Trending Now</h2>
+    <h2 class="text-start mb-4">Trending Now</h2>
     <div id="trendingCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div 
@@ -7,7 +7,7 @@
           [class]="i === 0 ? 'carousel-item active' : 'carousel-item'"
         >
           <div class="card border rounded shadow p-3">
-            <img [src]="course.image" class="card-img-top" alt="{{ course.title }}">
+            <img [src]="course.imageUrl" class="card-img-top" alt="{{ course.title }}">
             <div class="card-body">
               <h5 class="card-title">{{ course.title }}</h5>
               <p class="card-text">{{ course.description }}</p>
