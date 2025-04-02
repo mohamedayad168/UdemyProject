@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Udemy.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class solveIsDeletedNullableCondition : Migration
+    public partial class updateA2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,13 +41,6 @@ namespace Udemy.Infrastructure.Migrations
                 oldType: "bit",
                 oldNullable: true);
 
-            //migrationBuilder.AddColumn<int>(
-            //    name: "Id",
-            //    table: "CourseRequirements",
-            //    type: "int",
-            //    nullable: false,
-            //    defaultValue: 0);
-
             migrationBuilder.AlterColumn<bool>(
                 name: "IsDeleted",
                 table: "CourseGoals",
@@ -68,35 +61,43 @@ namespace Udemy.Infrastructure.Migrations
                 oldType: "bit",
                 oldNullable: true);
 
+            migrationBuilder.AlterColumn<decimal>(
+                name: "CurrentPrice",
+                table: "Courses",
+                type: "decimal(18,2)",
+                nullable: false,
+                computedColumnSql: "[Price] - [Price] * ([Discount]/100)",
+                stored: true,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)",
+                oldComputedColumnSql: "[Price] * ([Discount]/100)",
+                oldStored: true);
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: 11111,
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "IsDeleted", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "6c3df827-a0b9-40d7-9bea-1c3ed6f51528", new DateTime(2025, 3, 12, 18, 28, 9, 395, DateTimeKind.Local).AddTicks(3980), false, "AQAAAAIAAYagAAAAEBWpB1Tvz7ph8kuyWb4brzUQZLcrEiXlYJtfMHUv5JBQGmSknyV1B7fPQUo1k3S1Ww==", "76dc839c-0095-458d-a5dc-9fde92cb8a0e" });
+                values: new object[] { "e98ecc46-9929-4619-8178-48d9bb09416d", new DateTime(2025, 4, 2, 2, 42, 43, 712, DateTimeKind.Local).AddTicks(1509), false, "AQAAAAIAAYagAAAAELBFbuD14Bf+Prynqv/T7R/H5MbXh9s9MQTIQi9AG8P9d7+w3YZNcgcMcQMs4Df0EA==", "bf5a85e7-bc34-423b-921a-bb8a06b599b6" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: 22222,
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "IsDeleted", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "a51fbaef-e7b8-48b1-a14f-1bed4995c88a", new DateTime(2025, 3, 12, 18, 28, 9, 489, DateTimeKind.Local).AddTicks(5210), false, "AQAAAAIAAYagAAAAEBXh1YcWd/2vw2ME+1ZBzUI7gtqZAyIbk2Fp/BUVGD7euOKSH6EQdMB/tJ0yEP3vwA==", "63b84041-6779-400f-90ec-84665177453d" });
+                values: new object[] { "978acd43-df3f-4d6f-a7e4-65e1f72c139d", new DateTime(2025, 4, 2, 2, 42, 43, 752, DateTimeKind.Local).AddTicks(8655), false, "AQAAAAIAAYagAAAAEPc/mKbYJRazOHTU0A4CqkrazuVwrajJoGUQZKYEr61qUkT74O+Sh6gVTNPUAkrJEQ==", "d97e5410-0095-4103-a06a-eb14986b79a1" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: 33333,
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "IsDeleted", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "0c2ec0a5-07cc-4b8c-8018-5a6c8e5a62a5", new DateTime(2025, 3, 12, 18, 28, 9, 583, DateTimeKind.Local).AddTicks(6063), false, "AQAAAAIAAYagAAAAEGICxeleKBzqukH7bgYFAOCCrNbTd2vk2BkhX4KulFNWfY3eBGCJaapWotlt+dQL1g==", "0cc49928-910e-4b3b-a922-05c00534b98e" });
+                values: new object[] { "f6a11288-a6be-4b0c-8d38-d9d87e053ed6", new DateTime(2025, 4, 2, 2, 42, 43, 794, DateTimeKind.Local).AddTicks(2120), false, "AQAAAAIAAYagAAAAEAIkqTp4LA1lD0Jgu7AWY293M60GIDwQKpYmqYc9i3mNzeJjxCEdthodBP+lh8v2AQ==", "b37c8bad-cc24-4dc4-b61e-00a11795ca15" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropColumn(
-            //    name: "Id",
-            //    table: "CourseRequirements");
-
             migrationBuilder.AlterColumn<string>(
                 name: "Title",
                 table: "Students",
@@ -138,6 +139,18 @@ namespace Udemy.Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(bool),
                 oldType: "bit");
+
+            migrationBuilder.AlterColumn<decimal>(
+                name: "CurrentPrice",
+                table: "Courses",
+                type: "decimal(18,2)",
+                nullable: false,
+                computedColumnSql: "[Price] * ([Discount]/100)",
+                stored: true,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)",
+                oldComputedColumnSql: "[Price] - [Price] * ([Discount]/100)",
+                oldStored: true);
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
