@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,48 @@ namespace Udemy.Service.Service
             _repository = repository;
             _mapper = mapper;
         }
+        
+        public async Task<CourseRatingRDTO> GetCourseRatingsAsync(int courseId)
+        {
+            //check if course exists
+            var course = await _repository.Courses.GetByIdAsync(courseId, false);
+            if(course is null)
+                throw new KeyNotFoundException("Enrollment not found.");
+
+            var rating = await _repository.Enrollments
+                                                    .FindByCondition(e => (e.CourseId == courseId)&&(e.IsDeleted==false)&&e.comment!=null&&e.Rating!=null, false)
+                                                    .Include(e => e.Student)
+                                                    .Select(e => new RatingRDTO
+                                                    {
+                                                        CourseId = e.CourseId,
+                                                        StudentId = e.StudentId,
+                                                        StudentName = $"{e.Student.FirstName} {e.Student.LastName}",
+                                                        date = e.CreatedDate,
+                                                        Rating = e.Rating ?? 0,
+                                                        Comment=e.comment ?? "",
+
+                                                    }).ToListAsync();
+
+            var courseRating=new CourseRatingRDTO()
+            {
+                CourseId = courseId,
+                Rating=course.Rating ?? 0,
+                TotalReviews=rating.Count,
+                InstructorId=course.InstructorId,
+                Ratings=rating
+
+
+                
+
+            };
+
+
+            return courseRating;
+
+
+        }
+
+
 
         public async Task<IEnumerable<EnrollmentRDTO>> GetEnrollmentsByStudentIdAsync(int studentId)
         {

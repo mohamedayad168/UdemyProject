@@ -5,11 +5,12 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from "./footer/footer.component";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatIcon, MatButton,HomeComponent,CommonModule,HeaderComponent,RouterModule],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, RouterModule, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

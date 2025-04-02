@@ -15,15 +15,8 @@ builder.Services.ConfigureAutoMapperService();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200") // Angular URL
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAngular", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

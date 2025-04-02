@@ -4,8 +4,8 @@
            <div class="col-lg-8 order-lg-1">
             <nav aria-label="breadcrumb" class="mb-4">
               <div class="text-sm text-muted mb-3">
-                <span class="text-purple-500 cursor-pointer">{{courseDetails.category.title}}</span><span class="text-white mx-2">></span>
-                <span class="text-purple-500 cursor-pointer">{{courseDetails.subcategory.title}}</span> <span class="text-white mx-2"></span>
+                <span class="text-purple-500 cursor-pointer">{{courseDetails.subCategory.category.name}}</span><span class="text-white mx-2">></span>
+                <span class="text-purple-500 cursor-pointer">{{courseDetails.subCategory.name}}</span> <span class="text-white mx-2"></span>
               </div>
             </nav>
               <h1 class="fw-bold mb-2">{{courseDetails.title}}</h1>
@@ -17,11 +17,10 @@
                    <span class="rating-color fw-bold me-1">{{courseDetails.rating}}</span>
                     <span class="rating-color me-1">
                       <i class="bi bi-star-fill"></i></span>
-                   <a href="#reviews" class="link-light-purple me-2">( {{courseDetails.totalReviews}} ratings)</a>
-                   <span>{{courseDetails.totalStudents}} students</span> </div>
+                   <a href="#reviews" class="link-light-purple me-2">( {{courseDetails.noSubscribers}} Students)</a>
+                 </div>
 
               <p class="mb-2 small">Created by <a href="#" class="link-light-purple fw-bold">{{courseDetails.instructor.name}}</a></p> <div class="small">
-                  <span class="metadata-item"><i class="bi bi-calendar-check metadata-icon"></i>Last updated {{courseDetails.modifiedDate | date:'mediumDate'}}</span>
               </div>
           </div>
 
@@ -65,7 +64,7 @@
           <div class="section-box">
               <h2>What you'll learn</h2>
               <ul class="checklist row">
-                @for(goal of courseDetails.goals; track courseDetails.goals.indexOf(goal)){
+                @for(goal of courseDetails.courseGoals; track courseDetails.courseGoals.indexOf(goal)){
                   <li class="col-md-6 mb-2">{{goal}}</li>
                 }
 
@@ -76,7 +75,7 @@
             <h2 class="h4 fw-bold mb-3">Course content</h2>
             <p class="text-muted small mb-3">{{numberOfSections}} sections • {{numberOfLessons}} lectures • {{courseDetails.duration}} total length</p> <div class="accordion" id="courseAccordion">
               <cdk-accordion class="example-accordion">
-                @for (section of courseDetails.courseContent.sections; track section; let index = $index) {
+                @for (section of courseDetails.sections; track section; let index = $index) {
                   <cdk-accordion-item #accordionItem="cdkAccordionItem" class="example-accordion-item">
                     <button
                       class="example-accordion-item-header d-flex align-items-center w-100"
@@ -116,7 +115,7 @@
         <div class="mb-4 mt-4">
              <h2 class="h4 fw-bold mb-3">Requirements</h2>
              <ul class="default-list">
-              @for(req of courseDetails.requirements;track req){
+              @for(req of courseDetails.courseRequirements;track req){
                 <li>{{req}}</li>
               }
 

@@ -5,8 +5,8 @@ export const routes: Routes = [
     { path:"",
    component:HomeComponent},
    {
+      title: 'Course Details',
       path: 'course/:id',
       component:CourseDetailsComponent
-
    }
 ];

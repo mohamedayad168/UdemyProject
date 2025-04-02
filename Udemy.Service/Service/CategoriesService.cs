@@ -48,7 +48,8 @@ namespace Udemy.Service.Service
 
         public async Task<CategoryRDTO> CreateAsync(CategoryCDTO categoryDto)
         {
-            var categoryWithSameTitle = await GetByTitleAsync(categoryDto.Name, false);
+
+            var categoryWithSameTitle = repository.Categories.FindByCondition(cat=> cat.Name == categoryDto.Name, false).FirstOrDefault();
 
             //check if same title exists
             if (categoryWithSameTitle is not null)

@@ -35,8 +35,13 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CourseRDTO?>> GetCourseByIdAsync([FromRoute] int id)
+        public async Task<ActionResult<CourseRDTO?>> GetCourseByIdAsync([FromRoute] int id, [FromQuery] bool detailed = false)
         {
+            if (detailed)
+            {
+                var courseDetails = await serviceManager.CoursesService.GetCourseDetailsAsync(id, false);
+                return Ok(courseDetails);
+            }
             var course = await serviceManager.CoursesService.GetByIdAsync(id, false);
             return Ok(course);
         }

@@ -33,7 +33,8 @@ namespace Udemy.Presentation.Controllers
         }
 
 
-        [HttpGet("{title}" )]
+        [HttpGet("{title}")]
+        [ActionName(nameof(GetCategoryByTitleAsync))]
         public async Task<ActionResult<CategoryRDTO>> GetCategoryByTitleAsync(string title)
         {
             var category = await manager.CategoriesService.GetByTitleAsync(title, false);
@@ -52,7 +53,9 @@ namespace Udemy.Presentation.Controllers
             //    values: new { title = categoryRDTO.Title }
             //  );
 
-            return CreatedAtAction(nameof(GetCategoryByTitleAsync), new { categoryRDTO.Name }, categoryRDTO);
+            var actionResult= CreatedAtAction(nameof(GetCategoryByTitleAsync), new { title = categoryRDTO.Name }, categoryRDTO);
+            
+            return actionResult;
         }
 
 

@@ -32,6 +32,29 @@ namespace Udemy.Service.Service
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
+
+
+        public async Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges)
+        {
+            var course = await repository.Courses.FindByCondition(c => c.Id == id, trackChanges)
+                        .Include(c => c.Instructor)
+                        .Include(c => c.SubCategory)
+                        .ThenInclude(sc => sc.Category)
+                        .Include(c => c.CourseGoals)
+                        .Include(c => c.CourseRequirements)
+                        .Include(c => c.Sections)
+                        .ThenInclude(s => s.Lessons)
+                        .FirstOrDefaultAsync();
+
+            return course is null ?
+                throw new NotFoundException($"course with id: {id} doesn't exist")
+                : new CourseDetailsRDto(course);
+
+                ;
+
+            }
+
+
         public async Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges)
         {
             var course = await repository.Courses.GetByIdAsync(id, false);

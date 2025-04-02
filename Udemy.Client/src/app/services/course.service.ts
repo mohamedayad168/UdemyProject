@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Course } from '../models/course.model';
 import { Category } from '../models/category.model';
+import { CourseDetail } from '../models/CourseDetail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { Category } from '../models/category.model';
 export class CourseService {
   private apiUrl = `${environment.baseurl}/courses`;
 
-  
+
   constructor(private http: HttpClient) {}
 
   getCourses(): Observable<Course[]> {
@@ -21,4 +22,18 @@ export class CourseService {
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${environment.baseurl}/categories`);
   }
+
+
+  getCourseById(id: number,detailed:boolean=false): Observable<CourseDetail> {
+
+    console.log(`Fetching course details for ID: ${id} with detailed=${detailed}`);
+
+
+      return this.http.get<CourseDetail>(`${this.apiUrl}/${id}?detailed=${detailed}`);
+
+
+
+  }
+
+
 }

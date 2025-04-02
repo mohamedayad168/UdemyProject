@@ -10,18 +10,18 @@ namespace Udemy.API.Controllers
     [ApiController]
     public class InstructorController : ControllerBase
     {
-        private readonly IInstructorService _instructorService;
+        private readonly IServiceManager _serviceManager;
 
-        public InstructorController(IInstructorService instructorService)
+        public InstructorController(IServiceManager serviceManager)
         {
-            _instructorService = instructorService;
+            _serviceManager = serviceManager;
         }
 
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InstructorRDTO>>> GetAll()
         {
-            var instructors = await _instructorService.GetAllAsync(false);
+            var instructors = await _serviceManager.InstructorService.GetAllAsync(false);
             return Ok(instructors);
         }
 
@@ -29,7 +29,7 @@ namespace Udemy.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<InstructorRDTO>> GetById(int id)
         {
-            var instructor = await _instructorService.GetByIdAsync(id, false);
+            var instructor = await _serviceManager.InstructorService.GetByIdAsync(id, false);
             if (instructor == null)
                 return NotFound($"Instructor with ID {id} not found.");
 
@@ -40,7 +40,7 @@ namespace Udemy.API.Controllers
         [HttpGet("title/{title}")]
         public async Task<ActionResult<InstructorRDTO>> GetByTitle(string title)
         {
-            var instructor = await _instructorService.GetByTitleAsync(title, false);
+            var instructor = await _serviceManager.InstructorService.GetByTitleAsync(title, false);
             if (instructor == null)
                 return NotFound($"Instructor with title '{title}' not found.");
 
@@ -56,7 +56,7 @@ namespace Udemy.API.Controllers
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
 
-            var createdInstructor = await _instructorService.CreateAsync(instructorDto);
+            var createdInstructor = await _serviceManager.InstructorService.CreateAsync(instructorDto);
             return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, createdInstructor);
         }
 
@@ -66,7 +66,7 @@ namespace Udemy.API.Controllers
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
 
-            var isUpdated = await _instructorService.UpdateAsync(id, instructorDto);
+            var isUpdated = await _serviceManager.InstructorService.UpdateAsync(id, instructorDto);
             if (!isUpdated)
                 return NotFound($"Instructor with ID {id} not found.");
 
@@ -77,7 +77,7 @@ namespace Udemy.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var isDeleted = await _instructorService.DeleteAsync(id);
+            var isDeleted = await _serviceManager.InstructorService.DeleteAsync(id);
             if (!isDeleted)
                 return NotFound($"Instructor with ID {id} not found.");
 

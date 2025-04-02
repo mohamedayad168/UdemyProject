@@ -14,4 +14,5 @@ public interface IServiceManager
     IAnswerService AnswerService { get; }
     IAskService AskService { get; }
     ICartService CartService { get; }
+    ISubCategoriesService SubCategoriesService { get; }
 }
