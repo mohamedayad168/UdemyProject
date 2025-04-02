@@ -5,13 +5,14 @@ import { PartnerSectionComponent } from '../partner-section/partner-section.comp
 
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
+import { LearnersViewingComponent } from '../learners-viewing/learners-viewing.component';
 
 
 
 
 @Component({
   selector: 'app-home',
-  imports: [FooterComponent,RouterModule,CarouselSectionComponent, CourseSectionComponent,PartnerSectionComponent],
+  imports: [LearnersViewingComponent,FooterComponent,RouterModule,CarouselSectionComponent, CourseSectionComponent,PartnerSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

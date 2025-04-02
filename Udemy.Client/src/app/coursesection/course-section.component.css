@@ -1,5 +1,6 @@
 .container {
   max-width: 1200px;
+  position: relative;
 }
 
 .btn {
@@ -39,4 +40,39 @@
 .btn-outline-primary:hover {
   background-color: #007bff;
   color: white;
+}
+
+/* Category and Course Container Styles */
+.category-container, .course-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+}
+
+/* Scroll Button Styles */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.scroll-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.scroll-btn.left {
+  left: -20px;
+}
+
+.scroll-btn.right {
+  right: -20px;
 }

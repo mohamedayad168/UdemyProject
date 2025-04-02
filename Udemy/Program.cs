@@ -15,12 +15,22 @@ builder.Services.ConfigureAutoMapperService();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAngular",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") // Angular URL
+                  .AllowAnyMethod()
+                  .AllowCredentials() // to accept credentials "Cookie" from different URL
+                  .AllowAnyHeader();
+        });
 });
+builder.Services.ConfigureApplicationCookie();
+builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -38,8 +48,11 @@ app.UseCors("AllowAngular");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); 
+
 
 app.Run();

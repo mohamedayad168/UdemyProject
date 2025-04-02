@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { CommonModule } from '@angular/common';
 import { Course } from '../models/course.model';
@@ -15,6 +15,9 @@ export class CourseSectionComponent implements OnInit {
   filteredCourses: Course[] = []; // Filtered courses to be displayed
   categories: Category[] = [];
   selectedCategory: string = ''; // Name of selected category
+
+  @ViewChild('categoryContainer') categoryContainer!: ElementRef;
+  @ViewChild('courseContainer') courseContainer!: ElementRef;
 
   constructor(private courseService: CourseService) {}
 
@@ -49,7 +52,24 @@ export class CourseSectionComponent implements OnInit {
   }
 
   filterCourses(): void {
-    // Filter courses by subCategory.name
     this.filteredCourses = this.courses.filter(course => course.subCategory.name === this.selectedCategory);
+  }
+
+  scrollCategories(direction: string): void {
+    const container = this.categoryContainer.nativeElement;
+    if (direction === 'left') {
+      container.scrollBy({ left: -300, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  }
+
+  scrollCourses(direction: string): void {
+    const container = this.courseContainer.nativeElement;
+    if (direction === 'left') {
+      container.scrollBy({ left: -300, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
   }
 }
