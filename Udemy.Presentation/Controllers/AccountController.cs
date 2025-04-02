@@ -25,4 +25,13 @@ public class AccountController(SignInManager<ApplicationUser> signInManager) : C
 
         return NoContent();
     }
+
+    [Authorize]
+    [HttpGet("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+
+        return NoContent();
+    }
 }
