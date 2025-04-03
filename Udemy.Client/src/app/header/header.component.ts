@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CartPopupComponent } from "../cart-popup/cart-popup.component";
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule, CartPopupComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

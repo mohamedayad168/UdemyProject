@@ -1,0 +1,11 @@
+/* @import "@node_modules/bootstrap/dist/css/bootstrap.min.css"; */
+
+:host{
+    position: absolute;
+    display: flex;
+}
+
+.popup{
+    max-width: 28rem;
+    /* @apply d-flex align-items-center justify-content-between; */
+}
