@@ -6,6 +6,8 @@
 .btn {
   font-size: 0.9rem;
   padding: 0.5rem 1rem;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 .card-title {
@@ -27,21 +29,6 @@
   border-radius: 0.5rem;
 }
 
-.badge {
-  font-size: 0.8rem;
-  padding: 0.4rem 0.7rem;
-}
-
-.btn-outline-primary {
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-  background-color: #007bff;
-  color: white;
-}
-
 /* Category and Course Container Styles */
 .category-container, .course-container {
   display: flex;
@@ -49,17 +36,40 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem 0;
+  width: 100%;
+  overflow: hidden; /* Hide scrollbars */
 }
 
-/* Scroll Button Styles */
+.category-container::-webkit-scrollbar, .course-container::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
+
+.category-container .btn.btn-dark {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+.category-container .btn.btn-outline-dark {
+  border-color: #6f42c1;
+  color: #000000;
+}
+
+.category-container .btn-outline-dark:hover {
+  background-color: #6f42c1;
+  color: white;
+}
+
+/* Scroll Button Styling */
 .scroll-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #6c63ff;
+  border-radius: 50%;
   color: white;
   border: none;
-  border-radius: 50%;
+ 
   padding: 0.5rem;
   cursor: pointer;
   z-index: 10;
@@ -75,4 +85,38 @@
 
 .scroll-btn.right {
   right: -20px;
+}
+
+/* Course Container Styling */
+.course-container .card {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.course-container .card:hover {
+  transform: translateY(-5px);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.card-text strong {
+  font-weight: 600;
 }

@@ -1,32 +1,31 @@
 <div class="container mt-5 position-relative">
-    <h3 class="mb-4">Learners are viewing</h3>
-    <button class="scroll-btn left" (click)="scrollLeft()">&#10094;</button>
-    
-    <div #courseContainer class="course-container">
-      <div class="course-card" *ngFor="let course of courses" 
-           (mouseenter)="showOverlay(course)" (mouseleave)="hideOverlay()"
-           (click)="goToDetails(course.id)">
-        <div class="card h-100 position-relative">
-          <img [src]="course.imageUrl" class="card-img-top" alt="Course Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ course.title }}</h5>
-            <p class="card-text">Instructor: {{ course.instructor }}</p>
-            <p class="card-text">Rating: {{ course.rating }} ★</p>
-            <p class="card-text">Price: {{ course.price | currency }}</p>
-            <span class="badge bg-success" *ngIf="course.bestSeller">Bestseller</span>
-          </div>
-          
-          <!-- Hover overlay for additional details -->
-          <div class="overlay" *ngIf="hoveredCourse === course">
-            <h5>{{ course.title }}</h5>
-            <p>Bestseller</p>
-            <p>{{ course.duration }} - {{ course.courseLevel }}</p>
-            <p>{{ course.description }}</p>
-          </div>
+  <h3 class="mb-4">Learners are viewing</h3>
+  <button class="scroll-btn left" (click)="scrollLeft()">&#10094;</button>
+
+  <div #courseContainer class="course-container">
+    <div class="course-card" *ngFor="let course of courses" 
+         (mouseenter)="showOverlay(course)" (mouseleave)="hideOverlay()"
+         (click)="goToDetails(course.id)">
+      <div class="card h-100 position-relative">
+        <img [src]="course.imageUrl" class="card-img-top" alt="Course Image">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.title }}</h5>
+          <p class="card-text">Instructor: {{ course.instructor }}</p>
+          <p class="card-text">Rating: {{ course.rating }} ★</p>
+          <p class="card-text">Price: {{ course.price | currency }}</p>
+          <span class="badge bg-success" *ngIf="course.bestSeller">Bestseller</span>
+        </div>
+
+        <!-- Hover overlay for additional details -->
+        <div class="overlay" *ngIf="hoveredCourse === course">
+          <h5>{{ course.title }}</h5>
+          <p>Bestseller</p>
+          <p>{{ course.duration }} - {{ course.courseLevel }}</p>
+          <p>{{ course.description }}</p>
         </div>
       </div>
     </div>
-  
-    <button class="scroll-btn right" (click)="scrollRight()">&#10095;</button>
   </div>
-  
+
+  <button class="scroll-btn right" (click)="scrollRight()">&#10095;</button>
+</div>

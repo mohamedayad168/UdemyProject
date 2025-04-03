@@ -52,11 +52,11 @@ body.dark-mode .navbar-light .navbar-nav .nav-link {
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #5a057a;
+    color:  #5a2e91;
 }
 
 body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
-    color: #5a057a;
+    color: #6f42c1;
 }
 
 /* Button Styles */
@@ -67,23 +67,23 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 /* Log In and Sign Up Button Styles */
 .btn-outline-primary {
     background-color: #fdfcfe;
-    color: #74079b;
-    border-color: #5a057a;
+    color:  #6f42c1;
+    border-color: #6f42c1;
 }
 
 .btn-outline-primary:hover {
     background-color: #f5f2f7;
-    border-color: #4a0464;
+    border-color:#5a2e91;
 }
 
 .btn-primary {
-    background-color: #74079b;
-    border-color: #74079b;
+    background-color: #6f42c1 ;
+    border-color: #6f42c1;
 }
 
 .btn-primary:hover {
-    background-color: #5a057a;
-    border-color: #5a057a;
+    background-color: #5a2e91;
+    border-color: #5a2e91;
 }
 
 /* Dark Mode Button */
@@ -126,7 +126,7 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 .headersection .search-bar input:focus {
     width: 500px;
     outline: none;
-    border-color: #5a057a;
+    border-color:  #6f42c1;
 }
 
 /* Category Dropdown */
@@ -141,16 +141,16 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 
 /* Improved Button Hover */
 .btn-primary:hover {
-    background-color: #5a057a;
-    border-color: #5a057a;
+    background-color:#5a2e91;
+    border-color: #5a2e91;
 }
 
 .btn-outline-primary:hover {
     background-color: #e4d4ed;
-    border-color: #4a0464;
-    color: #4a0464;
+    border-color: #5a2e91;
+    color: #5a2e91;
 }
-/* Udemy Business and Teach on Udemy Dropdown */
+
 .dropdown-menu.p-4 {
     background-color: white;
     color: #333;
@@ -159,9 +159,9 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
     padding: 16px;
     width: 300px;
     position: absolute;
-    top: 100%; /* Ensures it appears right below the button */
+    top: 100%; 
     left: 0;
-    margin-top: 8px; /* Adds a small gap between the button and dropdown */
+    margin-top: 8px; 
     z-index: 1000;
 }
 
@@ -180,8 +180,8 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .dropdown-menu.p-4 button {
-    background-color: #74079b;
-    border-color: #74079b;
+    background-color:  #6f42c1;
+    border-color: #6f42c1;
     color: white;
     margin-top: 10px;
     width: 100%;
@@ -190,11 +190,17 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .dropdown-menu.p-4 button:hover {
-    background-color: #5a057a;
-    border-color: #5a057a;
+    background-color: #5a2e91;
+    border-color: #5a2e91;
 }
 
-/* Proper display when clicking */
+
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+.navbar .btn-link {
+    color: #6f42c1; 
+    font-weight: bold;
+}.navbar .btn-link :hover{
+    color: #5a2e91; 
+    font-weight: bold;}

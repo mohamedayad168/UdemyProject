@@ -10,7 +10,7 @@ import { Category } from '../models/category.model';
   styleUrls: ['./course-section.component.css'],
   imports: [CommonModule]
 })
-export class CourseSectionComponent implements OnInit {
+export class CourseSectionComponent  implements OnInit {
   courses: Course[] = [];
   filteredCourses: Course[] = []; // Filtered courses to be displayed
   categories: Category[] = [];
@@ -25,17 +25,17 @@ export class CourseSectionComponent implements OnInit {
     this.loadCategories();
     this.loadCourses();
   }
-
   loadCategories(): void {
     this.courseService.getCategories().subscribe((data: Category[]) => {
       this.categories = data;
+      console.log('Loaded Categories:', this.categories); // Log loaded categories
       if (this.categories.length > 0) {
-        this.selectedCategory = this.categories[0].name; // Default selected category
-        this.filterCourses(); // Filter courses based on the default category
+        this.selectedCategory = this.categories[0].name;
+        this.filterCourses();
       }
     });
   }
-
+  
   loadCourses(): void {
     this.courseService.getCourses().subscribe({
       next: (data) => {
@@ -46,14 +46,31 @@ export class CourseSectionComponent implements OnInit {
     });
   }
 
-  selectCategory(category: string): void {
-    this.selectedCategory = category;
+  selectCategory(category: Category): void {
+    this.selectedCategory = category.name;
     this.filterCourses(); // Filter courses when a category is selected
   }
 
   filterCourses(): void {
-    this.filteredCourses = this.courses.filter(course => course.subCategory.name === this.selectedCategory);
+    console.log('Selected Category:', this.selectedCategory); // Log selected category
+    this.filteredCourses = this.courses.filter(course => {
+      const subCategoryName = course.subCategory?.name || 'No Subcategory';
+      
+      // Find the category by name
+      const category = this.categories.find(cat => cat.name === this.selectedCategory);
+      
+      // Check if the category exists and contains the subcategory
+      if (category) {
+        return category.subcategories?.some(sub => sub.name === subCategoryName) || subCategoryName === 'No Subcategory';
+      }
+      
+      return false;
+    });
+    console.log('Filtered Courses:', this.filteredCourses); // Log the filtered list
   }
+  
+  
+  
 
   scrollCategories(direction: string): void {
     const container = this.categoryContainer.nativeElement;
