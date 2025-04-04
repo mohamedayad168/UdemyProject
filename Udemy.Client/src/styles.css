@@ -26,3 +26,11 @@ button.match-input-height {
 .mat-mdc-mini-fab {
   border-radius: 5px !important;
 }
+
+.text-primary {
+  color: #7d00fe !important;
+}
+
+.bg-primary {
+  background-color: #7d00fe !important;
+}
