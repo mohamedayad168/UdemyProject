@@ -1,0 +1,29 @@
+<div class="container my-5">
+    <h2 class="text-start mb-4">Trending Now</h2>
+    <div id="trendingCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div 
+          *ngFor="let course of trendingCourses; let i = index" 
+          [class]="i === 0 ? 'carousel-item active' : 'carousel-item'"
+        >
+          <div class="card border rounded shadow p-3">
+            <img [src]="course.imageUrl" class="card-img-top" alt="{{ course.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ course.title }}</h5>
+              <p class="card-text">{{ course.description }}</p>
+              <a href="#" class="btn btn-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Carousel Controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#trendingCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#trendingCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  
