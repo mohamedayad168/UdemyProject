@@ -1,5 +1,4 @@
 export interface rating {
-    id: number;
     rating: number;
     comment: string;
     date: Date;
@@ -20,21 +19,21 @@ export const dummyRatings: CourseRating= {
     totalReviews: 3,
     ratings: [
         {
-            id: 1,
+
             rating: 5,
             comment: "Great course!",
             date: new Date("2023-10-01"),
             studentName: "Alice"
         },
         {
-            id: 2,
+
             rating: 4,
             comment: "Very informative.",
             date: new Date("2023-10-02"),
             studentName: "Bob"
         },
         {
-            id: 3,
+
             rating: 3.5,
             comment: "Good, but could be better.",
             date: new Date("2023-10-03"),

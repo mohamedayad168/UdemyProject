@@ -1,1 +1,36 @@
-@import "tailwindcss";
+button.match-input-height {
+  height: var(--mat-form-field-container-height) !important;
+}
+
+.mdc-notched-outline__notch {
+  border-right-style: none !important;
+}
+
+.mat-mdc-snack-bar-container.snack-error {
+  --mdc-snackbar-container-color: red;
+  --mat-snack-bar-button-color: #fff;
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.mat-mdc-snack-bar-container.snack-success {
+  --mdc-snackbar-container-color: green;
+  --mat-snack-bar-button-color: #fff;
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.mat-mdc-button,
+.mat-mdc-outlined-button,
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+  border-radius: 5px !important;
+}
+
+.text-primary {
+  color: #7d00fe !important;
+}
+
+.bg-primary {
+  background-color: #7d00fe !important;
+}

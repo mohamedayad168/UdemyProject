@@ -40,6 +40,14 @@ namespace Udemy.Presentation.Controllers
             return Ok(enrollments);
         }
 
+        [HttpGet("ratings/{courseId}")]
+        public async Task<IActionResult> GetRatingsByCourse(int courseId)
+        {
+            var ratings= await _service.EnrollmentService.GetCourseRatingsAsync(courseId);
+            return Ok(ratings);
+        }
+
+
      
         [HttpGet("{studentId}/{courseId}")]
         public async Task<IActionResult> GetEnrollment(int studentId, int courseId)

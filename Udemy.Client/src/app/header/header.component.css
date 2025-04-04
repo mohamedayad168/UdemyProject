@@ -1,5 +1,5 @@
-/* Global Styles */
-body {
+Global Styles
+/* body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,18 +8,17 @@ body {
     font-size: 15px;
     font-family: udemy sans, sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
+} */
 /* Dark Mode */
-body.dark-mode {
+/* body.dark-mode {
     background-color: #1c1c1c;
     color: #f1f1f1;
-}
-:host{
+} */
+:host {
     z-index: 9999;
     position: relative;
 }
-.headersection {
+/* .headersection {
     display: flex;
     position: relative;
     height: 75px;
@@ -37,10 +36,10 @@ body.dark-mode .headersection {
 
 .nav {
     display: flex;
-}
+} */
 
 /* Navbar Links */
-.headersection li {
+/* .headersection li {
     text-decoration: none;
     list-style: none;
 }
@@ -59,16 +58,16 @@ body.dark-mode .navbar-light .navbar-nav .nav-link {
 }
 
 body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
-    color: #6f42c1;
+    color: #5a057a;
 }
 
 /* Button Styles */
-.btn-primary, .btn-outline-primary {
+/* .btn-primary, .btn-outline-primary {
     transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
 /* Log In and Sign Up Button Styles */
-.btn-outline-primary {
+/* .btn-outline-primary {
     background-color: #fdfcfe;
     color:  #6f42c1;
     border-color: #6f42c1;
@@ -85,38 +84,38 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .btn-primary:hover {
-    background-color: #5a2e91;
-    border-color: #5a2e91;
+    background-color: #5a057a;
+    border-color: #5a057a;
 }
 
 /* Dark Mode Button */
-.dark-mode-toggle {
+/* .dark-mode-toggle {
     margin-left: 1rem;
     cursor: pointer;
 }
 
 .dark-mode-toggle:hover {
     opacity: 0.8;
-}
+} */
 
 /* Udemy Logo */
-.logo img {
-    display: block;
-    padding: 20px 0 20px 25px;
-    width: 500px;
-}
+/* .logo img {
+  display: block;
+  padding: 20px 0 20px 25px;
+  width: 500px;
+} */
 
 /* Search, Cart, and Worldwide Icons */
-.headersection .search-icon,
+/* .headersection .search-icon,
 .headersection .cart-icon,
 .headersection .world-icon {
     width: 25px;
     height:25px;
     object-fit: contain;
-}
+} */
 
 /* Search Bar */
-.headersection .search-bar input {
+/* .headersection .search-bar input {
     width: 400px;
     max-width: 100%;
     margin-left: 8px;
@@ -129,62 +128,62 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 .headersection .search-bar input:focus {
     width: 500px;
     outline: none;
-    border-color:  #6f42c1;
+    border-color: #5a057a;
 }
 
 /* Category Dropdown */
-.dropdown-menu {
-    background-color: white;
-    color: #333;
+/* .dropdown-menu {
+  background-color: white;
+  color: #333;
 }
 
 .dropdown-menu .dropdown-item:hover {
-    background-color: #f5f2f7;
-}
+  background-color: #f5f2f7;
+} */
 
 /* Improved Button Hover */
 .btn-primary:hover {
-    background-color:#5a2e91;
-    border-color: #5a2e91;
+  background-color: #5a057a;
+  border-color: #5a057a;
 }
 
 .btn-outline-primary:hover {
-    background-color: #e4d4ed;
-    border-color: #5a2e91;
-    color: #5a2e91;
+  background-color: #e4d4ed;
+  border-color: #4a0464;
+  color: #4a0464;
 }
-
+/* Udemy Business and Teach on Udemy Dropdown */
 .dropdown-menu.p-4 {
-    background-color: white;
-    color: #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    width: 300px;
-    position: absolute;
-    top: 100%; 
-    left: 0;
-    margin-top: 8px; 
-    z-index: 1000;
+  background-color: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 300px;
+  position: absolute;
+  top: 100%; /* Ensures it appears right below the button */
+  left: 0;
+  margin-top: 8px; /* Adds a small gap between the button and dropdown */
+  z-index: 1000;
 }
 
-.dropdown-menu.p-4 h6 {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    font-weight: bold;
-}
+/* .dropdown-menu.p-4 h6 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  font-weight: bold;
+} */
 
-.dropdown-menu.p-4 p {
-    margin: 8px 0;
-    font-size: 14px;
-    color: #555;
+/* .dropdown-menu.p-4 p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #555;
 }
 
 .dropdown-menu.p-4 button {
-    background-color:  #6f42c1;
-    border-color: #6f42c1;
+    background-color: #74079b;
+    border-color: #74079b;
     color: white;
     margin-top: 10px;
     width: 100%;
@@ -193,17 +192,42 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .dropdown-menu.p-4 button:hover {
-    background-color: #5a2e91;
-    border-color: #5a2e91;
+    background-color: #5a057a;
+    border-color: #5a057a;
 }
 
-
-.dropdown:hover .dropdown-menu {
-    display: block;
+/* Proper display when clicking */
+/* .dropdown:hover .dropdown-menu {
+  display: block;
 }
 .navbar .btn-link {
-    color: #6f42c1; 
-    font-weight: bold;
-}.navbar .btn-link :hover{
-    color: #5a2e91; 
-    font-weight: bold;}
+  color: #6f42c1;
+  font-weight: bold;
+}
+.navbar .btn-link :hover {
+  color: #5a2e91;
+  font-weight: bold;
+} */
+
+.custom-bage .mat-badge-content {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.custom-bage .mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+input:focus {
+  border-color: black !important;
+
+  border-style: solid !important;
+
+  border-width: 2px !important;
+
+  box-shadow: none !important;
+}

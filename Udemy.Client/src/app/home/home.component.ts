@@ -9,13 +9,14 @@ import { LearnersViewingComponent } from '../learners-viewing/learners-viewing.c
 import { HandsOnTrainingComponent } from '../hands-on-training/hands-on-training.component';
 import { TrendingNowComponent } from '../trending-now/trending-now.component';
 import { ClearnerTestimonialsComponent } from '../clearner-testimonials/clearner-testimonials.component';
+import { CategorysectionComponent } from '../categorysection/categorysection.component';
 
 
 
 
 @Component({
   selector: 'app-home',
-  imports: [ClearnerTestimonialsComponent,TrendingNowComponent,HandsOnTrainingComponent,LearnersViewingComponent,FooterComponent,RouterModule,CarouselSectionComponent, CourseSectionComponent,PartnerSectionComponent],
+  imports: [CategorysectionComponent,ClearnerTestimonialsComponent,TrendingNowComponent,HandsOnTrainingComponent,LearnersViewingComponent,FooterComponent,RouterModule,CarouselSectionComponent, CourseSectionComponent,PartnerSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

@@ -59,7 +59,7 @@ namespace Udemy.Infrastructure.Repository
             await SaveChangesAsync();
         }
 
-        public async Task<bool> CheckIfCourseExists(int id)
+        public async Task<bool> CheckIfCourseExistsAsync(int id)
         {
             return await _context.Courses.AnyAsync(c => c.Id == id);
         }
