@@ -1,76 +1,119 @@
-<div class="headersection">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <!-- Logo Section -->
-            <div class="col-2">
-                <div class="logo">
-                    <a routerLink="/">
-                        <img src="assets/image/logo-udemy.svg" class="img-fluid" alt="Udemy Logo" />
-                    </a>
+<!-- <div class="headersection">
+  <div class="container-fluid">
+    <div class="row align-items-center"> -->
+<!-- Logo Section -->
+<!-- <div class="col-2">
+        <div class="logo">
+          <a routerLink="/">
+            <img
+              src="assets/image/logo-udemy.svg"
+              class="img-fluid"
+              alt="Udemy Logo"
+            />
+          </a>
+        </div>
+      </div> -->
+<!-- Navigation Bar Section -->
+<!-- <div class="col-10">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid"> -->
+<!-- Category Dropdown -->
+<!-- <div class="dropdown me-3">
+              <button
+                class="btn dropdown-toggle"
+                type="button"
+                id="categoryDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Categories
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li *ngFor="let category of categories">
+                  <a class="dropdown-item" href="#">{{ category }}</a>
+                </li>
+              </ul>
+            </div> -->
+
+<!-- Search Section -->
+<!-- <div class="d-flex align-items-center ms-auto me-3 search-bar">
+              <img
+                src="assets/image/search.png"
+                alt="search-icon"
+                class="me-2 search-icon"
+              />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search for anything"
+              />
+            </div> -->
+
+<!-- Udemy Business and Teach Section -->
+<!-- <div class="d-flex align-items-center ms-auto me-3"> -->
+<!-- Udemy Business Dropdown -->
+<!-- <div class="dropdown me-3">
+                <button
+                  class="btn btn-link text-decoration-none"
+                  type="button"
+                  id="udemyBusinessDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Udemy Business
+                </button>
+                <div
+                  class="dropdown-menu p-4"
+                  aria-labelledby="udemyBusinessDropdown"
+                >
+                  <h6>
+                    Get your team access to over<br />
+                    15,000 top Udemy courses,<br />
+                    anytime, anywhere.
+                  </h6>
+                  <button class="btn btn-primary mt-3">
+                    Try Udemy Business
+                  </button>
                 </div>
-            </div>
-            <!-- Navigation Bar Section -->
-            <div class="col-10">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <div class="container-fluid">
-                        <!-- Category Dropdown -->
-                        <div class="dropdown me-3">
-                            <button class="btn dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categories
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                                <li *ngFor="let category of categories">
-                                    <a class="dropdown-item" href="#">{{ category }}</a>
-                                </li>
-                            </ul>
-                        </div>
+              </div> -->
 
-                        <!-- Search Section -->
-                        <div class="d-flex align-items-center ms-auto me-3 search-bar">
-                            <img src="assets/image/search.png" alt="search-icon" class="me-2 search-icon" />
-                            <input type="text" class="form-control" placeholder="Search for anything" />
-                        </div>
+<!-- Teach on Udemy Dropdown -->
+<!-- <div class="dropdown">
+                <button
+                  class="btn btn-link text-decoration-none"
+                  type="button"
+                  id="teachOnUdemyDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Teach on Udemy
+                </button>
+                <div
+                  class="dropdown-menu p-4"
+                  aria-labelledby="teachOnUdemyDropdown"
+                >
+                  <h6>
+                    Turn what you know into an opportunity and reach millions
+                    around the world.
+                  </h6>
+                  <button class="btn btn-primary mt-3">Learn More</button>
+                </div>
+              </div> -->
+<!-- </div> -->
 
-                        <!-- Udemy Business and Teach Section -->
-                        <div class="d-flex align-items-center ms-auto me-3">
-                            <!-- Udemy Business Dropdown -->
-                            <div class="dropdown me-3">
-                                <button class="btn btn-link text-decoration-none" type="button" id="udemyBusinessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Udemy Business
-                                </button>
-                                <div class="dropdown-menu p-4" aria-labelledby="udemyBusinessDropdown">
-                                    <h6>
-                                        Get your team access to over<br/>
-                                        15,000 top Udemy courses,<br/>
-                                        anytime, anywhere.
-                                    </h6>
-                                    <button class="btn btn-primary mt-3">Try Udemy Business</button>
-                                </div>
-                            </div>
+<!-- Cart, Log In, and Sign Up Section -->
+<!-- <div class="d-flex align-items-center">
+              <a href="#" class="me-3">
+                <img
+                  src="assets/image/cart.png"
+                  alt="cart-icon"
+                  class="cart-icon"
+                />
+              </a>
 
-                            <!-- Teach on Udemy Dropdown -->
-                            <div class="dropdown">
-                                <button class="btn btn-link text-decoration-none" type="button" id="teachOnUdemyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Teach on Udemy
-                                </button>
-                                <div class="dropdown-menu p-4" aria-labelledby="teachOnUdemyDropdown">
-                                    <h6>
-                                        Turn what you know into an opportunity and reach millions around the world.
-                                    </h6>
-                                    <button class="btn btn-primary mt-3">Learn More</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Cart, Log In, and Sign Up Section -->
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="me-3">
-                                <img src="assets/image/cart.png" alt="cart-icon" class="cart-icon" />
-                            </a>
-
-                            <button class="btn btn-outline-primary me-2">Log In</button>
-                            <button class="btn btn-primary">Sign Up</button>
-                            <div class="dropdown ms-1">
+              <button class="btn btn-outline-primary me-2">Login</button>
+              <button class="btn btn-primary">Sign Up</button> -->
+<!-- <div class="dropdown ms-1">
                                 <button class="btn btn-link text-decoration-none" type="button" id="worldwideDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="assets/image/worldwide.png" alt="world-icon" class="world-icon" />
                                 </button>
@@ -84,11 +127,98 @@
                                     <li><a class="dropdown-item" href="#">Japanese</a></li>
                                     <li><a class="dropdown-item" href="#">Portuguese</a></li>
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+                            </div> -->
+<!-- </div>
+          </div>
+        </nav>
+      </div>
     </div>
-</div>
+  </div>
+</div> -->
+
+<header
+  class="border-bottom shadow-sm p-3 px-4 w-100 position-relative bg-white"
+  style="max-height: 5rem"
+>
+  <div
+    class="d-flex align-items-center justify-content-between mx-auto"
+    style="max-width: 1536px"
+  >
+    <img
+      routerLink="/"
+      src="assets/image/logo-udemy.svg"
+      alt="app logo"
+      style="max-height: 2rem; cursor: pointer"
+    />
+
+    <form
+      class="position-relative d-flex align-items-center w-100 mx-4"
+      style="max-width: 28rem"
+      #searchForm="ngForm"
+    >
+      <input
+        type="search"
+        class="form-control w-100 p-2 text-sm border rounded-3"
+        placeholder="Search"
+        name="search"
+      />
+
+      <button
+        mat-icon-button
+        type="submit"
+        class="position-absolute top-50 translate-middle-y end-0 me-3 d-flex align-items-center bg-transparent"
+        style="border-color: transparent"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+
+    <div class="d-flex gap-3 align-items-center">
+      <a
+        routerLink="cart"
+        routerLinkActive="active"
+        matBadge="20"
+        matBadgeSize="large"
+        style="color: black"
+        class="custom-bage mt-2 me-2 position-relative"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+      @if(accountService.currentUser()){
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>arrow_drop_down</mat-icon>
+        <span>{{ accountService.currentUser()?.email }}</span>
+      </button>
+      }@else {
+      <button routerLink="/account/login" mat-stroked-button>Login</button>
+      <button routerLink="/account/register" mat-stroked-button>
+        Register
+      </button>
+      }
+    </div>
+  </div>
+
+  @if(busyService.loading){
+  <mat-progress-bar
+    style="position: absolute; bottom: 0; left: 0"
+    mode="indeterminate"
+  ></mat-progress-bar>
+  }
+</header>
+
+<mat-menu #menu="matMenu" class="px-4">
+  <button mat-menu-item class="px-3" routerLink="/cart">
+    <mat-icon>shopping_cart</mat-icon>
+    My Cart
+  </button>
+
+  <button mat-menu-item class="px-3" routerLink="/orders">
+    <mat-icon>history</mat-icon>
+    My Orders
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item class="px-3" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>

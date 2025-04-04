@@ -47,7 +47,7 @@ public class AccountController(
     public async Task<IActionResult> GetUserInfo()
     {
         if (User.Identity?.IsAuthenticated == false)
-            return Forbid();
+            return NoContent();
 
         var user = await signInManager.UserManager.GetUserByEmail(User);
         var userDto = mapper.Map<UserDto>(user);

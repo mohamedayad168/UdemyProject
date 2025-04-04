@@ -1,5 +1,5 @@
-/* Global Styles */
-body {
+Global Styles
+/* body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,15 +8,15 @@ body {
     font-size: 15px;
     font-family: udemy sans, sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
 /* Dark Mode */
-body.dark-mode {
+/* body.dark-mode {
     background-color: #1c1c1c;
     color: #f1f1f1;
-}
+} */
 
-.headersection {
+/* .headersection {
     display: flex;
     position: relative;
     height: 75px;
@@ -34,10 +34,10 @@ body.dark-mode .headersection {
 
 .nav {
     display: flex;
-}
+} */
 
 /* Navbar Links */
-.headersection li {
+/* .headersection li {
     text-decoration: none;
     list-style: none;
 }
@@ -60,12 +60,12 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 /* Button Styles */
-.btn-primary, .btn-outline-primary {
+/* .btn-primary, .btn-outline-primary {
     transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
 /* Log In and Sign Up Button Styles */
-.btn-outline-primary {
+/* .btn-outline-primary {
     background-color: #fdfcfe;
     color:  #6f42c1;
     border-color: #6f42c1;
@@ -87,33 +87,33 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 /* Dark Mode Button */
-.dark-mode-toggle {
+/* .dark-mode-toggle {
     margin-left: 1rem;
     cursor: pointer;
 }
 
 .dark-mode-toggle:hover {
     opacity: 0.8;
-}
+} */
 
 /* Udemy Logo */
-.logo img {
-    display: block;
-    padding: 20px 0 20px 25px;
-    width: 500px;
-}
+/* .logo img {
+  display: block;
+  padding: 20px 0 20px 25px;
+  width: 500px;
+} */
 
 /* Search, Cart, and Worldwide Icons */
-.headersection .search-icon,
+/* .headersection .search-icon,
 .headersection .cart-icon,
 .headersection .world-icon {
     width: 25px;
     height:25px;
     object-fit: contain;
-}
+} */
 
 /* Search Bar */
-.headersection .search-bar input {
+/* .headersection .search-bar input {
     width: 400px;
     max-width: 100%;
     margin-left: 8px;
@@ -130,14 +130,14 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 /* Category Dropdown */
-.dropdown-menu {
-    background-color: white;
-    color: #333;
+/* .dropdown-menu {
+  background-color: white;
+  color: #333;
 }
 
 .dropdown-menu .dropdown-item:hover {
-    background-color: #f5f2f7;
-}
+  background-color: #f5f2f7;
+} */
 
 /* Improved Button Hover */
 .btn-primary:hover {
@@ -165,18 +165,18 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
     z-index: 1000;
 }
 
-.dropdown-menu.p-4 h6 {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    font-weight: bold;
-}
+/* .dropdown-menu.p-4 h6 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  font-weight: bold;
+} */
 
-.dropdown-menu.p-4 p {
-    margin: 8px 0;
-    font-size: 14px;
-    color: #555;
+/* .dropdown-menu.p-4 p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #555;
 }
 
 .dropdown-menu.p-4 button {
