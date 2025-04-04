@@ -1,0 +1,25 @@
+.carousel-item {
+    text-align: center;
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card {
+    margin: 0 auto;
+    max-width: 300px;
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: #6c63ff;
+    border-radius: 50%;
+  }
+  

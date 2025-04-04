@@ -13,19 +13,19 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngular",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200") // Angular URL
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
-});
+
 builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAuthorization();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,6 +33,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCors("AllowAngularDev");
 app.ConfigureExceptionHandler();
 
 // Configure the HTTP request pipeline.
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("AllowAngular");
+
 
 app.UseHttpsRedirection();
 
@@ -55,3 +56,4 @@ app.MapControllers();
 
 
 app.Run();
+

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using System.Security.Authentication;
 using Udemy.Core.ErrorModels;
 using Udemy.Core.Exceptions;
 
@@ -23,6 +24,7 @@ public static class ExceptionMiddlewareExtensions
                     {
                         NotFoundException => StatusCodes.Status404NotFound,
                         BadRequestException => StatusCodes.Status400BadRequest,
+                        AuthenticationException => StatusCodes.Status401Unauthorized,
                         _ => StatusCodes.Status500InternalServerError
                     };
 
