@@ -4,8 +4,10 @@ import { CourseReviewsComponent } from '../course-reviews/course-reviews.compone
 import {  CourseDetail, dummyCourseDetails } from '../../models/CourseDetail.model';
 import { CommonModule} from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CourseService } from '../../services/course.service';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-course-details',
@@ -19,20 +21,32 @@ export class CourseDetailsComponent {
   courseDetails!:CourseDetail;
   activatedRoute=inject(ActivatedRoute);
   courseService=inject(CourseService);
+  router=inject(Router);
+  route=inject(ActivatedRoute);
 
 
 
   ngOnInit() {
     // Simulate fetching course details from a service
     const courseId:number=this.activatedRoute.snapshot.params['id'];
-    this.courseService.getCourseById(courseId,true).subscribe((data:CourseDetail) => {
+    this.courseService.getCourseById(courseId,true)
+    .pipe(
+      catchError((error) => {
+        console.error('Error fetching course details:', error);
+        // Handle the error here, e.g., navigate to a 404 page or show an error message
+        this.router.navigate(['/not-found']);
+        return throwError('Something went wrong');
+      })
+    )
+    .subscribe((data?:CourseDetail) => {
       if(data){
         this.courseDetails=data;
+        console.log("bad data",data);
+
       }
       else{
-        console.error("No data received for course details.");
-        this.courseDetails = dummyCourseDetails;
         // route to a 404 page or show an error message
+        this.router.navigate(['/not-found']);
       }
 
     });
