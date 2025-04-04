@@ -56,7 +56,7 @@ body.dark-mode .navbar-light .navbar-nav .nav-link {
 }
 
 body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
-    color: #6f42c1;
+    color: #5a057a;
 }
 
 /* Button Styles */
@@ -82,8 +82,8 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .btn-primary:hover {
-    background-color: #5a2e91;
-    border-color: #5a2e91;
+    background-color: #5a057a;
+    border-color: #5a057a;
 }
 
 /* Dark Mode Button */
@@ -126,7 +126,7 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 .headersection .search-bar input:focus {
     width: 500px;
     outline: none;
-    border-color:  #6f42c1;
+    border-color: #5a057a;
 }
 
 /* Category Dropdown */
@@ -141,28 +141,28 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 
 /* Improved Button Hover */
 .btn-primary:hover {
-    background-color:#5a2e91;
-    border-color: #5a2e91;
+  background-color: #5a057a;
+  border-color: #5a057a;
 }
 
 .btn-outline-primary:hover {
-    background-color: #e4d4ed;
-    border-color: #5a2e91;
-    color: #5a2e91;
+  background-color: #e4d4ed;
+  border-color: #4a0464;
+  color: #4a0464;
 }
-
+/* Udemy Business and Teach on Udemy Dropdown */
 .dropdown-menu.p-4 {
-    background-color: white;
-    color: #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    width: 300px;
-    position: absolute;
-    top: 100%; 
-    left: 0;
-    margin-top: 8px; 
-    z-index: 1000;
+  background-color: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 300px;
+  position: absolute;
+  top: 100%; /* Ensures it appears right below the button */
+  left: 0;
+  margin-top: 8px; /* Adds a small gap between the button and dropdown */
+  z-index: 1000;
 }
 
 /* .dropdown-menu.p-4 h6 {
@@ -180,8 +180,8 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .dropdown-menu.p-4 button {
-    background-color:  #6f42c1;
-    border-color: #6f42c1;
+    background-color: #74079b;
+    border-color: #74079b;
     color: white;
     margin-top: 10px;
     width: 100%;
@@ -190,17 +190,42 @@ body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
 }
 
 .dropdown-menu.p-4 button:hover {
-    background-color: #5a2e91;
-    border-color: #5a2e91;
+    background-color: #5a057a;
+    border-color: #5a057a;
 }
 
-
-.dropdown:hover .dropdown-menu {
-    display: block;
+/* Proper display when clicking */
+/* .dropdown:hover .dropdown-menu {
+  display: block;
 }
 .navbar .btn-link {
-    color: #6f42c1; 
-    font-weight: bold;
-}.navbar .btn-link :hover{
-    color: #5a2e91; 
-    font-weight: bold;}
+  color: #6f42c1;
+  font-weight: bold;
+}
+.navbar .btn-link :hover {
+  color: #5a2e91;
+  font-weight: bold;
+} */
+
+.custom-bage .mat-badge-content {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.custom-bage .mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+input:focus {
+  border-color: black !important;
+
+  border-style: solid !important;
+
+  border-width: 2px !important;
+
+  box-shadow: none !important;
+}
