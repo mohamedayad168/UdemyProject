@@ -25,14 +25,28 @@ builder.Services.AddCors(options =>
 
 
 
-
+builder.Services.ConfigureApplicationCookie();
+builder.Services.AddAuthorization();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowCredentials()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
 app.UseCors("AllowAngularDev");
 
+app.UseCors("AllowAngularDev");
 app.ConfigureExceptionHandler();
 
 // Configure the HTTP request pipeline.
@@ -43,10 +57,16 @@ if (app.Environment.IsDevelopment())
 }
 
 
+
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); 
+
 
 app.Run();
+

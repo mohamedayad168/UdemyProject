@@ -1,0 +1,103 @@
+.udemy-footer {
+    background-color: #0e0e0f; /* Dark background like category section */
+    color: #fff; /* White text for contrast */
+    padding: 40px 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .footer-column {
+    margin-bottom: 20px;
+  }
+  
+  .footer-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff; /* White headings */
+    margin-bottom: 15px;
+    text-transform: uppercase; /* Matching Udemy style */
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-link {
+    color: #fff; /* White links */
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    opacity: 0.8; /* Slightly muted */
+  }
+  
+  .footer-link:hover {
+    color: #cec0fc; /* Light purple hover like Udemy */
+    opacity: 1;
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
+  }
+  
+  .footer-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #cec0fc; /* Matching accent color */
+  }
+  
+  .footer-copyright {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6); /* Muted white */
+  }
+  
+  /* Certification "See All" links */
+  .see-all-link {
+    color: #cec0fc;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+  }

@@ -17,4 +17,7 @@ namespace Udemy.Service.DataTransferObjects.Read
         [StringLength(20)]
         public required string Name { get; set; }
     }
+
+
+
 }

@@ -1,0 +1,77 @@
+.container {
+  position: relative;
+}
+
+.course-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+}
+
+.course-card {
+  width:1200px; 
+  transition: all 0.3s ease; 
+}
+
+.course-card:hover {
+  transform: scale(1.05); 
+  z-index: 10; 
+}
+
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  color: rgb(0, 0, 0);
+  padding: 1rem;
+  display: none; /* Hidden by default */
+  text-align: center;
+  border-radius: 0.5rem;
+}
+
+.course-card:hover .overlay {
+  display: block; 
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+ 
+  color: white;
+  border: none;
+
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+  background-color: #6c63ff;
+  border-radius: 50%;
+}
+
+.scroll-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.scroll-btn.left {
+  left: -20px;
+}
+
+.scroll-btn.right {
+  right: -20px;
+}

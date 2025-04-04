@@ -1,0 +1,169 @@
+.container {
+  max-width: 1024px;
+}
+
+button:hover {
+  background-color: #1e40af;
+}
+
+   /* Basic custom styles inspired by Udemy */
+   body {
+    background-color: #f8f9fa;
+}
+.udemy-navbar {
+     background-color: #1c1d1f;
+     /* Add more styling for a realistic navbar */
+}
+.course-header-section {
+    background-color: #1c1d1f; /* Very dark background */
+    color: #ffffff;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.breadcrumb-item a {
+    color: #cec0fc;
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: #f8f9fa;
+}
+.rating-color { color: #f3ca8c; }
+.link-light-purple { color: #cec0fc; text-decoration: none; }
+.link-light-purple:hover { color: #ffffff; }
+
+.sidebar-card {
+    background-color: #ffffff; /* White card for sidebar */
+    color: #1c1d1f; /* Dark text inside sidebar */
+    border: 1px solid #d1d7dc;
+    box-shadow: 0 4px 8px rgba(0,0,0,.08);
+    position: sticky;
+    top: 20px;
+    max-width: 350px; /* Ensure it doesn't stretch the container */
+    /* Add position: sticky; top: 20px; for sticky effect (requires parent setup) */
+}
+.preview-placeholder {
+    background-color: #1c1d1f; /* Dark preview */
+    color: #fff;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+}
+ .preview-placeholder .play-icon { font-size: 4rem; color: rgba(255, 255, 255, 0.8); }
+ .preview-placeholder .preview-text { margin-top: 0.5rem; font-weight: bold; }
+
+.price-current { font-size: 2rem; font-weight: bold; color: #1c1d1f;}
+.price-original { color: #6a6f73; text-decoration: line-through; margin-left: 0.5rem; }
+.price-discount { color: #1c1d1f; font-weight: bold; margin-left: 0.5rem; }
+.time-left { color: #b32d0f; font-size: 0.9rem; font-weight: bold; }
+
+.btn-purchase { background-color: #a435f0; border-color: #a435f0; color: #fff; font-weight: bold; }
+.btn-purchase:hover { background-color: #8710d8; border-color: #8710d8; color: #fff; }
+.btn-outline-dark { border-color: #1c1d1f; color: #1c1d1f; font-weight: bold; }
+.btn-outline-dark:hover { background-color: #1c1d1f; color: #fff; }
+
+.section-box {
+    border: 1px solid #d1d7dc;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.section-box h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
+
+
+.instructor-img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; }
+.review-rating { display: flex; align-items: center; margin-bottom: 0.5rem; }
+.review-stars { color: #f3ca8c; margin-left: 0.5rem; }
+.metadata-icon { margin-right: 0.5rem; }
+.metadata-item { margin-right: 1rem; margin-bottom: 0.5rem; display: inline-block; }
+ul.checklist { list-style: none; padding-left: 0; }
+ul.checklist li::before { content: "\F26E"; /* Bootstrap Icons check */ font-family: bootstrap-icons !important; margin-right: 0.75rem; }
+.default-list {
+  list-style-type: disc;
+}
+
+
+/* Accordion Container */
+.example-accordion {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Accordion Item */
+.example-accordion-item {
+  border-bottom: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+/* Section Header */
+.example-accordion-item-header {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8f9fa;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.example-accordion-item-header:hover {
+  background-color: #e9ecef;
+}
+
+/* Arrow Icon */
+.icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.expanded .icon {
+  transform: rotate(180deg);
+}
+
+/* Section Body */
+.example-accordion-item-body {
+  padding: 10px 16px;
+  background: #fff;
+}
+
+/* Lesson List */
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease-in-out;
+}
+
+.lesson-item:hover {
+  background: #f8f9fa;
+}
+
+/* Lesson Title */
+.lesson-title {
+  font-weight: 500;
+}
+
+/* Lesson Duration */
+.lesson-duration {
+  font-size: 14px;
+  color: gray;
+}
+

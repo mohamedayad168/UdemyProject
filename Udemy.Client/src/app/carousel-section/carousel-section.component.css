@@ -22,3 +22,15 @@
 .carousel-control-next-icon {
     filter: invert(1);
 }
+
+.btn-purple {
+    background-color: #6f42c1; 
+    color: white; 
+    border: none;
+  }
+  
+  .btn-purple:hover {
+    background-color: #5a2e91;
+    color: white;
+  }
+  

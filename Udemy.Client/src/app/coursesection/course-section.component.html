@@ -1,40 +1,55 @@
 <div class="container my-5">
-  <div class="d-flex justify-content-center mb-4 flex-wrap">
-    <button
-      *ngFor="let category of categories"
-      class="btn mx-1 mb-2"
-      [ngClass]="{
-        'btn-btn-orange': selectedCategory === category.name,
-        'btn-outline-dark': selectedCategory !== category.name
-      }"
-      (click)="selectCategory(category.name)"
-    >
-      {{ category.name }}
-    </button>
+  <!-- Categories Section -->
+  <div class="d-flex justify-content-center mb-4 flex-wrap" style="position: relative;">
+    <!-- Left Scroll Button for Categories -->
+    <button class="scroll-btn left" (click)="scrollCategories('left')">&#10094;</button>
+
+    <!-- Category Container -->
+    <div class="category-container" #categoryContainer>
+      <button
+        *ngFor="let category of categories"
+        class="btn mx-1 mb-2"
+        [ngClass]="{'btn-dark': selectedCategory === category.name, 'btn-outline-dark': selectedCategory !== category.name}"
+        (click)="selectCategory(category)"
+        [style.background-color]="selectedCategory === category.name ? '#6f42c1' : 'white'"
+        [style.color]="selectedCategory === category.name ? 'white' : '#6f42c1'"
+      >
+        {{ category.name }}
+      </button>
+    </div>
+
+    <!-- Right Scroll Button for Categories -->
+    <button class="scroll-btn right" (click)="scrollCategories('right')">&#10095;</button>
   </div>
 
-  <div class="row">
-    <div class="col-md-4 mb-4" *ngFor="let course of courses">
-      <div class="card h-100 shadow-sm">
-        <img
-          [src]="course.imageUrl"
-          class="card-img-top"
-          alt="{{ course.title }}"
-        />
-        <div class="card-body">
-          <h5 class="card-title">{{ course.title }}</h5>
-          <p class="card-text">{{ course.description }}</p>
-          <p class="card-text">
-            <strong>Instructor:</strong> {{ course.instructor }} <br />
-            <strong>Rating:</strong> {{ course.rating }}
-          </p>
+  <!-- Courses Section -->
+  <div class="d-flex justify-content-center mb-4 flex-wrap" style="position: relative;">
+    <!-- Left Scroll Button for Courses -->
+    <button class="scroll-btn left" (click)="scrollCourses('left')">&#10094;</button>
 
-          <p class="card-text">
-            <strong>Price:</strong>
-          </p>
-          <a href="#" class="btn btn-primary">View Details</a>
+    <!-- Courses Container -->
+    <div class="course-container" #courseContainer>
+      <div class="col-md-4 mb-4" *ngFor="let course of filteredCourses">
+        <div class="card h-100 shadow-sm">
+          <img [src]="course.imageUrl" class="card-img-top" alt="{{ course.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ course.title }}</h5>
+            <p class="card-text">{{ course.description }}</p>
+            <p class="card-text">
+              <strong>Instructor:</strong> {{ course.instructor?.name || 'Unknown' }} <br>
+              
+              <strong>Rating:</strong> {{ course.rating }} 
+            </p>
+            <p class="card-text">
+              <strong>Price:</strong> {{ course.currentPrice | currency }} 
+            </p>
+            <a href="#" class="btn btn-primary">View Details</a>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Right Scroll Button for Courses -->
+    <button class="scroll-btn right" (click)="scrollCourses('right')">&#10095;</button>
   </div>
 </div>

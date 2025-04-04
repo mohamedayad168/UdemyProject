@@ -1,0 +1,35 @@
+<div class="container my-6">
+    <h2 class="text-start mb-4">Learning focused on your goals</h2>
+    <div class="row">
+      <!-- Cards Section -->
+      <div class="col-md-5">
+        <div
+          class="card border rounded shadow p-3 mb-3"
+          *ngFor="let feature of features"
+          (click)="selectFeature(feature)"
+
+        >
+          <div class="d-flex align-items-center">
+            <span class="icon me-3">{{ feature.icon }}</span>
+            <div>
+              <h5 class="fw-bold">{{ feature.title }}</h5>
+              <p>{{ feature.description }}</p>
+              <a href="#" class="text-primary">{{ feature.linkText }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Details Section -->
+      <div class="col-md-6" *ngIf="selectedFeature">
+        <div class="card border rounded shadow p-4">
+          <h4 class="fw-bold">{{ selectedFeature?.title }}</h4>
+          <p>{{ selectedFeature?.details }}</p>
+          <a href="#" class="btn btn-primary">{{ selectedFeature?.linkText }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  

@@ -124,7 +124,7 @@ public class CartService(
     {
         foreach (var courseId in courseIds)
         {
-            if (!await repository.Courses.CheckIfCourseExists(courseId))
+            if (!await repository.Courses.CheckIfCourseExistsAsync(courseId))
                 throw new BadRequestException($"Course with Id: {courseId} Doesn't Exists.");
         }
     }

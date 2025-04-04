@@ -35,10 +35,6 @@ public class Course : BaseEntity
     public int SubCategoryId { get; set; }
     [ForeignKey("SubCategoryId")]
     public SubCategory SubCategory { get; set; }
-
-
-
-
     public int InstructorId { get; set; }
     [ForeignKey("InstructorId")]
     public Instructor Instructor { get; set; }

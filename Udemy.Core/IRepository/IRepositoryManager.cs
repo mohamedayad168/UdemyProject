@@ -1,4 +1,6 @@
-﻿namespace Udemy.Core.IRepository;
+﻿using Udemy.Core.Entities;
+
+namespace Udemy.Core.IRepository;
 public interface IRepositoryManager
 {
     ICoursesRepository Courses { get; }
@@ -16,6 +18,8 @@ public interface IRepositoryManager
     IAskRepository Ask { get; }
     IAnswerRepository Answer { get; }
     ICartRepository Cart { get; }
+    
+    ISubCategoriesRepository SubCategories { get; }
 
     Task SaveAsync();
 }
