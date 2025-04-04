@@ -15,7 +15,10 @@ body.dark-mode {
     background-color: #1c1c1c;
     color: #f1f1f1;
 }
-
+:host{
+    z-index: 9999;
+    position: relative;
+}
 .headersection {
     display: flex;
     position: relative;

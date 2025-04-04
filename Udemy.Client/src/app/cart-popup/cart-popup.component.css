@@ -3,9 +3,37 @@
 :host{
     position: absolute;
     display: flex;
+    right: 0;
+    top: 3rem;
 }
 
 .popup{
-    max-width: 28rem;
+    width: 300px;
     /* @apply d-flex align-items-center justify-content-between; */
+    overflow: hidden;
+}
+.item{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50px auto;
+    gap: 10px;
+    /* padding: 10px; */
+    
+}
+.item-info{
+    /* width: calc(100% - 50px); */
+    /* flex: 1; */
+    width: 100%;
+    max-width: 100%;
+}
+.item-info >*{
+    width: 100%;
+    display: block;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.item img{
+    width: 50px;
+    height: fit-content;
 }
