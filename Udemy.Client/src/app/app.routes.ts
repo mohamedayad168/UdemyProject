@@ -16,17 +16,16 @@ export const routes: Routes = [
     path: 'account/login',
     component: LoginComponent,
   },
-    { path:"",
-   component:HomeComponent},
-   {
-      title: 'Course Details',
-      path: 'course/:id',
-      component:CourseDetailsComponent
-   },
-   {
-      title: '404',
-      path: '**',
+  { path: '', component: HomeComponent },
+  {
+    title: 'Course Details',
+    path: 'course/:id',
+    component: CourseDetailsComponent,
+  },
+  {
+    title: '404',
+    path: '**',
 
-      component:NotFoundPageComponent
-   }
+    component: NotFoundPageComponent,
+  },
 ];

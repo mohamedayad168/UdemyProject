@@ -27,6 +27,14 @@ button.match-input-height {
   border-radius: 5px !important;
 }
 
+.text-primary {
+  color: #7d00fe !important;
+}
+
+.bg-primary {
+  background-color: #7d00fe !important;
+}
+
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
   stroke: #7d00fe !important;
 }

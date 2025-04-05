@@ -190,8 +190,18 @@
         <span>{{ accountService.currentUser()?.email }}</span>
       </button>
       }@else {
-      <button routerLink="/account/login" mat-stroked-button>Login</button>
-      <button routerLink="/account/register" mat-stroked-button>
+      <button
+        routerLink="/account/login"
+        mat-stroked-button
+        class="text-primary"
+      >
+        Login
+      </button>
+      <button
+        routerLink="/account/register"
+        mat-stroked-button
+        class="text-primary"
+      >
         Register
       </button>
       }
