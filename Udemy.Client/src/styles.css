@@ -88,3 +88,7 @@ button.match-input-height {
  
   /* left: ; */
 }
+a{
+  text-decoration: none;
+  color: inherit;
+}

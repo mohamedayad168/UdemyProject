@@ -28,7 +28,7 @@
 
   <p-carousel [value]="filteredCourses" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions">
     <ng-template let-course   #item>
-        <div class="dark:border-surface-700 rounded m-2 p-2  text-start w-100">
+        <a [routerLink]="['/course', course.id ]"  class="d-block dark:border-surface-700 rounded m-2 p-2 text-start w-100">
             <div class="mb-4">
                 <div class="relative mx-auto">
                     <img [src]="course.imageUrl" [alt]="course.name" class="w-100 rounded-border border border-surface-200 " />
@@ -48,7 +48,7 @@
                     <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
                 </span>
             </div>
-        </div>
+        </a>
     </ng-template>
 </p-carousel>
 

@@ -8,12 +8,13 @@ import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { Rating } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.css'],
-  imports: [FormsModule, Rating, CommonModule, Carousel, ButtonModule, Tag],
+  imports: [FormsModule, Rating, CommonModule, Carousel, ButtonModule, Tag,RouterLink],
 })
 export class CourseSectionComponent implements OnInit {
   courses: Course[] = [];
