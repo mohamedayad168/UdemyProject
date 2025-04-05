@@ -1,12 +1,13 @@
 export type User = {
-  id: number;
+  id?: number;
   email: string;
-  userName: string;
+  userName?: string;
   firstName: string;
   lastName: string;
   countryName: string;
   city: string;
-  state?: string;
+  state: string;
   age: number;
   gender: string;
+  phoneNumber: string;
 };

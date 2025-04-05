@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using Udemy.Core.Entities;
 using Udemy.Presentation.Extenstions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.IService;
 
 namespace Udemy.Presentation.Controllers;
 
@@ -15,21 +14,27 @@ namespace Udemy.Presentation.Controllers;
 [Route("api/[controller]")]
 public class AccountController(
     SignInManager<ApplicationUser> signInManager,
-    IMapper mapper
+    IMapper mapper,
+    IServiceManager serviceManager
+
 ) : ControllerBase
 {
+
+
+
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
         var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
-        if(user is null)
+        if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
         var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
-        if(!result)
+        if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
-        await signInManager.SignInAsync(user , true);
+        await signInManager.SignInAsync(user, true);
 
         return NoContent();
     }
@@ -62,5 +67,21 @@ public class AccountController(
         {
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
+    }
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> SignUp(UserForCreationDto register)
+    {
+        var user = await signInManager.UserManager.FindByEmailAsync(register.Email);
+        if (user == null)
+        {
+            var createUser = await serviceManager.UserService.CreateUserAsync(register);
+
+            return Ok(createUser);
+        }
+        else
+        {
+            return BadRequest("Email is Already Exist");
+        }
+
     }
 }

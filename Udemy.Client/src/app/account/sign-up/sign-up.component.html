@@ -1,1 +1,200 @@
-<p>sign-up works!</p>
+<mat-card
+  class="container-fluid mx-auto mt-5 p-5"
+  style="max-width: 32rem; background-color: #f8f2f6 !important"
+>
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <div class="text-center mb-4">
+      <h1 class="display-5 fw-semibold text-primary" style="font-size: 30px">
+        Sign Up
+      </h1>
+    </div>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>User Name</mat-label>
+      <input
+        formControlName="UserName"
+        type="text"
+        matInput
+        placeholder="User Name"
+        required
+      />
+      <mat-error *ngIf="signUpForm.get('UserName')?.hasError('required')">
+        User is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>First Name</mat-label>
+      <input
+        formControlName="FirstName"
+        type="text"
+        matInput
+        placeholder="First Name"
+        required
+      />
+      <mat-error *ngIf="signUpForm.get('FirstName')?.hasError('required')">
+        First Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Last Name</mat-label>
+      <input
+        formControlName="LastName"
+        type="text"
+        matInput
+        placeholder="Last Name"
+        required
+      />
+      <mat-error *ngIf="signUpForm.get('LastName')?.hasError('required')">
+        Last Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Email Address</mat-label>
+      <input
+        formControlName="Email"
+        type="email"
+        placeholder="Email"
+        matInput
+        required
+        email
+      />
+      <mat-error *ngIf="signUpForm.get('Email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="signUpForm.get('Email')?.hasError('email')">
+        Please enter a valid email
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Password</mat-label>
+      <input
+        formControlName="Password"
+        type="password"
+        placeholder="Password"
+        matInput
+        required
+        minlength="8"
+      />
+      <mat-hint>Password must be at least 8 characters long</mat-hint>
+      <mat-error *ngIf="signUpForm.get('Password')?.hasError('required')">
+        Password is required
+      </mat-error>
+      <mat-error *ngIf="signUpForm.get('Password')?.hasError('minlength')">
+        Password must be at least 8 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        formControlName="ConfirmPassword"
+        type="password"
+        placeholder="Confirm Password"
+        matInput
+        required
+      />
+      <mat-error
+        *ngIf="signUpForm.get('ConfirmPassword')?.hasError('required')"
+      >
+        Please confirm your password
+      </mat-error>
+      <mat-error *ngIf="signUpForm.hasError('passwordMismatch')">
+        Passwords do not match
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Rest of your form fields remain the same -->
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Country</mat-label>
+      <input
+        formControlName="CountryName"
+        type="text"
+        matInput
+        placeholder="Country Name"
+        required
+      />
+      <mat-error *ngIf="signUpForm.get('CountryName')?.hasError('required')">
+        Country is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>PhoneNumber</mat-label>
+      <input
+        formControlName="PhoneNumber"
+        type="text"
+        matInput
+        placeholder="Phone Number"
+        required
+      />
+      <mat-error *ngIf="signUpForm.get('PhoneNumber')?.hasError('required')">
+        Phone Number is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>City</mat-label>
+      <input formControlName="City" type="text" matInput placeholder="City" />
+      <mat-error *ngIf="signUpForm.get('City')?.hasError('required')">
+        City is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>State</mat-label>
+      <input formControlName="State" type="text" matInput placeholder="State" />
+      <mat-error *ngIf="signUpForm.get('State')?.hasError('required')">
+        State is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Age</mat-label>
+      <input formControlName="Age" type="number" matInput placeholder="Age" />
+      <mat-error *ngIf="signUpForm.get('Age')?.hasError('required')">
+        Age is required
+      </mat-error>
+    </mat-form-field>
+    <div class="mb-3">
+      <mat-label>Gender</mat-label>
+      <mat-radio-group
+        formControlName="Gender"
+        class="d-flex mt-2"
+        style="gap: 20px"
+      >
+        <mat-radio-button value="M">Male</mat-radio-button>
+        <mat-radio-button value="F">Female</mat-radio-button>
+      </mat-radio-group>
+      <mat-error
+        *ngIf="
+          signUpForm.get('Gender')?.hasError('required') &&
+          signUpForm.get('Gender')?.touched
+        "
+      >
+        Gender is required
+      </mat-error>
+    </div>
+
+    <!-- Other fields... -->
+
+    <div class="mt-4">
+      <button
+        mat-flat-button
+        type="submit"
+        style="color: white !important"
+        class="w-100 py-2 bg-primary"
+        [disabled]="!signUpForm.valid"
+      >
+        Sign Up
+      </button>
+    </div>
+  </form>
+  <div class="text-center mt-3">
+    <span class="text-muted">Already have an account?</span>
+    <a
+      routerLink="/account/login"
+      class="ms-2 text-primary text-decoration-none"
+      style="font-weight: 500"
+    >
+      Log In
+    </a>
+  </div>
+</mat-card>

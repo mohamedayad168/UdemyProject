@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.model';
 import { map } from 'rxjs';
+import { SignUp } from '../models/SignUp.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,8 @@ export class AccountService {
 
   logout() {
     return this.http.post(this.baseUrl + '/account/logout', {});
+  }
+  signUp(values: any) {
+    return this.http.post<SignUp>(this.baseUrl + '/Account/SignUp', values);
   }
 }

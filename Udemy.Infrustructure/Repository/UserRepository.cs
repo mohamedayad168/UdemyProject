@@ -9,10 +9,10 @@ public class UserRepository(
     ApplicationDbContext dbContext,
     UserManager<ApplicationUser> userManager) : IUserRepository
 {
-    public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(bool trackChanges, RequestParamter requestParamter)
     {
-        var users = trackChanges 
-            ? dbContext.Users.OfType<ApplicationUser>() 
+        var users = trackChanges
+            ? dbContext.Users.OfType<ApplicationUser>()
             : dbContext.Users.OfType<ApplicationUser>().AsNoTracking();
 
         return await users
@@ -41,19 +41,22 @@ public class UserRepository(
         return user?.IsDeleted == true ? null : user;
     }
 
-    public async Task<IdentityResult> AddRolesToUser(ApplicationUser user , IEnumerable<string> roles)
+    public async Task<IdentityResult> AddRolesToUser(ApplicationUser user, IEnumerable<string> roles)
     {
-        return await userManager.AddToRolesAsync(user , roles);
+        return await userManager.AddToRolesAsync(user, roles);
     }
 
-    public async Task<IdentityResult> AddRoleToUser(ApplicationUser user , string role)
+    public async Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role)
     {
-        return await userManager.AddToRoleAsync(user , role);
+        return await userManager.AddToRoleAsync(user, role);
     }
 
     public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
     {
-        return await userManager.CreateAsync(user, password);
+        var result = await userManager.CreateAsync(user, password);
+        await dbContext.SaveChangesAsync();
+        return result;
+
     }
 
     public void DeleteUser(ApplicationUser user)

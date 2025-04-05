@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { LoginComponent } from './account/login/login.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { SignUpComponent } from './account/sign-up/sign-up.component';
 export const routes: Routes = [
   {
     path: '',
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'account/login',
     component: LoginComponent,
+  },
+  {
+    path: 'account/signup',
+    component: SignUpComponent,
   },
   { path: '', component: HomeComponent },
   {

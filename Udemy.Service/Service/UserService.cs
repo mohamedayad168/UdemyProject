@@ -4,7 +4,6 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Core.Utils;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -12,15 +11,15 @@ using Udemy.Service.IService;
 
 namespace Udemy.Service.Service;
 public class UserService(
-    IRepositoryManager repository ,
+    IRepositoryManager repository,
     IMapper mapper) : IUserService
 {
     private readonly IRepositoryManager repository = repository;
     private readonly IMapper mapper = mapper;
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges, RequestParamter requestParamter)
     {
-        var users = await repository.User.GetAllUsersAsync(trackChanges , requestParamter);
+        var users = await repository.User.GetAllUsersAsync(trackChanges, requestParamter);
 
         var usersDto = mapper.Map<IEnumerable<UserDto>>(users);
 
@@ -63,16 +62,18 @@ public class UserService(
 
         // handle password validation (must contain at least chararcter, ... etc)
 
-        var result = await repository.User.CreateUserAsync(userEntity , userDto.Password);
+        var result = await repository.User.CreateUserAsync(userEntity, userDto.Password);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
         {
             StringBuilder sb = new StringBuilder();
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
                 sb.Append(error.Description);
 
             throw new UserCreatingBadRequest(sb.ToString());
         }
+
+
 
         var userToReturn = mapper.Map<UserDto>(userEntity);
 
@@ -88,18 +89,18 @@ public class UserService(
         await repository.SaveAsync();
     }
 
-    public async Task UpdateUserAsync(int id , UserForUpdatingDto userDto)
+    public async Task UpdateUserAsync(int id, UserForUpdatingDto userDto)
     {
         var userEntity = await GetUserAndCheckIfItExistsAsync(id);
 
         var userWithSameUsername = await repository.User.GetUserByUsernameAsync(userDto.UserName);
 
-        if(userWithSameUsername is not null && userWithSameUsername.Id != userEntity.Id)
+        if (userWithSameUsername is not null && userWithSameUsername.Id != userEntity.Id)
         {
             throw new UsernameExistBadRequest(userDto.UserName);
         }
 
-        mapper.Map(userDto , userEntity);
+        mapper.Map(userDto, userEntity);
 
         await repository.SaveAsync();
     }
