@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CartService } from '../services/cart/cart.service';
 
 @Component({
@@ -8,5 +8,7 @@ import { CartService } from '../services/cart/cart.service';
   styleUrl: './cart-page.component.css',
 })
 export class CartPageComponent {
+  //   cartItems = computed(() => this.cartService.cartItems);
+
   cartService = inject(CartService);
 }

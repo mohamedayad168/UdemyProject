@@ -5,8 +5,8 @@
              <div class="col-lg-8 order-lg-1">
               <nav aria-label="breadcrumb" class="mb-4">
                 <div class="text-sm text-muted mb-3">
-                  <span class="default-text cursor-pointer">{{courseDetails.subCategory.category.name}}</span><span class="text-white m-2">></span>
-                  <span class="default-text cursor-pointer">{{courseDetails.subCategory.name}}</span>
+                  <span class="default-text cursor-pointer">{{courseDetails.subCategory.category?.name}}</span><span class="text-white m-2">></span>
+                  <span class="default-text cursor-pointer">{{courseDetails.subCategory?.name}}</span>
                 </div>
               </nav>
                 <h1 class="fw-bold mb-2">{{courseDetails.title}}</h1>
@@ -21,7 +21,7 @@
                      <a href="#reviews" class="link-light-purple me-2">( {{courseDetails.noSubscribers}} Students)</a>
                    </div>
 
-                <p class="mb-2 small">Created by <a href="#" class="link-light-purple fw-bold">{{courseDetails.instructor.name}}</a></p> <div class="small">
+                <p class="mb-2 small">Created by <a href="#" class="link-light-purple fw-bold">{{courseDetails.instructor?.name}}</a></p> <div class="small">
                 </div>
             </div>
 
@@ -116,7 +116,7 @@
                        </div>
                           <div class="d-grid gap-2">
                            <div class="d-flex gap-2">
-                               <button type="button" class="btn btn-purchase flex-grow-1">Add to cart</button>
+                               <button (click)="cartService.addItem(courseDetails)" type="button" class="btn btn-purchase flex-grow-1">Add to cart</button>
                            </div>
                            <button type="button" class="btn btn-outline-dark">Buy now</button>
                        </div>

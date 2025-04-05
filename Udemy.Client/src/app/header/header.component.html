@@ -177,7 +177,7 @@
       <a
         routerLink="cart"
         routerLinkActive="active"
-        matBadge="20"
+        matBadge="{{ cartService.cartItems().length }}"
         matBadgeSize="large"
         style="color: black"
         class="custom-bage mt-2 me-2 position-relative"

@@ -22,8 +22,13 @@ export class StorageService {
     this.storageItems.set('cart', new storageItemHandler('cart'));
   }
 
+  
   addItem(key: storageKey, item: any) {
-    this.storageItems.get(key)!.addItem(item);
+    console.log('addItem', key, item);
+    console.log(this.storageItems.get(key));
+    if(!this.storageItems.get(key)!.value()?.find((i: any) => i.id === item.id)) {
+      this.storageItems.get(key)!.addItem(item);
+    }
   }
 
   removeItem(key: storageKey, item: any) {

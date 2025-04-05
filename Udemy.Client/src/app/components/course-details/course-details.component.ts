@@ -14,6 +14,7 @@ import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CartService } from '../../services/cart/cart.service';
 @Component({
   selector: 'app-course-details',
   imports: [CommonModule,
@@ -34,6 +35,7 @@ export class CourseDetailsComponent {
   courseDetails!:CourseDetail;
   activatedRoute=inject(ActivatedRoute);
   courseService=inject(CourseService);
+  cartService=inject(CartService);
   router=inject(Router);
   route=inject(ActivatedRoute);
   private modalService = inject(NgbModal);
@@ -100,5 +102,6 @@ export class CourseDetailsComponent {
   }
 
 
+ 
 
 }
