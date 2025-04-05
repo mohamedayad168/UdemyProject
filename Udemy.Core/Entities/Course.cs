@@ -14,7 +14,7 @@ public class Course : BaseEntity
     public decimal? Discount { get; set; }
     [Column(TypeName = "DECIMAL(8, 2)")]
     public decimal Price { get; set; }
-    public int Duration { get; set; }
+    public decimal Duration { get; set; }
     [StringLength(20)]
     public string Language { get; set; }
     public string? ImageUrl { get; set; }

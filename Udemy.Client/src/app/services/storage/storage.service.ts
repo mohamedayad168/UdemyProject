@@ -31,8 +31,8 @@ export class StorageService {
     }
   }
 
-  removeItem(key: storageKey, item: any) {
-    this.storageItems.get(key)!.removeItem(item);
+  removeItem(key: storageKey, filterFunc: (item: any) => boolean) {
+    this.storageItems.get(key)!.removeItem(filterFunc);
   }
 
   setValue(key: storageKey, _value: any) {

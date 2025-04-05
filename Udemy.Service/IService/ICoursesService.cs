@@ -72,7 +72,7 @@ namespace Udemy.Service.IService
         public string CourseLevel { get; set; }
         public decimal? Discount { get; set; }
         public decimal Price { get; set; }
-        public int Duration { get; set; }
+        public decimal Duration { get; set; }
         public string Language { get; set; }
         public string? ImageUrl { get; set; }
         public string? VideoUrl { get; set; }
@@ -104,7 +104,7 @@ namespace Udemy.Service.IService
         }
         public int Id { get; set; }
         public string Title { get; set; }
-        public int Duration { get; set; }
+        public decimal Duration { get; set; }
         public int NoLessons { get; set; }
         public List<LessonDto> Lessons { get; set; }
     }
@@ -122,7 +122,7 @@ namespace Udemy.Service.IService
         }
         public int Id { get; set; }
         public string Title { get; set; }
-        public int Duration { get; set; }
+        public decimal Duration { get; set; }
         public string Type { get; set; }
         public string? VideoUrl { get; set; }
         public string? ArticleContent { get; set; }
