@@ -34,3 +34,7 @@ button.match-input-height {
 .bg-primary {
   background-color: #7d00fe !important;
 }
+
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
+  stroke: #7d00fe !important;
+}
