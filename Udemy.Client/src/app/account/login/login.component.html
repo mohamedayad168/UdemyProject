@@ -16,6 +16,11 @@
         placeholder="name@example.com"
         matInput
       />
+      @if(loginForm.get("email")?.getError("required")){
+      <mat-error>Email Is Required</mat-error>
+      } @if(loginForm.get("email")?.getError("email")){
+      <mat-error>Email Is Invalid</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100 mb-3">
@@ -26,7 +31,11 @@
         placeholder="Password"
         matInput
       />
+      @if(loginForm.get("password")?.getError("required")){
+      <mat-error>Password Is Required</mat-error>
+      }
     </mat-form-field>
+
     <button
       mat-flat-button
       type="submit"
@@ -35,5 +44,11 @@
     >
       Sign In
     </button>
+
+    @if(errorMessage() !== ''){
+    <mat-error class="mx-auto pt-5 text-center"
+      >Password or Email Is Incorrect</mat-error
+    >
+    }
   </form>
 </mat-card>
