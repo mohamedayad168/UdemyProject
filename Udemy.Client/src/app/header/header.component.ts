@@ -16,6 +16,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { BusyService } from '../services/busy.service';
+import { CartService } from '../services/cart/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -41,7 +42,7 @@ export class HeaderComponent {
   busyService = inject(BusyService);
   accountService = inject(AccountService);
   private router = inject(Router);
-
+  cartService=inject(CartService);
   logout() {
     this.accountService.logout().subscribe({
       next: () => {

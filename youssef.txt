@@ -4,7 +4,8 @@ repository , service , controller , dto , exeptions
 -course
 -CourseGoals
 
-1 animal style - double - beef
-1 animal style - trible - chicken 
-2 chicken hitch - trible - chicken
-1 chicken barbecue - tribe - chicken
+
+"/"					-sara		//home page
+"/login"			-abdo
+"/register"			-ayad	
+"/courses/[id]"		-shazly		//course details

@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { LoginComponent } from './account/login/login.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { CartPageComponent } from './cart-page/cart-page.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
 export const routes: Routes = [
   {
@@ -26,6 +27,11 @@ export const routes: Routes = [
     title: 'Course Details',
     path: 'course/:id',
     component: CourseDetailsComponent,
+  },
+  {
+    title: 'Cart',
+    path: 'cart',
+    component: CartPageComponent,
   },
   {
     title: '404',

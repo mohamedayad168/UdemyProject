@@ -1,0 +1,52 @@
+<div class="container">
+  <h2 class="fs-1 mb-4">Shopping Cart</h2>
+
+  <section class="d-flex gap-4">
+    <div class="items-wrapper flex-grow-1">
+      <h4 class="fs-6 pb-3 mb-4 fw-bold border-bottom">
+        {{ cartService.cartItems()?.length }} Course in Cart
+      </h4>
+
+      <ul class="m-0 p-0 d-flex flex-column gap-4">
+        @for (course of cartService.cartItems(); track $index) {
+        <li class="course list-unstyled d-flex">
+          <img src="{{ course.imageUrl }}" alt=""/>
+          <div class="course-info">
+            <h5>{{ course.title }}</h5>
+            <p>{{ course.instructor.name }}</p>
+            <div class="d-flex gap-3 align-items-center">
+              <label
+                class="rounded-1 fw-bold"
+                for=""
+                style="
+                  color: #0d5261;
+                  background-color: #c2e9eb;
+                  padding: 2px 8px;
+                  font-size: 12px;
+                "
+                >Bestseller</label
+              >
+              <p class="m-0">{{ course.rating }}/5 Ratings</p>
+            </div>
+            <div
+              class="price d-flex gap-3 align-items-center"
+              style="color: #595c73"
+            >
+              <span class="current-price">${{ course.price }}</span>
+              <span>{{ course.duration }} total hours</span>
+            </div>
+          </div>
+          <div>
+            <button (click)="removeFromCart(course)" class="btn">Remove</button>
+          </div>
+        </li>
+        }
+      </ul>
+    </div>
+
+    <div class="info">
+      <h6>Total:</h6>
+      <h2>${{ cartService.totalPrice() }}</h2>
+    </div>
+  </section>
+</div>

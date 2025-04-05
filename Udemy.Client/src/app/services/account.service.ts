@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.model';
 import { map } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 import { SignUp } from '../models/SignUp.model';
 
 @Injectable({
@@ -9,29 +10,31 @@ import { SignUp } from '../models/SignUp.model';
 })
 export class AccountService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5191/api';
   currentUser = signal<User | null>(null);
-
+  // baseUrl = environment.baseurl ;
   login(values: any) {
-    return this.http.post<User>(this.baseUrl + '/account/login', values);
+    return this.http.post<User>(environment.baseurl + '/account/login', values);
   }
 
   getUserInfo() {
-    return this.http.get<User>(this.baseUrl + '/account/user-info').pipe(
-      map((user) => {
-        this.currentUser.set(user);
+      return this.http
+        .get<User>(environment.baseurl + '/account/user-info')
+        .pipe(
+          map((user) => {
+            this.currentUser.set(user);
 
-        return user;
-      })
-    );
+            return user;
+          })
+        );
+
   }
 
   getAuthState() {
-    return this.http.get(this.baseUrl + '/account');
+    return this.http.get(environment.baseurl + '/account');
   }
 
   logout() {
-    return this.http.post(this.baseUrl + '/account/logout', {});
+    return this.http.post(environment.baseurl + '/account/logout', {});
   }
   signUp(values: any) {
     return this.http.post<SignUp>(this.baseUrl + '/Account/SignUp', values);

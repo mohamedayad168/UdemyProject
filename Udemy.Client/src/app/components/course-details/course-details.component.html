@@ -1,186 +1,217 @@
-<div class="course-header-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 order-lg-1">
-        <nav aria-label="breadcrumb" class="mb-4">
-          <div class="text-sm text-muted mb-3">
-            <span class="text-purple-500 cursor-pointer">{{
-              courseDetails.subCategory.category.name
-            }}</span
-            ><span class="text-white mx-2">></span>
-            <span class="text-purple-500 cursor-pointer">{{
-              courseDetails.subCategory.name
-            }}</span>
-            <span class="text-white mx-2"></span>
-          </div>
-        </nav>
-        <h1 class="fw-bold mb-2">{{ courseDetails.title }}</h1>
-        <p class="fs-5 mb-3">{{ courseDetails.description }}</p>
-        <div class="d-flex align-items-center mb-2 flex-wrap">
-          @if(courseDetails.bestSeller !=null) {
-          <span class="badge bg-warning text-dark me-1">{{
-            courseDetails.bestSeller
-          }}</span>
-          }
-          <span class="rating-color fw-bold me-1">{{
-            courseDetails.rating
-          }}</span>
-          <span class="rating-color me-1">
-            <i class="bi bi-star-fill"></i
-          ></span>
-          <a href="#reviews" class="link-light-purple me-2"
-            >( {{ courseDetails.noSubscribers }} Students)</a
-          >
-        </div>
+@if(courseDetails){
+  <div class="course-header-section ">
+    <div class="container ">
+      <div class="row">
+             <div class="col-lg-8 order-lg-1">
+              <nav aria-label="breadcrumb" class="mb-4">
+                <div class="text-sm text-muted mb-3">
+                  <span class="default-text cursor-pointer">{{courseDetails.subCategory.category?.name}}</span><span class="text-white m-2">></span>
+                  <span class="default-text cursor-pointer">{{courseDetails.subCategory?.name}}</span>
+                </div>
+              </nav>
+                <h1 class="fw-bold mb-2">{{courseDetails.title}}</h1>
+                 <p class="fs-5 mb-3">{{courseDetails.description}}</p> <div class="d-flex align-items-center mb-2 flex-wrap">
+                     @if(courseDetails.bestSeller !=null)
+                     {
+                      <span class="badge bg-warning text-dark me-1">{{courseDetails.bestSeller}}</span>
+                    }
+                     <span class="rating-color fw-bold me-1">{{courseDetails.rating}}</span>
+                      <span class="rating-color me-1">
+                        <i class="bi bi-star-fill"></i></span>
+                     <a href="#reviews" class="link-light-purple me-2">( {{courseDetails.noSubscribers}} Students)</a>
+                   </div>
 
-        <p class="mb-2 small">
-          Created by
-          <a href="#" class="link-light-purple fw-bold">{{
-            courseDetails.instructor.name
-          }}</a>
-        </p>
-        <div class="small"></div>
-      </div>
+                <p class="mb-2 small">Created by <a href="#" class="link-light-purple fw-bold">{{courseDetails.instructor?.name}}</a></p> <div class="small">
+                </div>
+            </div>
 
-      <div class="col-lg-4 order-lg-2 position-sticky sticky-top">
-        <div class="card sidebar-card">
-          <div class="preview-placeholder position-relative">
-            <img
-              [src]="courseDetails.imageUrl"
-              alt="Course Thumbnail"
-              class="img-fluid rounded-top"
-              style="filter: brightness(50%)"
-            />
-            <div
-              class="play-icon position-absolute top-50 start-50 translate-middle text-white"
-            >
-              <i class="bi bi-play-circle-fill fs-1"></i>
-            </div>
-            <div
-              class="preview-text position-absolute bottom-0 start-50 translate-middle-x"
-            >
-              Preview this course
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="mb-2">
-              <span class="price-current"
-                >E£ {{ courseDetails.currentPrice }}</span
-              >
-              <span class="price-original">E£{{ courseDetails.price }}</span>
-            </div>
-            <div class="d-grid gap-2">
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-purchase flex-grow-1">
-                  Add to cart
-                </button>
+
+            <!-- Modal template -->
+            <ng-template #content let-modal>
+              <div class="modal-header w-100  border-0 text-white bg-dark">
+                <h4 class="modal-title">Course Preview</h4>
+                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
               </div>
-              <button type="button" class="btn btn-outline-dark">
-                Buy now
-              </button>
-            </div>
-            <h5 class="h6 fw-bold">This course includes:</h5>
-            <ul class="list-unstyled small text-muted">
-              <li class="mb-1">
-                <i class="bi bi-camera-video me-2"></i
-                >{{ courseDetails.duration }} hours on-demand video
-              </li>
-            </ul>
+              <div class="modal-body bg-dark text-white" >
+                <vg-player (onPlayerReady)="onPlayerReady($event)" >
+                  <vg-overlay-play (dblclick)="toggleFullscreen()"></vg-overlay-play>
+                  <vg-buffering></vg-buffering>
+
+                  <!-- Clickable scrub bar -->
+                  <vg-scrub-bar [vgSlider]="true">
+                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                  </vg-scrub-bar>
+
+                  <vg-controls>
+                    <vg-play-pause ></vg-play-pause>
+                    <vg-playback-button></vg-playback-button>
+                    <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                    <vg-scrub-bar></vg-scrub-bar>
+                    <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                    <vg-mute></vg-mute>
+                    <vg-volume></vg-volume>
+                    <vg-fullscreen></vg-fullscreen>
+                  </vg-controls>
+
+                  <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
+                    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                  </video>
+                </vg-player>
+              </div>
+              <!-- <div class="modal-body bg-dark text-white">
+                <vg-player (onPlayerReady)="onPlayerReady($event)">
+                  <vg-overlay-play></vg-overlay-play>
+                  <vg-buffering></vg-buffering>
+
+                  <vg-scrub-bar>
+                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                  </vg-scrub-bar>
+
+                  <vg-controls>
+                      <vg-play-pause></vg-play-pause>
+                      <vg-playback-button></vg-playback-button>
+
+                      <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                      <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+
+                      <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+                      <vg-track-selector></vg-track-selector>
+                      <vg-mute></vg-mute>
+                      <vg-volume></vg-volume>
+
+                      <vg-fullscreen></vg-fullscreen>
+                  </vg-controls>
+
+                  <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
+                      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                  </video>
+              </vg-player>
+
+              </div> -->
+
+            </ng-template>
+
+            <div class="col-lg-4 order-lg-2 position-sticky sticky-top" >
+              <div class="card sidebar-card" >
+
+                    <div class="preview-placeholder position-relative" (click)="openVerticallyCentered(content)">
+                     <img [src]="courseDetails.imageUrl" alt="Course Thumbnail" class="img-fluid w-100" >
+                     <div
+                     class="play-icon position-absolute top-50 start-50 translate-middle text-white"
+                    >
+                     <i class="bi bi-play-circle-fill fs-1"></i>
+                   </div>
+                     <div class="preview-text position-absolute bottom-0 start-50 translate-middle-x">
+                     Preview this course
+                     </div>
+                   </div>
+
+                   <div class="card-body">
+                       <div class="mb-2">
+                           <span class="price-current">E£ {{courseDetails.currentPrice}}</span> <span class="price-original">E£{{courseDetails.price}}</span>
+                       </div>
+                          <div class="d-grid gap-2">
+                           <div class="d-flex gap-2">
+                               <button (click)="cartService.addItem(courseDetails)" type="button" class="btn btn-purchase flex-grow-1">Add to cart</button>
+                           </div>
+                           <button type="button" class="btn btn-outline-dark">Buy now</button>
+                       </div>
+                       <h5 class="h6 fw-bold">This course includes:</h5>
+                       <ul class="list-unstyled small text-muted">
+                           <li class="mb-1"><i class="bi bi-camera-video me-2"></i>{{courseDetails.duration}} hours on-demand video</li>
+                       </ul>
+                   </div>
+              </div>
           </div>
+
         </div>
-      </div>
     </div>
   </div>
-</div>
 
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="section-box">
-        <h2>What you'll learn</h2>
-        <ul class="checklist row">
-          @for(goal of courseDetails.courseGoals; track
-          courseDetails.courseGoals.indexOf(goal)){
-          <li class="col-md-6 mb-2">{{ goal }}</li>
-          }
-        </ul>
-      </div>
+  <div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
 
-      <div class="course-content mb-6">
-        <h2 class="h4 fw-bold mb-3">Course content</h2>
-        <p class="text-muted small mb-3">
-          {{ numberOfSections }} sections • {{ numberOfLessons }} lectures •
-          {{ courseDetails.duration }} total length
-        </p>
-        <div class="accordion" id="courseAccordion">
-          <cdk-accordion class="example-accordion">
-            @for (section of courseDetails.sections; track section; let index =
-            $index) {
-            <cdk-accordion-item
-              #accordionItem="cdkAccordionItem"
-              class="example-accordion-item"
-            >
-              <button
-                class="example-accordion-item-header d-flex align-items-center w-100"
-                (click)="accordionItem.toggle()"
-                tabindex="0"
-                [attr.id]="'accordion-header-' + index"
-                [attr.aria-expanded]="accordionItem.expanded"
-                [attr.aria-controls]="'accordion-body-' + index"
-              >
-                <span>{{ section.title }}</span>
-                <span
-                  class="example-accordion-item-description ms-auto d-flex align-items-center"
-                >
-                  <span class="me-2 text-muted"
-                    >({{ section.lessons.length }} lessons)</span
-                  >
-                  <i
-                    class="icon bi bi-chevron-down"
-                    [ngClass]="{ expanded: accordionItem.expanded }"
-                  ></i>
-                </span>
-              </button>
-
-              @if(accordionItem.expanded) {
-              <div
-                class="example-accordion-item-body"
-                role="region"
-                [attr.id]="'accordion-body-' + index"
-                [attr.aria-labelledby]="'accordion-header-' + index"
-              >
-                <ul class="lesson-list">
-                  @for (lesson of section.lessons; track lesson) {
-                  <li class="lesson-item">
-                    <span class="lesson-title">{{ lesson.title }}</span>
-                    <span class="lesson-duration text-muted"
-                      >({{ lesson.duration }})</span
-                    >
-                  </li>
+            <div class="section-box">
+                <h2>What you'll learn</h2>
+                <ul class="checklist row">
+                  @for(goal of courseDetails.courseGoals; track courseDetails.courseGoals.indexOf(goal)){
+                    <li class="col-md-6 mb-2">{{goal}}</li>
                   }
+
                 </ul>
+            </div>
+
+            <div class="course-content mb-6">
+              <h2 class="h4 fw-bold mb-3">Course content</h2>
+              <p class="text-muted small mb-3">{{numberOfSections}} sections • {{numberOfLessons}} lectures • {{courseDetails.duration}} total length</p> <div class="accordion" id="courseAccordion">
+                <cdk-accordion class="example-accordion">
+                  @for (section of courseDetails.sections; track section; let index = $index) {
+                    <cdk-accordion-item #accordionItem="cdkAccordionItem" class="example-accordion-item">
+                      <button
+                        class="example-accordion-item-header d-flex align-items-center w-100"
+                        (click)="accordionItem.toggle()"
+                        tabindex="0"
+                        [attr.id]="'accordion-header-' + index"
+                        [attr.aria-expanded]="accordionItem.expanded"
+                        [attr.aria-controls]="'accordion-body-' + index">
+                        <span>{{ section.title }}</span>
+                        <span class="example-accordion-item-description ms-auto d-flex align-items-center">
+                          <span class="me-2 text-muted">({{ section.lessons.length }} lessons)</span>
+                          <i class="icon bi bi-chevron-down" [ngClass]="{'expanded': accordionItem.expanded}"></i>
+                        </span>
+                      </button>
+
+                      @if(accordionItem.expanded) {
+                        <div
+                          class="example-accordion-item-body"
+                          role="region"
+                          [attr.id]="'accordion-body-' + index"
+                          [attr.aria-labelledby]="'accordion-header-' + index">
+                          <ul class="lesson-list">
+                            @for (lesson of section.lessons; track lesson) {
+                              <li class="lesson-item">
+                                <span class="lesson-title">{{ lesson.title }}</span>
+                                <span class="lesson-duration text-muted">({{ lesson.duration }})</span>
+                              </li>
+                            }
+                          </ul>
+                        </div>
+                      }
+                    </cdk-accordion-item>
+                  }
+                </cdk-accordion>
               </div>
-              }
-            </cdk-accordion-item>
-            }
-          </cdk-accordion>
-        </div>
 
-        <div class="mb-4 mt-4">
-          <h2 class="h4 fw-bold mb-3">Requirements</h2>
-          <ul class="default-list">
-            @for(req of courseDetails.courseRequirements;track req){
-            <li>{{ req }}</li>
-            }
-          </ul>
-        </div>
+          <div class="mb-4 mt-4">
+               <h2 class="h4 fw-bold mb-3">Requirements</h2>
+               <ul class="default-list">
+                @for(req of courseDetails.courseRequirements;track req)
+                {
+                  <li>{{req}}</li>
+                }
 
-        <app-instructor-bio
-          [instructorId]="courseDetails.instructor.id"
-        ></app-instructor-bio>
+            </ul>
+           </div>
+
+        <app-instructor-bio [instructorId]="courseDetails.instructor.id"></app-instructor-bio>
 
         <app-course-reviews [courseId]="courseDetails.id"></app-course-reviews>
-      </div>
-    </div>
   </div>
+        </div>
+    </div>
 </div>
+}
+
+@else {
+
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+}

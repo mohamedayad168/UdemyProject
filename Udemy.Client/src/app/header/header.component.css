@@ -9,13 +9,15 @@ Global Styles
     font-family: udemy sans, sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     transition: background-color 0.3s ease, color 0.3s ease;
 } */
-
 /* Dark Mode */
 /* body.dark-mode {
     background-color: #1c1c1c;
     color: #f1f1f1;
 } */
-
+:host {
+    z-index: 9999;
+    position: relative;
+}
 /* .headersection {
     display: flex;
     position: relative;
