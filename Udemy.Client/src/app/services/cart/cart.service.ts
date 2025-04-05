@@ -9,7 +9,13 @@ export class CartService {
 
   constructor() {}
 
+  get cartItems() {
+    return this.storageService.storageItems.get('cart')?.value;
+  }
   addItem(item: any) {
     this.storageService.addItem('cart', item);
+  }
+  removeItem(item: any) {
+    this.storageService.removeItem('cart', item);
   }
 }

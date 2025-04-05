@@ -1,1 +1,29 @@
-<p>cart-page works!</p>
+<h2 class="fs-1">Shopping Cart</h2>
+
+<section>
+    <div class="items-wrapper">
+        <h4>{{cartService.cartItems}} Course in Cart</h4>
+
+
+
+        <ul>
+            @for (course of cartService.cartItems; track $index) {
+            <li class="course">
+                <img src="{{ course.image }}" alt="">
+                <div class="course-info">
+                    <h5>{{ course.title }}</h5>
+                    <p>{{ course.instructor }}</p>
+                    <div class="price">
+                        <span class="current-price">{{ course.price }}</span>
+                        <span class="original-price">{{ course.originalPrice }}</span>
+                    </div>
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+
+
+
+    <div class="info"></div>
+</section>
