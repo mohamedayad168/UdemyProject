@@ -8,7 +8,7 @@ namespace Udemy.Core.Entities
     {
         [StringLength(100)]
         public required string Title { get; set; }
-        public int Duration { get; set; }
+        public decimal Duration { get; set; }
         public string Type { get; set; }
         public string? VideoUrl { get; set; }
 

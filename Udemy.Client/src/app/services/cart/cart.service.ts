@@ -11,18 +11,16 @@ export class CartService {
   constructor(private storageService: StorageService) {}
 
   get cartItems(): Signal<CourseDetail[]> {
-    try{
+    if (this.storageService.storageItems.get('cart')?.value) {
       return this.storageService.storageItems.get('cart')?.value as Signal<CourseDetail[]>
     }
-    catch{
-      return  signal([]);
-    }
+    return  signal([]);
   }
   addItem(item: any) {
     this.storageService.addItem('cart', item);
   }
-  removeItem(item: any) {
-    this.storageService.removeItem('cart', item);
+  removeItem(filterFunc: (item: any) => boolean) {
+    this.storageService.removeItem('cart', filterFunc);
   }
 
 

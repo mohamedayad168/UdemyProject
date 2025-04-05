@@ -20,7 +20,7 @@ export class TrendingNowComponent implements OnInit {
   }
 
   fetchTrendingCourses() {
-    this.http.get<Course[]>(`${environment.baseurl}/courses`) 
+    this.http.get<Course[]>(`${environment.baseurl}/courses/page?PageSize=5&PageNumber=1`) 
       .subscribe(
         (data) => {
           this.trendingCourses = data;
