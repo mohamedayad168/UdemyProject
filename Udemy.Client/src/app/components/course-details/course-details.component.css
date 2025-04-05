@@ -166,4 +166,13 @@ ul.checklist li::before { content: "\F26E"; /* Bootstrap Icons check */ font-fam
   font-size: 14px;
   color: gray;
 }
+.default-text{
+  color: #7d00fe;
+}
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height to center vertically */
+}
