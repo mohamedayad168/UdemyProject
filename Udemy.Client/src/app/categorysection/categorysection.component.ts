@@ -45,7 +45,7 @@ export class CategorysectionComponent implements OnInit {
   private mapCoursesToCategories(): void {
     this.categories.forEach((category) => {
       this.categoryCourses[category.id] = this.courses
-        .filter(course => course.subCategory.id === category.id) // Match category with courses
+        .filter(course => course.subCategoryId === category.id) // Match category with courses
         .slice(0, 5); // Show only 5 courses per category
     });
   }

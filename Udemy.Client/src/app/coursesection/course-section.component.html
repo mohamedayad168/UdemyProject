@@ -9,10 +9,10 @@
       <button
         *ngFor="let category of categories"
         class="btn mx-1 mb-2"
-        [ngClass]="{'btn-dark': selectedCategory === category.name, 'btn-outline-dark': selectedCategory !== category.name}"
+        [ngClass]="{'btn-dark': selectedCategory === category.id, 'btn-outline-dark': selectedCategory !== category.id}"
         (click)="selectCategory(category)"
-        [style.background-color]="selectedCategory === category.name ? '#6f42c1' : 'white'"
-        [style.color]="selectedCategory === category.name ? 'white' : '#6f42c1'"
+        [style.background-color]="selectedCategory === category.id ? '#6f42c1' : 'white'"
+        [style.color]="selectedCategory === category.id ? 'white' : '#6f42c1'"
       >
         {{ category.name }}
       </button>
@@ -22,34 +22,34 @@
     <button class="scroll-btn right" (click)="scrollCategories('right')">&#10095;</button>
   </div>
 
-  <!-- Courses Section -->
-  <div class="d-flex justify-content-center mb-4 flex-wrap" style="position: relative;">
-    <!-- Left Scroll Button for Courses -->
-    <button class="scroll-btn left" (click)="scrollCourses('left')">&#10094;</button>
 
-    <!-- Courses Container -->
-    <div class="course-container" #courseContainer>
-      <div class="col-md-4 mb-4" *ngFor="let course of filteredCourses">
-        <div class="card h-100 shadow-sm">
-          <img [src]="course.imageUrl" class="card-img-top" alt="{{ course.title }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ course.title }}</h5>
-            <p class="card-text">{{ course.description }}</p>
-            <p class="card-text">
-              <strong>Instructor:</strong> {{ course.instructor?.name || 'Unknown' }} <br>
-              
-              <strong>Rating:</strong> {{ course.rating }} 
+
+
+
+  <p-carousel [value]="filteredCourses" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+    <ng-template let-course   #item>
+        <div class="dark:border-surface-700 rounded m-2 p-2  text-start w-100">
+            <div class="mb-4">
+                <div class="relative mx-auto">
+                    <img [src]="course.imageUrl" [alt]="course.name" class="w-100 rounded-border border border-surface-200 " />
+                    <p-tag [value]="course.inventoryStatus" [severity]="getSeverity(course.inventoryStatus)" class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                </div>
+            </div>
+            <h6 class="mb-1 fw-bold ellipsis"><span>{{ course.title }}</span></h6>
+            <p class="mb-1" style="font-size: 14px;">{{ course.instructorName }}</p>
+            <p class="d-flex align-content-center gap-2 mb-1">
+              <span>{{ course.rating }}</span>
+              <p-rating [ngModel]="round(course.rating)" [ngStyle]="{ 'color': '#ffcc00' }" [readonly]="true" />
             </p>
-            <p class="card-text">
-              <strong>Price:</strong> {{ course.currentPrice | currency }} 
-            </p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
+            <div class="flex justify-between ">
+                <div class=" fw-bold fs-6">{{ '$' + course.price }}</div>
+                <span>
+                    <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                </span>
+            </div>
         </div>
-      </div>
-    </div>
+    </ng-template>
+</p-carousel>
 
-    <!-- Right Scroll Button for Courses -->
-    <button class="scroll-btn right" (click)="scrollCourses('right')">&#10095;</button>
   </div>
-</div>

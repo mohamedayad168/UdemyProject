@@ -35,6 +35,56 @@ button.match-input-height {
   background-color: #7d00fe !important;
 }
 
-.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: #7d00fe !important;
+}
+
+.ellipsis {
+  position: relative;
+}
+
+.ellipsis:before {
+  content: "&nbsp;";
+  visibility: hidden;
+}
+
+.ellipsis span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.p-carousel-content{
+  position: relative;
+}
+.p-carousel-prev-button,
+.p-carousel-next-button {
+  z-index: 3;
+  cursor: pointer;
+  position: absolute;
+  top: calc(35% - 20px);
+  background-color: white;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.259);
+  aspect-ratio: 1;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  &.p-disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.p-carousel-next-button {
+  right: 0;
+
+}
+.p-carousel-prev-button {
+  left: 2px;
+ 
+  /* left: ; */
 }
