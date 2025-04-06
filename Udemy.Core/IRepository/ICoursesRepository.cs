@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Udemy.Core.Entities;
+﻿using Udemy.Core.Entities;
 using Udemy.Core.ReadOptions;
 
 namespace Udemy.Core.IRepository
@@ -12,7 +7,8 @@ namespace Udemy.Core.IRepository
     {
         //read
         public Task<IEnumerable<Course>> GetAllAsync(bool trackChanges);
-        public Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamterbool ,bool trackChanges);
+        public Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId);
+        public Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamterbool, bool trackChanges);
         public Task<Course?> GetByTitleAsync(string title, bool trackChanges);
         public Task<Course> GetByIdAsync(int id, bool trackChanges);
 

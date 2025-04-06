@@ -20,7 +20,7 @@ namespace Udemy.Infrastructure.Repository
             var course = await GetByIdAsync(id, false) ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
 
-            course.IsDeleted = true; 
+            course.IsDeleted = true;
             await SaveChangesAsync();
         }
 
@@ -69,6 +69,12 @@ namespace Udemy.Infrastructure.Repository
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
+        {
+            var courses = await _context.Courses.Include(x => x.SubCategory).Where(x => x.SubCategory.CategoryId == categoryId).Take(300).AsNoTracking().ToListAsync();
+            return courses;
         }
     }
 }

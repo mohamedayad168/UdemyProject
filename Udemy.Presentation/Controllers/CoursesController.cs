@@ -1,10 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
@@ -24,7 +18,12 @@ namespace Udemy.Presentation.Controllers
             var courses = await serviceManager.CoursesService.GetAllAsync(false);
             return Ok(courses);
         }
-
+        [HttpGet("category/{id:int}")]
+        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesByCategory([FromRoute] int id)
+        {
+            var courses = await serviceManager.CoursesService.GetAllByCategoryId(id);
+            return Ok(courses);
+        }
 
         [HttpGet("page")]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
