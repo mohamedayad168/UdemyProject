@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { AccountService } from '../../lib/services/account.service';
@@ -37,7 +39,7 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
     NgIf,
   ],
   templateUrl: './signup-page.component.html',
-  styleUrl: './signup-page.component.css'
+  styleUrl: './signup-page.component.css',
 })
 export class SignupPageComponent {
   private accountService = inject(AccountService);
@@ -51,7 +53,16 @@ export class SignupPageComponent {
         FirstName: ['', Validators.required],
         LastName: ['', Validators.required],
         Email: ['', [Validators.required, Validators.email]],
-        Password: ['', [Validators.required, Validators.minLength(8)]],
+        Password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/
+            ),
+          ],
+        ],
         ConfirmPassword: ['', Validators.required],
         CountryName: ['', Validators.required],
         PhoneNumber: ['', Validators.required],
@@ -64,10 +75,19 @@ export class SignupPageComponent {
     );
   }
 
-  passwordMatchValidator(formGroup: FormGroup) {
+  passwordMatchValidator(formGroup: AbstractControl): ValidationErrors | null {
     const password = formGroup.get('Password')?.value;
     const confirmPassword = formGroup.get('ConfirmPassword')?.value;
-    return password === confirmPassword ? null : { passwordMismatch: true };
+
+    if (password !== confirmPassword) {
+      // Set error on ConfirmPassword field
+      formGroup.get('ConfirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      // Clear error if passwords match
+      formGroup.get('ConfirmPassword')?.setErrors(null);
+      return null;
+    }
   }
 
   onSubmit() {
