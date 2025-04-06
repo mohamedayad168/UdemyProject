@@ -8,10 +8,10 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { authInterceptor } from './interceptors/auth.interceptor';
-import { InitService } from './services/init.service';
+import { authInterceptor } from './lib/interceptors/auth.interceptor';
+import { InitService } from './lib/services/init.service';
 import { lastValueFrom } from 'rxjs';
-import { loadingInterceptor } from './interceptors/loading.interceptor';
+import { loadingInterceptor } from './lib/interceptors/loading.interceptor';
 
 function initializeApp(initService: InitService) {
   return () =>
