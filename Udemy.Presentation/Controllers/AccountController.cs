@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Presentation.Extenstions;
 using Udemy.Service.DataTransferObjects.Create;
@@ -33,20 +34,20 @@ public class AccountController(
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-       // var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
-       var user= await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
-        if(user is null)
+        // var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
+        var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+        if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
         var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
-        
-        
 
 
-        await signInManager.SignInAsync(user , true);
+
+
+        await signInManager.SignInAsync(user, true);
 
         return NoContent();
     }
