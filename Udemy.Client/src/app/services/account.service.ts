@@ -17,16 +17,13 @@ export class AccountService {
   }
 
   getUserInfo() {
-      return this.http
-        .get<User>(environment.baseurl + '/account/user-info')
-        .pipe(
-          map((user) => {
-            this.currentUser.set(user);
+    return this.http.get<User>(environment.baseurl + '/account/user-info').pipe(
+      map((user) => {
+        this.currentUser.set(user);
 
-            return user;
-          })
-        );
-
+        return user;
+      })
+    );
   }
 
   getAuthState() {
@@ -37,6 +34,9 @@ export class AccountService {
     return this.http.post(environment.baseurl + '/account/logout', {});
   }
   signUp(values: any) {
-    return this.http.post<SignUp>(this.baseUrl + '/Account/SignUp', values);
+    return this.http.post<SignUp>(
+      environment.baseurl + '/Account/SignUp',
+      values
+    );
   }
 }
