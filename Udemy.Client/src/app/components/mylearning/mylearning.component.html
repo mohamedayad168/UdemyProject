@@ -5,14 +5,20 @@
       <li [ngbNavItem]="1"  class="nav-item">
         <button ngbNavLink>My Courses</button>
         <ng-template ngbNavContent>
-
+          <h1 class="text-center h-100">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Loading...</p>
+            <p>My Courses</p>
+          </h1>
         </ng-template>
       </li>
       <li [ngbNavItem]="2" [destroyOnHide]="false" class="nav-item">
         <button ngbNavLink>My-Learning Report</button>
         <ng-template   ngbNavContent>
           @if(powerBiUrl){
-            <div class="ratio ratio-16x9 h-50" >
+            <div class="ratio ratio-21x9 h-50" >
               <iframe title="Studify-Student Dashboard"  [src]="powerBiUrl" allowfullscreen></iframe>
             </div>
           }
