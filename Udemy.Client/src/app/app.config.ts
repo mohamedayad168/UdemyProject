@@ -12,7 +12,8 @@ import { authInterceptor } from './lib/interceptors/auth.interceptor';
 import { InitService } from './lib/services/init.service';
 import { lastValueFrom } from 'rxjs';
 import { loadingInterceptor } from './lib/interceptors/loading.interceptor';
-
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 function initializeApp(initService: InitService) {
   return () =>
     lastValueFrom(initService.init()).finally(() => {
@@ -25,6 +26,11 @@ function initializeApp(initService: InitService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    providePrimeNG({
+        theme: {
+            preset: Aura
+        }
+    }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])),

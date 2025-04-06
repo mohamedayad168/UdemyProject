@@ -33,7 +33,7 @@
 
 
 
-  <p-carousel [value]="filteredCourses" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+  <p-carousel [showIndicators]="false" [value]="filteredCourses" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions">
     <ng-template let-course   #item>
         <a [routerLink]="['/courses', course.id ]"  class="d-block dark:border-surface-700 rounded m-2 p-2 text-start w-100">
             <div class="mb-4">
@@ -52,7 +52,7 @@
                 <div class=" fw-bold fs-6">{{ '$' + course.price }}</div>
                 <span>
                     <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
-                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2!" />
                 </span>
             </div>
         </a>

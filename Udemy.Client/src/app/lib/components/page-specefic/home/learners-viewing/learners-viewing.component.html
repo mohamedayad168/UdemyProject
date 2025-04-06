@@ -1,6 +1,6 @@
 <div class="container mt-5 position-relative">
   <h3 class="mb-4">Learners are viewing</h3>
-  <button class="scroll-btn left" (click)="scrollLeft()">&#10094;</button>
+  <!-- <button class="scroll-btn left" (click)="scrollLeft()">&#10094;</button>
 
   <div #courseContainer class="course-container">
     <div class="course-card" *ngFor="let course of courses" 
@@ -16,7 +16,6 @@
           <span class="badge bg-success" *ngIf="course.bestSeller">Bestseller</span>
         </div>
 
-        <!-- Hover overlay for additional details -->
         <div class="overlay" *ngIf="hoveredCourse === course">
           <h5>{{ course.title }}</h5>
           <p>Bestseller</p>
@@ -26,6 +25,36 @@
       </div>
     </div>
   </div>
+  
+  <button class="scroll-btn right" (click)="scrollRight()">&#10095;</button> -->
 
-  <button class="scroll-btn right" (click)="scrollRight()">&#10095;</button>
+
+
+
+
+  <p-carousel [showIndicators]="false" [value]="courses!" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+    <ng-template let-course #item>
+        <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+            <div class="mb-4">
+                <div class="relative mx-auto">
+                    <img [src]="course.imageUrl" [alt]="course.name" class="w-full rounded-border" />
+                    <p-tag [value]="course.inventoryStatus" [severity]="getSeverity(course.inventoryStatus)" class="absolute" styleClass="dark:!bg-surface-900" [style]="{ 'left.px': 5, 'top.px': 5 }" />
+                </div>
+            </div>
+            <div class="mb-4 font-medium">{{ course.title }}</div>
+            <div class="flex justify-between items-center">
+                <div class="mt-0 font-semibold text-xl">{{ '$' + course.price }}</div>
+                <span>
+                    <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2!" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
+</p-carousel>
+
+
+
 </div>
+
+<!-- Hover overlay for additional details -->

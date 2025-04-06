@@ -1,35 +1,60 @@
 <div class="top-companies text-start">
-    <div class="top-companies-header "  >
-      <p class="top-companies-text text-start">
-        Top companies choose Udemy Business to build in-demand career skills.
-      </p>
-      <div class="company-logos"  >
-        <img src="assets/logos/nasdaq-light.svg" alt="Nasdaq" class="company-logo" />
-        <img src="assets/logos/eventbrite-light.svg" alt="Volkswagen" class="company-logo" />
-        <img src="assets/logos/netapp-light.svg" alt="NetApp" class="company-logo" />
-        <img src="assets/logos/volkswagen-light.svg" alt="Eventbrite" class="company-logo" />
+  <div class="top-companies-header container">
+    <p class="top-companies-text text-start">
+      Top companies choose Udemy Business to build in-demand career skills.
+    </p>
+    <div class="company-logos">
+      <img
+        src="assets/logos/nasdaq-light.svg"
+        alt="Nasdaq"
+        class="company-logo"
+      />
+      <img
+        src="assets/logos/eventbrite-light.svg"
+        alt="Volkswagen"
+        class="company-logo"
+      />
+      <img
+        src="assets/logos/netapp-light.svg"
+        alt="NetApp"
+        class="company-logo"
+      />
+      <img
+        src="assets/logos/volkswagen-light.svg"
+        alt="Eventbrite"
+        class="company-logo"
+      />
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="udemy-footer container  ">
+  <div class="explore-section">
+    <h2 class="section-title text-start">
+      Explore top skills and certifications
+    </h2>
+
+    <div class="categories-grid">
+      <div class="category-column" *ngFor="let category of categories">
+        <h4 class="category-title">{{ category.name }}</h4>
+        <ul class="course-list">
+          <li *ngFor="let course of categoryCourses[category.id]">
+            {{ course.title }}
+          </li>
+        </ul>
+        <a
+          class="see-all"
+          *ngIf="
+            category.name === 'Certifications by Issuer' ||
+            category.name === 'Certifications by Skill'
+          "
+        >
+          See all Certifications
+        </a>
       </div>
     </div>
   </div>
-  
-<div class="udemy-footer">
-    
-    <div class="explore-section">
-      <h2 class="section-title text-start">Explore top skills and certifications</h2>
-  
-      <div class="categories-grid">
-        <div class="category-column" *ngFor="let category of categories">
-          <h4 class="category-title">{{ category.name }}</h4>
-          <ul class="course-list">
-            <li *ngFor="let course of categoryCourses[category.id]">
-              {{ course.title }}
-            </li>
-          </ul>
-          <a class="see-all" *ngIf="category.name === 'Certifications by Issuer' || category.name === 'Certifications by Skill'">
-            See all Certifications
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+</div>

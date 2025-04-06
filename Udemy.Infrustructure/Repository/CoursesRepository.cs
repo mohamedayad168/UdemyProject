@@ -73,7 +73,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
         {
-            var courses = await _context.Courses.Include(x => x.SubCategory).Where(x => x.SubCategory.CategoryId == categoryId).Take(300).AsNoTracking().ToListAsync();
+            var courses = await _context.Courses.Include(x => x.SubCategory).Where(x => x.SubCategory.CategoryId == categoryId).Take(20).AsNoTracking().ToListAsync();
             return courses;
         }
     }

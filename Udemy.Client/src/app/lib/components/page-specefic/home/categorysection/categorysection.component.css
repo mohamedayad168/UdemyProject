@@ -1,3 +1,9 @@
+:host{
+  background-color: #1c1d1f;
+  display: block;
+}
+
+
 .top-companies-header {
     background-color: #1c1d1f;
     color: white;
@@ -54,7 +60,7 @@
   }
   
   .explore-section {
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
     padding: 0 20px;
   }
