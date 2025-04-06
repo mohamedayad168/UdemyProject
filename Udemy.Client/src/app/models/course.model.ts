@@ -16,10 +16,9 @@ export interface Course {
   bestSeller?: string;
   currentPrice: number;
   rating?: number;
-  subCategory: {
-    id: number;
-    name: string;
-  };
+  subCategoryId: number;
+  categoryId: number;
+  instructorName: string;
   instructor: {
     id: number;
     name: string;

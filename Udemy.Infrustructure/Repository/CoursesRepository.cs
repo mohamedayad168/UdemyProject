@@ -47,6 +47,8 @@ namespace Udemy.Infrastructure.Repository
             return await FindByCondition(c => !c.IsDeleted, trackChanges)
                 .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
                 .Take(requestParamter.PageSize)
+                .Include(c => c.Instructor)
+                .Include(c => c.SubCategory)
                 .ToListAsync();
         }
 

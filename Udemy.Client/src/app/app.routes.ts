@@ -4,6 +4,7 @@ import { CourseDetailsComponent } from './components/course-details/course-detai
 import { LoginComponent } from './account/login/login.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { CartPageComponent } from './cart-page/cart-page.component';
+import { MylearningComponent } from './components/mylearning/mylearning.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
 export const routes: Routes = [
   {
@@ -34,9 +35,14 @@ export const routes: Routes = [
     component: CartPageComponent,
   },
   {
+    title: 'My Learning',
+    path: 'my-learning',
+    component:MylearningComponent
+  },
+  {
     title: '404',
     path: '**',
 
     component: NotFoundPageComponent,
-  },
+  }
 ];

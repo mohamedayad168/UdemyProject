@@ -33,6 +33,9 @@ namespace Udemy.Service.DataTransferObjects.Read
         [Range(0.0, 5.0)]
         public decimal? Rating { get; set; }
         public int SubCategoryId { get; set; }
+        public int CategoryId { get; set; }
+
         public int InstructorId { get; set; }
+        public string InstructorName { get; set; }
     }
 }

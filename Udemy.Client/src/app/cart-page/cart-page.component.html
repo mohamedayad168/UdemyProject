@@ -11,9 +11,9 @@
         @for (course of cartService.cartItems(); track $index) {
         <li class="course list-unstyled d-flex">
           <img src="{{ course.imageUrl }}" alt=""/>
-          <div class="course-info">
-            <h5>{{ course.title }}</h5>
-            <p>{{ course.instructor.name }}</p>
+          <div class="course-info px-2">
+            <h5 class="fs-5 mb-0">{{ course.title }}</h5>
+            <p class="mb-1">{{ course.instructor.name }}</p>
             <div class="d-flex gap-3 align-items-center">
               <label
                 class="rounded-1 fw-bold"
@@ -37,16 +37,18 @@
             </div>
           </div>
           <div>
-            <button (click)="removeFromCart(course)" class="btn">Remove</button>
+            <button (click)="removeFromCart(course)" class="btn btn btn-danger py-0 px-2">Remove</button>
           </div>
         </li>
         }
       </ul>
     </div>
 
-    <div class="info">
+    <div class="info" style="min-width: 300px;">
       <h6>Total:</h6>
       <h2>${{ cartService.totalPrice() }}</h2>
+      <button style="background-color: #6d28d2;" class="btn text-white rounded-1 fw-bold fs-5 w-100">Proceed to Checkout →</button>
+      <p style="font-size: 12px;" class="text-secondary">You won't be charged yet</p>
     </div>
   </section>
 </div>

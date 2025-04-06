@@ -13,6 +13,8 @@ export class AccountService {
   currentUser = signal<User | null>(null);
   // baseUrl = environment.baseurl ;
   login(values: any) {
+    console.log('Login values:', values);
+
     return this.http.post<User>(environment.baseurl + '/account/login', values);
   }
 
@@ -21,9 +23,9 @@ export class AccountService {
       map((user) => {
         this.currentUser.set(user);
 
-        return user;
-      })
-    );
+            return user;
+          })
+        );
   }
 
   getAuthState() {
