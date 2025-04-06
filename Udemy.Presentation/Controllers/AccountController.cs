@@ -52,6 +52,10 @@ public class AccountController(
         return NoContent();
     }
 
+
+
+
+
     [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
@@ -60,6 +64,11 @@ public class AccountController(
 
         return NoContent();
     }
+
+
+
+
+
 
     [HttpGet("user-info")]
     public async Task<IActionResult> GetUserInfo()
@@ -73,6 +82,9 @@ public class AccountController(
         return Ok(userDto);
     }
 
+
+
+
     [HttpGet]
     public IActionResult GetAuthState()
     {
@@ -81,6 +93,9 @@ public class AccountController(
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
+
+
+
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp(UserForCreationDto register)
     {

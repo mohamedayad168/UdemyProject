@@ -16,7 +16,8 @@ export class CourseService {
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(
-      environment.baseurl + '/Courses/page?PageSize=500&PageNumber=1'
+      // environment.baseurl + '/Courses/page?PageSize=500&PageNumber=1'
+      environment.baseurl + '/Courses'
     );
   }
 
