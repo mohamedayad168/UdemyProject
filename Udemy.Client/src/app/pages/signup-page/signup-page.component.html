@@ -77,13 +77,19 @@
         required
         minlength="8"
       />
-      <mat-hint>Password must be at least 8 characters long</mat-hint>
+      <mat-hint style="font-size: 9px !important; line-height: 1.2">
+        Password must be at least 8 characters and must contain one uppercase
+        letter, one lowercase letter, and one special character</mat-hint
+      >
       <mat-error *ngIf="signUpForm.get('Password')?.hasError('required')">
         Password is required
       </mat-error>
-      <mat-error *ngIf="signUpForm.get('Password')?.hasError('minlength')">
-        Password must be at least 8 characters
+      @if(signUpForm.get('Password')?.hasError('pattern')){
+      <mat-error style="font-size: 9px !important; line-height: 1.2">
+        Password must be at least 8 characters and must contain one uppercase
+        letter, one lowercase letter, and one special character
       </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100 mb-3">
@@ -98,9 +104,11 @@
       <mat-error
         *ngIf="signUpForm.get('ConfirmPassword')?.hasError('required')"
       >
-        Please confirm your password
+        Confirm Password is required
       </mat-error>
-      <mat-error *ngIf="signUpForm.hasError('passwordMismatch')">
+      <mat-error
+        *ngIf="signUpForm.get('ConfirmPassword')?.hasError('passwordMismatch')"
+      >
         Passwords do not match
       </mat-error>
     </mat-form-field>
