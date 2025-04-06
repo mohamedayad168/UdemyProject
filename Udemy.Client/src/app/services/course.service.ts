@@ -15,9 +15,7 @@ export class CourseService {
   constructor(private http: HttpClient) {}
 
   getCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(
-      environment.baseurl + '/Courses/page?PageSize=5&PageNumber=1'
-    );
+    return this.http.get<Course[]>(environment.baseurl + '/Courses');
   }
 
   getCategories(): Observable<Category[]> {

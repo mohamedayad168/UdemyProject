@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
@@ -21,6 +16,12 @@ namespace Udemy.Service.Service
         public async Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges)
         {
             var courses = await repository.Courses.GetAllAsync(false);
+
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+        }
+        public async Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId)
+        {
+            var courses = await repository.Courses.GetAllByCategoryId(categoryId);
 
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
@@ -50,9 +51,9 @@ namespace Udemy.Service.Service
                 throw new NotFoundException($"course with id: {id} doesn't exist")
                 : new CourseDetailsRDto(course);
 
-                ;
+            ;
 
-            }
+        }
 
 
         public async Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges)

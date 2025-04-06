@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Udemy.Core.Entities;
+﻿using Udemy.Core.Entities;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -15,6 +10,7 @@ namespace Udemy.Service.IService
     {
         //read
         public Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges);
+        Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId);
         public Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
@@ -51,9 +47,9 @@ namespace Udemy.Service.IService
             IsFree = course.IsFree;
             BestSeller = course.BestSeller;
             CurrentPrice = course.CurrentPrice;
-            Rating = course.Rating;    
+            Rating = course.Rating;
             SubCategory = new SubCategoryRDTO(course.SubCategory);
-           
+
             Instructor = new InstructorRDTO()
             {
                 Id = course.Instructor.Id,
@@ -81,9 +77,9 @@ namespace Udemy.Service.IService
         public string? BestSeller { get; set; }
         public decimal CurrentPrice { get; set; }
         public decimal? Rating { get; set; }
-  
+
         public SubCategoryRDTO SubCategory { get; set; }
-        
+
         public InstructorRDTO Instructor { get; set; }
 
         public List<string> CourseGoals { get; set; }
@@ -99,7 +95,7 @@ namespace Udemy.Service.IService
             Title = section.Title;
             Duration = section.Duration;
             NoLessons = section.Lessons.Count;
-            Lessons = section.Lessons.Select(x=> new LessonDto(x)).ToList();
+            Lessons = section.Lessons.Select(x => new LessonDto(x)).ToList();
 
         }
         public int Id { get; set; }
