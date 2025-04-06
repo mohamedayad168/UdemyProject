@@ -1,33 +1,27 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { CourseDetailsComponent } from './components/course-details/course-details.component';
-import { LoginComponent } from './account/login/login.component';
-import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
-import { CartPageComponent } from './cart-page/cart-page.component';
-import { MylearningComponent } from './components/mylearning/mylearning.component';
-import { SignUpComponent } from './account/sign-up/sign-up.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { CartPageComponent } from './pages/cart-page/cart-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { CourseDetailsPageComponent } from './pages/course-details-page/course-details-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { SignupPageComponent } from './pages/signup-page/signup-page.component';
+import { MyLearningPageComponent } from './pages/my-learning-page/my-learning-page.component';
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: HomePageComponent,
   },
   {
-    path: 'course/:id',
-    component: CourseDetailsComponent,
+    path: 'courses/:id',
+    component: CourseDetailsPageComponent,
   },
   {
-    path: 'account/login',
-    component: LoginComponent,
+    path: 'login',
+    component: LoginPageComponent,
   },
   {
-    path: 'account/signup',
-    component: SignUpComponent,
-  },
-  { path: '', component: HomeComponent },
-  {
-    title: 'Course Details',
-    path: 'course/:id',
-    component: CourseDetailsComponent,
+    path: 'signup',
+    component: SignupPageComponent,
   },
   {
     title: 'Cart',
@@ -37,12 +31,11 @@ export const routes: Routes = [
   {
     title: 'My Learning',
     path: 'my-learning',
-    component:MylearningComponent
+    component: MyLearningPageComponent,
   },
   {
     title: '404',
     path: '**',
-
     component: NotFoundPageComponent,
-  }
+  },
 ];

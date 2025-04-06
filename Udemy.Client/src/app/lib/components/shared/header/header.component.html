@@ -1,0 +1,102 @@
+<header
+  class="border-bottom shadow-sm p-3 px-4 w-100 position-relative bg-white"
+  style="max-height: 5rem"
+>
+  <div
+    class="d-flex align-items-center justify-content-between mx-auto"
+    style="max-width: 1536px"
+  >
+    <img
+      routerLink="/"
+      src="assets/image/logo-udemy.svg"
+      alt="app logo"
+      style="max-height: 2rem; cursor: pointer"
+    />
+
+    <form
+      class="position-relative d-flex align-items-center w-100 mx-4"
+      style="max-width: 28rem"
+      #searchForm="ngForm"
+    >
+      <input
+        type="search"
+        class="form-control w-100 p-2 text-sm border rounded-3"
+        placeholder="Search"
+        name="search"
+      />
+
+      <button
+        mat-icon-button
+        type="submit"
+        class="position-absolute top-50 translate-middle-y end-0 me-3 d-flex align-items-center bg-transparent"
+        style="border-color: transparent"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+
+    <div class="d-flex gap-3 align-items-center">
+      @if(accountService.currentUser()){
+      <a routerLink="my-learning" mat-button class="text-primary">
+        My Learning
+      </a>
+      <a
+        routerLink="cart"
+        routerLinkActive="active"
+        matBadge="{{ cartService.cartItems()?.length }}"
+        matBadgeSize="large"
+        style="color: black"
+        class="custom-bage mt-2 me-2 position-relative"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>arrow_drop_down</mat-icon>
+        <div class="user-initials">
+          {{ accountService.currentUser()?.firstName?.charAt(0) }}
+        </div>
+      </button>
+
+      }@else {
+      <button
+        routerLink="/login"
+        mat-stroked-button
+        class="text-primary"
+      >
+        Login
+      </button>
+      <button
+        routerLink="/signup"
+        mat-stroked-button
+        class="text-primary"
+      >
+        Register
+      </button>
+      }
+    </div>
+  </div>
+
+  @if(busyService.loading){
+  <mat-progress-bar
+    style="position: absolute; bottom: 0; left: 0"
+    mode="indeterminate"
+  ></mat-progress-bar>
+  }
+</header>
+
+<mat-menu #menu="matMenu" class="px-4">
+  <button mat-menu-item class="px-3" routerLink="/cart">
+    <mat-icon>shopping_cart</mat-icon>
+    My Cart
+  </button>
+
+  <button mat-menu-item class="px-3" routerLink="/orders">
+    <mat-icon>history</mat-icon>
+    My Orders
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item class="px-3" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>

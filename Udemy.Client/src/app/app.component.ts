@@ -4,11 +4,18 @@ import { MatIcon } from '@angular/material/icon';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './lib/components/shared/header/header.component';
+import { FooterComponent } from './lib/components/shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, RouterModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    HeaderComponent,
+    RouterModule,
+    FooterComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
