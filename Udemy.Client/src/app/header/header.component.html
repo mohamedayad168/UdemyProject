@@ -37,14 +37,10 @@
 
     <div class="d-flex gap-3 align-items-center">
       @if(accountService.currentUser()){
-        <a
-          routerLink="my-learning"
-          mat-button
-          class="text-primary"
-        >
-          My Learning
-        </a>
-        <a
+      <a routerLink="my-learning" mat-button class="text-primary">
+        My Learning
+      </a>
+      <a
         routerLink="cart"
         routerLinkActive="active"
         matBadge="{{ cartService.cartItems()?.length }}"
@@ -56,7 +52,9 @@
       </a>
       <button mat-button [matMenuTriggerFor]="menu">
         <mat-icon>arrow_drop_down</mat-icon>
-        <div class="user-initials">{{accountService.currentUser()?.firstName?.charAt(0)}}</div>
+        <div class="user-initials">
+          {{ accountService.currentUser()?.firstName?.charAt(0) }}
+        </div>
       </button>
 
       }@else {
@@ -68,7 +66,7 @@
         Login
       </button>
       <button
-        routerLink="/account/register"
+        routerLink="/account/signup"
         mat-stroked-button
         class="text-primary"
       >
