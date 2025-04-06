@@ -21,13 +21,25 @@ public class AccountController(
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-        var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
+
+        //check if user exists
+        var usEr = await signInManager.UserManager.Users
+            .AnyAsync(u => u.Email == loginDto.Email);
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+       // var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
+       var user= await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
         if(user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
         var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
         if(!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
+
+        
+        
+
 
         await signInManager.SignInAsync(user , true);
 
