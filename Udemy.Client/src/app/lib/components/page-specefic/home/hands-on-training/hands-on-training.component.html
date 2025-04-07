@@ -1,8 +1,9 @@
 <div class=" r my-6">
     <h2 class="text-start mb-4">Learning focused on your goals</h2>
-    <div class="">
+    <div class="grid grid-cols-3 gap-4">
+
       <!-- Cards Section -->
-      <div class="grid">
+      <div class="grid col-span-2 gap-4">
         <div
           class="card border rounded shadow p-3 mb-3 "
           *ngFor="let feature of features"
@@ -20,14 +21,24 @@
         </div>
       </div>
   
+
       <!-- Details Section -->
-      <div class="col-md-6" *ngIf="selectedFeature">
+      <div [class.hidden]="!selectedFeature" class="">
+
+
+
+        <!-- TODO: replace with image -->
         <div class="card border rounded shadow p-4">
           <h4 class="fw-bold">{{ selectedFeature?.title }}</h4>
           <p>{{ selectedFeature?.details }}</p>
           <a href="#" class="btn btn-primary">{{ selectedFeature?.linkText }}</a>
         </div>
+        <!-- TODO END -->
+
+        
       </div>
+
+
     </div>
   </div>
   

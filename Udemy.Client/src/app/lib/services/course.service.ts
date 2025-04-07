@@ -16,13 +16,23 @@ export class CourseService {
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(
-      environment.baseurl + '/Courses/page?PageSize=500&PageNumber=1'
+      environment.baseurl + '/Courses/page?PageSize=50&PageNumber=1'
+      // environment.baseurl + '/Courses'
     );
   }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${environment.baseurl}/categories`);
   }
+
+
+  getCoursesByCategory(categoryId: number): Observable<Course[]> {
+    return this.http.get<Course[]>(
+      `${environment.baseurl}/courses/category/${categoryId}`
+    );
+  }
+
+
 
   getCourseById(
     id: number,

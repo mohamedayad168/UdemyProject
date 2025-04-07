@@ -80,18 +80,18 @@ export class CourseSectionComponent implements OnInit {
       this.categories = data;
       console.log('Loaded Categories:', this.categories); // Log loaded categories
       if (this.categories.length > 0) {
-        this.selectedCategory = null;
-        this.filterCourses();
+        this.selectedCategory = 1;
+        // this.filterCourses();
       }
     });
   }
 
   loadCourses(): void {
-    this.courseService.getCourses().subscribe({
+    this.courseService.getCoursesByCategory(1).subscribe({
       next: (data) => {
-        this.courses = data;
+        this.filteredCourses = data;
         console.log('Loaded Courses:', this.courses); // Log loaded courses
-        this.filterCourses(); // Filter courses whenever they are loaded
+        // this.filterCourses(); // Filter courses whenever they are loaded
       },
       error: (err) => console.error('Error loading courses:', err),
     });
@@ -99,7 +99,16 @@ export class CourseSectionComponent implements OnInit {
 
   selectCategory(category: Category): void {
     this.selectedCategory = category.id;
-    this.filterCourses(); // Filter courses when a category is selected
+
+    this.courseService.getCoursesByCategory(category.id).subscribe({
+      next: (data) => {
+        this.filteredCourses = data;
+        console.log('courses by category:'+category.id, this.courses); // Log loaded courses
+        // this.filterCourses(); // Filter courses whenever they are loaded
+      },
+      error: (err) => console.error('Error loading courses:', err),
+    })
+    // this.filterCourses(); // Filter courses when a category is selected
   }
 
   // filterCourses(): void {
@@ -125,16 +134,16 @@ export class CourseSectionComponent implements OnInit {
   //   console.log('Filtered Courses:', this.filteredCourses); // Log the filtered list
   // }
 
-  filterCourses(): void {
-    console.log('Selected Category:', this.selectedCategory); // Log selected category
-    if (this.selectedCategory != null) {
-      this.filteredCourses = this.courses.filter((course) => {
-        return course.categoryId === this.selectedCategory;
-      });
-    } else {
-      this.filteredCourses = this.courses;
-    }
-  }
+  // filterCourses(): void {
+  //   console.log('Selected Category:', this.selectedCategory); // Log selected category
+  //   if (this.selectedCategory != null) {
+  //     this.filteredCourses = this.courses.filter((course) => {
+  //       return course.categoryId === this.selectedCategory;
+  //     });
+  //   } else {
+  //     this.filteredCourses = this.courses;
+  //   }
+  // }
   scrollCategories(direction: string): void {
     const container = this.categoryContainer.nativeElement;
     if (direction === 'left') {
