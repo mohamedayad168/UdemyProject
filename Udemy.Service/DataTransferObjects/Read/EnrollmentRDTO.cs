@@ -8,7 +8,7 @@ namespace Udemy.Service.DataTransferObjects.Read
 {
  
         public class EnrollmentRDTO
-    {
+        {
         public int StudentId { get; set; }
         public string StudentName { get; set; } = string.Empty; 
         public int CourseId { get; set; }
@@ -20,5 +20,5 @@ namespace Udemy.Service.DataTransferObjects.Read
         public string? Comment { get; set; }
         public string? CertificationUrl { get; set; }
         public decimal? ProgressPercentage { get; set; }
-    }
+        }
 }

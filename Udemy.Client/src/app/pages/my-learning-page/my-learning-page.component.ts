@@ -3,10 +3,12 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { PowerBiReportsService } from '../../lib/services/PowerBi/power-bi-reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../lib/services/user.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-my-learning-page',
-  imports: [NgbNavModule, CommonModule],
+  imports: [NgbNavModule, CommonModule,MatProgressBarModule],
 
   templateUrl: './my-learning-page.component.html',
   styleUrl: './my-learning-page.component.css'
@@ -15,6 +17,8 @@ export class MyLearningPageComponent {
   powerBiService = inject(PowerBiReportsService);
   private santaizer = inject(DomSanitizer);
   powerBiUrl: string | null = null;
+  userService = inject(UserService);
+  userLearning: any=null;
 
   activeTab = 1;
 
@@ -30,5 +34,19 @@ export class MyLearningPageComponent {
     } else {
       console.error('Power BI URL is null or undefined.');
     }
+
+    // Fetch the user's learning data from the UserService
+    this.userService.getMyLearning().subscribe((data) => {
+      this.userLearning = data;
+      console.log('User Learning:', this.userLearning);
+    });
+
+
   }
+
+
+
+
+
+
 }

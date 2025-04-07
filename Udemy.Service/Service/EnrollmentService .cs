@@ -24,7 +24,31 @@ namespace Udemy.Service.Service
             _repository = repository;
             _mapper = mapper;
         }
-        
+
+        public async Task<IEnumerable<StudentCourseRDTO>> GetStudentCoursesAsync(int studentId)
+        {
+            var enrollments= _repository.Enrollments
+                .FindByCondition(enrollment=>(enrollment.StudentId==studentId)&&(enrollment.IsDeleted==false), false)
+                .Include(e=>e.Course).ThenInclude(c=>c.Instructor);
+
+            var studentCourses =await enrollments.Select(Course => new StudentCourseRDTO
+            {
+                StudentId = Course.StudentId,
+                StudentName = $"{Course.Student.FirstName} {Course.Student.LastName}",
+                CourseId = Course.CourseId,
+                Title = Course.Course.Title,
+                InstructorName = $"{Course.Course.Instructor.FirstName} {Course.Course.Instructor.LastName}",
+                ImageUrl = Course.Course.ImageUrl,
+                CourseProgress = Course.ProgressPercentage.ToString(),
+                ProgressPercentage = Course.ProgressPercentage
+            }).ToListAsync();
+
+            return studentCourses;
+
+        }
+
+
+
         public async Task<CourseRatingRDTO> GetCourseRatingsAsync(int courseId)
         {
             //check if course exists

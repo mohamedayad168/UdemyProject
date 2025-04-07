@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Udemy.Core.Entities;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
@@ -9,12 +12,22 @@ namespace Udemy.Presentations.Controllers;
 
 [ApiController]
 [Route("api/students")]
-public class StudentsController(IServiceManager serviceManager) : ControllerBase
+public class StudentsController(IServiceManager serviceManager,UserManager<ApplicationUser> _userManager) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllStudents([FromQuery] RequestParamter? requestParamter)
     {
         var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false , requestParamter);
+        return Ok(studentsDto);
+    }
+   [Authorize]
+    [HttpGet("my-learnings")]
+    public async Task<IActionResult> GetMyLearnings()
+    {
+        var userId = _userManager.GetUserId(User);
+        if (userId == null)
+            return BadRequest("User not found");
+        var studentsDto = await serviceManager.EnrollmentService.GetStudentCoursesAsync(int.Parse(userId));
         return Ok(studentsDto);
     }
 

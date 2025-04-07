@@ -15,6 +15,8 @@ namespace Udemy.Service.IService
         Task<IEnumerable<EnrollmentRDTO>> GetEnrollmentsByStudentIdAsync(int studentId);
         Task<IEnumerable<EnrollmentRDTO>> GetEnrollmentsByCourseIdAsync(int courseId);
 
+        Task<IEnumerable<StudentCourseRDTO>> GetStudentCoursesAsync(int studentId);
+
         Task<CourseRatingRDTO> GetCourseRatingsAsync(int courseId);
         Task<EnrollmentRDTO?> GetEnrollmentAsync(int studentId, int courseId);
         Task<EnrollmentRDTO> CreateEnrollmentAsync(EnrollmentCDTO enrollmentDto);
@@ -22,25 +24,20 @@ namespace Udemy.Service.IService
         Task DeleteEnrollmentAsync(int studentId, int courseId);
     }
 
-    public class CourseRatingRDTO
+    public class StudentCourseRDTO
     {
-        public int CourseId { get; set; }
-        public decimal Rating { get; set; }
-        public int TotalReviews { get; set; }
-        public int InstructorId { get; set; }
-        public IEnumerable<RatingRDTO> Ratings { get; set; }
-    }
-    public class RatingRDTO
-    {
-        public int CourseId { get; set; }
         public int StudentId { get; set; }
+        public string StudentName { get; set; } = string.Empty;
+        public int CourseId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string InstructorName { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string CourseProgress { get; set; } = string.Empty;
 
-        public string StudentName { get; set; }
+        public decimal? ProgressPercentage { get; set; } = 0; //Added new property
 
-        public DateTime date { get; set; }
-
-        public decimal Rating { get; set; }
-        public string Comment { get; set; } = string.Empty;
 
     }
+
+
 }

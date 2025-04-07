@@ -2,7 +2,7 @@
 using Udemy.Core.ReadOptions;
 
 namespace Udemy.Core.IRepository;
-public interface IStudentRepository
+public interface IStudentRepository : IRepositoryBase<Student>
 {
     Task CreateStudent(Student student);
     void DeleteStudent(Student student);

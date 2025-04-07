@@ -20,10 +20,6 @@ public class AccountController(
 
 ) : ControllerBase
 {
-
-
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {

@@ -18,6 +18,11 @@ public class StudentService(
     private readonly IRepositoryManager repository = repository;
     private readonly IMapper mapper = mapper;
 
+
+
+   
+
+
     public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
     {
         var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
