@@ -1,0 +1,100 @@
+<div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Left side (Image) -->
+    <div class="w-full md:w-1/2 bg-white flex items-center justify-center ">
+      <div class="max-w-md">
+        <img 
+          src="/assets/image/desktop-illustration-step-1-x2.webp" 
+          alt="Udemy Instructor" 
+          class="rounded-lg  w-full"
+        >
+      </div>
+    </div>
+  
+    <!-- Right side (Form) -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-8">
+      <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+          <h1 class="text-2xl font-bold text-gray-800 mb-2">Become a Udemy Instructor</h1>
+          <p class="text-gray-600">Discover a supportive community of online instructors. Get instant access to all course creation resources.</p>
+        </div>
+      
+        <form class="space-y-4">
+          <div>
+            <label for="fullname" class="block text-sm font-medium text-gray-700">Full name</label>
+            <input type="text" id="fullname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+          </div>
+      
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+          </div>
+      
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+          </div>
+      
+          <div class="flex items-start">
+            <input id="promotions" name="promotions" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1">
+            <label for="promotions" class="ml-2 block text-sm text-gray-700">
+              I want to get the most out of my experience, by receiving emails with insider tips, motivation, special updates and promotions reserved for instructors.
+            </label>
+          </div>
+      
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            Sign up
+          </button>
+        </form>
+      
+        <div class="mt-6">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-white text-gray-500">Other sign up options</span>
+            </div>
+          </div>
+        </div>
+  
+ <!-- Social sign-up buttons -->
+ <div class="mt-4 space-y-4">
+    <a href="https://www.facebook.com/v12.0/dialog/oauth?client_id=YOUR_FACEBOOK_APP_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_STATE_PARAM" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-blue-600 text-white">
+      <i class="fab fa-facebook-f mr-2"></i> 
+    </a>
+    <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=YOUR_GOOGLE_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=email" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-red-600 text-white">
+      <i class="fab fa-google mr-2"></i> 
+    </a>
+    <a href="https://appleid.apple.com/auth/authorize?client_id=YOUR_APPLE_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=email" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-black text-white">
+      <i class="fab fa-apple mr-2"></i>
+    </a>
+  </div>
+  
+        <div class="mt-6 text-center text-sm text-gray-500">
+          <p>By signing up, you agree to our  <a
+            routerLink="/terms-of-use"
+            class="ms-2 text-primary text-decoration-none"
+            style="font-weight: 500"
+          >
+         term of us
+          </a> and <a
+          routerLink="/privacy-policy"
+          class="ms-2 text-primary text-decoration-none"
+          style="font-weight: 500"
+        >
+       privacy policy
+        </a></p>
+          <p class="mt-2">Already have an account? 
+            <a
+      routerLink="/loginasinstractor"
+      class="ms-2 text-primary text-decoration-none"
+      style="font-weight: 500"
+    >
+      Log In
+    </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -6,6 +6,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './lib/components/shared/header/header.component';
 import { FooterComponent } from './lib/components/shared/footer/footer.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { FooterComponent } from './lib/components/shared/footer/footer.component
     CommonModule,
     HeaderComponent,
     RouterModule,
-    FooterComponent,
+    FooterComponent,ButtonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

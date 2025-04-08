@@ -8,6 +8,7 @@ interface Feature {
   description: string;
   details: string;
   linkText: string;
+  imageUrl: string;
 }
 @Component({
   selector: 'app-hands-on-training',
@@ -28,6 +29,7 @@ export class HandsOnTrainingComponent {
       details:
         'AI-powered exercises and hands-on practice to sharpen your skills in real-world scenarios.',
       linkText: 'Explore courses',
+      imageUrl:"",
     },
     {
       id: 2,
@@ -38,6 +40,7 @@ export class HandsOnTrainingComponent {
       details:
         'Certification-focused content to help you gain industry-recognized qualifications with practical challenges.',
       linkText: 'Explore courses',
+      imageUrl:"",
     },
     {
       id: 3,
@@ -48,6 +51,8 @@ export class HandsOnTrainingComponent {
       details:
         'Advanced analytics to track progress and insights to improve learning outcomes for your organization.',
       linkText: 'Find out more',
+
+      imageUrl:"",
     },
     {
       id: 4,
@@ -58,6 +63,7 @@ export class HandsOnTrainingComponent {
       details:
         'Flexible content customization for your team’s unique training requirements, including hosting your own content.',
       linkText: 'Find out more',
+      imageUrl:"",
     },
   ];
 
@@ -72,6 +78,7 @@ export class HandsOnTrainingComponent {
       details:
         'AI-powered exercises and hands-on practice to sharpen your skills in real-world scenarios.',
       linkText: 'Explore courses',
+      imageUrl:"",
     }; // Set to null initially
   }
 

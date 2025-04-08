@@ -1,0 +1,108 @@
+<div class="teach-with-us-container" style="
+    background-image: url('/assets/image/billboard-desktop-2x-v4.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+">
+    <div class="max-w-3xl mx-auto text-start py-12 px-4 sm:px-6 lg:px-8 relative z-10" style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    ">
+        <h1 class="text-3xl font-extrabold text-white sm:text-4xl mb-6">
+            Come teach with us
+        </h1>
+        
+        <p class="text-xl text-white mb-8">
+            Become an instructor and change lives – including your own
+        </p>
+        
+        <button 
+        (click)="navigateToGetStarted()"
+            class=" w-25 bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors min-w-[200px]"
+        >
+            Get started
+        </button>
+    </div>
+</div>
+
+<div class="bg-white bg-opacity-90 rounded-lg p-6 mt-20">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">
+        So many reasons to start
+    </h2>
+    
+    <div class="grid gap-4 md:grid-cols-2">
+        <div *ngFor="let reason of reasons" class="p-4 bg-gray-50 rounded-lg">
+            <p class="text-gray-700 flex items-center">
+                <i class="pi pi-check-circle text-green-500 mr-2"></i>
+                {{reason}}
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="flex flex-col items-center mb-8">
+    <h1 class="text-4xl font-bold text-black mb-8">How to Begin</h1>
+    
+    <div class="w-full border-b border-gray-200 flex justify-center mb-12">
+        <div class="flex">
+            <button 
+                *ngFor="let section of sections"
+                (click)="selectSection(section)"
+                [class]="selectedSection === section 
+                    ? 'border-b-2 border-blue-600 text-2xl text-blue-600 font-bold' 
+                    : 'text-gray-500 hover:text-gray-700'"
+                class="px-6 py-3 text-lg focus:outline-none transition-colors"
+            >
+                {{section.title}}
+            </button>
+        </div>
+    </div>
+    
+    <div class="flex flex-col md:flex-row gap-8">
+        <div class="w-full md:w-1/2 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-black mb-4">{{selectedSection.subtitle}}</h2>
+                
+                <div class="space-y-4 mb-6">
+                    <p *ngFor="let paragraph of selectedSection.paragraphs" class="text-2xl text-gray-600">
+                        {{paragraph}}
+                    </p>
+                    <p class="text-2xl fw-bold text-black">How we help you</p>
+                    <p class="text-2xl text-gray-600">{{selectedSection.helpText}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="w-full md:w-1/3">
+            <div class="h-full bg-gray-100 rounded-lg overflow-hidden">
+                <img 
+                    [src]="selectedSection.image" 
+                    [alt]="selectedSection.title + ' illustration'"
+                    class="w-full h-full object-cover"
+                >
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-gray-100 w-full">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-gray-900 mb-6">Become an instructor today</h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Join one of the world's largest online learning marketplaces.
+            </p>
+            <button 
+            (click)="navigateToGetStarted()"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors min-w-[200px]"
+            >
+                Get started
+            </button>
+        </div>
+    </div>
+</div>

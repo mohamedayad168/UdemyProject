@@ -6,6 +6,11 @@ import { CourseDetailsPageComponent } from './pages/course-details-page/course-d
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { MyLearningPageComponent } from './pages/my-learning-page/my-learning-page.component';
+import { CometeachwithusComponent } from './pages/cometeachwithus/cometeachwithus.component';
+import { GetStartedComponent } from './pages/get-started/get-started.component';
+import { LoginasinstractorComponent } from './pages/loginasinstractor/loginasinstractor.component';
+import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.component';
+import { TermsComponent } from './terms/terms.component';
 export const routes: Routes = [
   {
     path: '',
@@ -34,8 +39,19 @@ export const routes: Routes = [
     component: MyLearningPageComponent,
   },
   {
+    path: 'teach',
+    component: CometeachwithusComponent,
+  },
+  { path: 'privacy-policy', component:PrivecypolicyComponent},
+  { path: 'get-started', component: GetStartedComponent },
+  { path: 'loginasinstractor', component: LoginasinstractorComponent },
+  { path: 'terms-of-use', component: TermsComponent },
+  {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
+
+ 
+
 ];

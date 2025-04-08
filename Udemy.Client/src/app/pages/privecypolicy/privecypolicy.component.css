@@ -1,0 +1,80 @@
+/* Custom styling for the privacy policy content */
+.prose {
+    color: #374151; /* gray-700 */
+    line-height: 1.6;
+    font-size: 0.9375rem; /* 15px */
+  }
+  
+  .prose h2 {
+    color: #1f2937; /* gray-800 */
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    font-size: 1.5rem; /* 24px */
+    font-weight: 700;
+  }
+  
+  .prose h3 {
+    color: #1f2937; /* gray-800 */
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+  }
+  
+  .prose p {
+    margin-bottom: 1em;
+  }
+  
+  .prose a {
+    text-decoration: none;
+    color: #7c3aed; /* purple-600 */
+  }
+  
+  .prose a:hover {
+    color: #6d28d9; /* purple-700 */
+  }
+  
+  .prose table {
+    margin: 1.5em 0;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  .prose th, .prose td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border: 1px solid #e5e7eb; /* gray-200 */
+    vertical-align: top;
+  }
+  
+  .prose th {
+    background-color: #f9fafb; /* gray-50 */
+    font-weight: 600;
+  }
+  
+  .prose ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1em;
+  }
+  
+  .prose ol li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  @media (max-width: 768px) {
+    .prose table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }
+  html {
+    scroll-behavior: smooth;
+  }

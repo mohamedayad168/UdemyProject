@@ -104,8 +104,8 @@ public class AccountController(
         }
         else
         {
-            return BadRequest("Email is Already Exist");
-        }
+            return Unauthorized();
 
+        }
     }
 }

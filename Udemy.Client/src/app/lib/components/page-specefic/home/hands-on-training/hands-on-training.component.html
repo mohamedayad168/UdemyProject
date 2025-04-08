@@ -1,46 +1,44 @@
-<div class=" r my-6">
-    <h2 class="text-start mb-4">Learning focused on your goals</h2>
-    <div class="grid grid-cols-3 gap-4">
+<div class="my-6 px-4 max-w-7xl mx-auto">
+  <h2 class="text-start mb-6 text-2xl font-semibold">Learning focused on your goals</h2>
 
-      <!-- Cards Section -->
-      <div class="grid col-span-2 gap-4">
-        <div
-          class="card border rounded shadow p-3 mb-3 "
-          *ngFor="let feature of features"
-          (click)="selectFeature(feature)"
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        >
-          <div class="d-flex align-items-center">
-            <span class="icon me-3">{{ feature.icon }}</span>
-            <div>
-              <h5 class="fw-bold">{{ feature.title }}</h5>
-              <p>{{ feature.description }}</p>
-              <a href="#" class="text-primary">{{ feature.linkText }}</a>
-            </div>
+    <!-- Left: Cards List -->
+    <div class="space-y-4">
+      <div
+        *ngFor="let feature of features"
+        (click)="selectFeature(feature)"
+        class="border rounded shadow-md p-4 hover:shadow-lg transition cursor-pointer"
+        [ngClass]="{ 'bg-gray-100 border-blue-500': selectedFeature?.id === feature.id }"
+      >
+        <div class="flex items-start gap-3">
+          <span class="text-2xl">{{ feature.icon }}</span>
+          <div>
+            <h5 class="font-bold text-lg">{{ feature.title }}</h5>
+            <p class="text-gray-600">{{ feature.description }}</p>
+            <a href="#" class="text-blue-600 hover:underline">{{ feature.linkText }}</a>
           </div>
         </div>
       </div>
-  
-
-      <!-- Details Section -->
-      <div [class.hidden]="!selectedFeature" class="">
-
-
-
-        <!-- TODO: replace with image -->
-        <div class="card border rounded shadow p-4">
-          <h4 class="fw-bold">{{ selectedFeature?.title }}</h4>
-          <p>{{ selectedFeature?.details }}</p>
-          <a href="#" class="btn btn-primary">{{ selectedFeature?.linkText }}</a>
-        </div>
-        <!-- TODO END -->
-
-        
-      </div>
-
-
     </div>
-  </div>
-  
 
-  
+    <!-- Right: Selected Feature -->
+    <div *ngIf="selectedFeature" class="border rounded shadow-md p-6 h-full">
+      <div class="flex gap-6 items-start">
+        <img
+          [src]="selectedFeature.imageUrl || 'https://via.placeholder.com/150'"
+          alt="Feature image"
+          class="w-48 h-48 object-cover rounded"
+        />
+        <div>
+          <h4 class="text-xl font-bold mb-2">{{ selectedFeature.title }}</h4>
+          <p class="text-gray-700 mb-3">{{ selectedFeature.details }}</p>
+          <a href="#" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            {{ selectedFeature.linkText }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
