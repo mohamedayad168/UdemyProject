@@ -1,0 +1,7 @@
+{
+    "tailwindCSS.includeLanguages": {
+      "typescript": "html",
+      "typescriptreact": "html",
+      "html": "html"
+    }
+  }
