@@ -29,7 +29,7 @@ export class HandsOnTrainingComponent {
       details:
         'AI-powered exercises and hands-on practice to sharpen your skills in real-world scenarios.',
       linkText: 'Explore courses',
-      imageUrl:"",
+      imageUrl:"assets/image/desktop-hands-on-learning-2x.webp",
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ export class HandsOnTrainingComponent {
       details:
         'Certification-focused content to help you gain industry-recognized qualifications with practical challenges.',
       linkText: 'Explore courses',
-      imageUrl:"",
+      imageUrl:"assets/image/desktop-certification-prep-2x.webp",
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ export class HandsOnTrainingComponent {
         'Advanced analytics to track progress and insights to improve learning outcomes for your organization.',
       linkText: 'Find out more',
 
-      imageUrl:"",
+      imageUrl:"assets/image/desktop-insights-and-analytics-2x.webp",
     },
     {
       id: 4,
@@ -63,7 +63,7 @@ export class HandsOnTrainingComponent {
       details:
         'Flexible content customization for your team’s unique training requirements, including hosting your own content.',
       linkText: 'Find out more',
-      imageUrl:"",
+      imageUrl:"assets/image/desktop-customizable-2x.webp",
     },
   ];
 

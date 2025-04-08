@@ -10,7 +10,7 @@ import { CometeachwithusComponent } from './pages/cometeachwithus/cometeachwithu
 import { GetStartedComponent } from './pages/get-started/get-started.component';
 import { LoginasinstractorComponent } from './pages/loginasinstractor/loginasinstractor.component';
 import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.component';
-import { TermsComponent } from './terms/terms.component';
+import { TermsComponent } from './pages/terms/terms.component';
 export const routes: Routes = [
   {
     path: '',
