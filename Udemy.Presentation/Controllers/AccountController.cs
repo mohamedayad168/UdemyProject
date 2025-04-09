@@ -91,18 +91,23 @@ public class AccountController(
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
+
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp(UserForCreationDto register)
     {
-        var user = await signInManager.UserManager.FindByEmailAsync(register.Email);
-        if (user == null)
+        var student = await signInManager.UserManager.FindByEmailAsync(register.Email);
+
+        if (student == null)
         {
-            var createUser = await serviceManager.UserService.CreateUserAsync(register);
+            var studentForCreation = mapper.Map<StudentForCreationDto>(register);
+            studentForCreation.Wallet = 0m;
 
-            var userEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
-            await signInManager.UserManager.AddToRoleAsync(userEntity , UserRole.Student);
+            var createdStudent = await serviceManager.StudentService.CreateStudentAsync(studentForCreation);
+            var studentEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
 
-            return Ok(createUser);
+            await signInManager.UserManager.AddToRoleAsync(studentEntity , UserRole.Student);
+
+            return Ok(createdStudent);
         }
         else
         {
