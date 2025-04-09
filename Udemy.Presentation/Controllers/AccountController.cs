@@ -56,9 +56,8 @@ public class AccountController(
         var principal = new ClaimsPrincipal(identity);
 
 
-        var userRoles = await signInManager.UserManager.GetRolesAsync(user);
         var userDto = mapper.Map<UserDto>(user);
-        userDto.Roles = userRoles ?? [];
+        userDto.Roles = roles ?? [];
 
         return Ok(userDto);
     }
