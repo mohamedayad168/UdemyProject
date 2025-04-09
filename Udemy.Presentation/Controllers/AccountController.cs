@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 using Udemy.Core.Entities;
+using Udemy.Core.Utils;
 using Udemy.Presentation.Extenstions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -26,27 +29,31 @@ public class AccountController(
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-
-        //check if user exists
-        var usEr = await signInManager.UserManager.Users
-            .AnyAsync(u => u.Email == loginDto.Email);
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        // var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
         var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
-        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
+        var result = await signInManager.UserManager.CheckPasswordAsync(user , loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
+        var roles = await signInManager.UserManager.GetRolesAsync(user);
 
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.UserName)
+        };
 
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role , role));
+        }
 
+        var identity = new ClaimsIdentity(claims , "Identity.Application");
 
-        await signInManager.SignInAsync(user, true);
+        var principal = new ClaimsPrincipal(identity);
 
 
         var userRoles = await signInManager.UserManager.GetRolesAsync(user);
@@ -97,23 +104,26 @@ public class AccountController(
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
-
-
-
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp(UserForCreationDto register)
     {
-        var user = await signInManager.UserManager.FindByEmailAsync(register.Email);
-        if (user == null)
-        {
-            var createUser = await serviceManager.UserService.CreateUserAsync(register);
+        var student = await signInManager.UserManager.FindByEmailAsync(register.Email);
 
-            return Ok(createUser);
+        if (student == null)
+        {
+            var studentForCreation = mapper.Map<StudentForCreationDto>(register);
+            studentForCreation.Wallet = 0m;
+
+            var createdStudent = await serviceManager.StudentService.CreateStudentAsync(studentForCreation);
+            var studentEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
+
+            await signInManager.UserManager.AddToRoleAsync(studentEntity , UserRole.Student);
+
+            return Ok(createdStudent);
         }
         else
         {
-            return Unauthorized();
-
+            return BadRequest("Email is Already Exist");
         }
     }
 }
