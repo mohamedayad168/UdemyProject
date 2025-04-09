@@ -12,39 +12,43 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularDev",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200") // Angular default dev port
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
-
-
-
 builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAuthorization();
+
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularDev",
+    options.AddPolicy("AllowAngularDevelopment",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins(
+                "http://localhost:4200",//student & instructor frontend
+                "http://localhost:54376"// admin frontend
+            )
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+
+
+    options.AddPolicy("AllowAngularProduction",
+        policy =>
+        {
+            policy.WithOrigins("https://production:bomba")
                   .AllowCredentials()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
 });
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-app.UseCors("AllowAngularDev");
 
 
 app.ConfigureExceptionHandler();
@@ -52,8 +56,14 @@ app.ConfigureExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("AllowAngularDevelopment");
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseCors("AllowAngularProduction");
+    //app.UseHsts();
 }
 
 
