@@ -144,7 +144,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withViewTransitions(), withComponentInputBinding()),
     provideAnimationsAsync(),
-    provideAppInitializer(),
+    provideAppInitializer(loadUser),
     providePrimeNG({
       theme: {
         preset: MyPreset,
