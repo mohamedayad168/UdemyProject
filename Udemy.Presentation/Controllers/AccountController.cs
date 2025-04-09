@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Udemy.Core.Entities;
 using Udemy.Presentation.Extenstions;
 using Udemy.Service.DataTransferObjects.Create;
@@ -16,7 +17,9 @@ namespace Udemy.Presentation.Controllers;
 public class AccountController(
     SignInManager<ApplicationUser> signInManager,
     IMapper mapper,
-    IServiceManager serviceManager
+    IServiceManager serviceManager,
+    ILogger<AccountController> logger,
+    UserManager<ApplicationUser> userManager
 
 ) : ControllerBase
 {
@@ -45,7 +48,12 @@ public class AccountController(
 
         await signInManager.SignInAsync(user, true);
 
-        return NoContent();
+
+        var userRoles = await signInManager.UserManager.GetRolesAsync(user);
+        var userDto = mapper.Map<UserDto>(user);
+        userDto.Roles = userRoles ?? [];
+
+        return Ok(userDto);
     }
 
 

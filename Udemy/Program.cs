@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(
                 "http://localhost:4200",//student & instructor frontend
-                "http://localhost:54376"// admin frontend
+                "http://localhost:54377"// admin frontend
             )
             .AllowCredentials()
             .AllowAnyHeader()
