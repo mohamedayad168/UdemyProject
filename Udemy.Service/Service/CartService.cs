@@ -4,9 +4,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
-using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
 
 namespace Udemy.Service.Service;
@@ -36,77 +34,65 @@ public class CartService(
     )
     {
         await CheckIfStudentExistsAsync(studentId);
-        var cart = await GetStudentCartAndCheckIfExistsAsync(studentId);
+        var cart = await GetStudentCartAndCreateIfDoesntExistAsync(studentId);
 
         var cartDto = mapper.Map<CartDto>(cart);
         return cartDto;
     }
 
-    public async Task<CartDto> CreateStudentCartAsync(
-        CartForCreationDto cartDto , int studentId
+    public async Task AddCourseToStudentCartAsync(
+        int courseId , int studentId
     )
     {
         await CheckIfStudentExistsAsync(studentId);
+        await CheckIfCourseExistAsync(courseId);
 
-        if (await repository.Cart.CheckIfStudentCartExist(studentId))
-        {
-            throw new BadRequestException($"Student With Id: {studentId} already have a cart.");
-        }
+        var cart = await GetStudentCartAndCreateIfDoesntExistAsync(studentId);
 
-        await CheckIfCartCoursesExistAsync(cartDto.CourseIds);
+        cart.CartCourses.Add(new CartCourse() { CartId = cart.Id , CourseId = courseId });
 
-        var cart = new Cart();
-        repository.Cart.CreateCart(cart);
-        cart.StudentId = studentId;
         await repository.SaveAsync();
-
-        mapper.Map(cartDto , cart);
-        await repository.SaveAsync();
-
-        var cartDtoToReturn = mapper.Map<CartDto>(cart);
-        return cartDtoToReturn;
     }
 
-    public async Task UpdateStudentCartAsync(
-        CartForUpdatingDto cartDto , int studentId
-    )
+    public async Task DeleteCourseFromStudentCartAsync(int courseId , int studentId)
     {
         await CheckIfStudentExistsAsync(studentId);
-        await CheckIfCartCoursesExistAsync(cartDto.CourseIds);
+        await CheckIfCourseExistAsync(courseId);
 
         var cart = await GetStudentCartAndCheckIfExistsAsync(studentId);
 
-        foreach (var cartCourse in cart.CartCourses)
+        var cartCourse = cart.CartCourses.FirstOrDefault(x => x.CartId == cart.Id && x.CourseId == courseId);
+
+        if(cartCourse is null)
         {
-            repository.Cart.DeleteCartCourse(cartCourse);
+            throw new NotFoundException($"Student with Id: {studentId} doens't have course with id: {courseId} in the cart");
         }
 
-        foreach (var courseId in cartDto.CourseIds)
-        {
-            cart.CartCourses.Add(new CartCourse { CourseId = courseId });
-        }
+        repository.CartCourse.DeleteCartCourse(cartCourse);
 
         await repository.SaveAsync();
     }
 
-    public async Task DeleteStudentCartAsync(int studentId)
+    private async Task<Cart> GetStudentCartAndCreateIfDoesntExistAsync(int studentId)
     {
-        await CheckIfStudentExistsAsync(studentId);
-        var cart = await GetStudentCartAndCheckIfExistsAsync(studentId);
+        var cart = await repository.Cart.GetStudentCartByIdAsync(
+            studentId , true ,
+            x => x.Include(a => a.Student) ,
+            x => x.Include(a => a.CartCourses).ThenInclude(a => a.Course)
+        );
 
-        foreach (var cartCourse in cart.CartCourses)
+        if (cart is null)
         {
-            repository.Cart.DeleteCartCourse(cartCourse);
+            cart = new Cart();
+            repository.Cart.CreateCart(cart);
+
+            cart.StudentId = studentId;
+
+            await repository.SaveAsync();
         }
 
-        repository.Cart.DeleteCart(cart);
-
-        await repository.SaveAsync();
+        return cart;
     }
-
-
-
-
     private async Task<Cart> GetStudentCartAndCheckIfExistsAsync(int studentId)
     {
         // each student have one cart , so i don't have to use cartId here
@@ -120,13 +106,10 @@ public class CartService(
             throw new NotFoundException($"Student With Id: {studentId} Deosn't Have Cart");
         return studentCart;
     }
-    private async Task CheckIfCartCoursesExistAsync(List<int> courseIds)
+    private async Task CheckIfCourseExistAsync(int courseId)
     {
-        foreach (var courseId in courseIds)
-        {
-            if (!await repository.Courses.CheckIfCourseExistsAsync(courseId))
-                throw new BadRequestException($"Course with Id: {courseId} Doesn't Exists.");
-        }
+        if (!await repository.Courses.CheckIfCourseExistsAsync(courseId))
+            throw new BadRequestException($"Course with Id: {courseId} Doesn't Exists.");
     }
     private async Task CheckIfStudentExistsAsync(int id)
     {

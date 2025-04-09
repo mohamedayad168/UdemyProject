@@ -20,6 +20,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ICartRepository> cartRepository;
     private readonly Lazy<IUserRepository> userRepository;
     private readonly Lazy<ISubCategoriesRepository> subCategoriesRepository;
+    private readonly Lazy<ICartCourseRepository> cartCourseRepository;
     public RepositoryManager(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
     {
         this.applicationDbContext = applicationDbContext;
@@ -35,6 +36,7 @@ public class RepositoryManager : IRepositoryManager
         cartRepository = new Lazy<ICartRepository>(() => new CartRepository(applicationDbContext));
         userRepository = new Lazy<IUserRepository>(() => new UserRepository(applicationDbContext, userManager));
         subCategoriesRepository = new Lazy<ISubCategoriesRepository>(() => new SubCategoriesRepository(applicationDbContext));
+        cartCourseRepository = new Lazy<ICartCourseRepository>(() => new CartCourseRepository(applicationDbContext));
     }
 
     public ICoursesRepository Courses => coursesRepo.Value;
@@ -47,6 +49,7 @@ public class RepositoryManager : IRepositoryManager
     public IAskRepository Ask => askRepository.Value;
     public IAnswerRepository Answer => answerRepository.Value;
     public ICartRepository Cart => cartRepository.Value;
+    public ICartCourseRepository CartCourse => cartCourseRepository.Value;
     public IUserRepository User => userRepository.Value;
 
     public ISubCategoriesRepository SubCategories => subCategoriesRepository.Value;
