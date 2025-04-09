@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Udemy.Core.Entities;
+using Udemy.Core.Utils;
 using Udemy.Presentation.Extenstions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -14,40 +17,47 @@ namespace Udemy.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController(
-    SignInManager<ApplicationUser> signInManager,
-    IMapper mapper,
+    SignInManager<ApplicationUser> signInManager ,
+    IMapper mapper ,
     IServiceManager serviceManager
 
 ) : ControllerBase
 {
-
-
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-
-        //check if user exists
-        var usEr = await signInManager.UserManager.Users
-            .AnyAsync(u => u.Email == loginDto.Email);
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        // var user = await signInManager.UserManager.FindByEmailAsync(loginDto.Email);
         var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
-        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
+        var result = await signInManager.UserManager.CheckPasswordAsync(user , loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
+        var roles = await signInManager.UserManager.GetRolesAsync(user);
 
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.UserName)
+        };
 
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role , role));
+        }
 
+        var identity = new ClaimsIdentity(claims , "Identity.Application");
 
-        await signInManager.SignInAsync(user, true);
+        var principal = new ClaimsPrincipal(identity);
+
+        await signInManager.SignOutAsync();
+
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme , principal , new AuthenticationProperties
+        {
+            IsPersistent = true
+        });
 
         return NoContent();
     }
@@ -88,6 +98,9 @@ public class AccountController(
         if (user == null)
         {
             var createUser = await serviceManager.UserService.CreateUserAsync(register);
+
+            var userEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
+            await signInManager.UserManager.AddToRoleAsync(userEntity , UserRole.Student);
 
             return Ok(createUser);
         }
