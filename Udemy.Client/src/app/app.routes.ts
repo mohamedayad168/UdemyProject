@@ -11,6 +11,7 @@ import { GetStartedComponent } from './pages/get-started/get-started.component';
 import { LoginasinstractorComponent } from './pages/loginasinstractor/loginasinstractor.component';
 import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.component';
 import { TermsComponent } from './pages/terms/terms.component';
+import { CourseViewComponent } from './pages/course-view/course-view.component';
 export const routes: Routes = [
   {
     path: '',
@@ -47,11 +48,16 @@ export const routes: Routes = [
   { path: 'loginasinstractor', component: LoginasinstractorComponent },
   { path: 'terms-of-use', component: TermsComponent },
   {
+    path:'course/view/:id',
+    component:CourseViewComponent,
+    data: { hideHeader: true }
+  },
+  {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
 
- 
+
 
 ];
