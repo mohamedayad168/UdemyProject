@@ -1,0 +1,91 @@
+<header
+  class="grid grid-cols-3 [&>*]:flex justify-between p-2 shadow-lg bg-header"
+>
+  <h1 class="items-center gap-2">
+    <a
+      href="/"
+      aria-label="Home"
+      routerLink="/"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <img src="/yosofo-logo.png" class="h-4" alt="Yostate" />
+    </a>
+  </h1>
+
+  <!-- <p-floatlabel variant="on" >
+    <input
+      pInputText
+      id="on_label"
+      [(ngModel)]="searchInput"
+      autocomplete="off"
+      class="p-2 shadow w-full border border-gray-500 rounded-lg"
+    />
+    <label for="on_label">On Label</label>
+  </p-floatlabel> -->
+
+  <p-inputgroup styleClass="border1 border-gray-500 rounded-lg">
+    <!-- <p-floatlabel variant="on" > -->
+    <!-- <input pInputText [(ngModel)]="searchService.input" class="bg-transparent" placeholder="search"  /> -->
+    <p-inputgroup-addon>
+      <p-button
+        icon="pi pi-search"
+        severity="secondary"
+        variant="text"
+        class="h-full"
+        
+      />
+    </p-inputgroup-addon>
+
+    <!-- </p-floatlabel> -->
+  </p-inputgroup>
+
+  <div class="justify-end gap-3 items-center">
+    <!-- login -->
+    @if(authService.authState().isAuthenticated){ }@else{
+    <p-button
+      class="justify-end"
+      styleClass=" !rounded-sm btn-primary font-bold"
+      size="small"
+      label="Login"
+      (click)="authService.openDieloag()"
+    />
+    <p-button
+      class="justify-end"
+      styleClass=" !rounded-sm btn-purple"
+      size="small"
+      label="Sign Up"
+      (click)="authService.openDieloag()"
+    />
+    }
+
+    <!-- user icon/user image -->
+    @if(authService.authState().isAuthenticated){
+    <button (click)="menu.toggle($event)"  aria-label="User" class="cursor-pointer flex items-center gap-2">
+      <p>{{ authService.authState().user!.firstName }}</p>
+      <!-- <img
+      src="{{ authService.authState().user?.image ?? '/placeholders/user.jpg' }}"
+      alt="user image"
+      class="w-8 h-8 rounded-full"
+      srcset="" -->
+
+      <img src='/placeholders/user.jpg' class="w-8 h-8 rounded-full" alt="user image">
+      
+    />
+    </button>
+    }@else{
+    <button class="cursor-pointer px-2" aria-label="User">
+      <i (click)="menu.toggle($event)" class="pi pi-user !text-xl"></i>
+    </button>
+    }
+    <p-menu #menu [model]="items" [popup]="true" styleClass="mt-2" />
+  </div>
+
+  <!-- <nav>
+    <ul class="flex gap-4">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav> -->
+</header>

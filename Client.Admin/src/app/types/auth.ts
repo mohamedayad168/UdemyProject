@@ -1,0 +1,25 @@
+export interface IUser {
+    id: string,
+    email: string,
+    userName: string,
+    firstName: string,
+    lastName: string,
+    countryName: string,
+    city: string,
+    state: string,
+    Age: number,
+    gender: string,
+    roles: string[],
+    // token: string,
+    // image: string,
+    // phone: string,
+    // address: string,
+    // description: string,
+}
+export interface IAuthState {
+    user: IUser | null,
+    // loading: boolean,
+    error: string,
+    isAuthenticated: boolean,
+    dialogVisible: boolean,
+}

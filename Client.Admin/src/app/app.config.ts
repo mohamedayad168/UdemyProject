@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
@@ -12,6 +12,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
+import { AuthService } from './services/auth/auth.service';
 
 
 
@@ -130,6 +131,12 @@ const MyPreset = definePreset(Aura, {
   },
 });
 
+function loadUser(){
+  let authService = inject(AuthService);
+
+  return authService.loadUser()
+
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -137,6 +144,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withViewTransitions(), withComponentInputBinding()),
     provideAnimationsAsync(),
+    provideAppInitializer(loadUser),
     providePrimeNG({
       theme: {
         preset: MyPreset,

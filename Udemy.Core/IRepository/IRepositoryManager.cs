@@ -20,6 +20,7 @@ public interface IRepositoryManager
     ICartRepository Cart { get; }
     
     ISubCategoriesRepository SubCategories { get; }
+    ICartCourseRepository CartCourse { get; }
 
     Task SaveAsync();
 }

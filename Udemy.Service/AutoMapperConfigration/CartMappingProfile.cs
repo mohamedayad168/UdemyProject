@@ -11,12 +11,6 @@ public class CartMappingProfile : Profile
     {
         CreateMap<Cart , CartDto>()
             .ForMember(
-                dest => dest.StudentUsername ,
-                opt => opt.MapFrom(
-                    src => src.Student.UserName ?? ""
-                )
-            )
-            .ForMember(
                 dest => dest.StudentId,
                 opt => opt.MapFrom(
                     src => src.Student.Id
