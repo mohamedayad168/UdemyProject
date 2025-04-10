@@ -16,6 +16,9 @@ import { InstructorHomeComponent } from './instructor/instructor-home/instructor
 import { InstructorChallengeComponent } from './instructor/instructor-challenge/instructor-challenge.component';
 import { CongratulationComponent } from './instructor/congratulation/congratulation.component';
 import { GetstartwvedioComponent } from './instructor/getstartwvedio/getstartwvedio.component';
+import { FirstpageaftercreateComponent } from './instructor/firstpageaftercreate/firstpageaftercreate.component';
+import { TitelbageComponent } from './instructor/titelbage/titelbage.component';
+import { CreatecoursebageComponent } from './instructor/createcoursebage/createcoursebage.component';
 export const routes: Routes = [
   {
     path: '',
@@ -67,7 +70,10 @@ export const routes: Routes = [
     component:InstructorChallengeComponent,
   
   },
-  {
+  {path:'createcourse/entercoursetitel',component:TitelbageComponent},
+  {path:'createcourse/FGCOURSE',component:FirstpageaftercreateComponent},
+  {path:'createcourse/createcoursebage' ,component:CreatecoursebageComponent}
+  ,{
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
