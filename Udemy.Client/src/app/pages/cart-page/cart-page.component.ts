@@ -1,19 +1,15 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartService } from '../../lib/services/cart/cart.service';
-import { CourseDetail } from '../../lib/models/CourseDetail.model';
+import { EmptyStateComponent } from '../empty-state/empty-state.component';
+import { OrderSummaryComponent } from '../order-summary/order-summary.component';
+import { CartCourseComponent } from '../cart-course/cart-course.component';
 
 @Component({
   selector: 'app-cart-page',
-  imports: [],
+  imports: [EmptyStateComponent, OrderSummaryComponent, CartCourseComponent],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.css',
 })
 export class CartPageComponent {
-  //   cartItems = computed(() => this.cartService.cartItems);
-
   cartService = inject(CartService);
-
-  removeFromCart(coruse: CourseDetail) {
-    this.cartService.removeItem((item) => item.id !== coruse.id);
-  }
 }
