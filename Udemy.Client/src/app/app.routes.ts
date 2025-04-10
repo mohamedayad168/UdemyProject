@@ -13,6 +13,9 @@ import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.comp
 import { TermsComponent } from './pages/terms/terms.component';
 import { CourseViewComponent } from './pages/course-view/course-view.component';
 import { InstructorHomeComponent } from './instructor/instructor-home/instructor-home.component';
+import { InstructorChallengeComponent } from './instructor/instructor-challenge/instructor-challenge.component';
+import { CongratulationComponent } from './instructor/congratulation/congratulation.component';
+import { GetstartwvedioComponent } from './instructor/getstartwvedio/getstartwvedio.component';
 export const routes: Routes = [
   {
     path: '',
@@ -52,14 +55,22 @@ export const routes: Routes = [
   { path: 'get-started', component: GetStartedComponent },
   { path: 'loginasinstractor', component: LoginasinstractorComponent },
   { path: 'terms-of-use', component: TermsComponent },
+  {path:'instructor/record-vedio',component:GetstartwvedioComponent},
   {
     path: 'course/view/:id',
     component: CourseViewComponent,
     data: { hideHeader: true },
+  },
+  { path: 'instructor/congratulation', component: CongratulationComponent },
+  {
+    path:'instructor/challenge',
+    component:InstructorChallengeComponent,
+  
   },
   {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
+
 ];
