@@ -53,7 +53,7 @@ namespace Udemy.Service.IService
             Instructor = new InstructorRDTO()
             {
                 Id = course.Instructor.Id,
-                Name = course.Instructor.FirstName + " " + course.Instructor.LastName,
+                UserName = course.Instructor.FirstName + " " + course.Instructor.LastName,
                 Title = course.Instructor.Title,
                 Bio = course.Instructor.Bio
             };

@@ -12,6 +12,7 @@ import { LoginasinstractorComponent } from './pages/loginasinstractor/loginasins
 import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { CourseViewComponent } from './pages/course-view/course-view.component';
+import { InstructorHomeComponent } from './instructor/instructor-home/instructor-home.component';
 export const routes: Routes = [
   {
     path: '',
@@ -40,24 +41,25 @@ export const routes: Routes = [
     component: MyLearningPageComponent,
   },
   {
+    path: 'instructor/home',
+    component: InstructorHomeComponent,
+  },
+  {
     path: 'teach',
     component: CometeachwithusComponent,
   },
-  { path: 'privacy-policy', component:PrivecypolicyComponent},
+  { path: 'privacy-policy', component: PrivecypolicyComponent },
   { path: 'get-started', component: GetStartedComponent },
   { path: 'loginasinstractor', component: LoginasinstractorComponent },
   { path: 'terms-of-use', component: TermsComponent },
   {
-    path:'course/view/:id',
-    component:CourseViewComponent,
-    data: { hideHeader: true }
+    path: 'course/view/:id',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
   },
   {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
-
-
-
 ];
