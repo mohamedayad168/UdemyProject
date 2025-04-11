@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Service.IService;
 
@@ -21,11 +24,15 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IAskService> askService;
     private readonly Lazy<ICartService> cartService;
     private readonly Lazy<ISubCategoriesService> subCategoriesService;
+    private readonly Lazy<IPaymentService> paymentService;
 
 
     public ServiceManager(
         IRepositoryManager repositoryManager,
         IMapper mapper)
+        IRepositoryManager repositoryManager, 
+        IMapper mapper,
+        IConfiguration configuration)
     {
         coursesService = new Lazy<ICoursesService>(() => new CoursesService(repositoryManager, mapper));
         categoriesService = new Lazy<ICategoriesService>(() => new CategoriesService(repositoryManager, mapper));
@@ -40,6 +47,10 @@ public class ServiceManager : IServiceManager
         answerService = new Lazy<IAnswerService>(() => new AnswerService(repositoryManager, mapper));
         askService = new Lazy<IAskService>(() => new AskService(repositoryManager, mapper));
         cartService = new Lazy<ICartService>(() => new CartService(repositoryManager, mapper));
+        answerService = new Lazy<IAnswerService>(() =>  new AnswerService(repositoryManager,mapper));
+        askService = new Lazy<IAskService>(() =>  new AskService(repositoryManager,mapper));
+        cartService = new Lazy<ICartService>(() =>  new CartService(repositoryManager,mapper));
+        paymentService = new Lazy<IPaymentService>(() => new PaymentService(configuration,repositoryManager , mapper));
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
 
@@ -57,6 +68,7 @@ public class ServiceManager : IServiceManager
     public IAnswerService AnswerService => answerService.Value;
     public IAskService AskService => askService.Value;
     public ICartService CartService => cartService.Value;
+    public IPaymentService PaymentService => paymentService.Value;
 
     public ISubCategoriesService SubCategoriesService => subCategoriesService.Value;
 

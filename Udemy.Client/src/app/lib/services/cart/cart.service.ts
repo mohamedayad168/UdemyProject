@@ -28,7 +28,10 @@ export class CartService {
 
     const subtotal = cart.courses.reduce((sum, item) => sum + item.price, 0);
 
-    const discount = cart.courses.reduce((sum, item) => sum + item.discount, 0);
+    const discount = cart.courses.reduce(
+      (sum, item) => sum + (item.discount / 100) * item.price,
+      0
+    );
 
     return {
       subtotal,
@@ -42,11 +45,23 @@ export class CartService {
       map((cart) => {
         this.cart.set(cart);
 
-        console.log(cart);
-
         return cart;
       })
     );
+  }
+
+  setCart(cart: Cart) {
+    this.cart.set(cart);
+  }
+
+  deleteCart() {
+    return this.http
+      .delete(this.baseUrl + `/carts/${this.cart()?.studentId}`)
+      .subscribe({
+        next: () => {
+          this.cart.set(null);
+        },
+      });
   }
 
   addCourseToStudentCart(courseId: number) {
@@ -55,7 +70,7 @@ export class CartService {
     }
 
     return this.http
-      .post(this.baseUrl + `/carts?courseId=${courseId}`, {})
+      .post(this.baseUrl + `/carts/courses/${courseId}`, {})
       .subscribe({
         next: () => {
           this.getCart().subscribe({
@@ -67,7 +82,7 @@ export class CartService {
 
   deleteCourseFromStudentCart(courseId: number) {
     return this.http
-      .delete(this.baseUrl + `/carts?courseId=${courseId}`)
+      .delete(this.baseUrl + `/carts/courses/${courseId}`)
       .subscribe({
         next: () => {
           this.getCart().subscribe({

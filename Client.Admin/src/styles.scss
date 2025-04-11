@@ -3,105 +3,104 @@
   @import "tailwindcss/preflight.css";
 }
 
-
 @layer styles {
-    /* @tailwind utilities; */
-    @import "tailwindcss/utilities.css";
-    /* 
+  /* @tailwind utilities; */
+  @import "tailwindcss/utilities.css";
+  /* 
   :root {
     --p-button-padding-x: 0.25rem;
     --p-button-padding-y: 0.25rem;
   } */
-  
-    body {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-  
-    /* Utility Classes */
-  
-    /* Text Colors */
-    .text-primary {
-      color: var(--p-primary-text);
-    }
-    .text-secondary {
-      color: var(--p-secondary-text);
-    }
-    .text-info {
-      color: var(--p-info-text);
-    }
-  
-    /* Background Colors */
-    .bg-primary {
-      background-color: var(--p-primary-bg);
-    }
-    .bg-secondary {
-      background-color: var(--p-secondary-bg);
-    }
-    .bg-body {
-      background-color: var(--p-body-bg);
-    }
-    .bg-header {
-      background-color: var(--p-header-bg);
-    }
-    .bg-sidenav {
-      background-color: var(--p-side-nav-bg);
-    }
-  
-    /* Highlight Classes */
-    .hl-purple {
-      color: var(--highlight-purple);
-    }
-    .hl-red {
-      color: var(--highlight-red);
-    }
-    .bg-hl-purple {
-      background-color: var(--highlight-purple);
-    }
-    .bg-hl-red {
-      background-color: var(--highlight-red);
-    }
-  
-    /* shadows */
-    .shadow-yn {
-      box-shadow: 0 1px 2px #000000e6, 0 0px 2px #000000e6;
-    }
-  
-    /* Button Classes */
-    .btn-primary {
-      background-color: #53535f61;
-      color: var(--p-primary-text);
-      border: 0;
-      /* font-weight: bold; */
-    }
-    .btn-primary:hover {
-      background-color: var(--p-primary-hover-color);
-    }
-    .btn-primary:active {
-      background-color: var(--p-primary-active-color);
-    }
-    /* ----------------------------  */
-    .btn-secondary {
-      background-color: var(--p-secondary-bg);
-      color: var(--p-secondary-text);
-    }
-    .btn-secondary:hover {
-      background-color: var(--p-secondary-hover-color);
-    }
-    .btn-secondary:active {
-      background-color: var(--p-secondary-active-color);
-    }
-    /* ----------------------------  */
-    .btn-purple {
-      background-color: var(--p-highlight-purple);
-      color: var(--p-primary-text);
-      border: 0;
-    }
-    .btn-purple:hover {
-      background-color: var(--p-highlight-purple);
-    }
-    .btn-purple:active {
-      background-color: var(--p-highlight-purple);
-    }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
   }
+
+  /* Utility Classes */
+
+  /* Text Colors */
+  .text-primary {
+    color: var(--p-primary-text);
+  }
+  .text-secondary {
+    color: var(--p-secondary-text);
+  }
+  .text-info {
+    color: var(--p-info-text);
+  }
+
+  /* Background Colors */
+  .bg-primary {
+    background-color: var(--p-primary-bg);
+  }
+  .bg-secondary {
+    background-color: var(--p-secondary-bg);
+  }
+  .bg-body {
+    background-color: var(--p-body-bg);
+  }
+  .bg-header {
+    background-color: var(--p-header-bg);
+  }
+  .bg-sidenav {
+    background-color: var(--p-side-nav-bg);
+  }
+
+  /* Highlight Classes */
+  .hl-purple {
+    color: var(--highlight-purple);
+  }
+  .hl-red {
+    color: var(--highlight-red);
+  }
+  .bg-hl-purple {
+    background-color: var(--highlight-purple);
+  }
+  .bg-hl-red {
+    background-color: var(--highlight-red);
+  }
+
+  /* shadows */
+  .shadow-yn {
+    box-shadow: 0 1px 2px #000000e6, 0 0px 2px #000000e6;
+  }
+
+  /* Button Classes */
+  .btn-primary {
+    background-color: #53535f61;
+    color: var(--p-primary-text);
+    border: 0;
+    /* font-weight: bold; */
+  }
+  .btn-primary:hover {
+    background-color: var(--p-primary-hover-color);
+  }
+  .btn-primary:active {
+    background-color: var(--p-primary-active-color);
+  }
+  /* ----------------------------  */
+  .btn-secondary {
+    background-color: var(--p-secondary-bg);
+    color: var(--p-secondary-text);
+  }
+  .btn-secondary:hover {
+    background-color: var(--p-secondary-hover-color);
+  }
+  .btn-secondary:active {
+    background-color: var(--p-secondary-active-color);
+  }
+  /* ----------------------------  */
+  .btn-purple {
+    background-color: var(--p-highlight-purple);
+    color: var(--p-primary-text);
+    border: 0;
+  }
+  .btn-purple:hover {
+    background-color: var(--p-highlight-purple);
+  }
+  .btn-purple:active {
+    background-color: var(--p-highlight-purple);
+  }
+}

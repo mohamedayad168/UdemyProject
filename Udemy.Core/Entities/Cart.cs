@@ -25,6 +25,8 @@ namespace Udemy.Core.Entities
                 this.amount = value;
             }
         }
+        public string? ClientSecret { get; set; }
+        public string? PaymentIntentId { get; set; }
 
         // Navigation Property
         public Student Student { get; set; }

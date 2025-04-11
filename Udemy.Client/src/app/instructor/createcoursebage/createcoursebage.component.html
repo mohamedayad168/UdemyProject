@@ -1,0 +1,129 @@
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-bold text-center mb-6">Create Course</h2>
+    <form>
+      <!-- Course Title -->
+      <div class="mb-4">
+        <label for="courseTitle" class="block text-sm font-medium text-gray-700">Course Title:</label>
+        <input 
+          type="text" 
+          id="courseTitle" 
+          [(ngModel)]="courseTitle" 
+          name="courseTitle" 
+          (input)="updateTitleCount()" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <p class="mt-2 text-sm text-gray-500">Remaining characters: {{ titleRemaining }}</p>
+      </div>
+  
+      <!-- Course Description -->
+      <div class="mb-4">
+        <label for="courseDescription" class="block text-sm font-medium text-gray-700">Course Description (min. 300 characters):</label>
+        <textarea 
+          id="courseDescription" 
+          [(ngModel)]="courseDescription" 
+          name="courseDescription" 
+          (input)="updateDescriptionCount()" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          maxlength="1500"
+        ></textarea>
+        <p class="mt-2 text-sm text-gray-500">Word count: {{ wordCount }}</p>
+        <p class="mt-2 text-sm text-red-500" *ngIf="courseDescription.length < 300">Description must be at least 300 characters long.</p>
+      </div>
+  
+      <!-- Select Language -->
+      <div class="mb-4">
+        <label for="language" class="block text-sm font-medium text-gray-700">Language:</label>
+        <select 
+          id="language" 
+          [(ngModel)]="selectedLanguage" 
+          name="language" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+        </select>
+      </div>
+  
+      <!-- Select Category -->
+      <div class="mb-4">
+        <label for="category" class="block text-sm font-medium text-gray-700">Category:</label>
+        <select 
+          id="category" 
+          [(ngModel)]="selectedCategory" 
+          name="category" 
+          (change)="loadSubcategories(selectedCategory)" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
+  
+      <!-- Select Subcategory -->
+      <div class="mb-4">
+        <label for="subcategory" class="block text-sm font-medium text-gray-700">Subcategory:</label>
+        <select 
+          id="subcategory" 
+          [(ngModel)]="selectedSubcategory" 
+          name="subcategory" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</option>
+        </select>
+      </div>
+  
+      <!-- Course Level -->
+      <div class="mb-4">
+        <label for="level" class="block text-sm font-medium text-gray-700">Course Level:</label>
+        <select 
+          id="level" 
+          [(ngModel)]="selectedLevel" 
+          name="level" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+  
+      <!-- Course Image Upload -->
+      <div class="mb-4">
+        <label for="image" class="block text-sm font-medium text-gray-700">Course Image (750x422 px, .jpg, .jpeg, .gif, or .png):</label>
+        <input 
+          type="file" 
+          id="image" 
+          (change)="onImageUpload($event)" 
+          name="image" 
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <p class="mt-2 text-sm text-gray-500">Upload your course image here. It must meet our course image quality standards to be accepted. Important guidelines: 750x422 pixels; .jpg, .jpeg, .gif, or .png. No text on the image.</p>
+        <p class="mt-2 text-sm text-gray-500">No file chosen</p>
+      </div>
+  
+      <!-- Promotional Video URL -->
+      <div class="mb-4">
+        <label for="video" class="block text-sm font-medium text-gray-700">Promotional Video (MP4, AVI, MOV):</label>
+        <input 
+          type="file" 
+          id="video" 
+          (change)="onVideoUpload($event)" 
+          name="video" 
+          accept="video/mp4, video/avi, video/mov"
+          class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <p class="mt-2 text-sm text-gray-500">Upload your promotional video here. It must meet our video standards: MP4, AVI, or MOV.</p>
+      </div>
+      
+      <!-- Save Button -->
+      <div class="mb-4">
+        <button 
+          type="button" 
+          (click)="saveLandingPage()" 
+          [disabled]="isSaving || courseDescription.length < 300" 
+          class="w-full py-3 bg-blue-500 text-white text-lg rounded-lg focus:outline-none hover:bg-blue-600 disabled:bg-gray-300"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+  

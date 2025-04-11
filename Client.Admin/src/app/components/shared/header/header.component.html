@@ -1,5 +1,5 @@
 <header
-  class="grid grid-cols-3 [&>*]:flex justify-between p-2 shadow-lg bg-header"
+  class="grid grid-cols-3 [&>*]:flex justify-between p-2 shadow-yn bg-header"
 >
   <h1 class="items-center gap-2">
     <a
@@ -62,7 +62,7 @@
     <!-- user icon/user image -->
     @if(authService.authState().isAuthenticated){
     <button (click)="menu.toggle($event)"  aria-label="User" class="cursor-pointer flex items-center gap-2">
-      <p>{{ authService.authState().user!.firstName }}</p>
+      <p>{{ authService.authState().user?.firstName }}</p>
       <!-- <img
       src="{{ authService.authState().user?.image ?? '/placeholders/user.jpg' }}"
       alt="user image"

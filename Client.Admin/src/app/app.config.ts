@@ -6,13 +6,15 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 // primeng
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
 import { AuthService } from './services/auth/auth.service';
+import { authInterceptor } from './interceptors/auth/auth.interceptor';
+import { loadingInterceptor } from './interceptors/loading/loading.interceptor';
 
 
 
@@ -140,7 +142,7 @@ function loadUser(){
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withViewTransitions(), withComponentInputBinding()),
     provideAnimationsAsync(),

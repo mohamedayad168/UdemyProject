@@ -34,7 +34,7 @@ public class CartsController(IServiceManager serviceManager) : ControllerBase
         return Ok(studentCart);
     }
 
-    [HttpPost]
+    [HttpPost("Courses/{courseId}")]
     public async Task<IActionResult> AddCourseToStudentCart(int courseId)
     {
         int studentId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -44,7 +44,7 @@ public class CartsController(IServiceManager serviceManager) : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete]
+    [HttpDelete("Courses/{courseId}")]
     public async Task<IActionResult> DeleteCourseFromStudentCart(int courseId)
     {
         int studentId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -53,4 +53,14 @@ public class CartsController(IServiceManager serviceManager) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{cartId}")]
+    public async Task<IActionResult> DeleteStudentCart(int cartId)
+    {
+        await serviceManager.CartService.DeleteCart(cartId);
+
+        return NoContent();
+    }
+
+
 }

@@ -48,7 +48,7 @@ public class CartRepository(ApplicationDbContext dbContext)
 
     public void DeleteCart(Cart cart)
     {
-        Delete(cart);
+        dbContext.Carts.Remove(cart);
     }
 
     public void DeleteCartCourse(CartCourse cartCourse)

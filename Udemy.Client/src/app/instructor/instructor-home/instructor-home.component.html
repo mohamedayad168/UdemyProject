@@ -13,7 +13,7 @@
     >
       <span class="text-sm text-gray-600">Jump Into Course Creation</span>
       <button
-        class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 text-sm"
+      (click)="goToCourseCreate()" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 text-sm"
       >
         Create Your Course
       </button>
@@ -62,8 +62,10 @@
               Quality video lectures can set your course apart. Use our
               resources to learn the basics.
             </p>
-            <a href="#" class="text-sm font-medium mt-2 inline-block"
-              ><span class="text-purple-700">Get Started</span></a
+            <a
+            routerLink="/instructor/record-vedio"
+              class="text-purple-700 text-sm font-medium mt-2 inline-block"
+              >Get Started</a
             >
           </div>
         </div>
@@ -81,9 +83,9 @@
               Set your course up for success by building your audience.
             </p>
             <a
-              href="instructor/instructor-audiance"
-              class="-sm font-medium mt-2 inline-block"
-              ><span class="text-purple-700">Get Started</span></a
+           
+              class="text-purple-700 text-sm font-medium mt-2 inline-block"
+              >Get Started</a
             >
           </div>
         </div>
@@ -102,8 +104,10 @@
             Get exclusive tips and resources designed to help you launch your
             first course faster...
           </p>
-          <a href="#" class="text-sm font-medium mt-2 inline-block"
-            ><span class="text-purple-700">Get Started</span></a
+          <a
+          routerLink="/instructor/challenge"
+            class="text-purple-700 text-sm font-medium mt-2 inline-block"
+            >Get Started</a
           >
         </div>
       </div>
