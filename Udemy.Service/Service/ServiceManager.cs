@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Service.IService;
 
@@ -24,23 +22,24 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ICartService> cartService;
     private readonly Lazy<ISubCategoriesService> subCategoriesService;
 
+
     public ServiceManager(
-        IRepositoryManager repositoryManager, 
+        IRepositoryManager repositoryManager,
         IMapper mapper)
     {
         coursesService = new Lazy<ICoursesService>(() => new CoursesService(repositoryManager, mapper));
         categoriesService = new Lazy<ICategoriesService>(() => new CategoriesService(repositoryManager, mapper));
 
-        socialMediaService = new Lazy<ISocialMediaService>(() => new SocialMediaService(repositoryManager));
+        socialMediaService = new Lazy<ISocialMediaService>(() => new SocialMediaService(repositoryManager, mapper));
         courseRequirementService = new Lazy<ICourseRequirementService>(() => new CourseRequirementService(repositoryManager, mapper));
         instructorService = new Lazy<IInstructorService>(() => new InstructorService(repositoryManager, mapper));
-        enrollmentService = new Lazy<IEnrollmentService>(() => new EnrollmentService(repositoryManager, mapper)); 
+        enrollmentService = new Lazy<IEnrollmentService>(() => new EnrollmentService(repositoryManager, mapper));
 
         studentService = new Lazy<IStudentService>(() => new StudentService(repositoryManager, mapper));
         userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper));
-        answerService = new Lazy<IAnswerService>(() =>  new AnswerService(repositoryManager,mapper));
-        askService = new Lazy<IAskService>(() =>  new AskService(repositoryManager,mapper));
-        cartService = new Lazy<ICartService>(() =>  new CartService(repositoryManager,mapper));
+        answerService = new Lazy<IAnswerService>(() => new AnswerService(repositoryManager, mapper));
+        askService = new Lazy<IAskService>(() => new AskService(repositoryManager, mapper));
+        cartService = new Lazy<ICartService>(() => new CartService(repositoryManager, mapper));
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
 

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace Udemy.Service.IService;
+﻿namespace Udemy.Service.IService;
 public interface IServiceManager
 {
     IStudentService StudentService { get; }
@@ -15,4 +13,5 @@ public interface IServiceManager
     IAskService AskService { get; }
     ICartService CartService { get; }
     ISubCategoriesService SubCategoriesService { get; }
+    ISocialMediaService SocialMediaService { get; }
 }

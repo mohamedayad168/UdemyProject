@@ -26,16 +26,25 @@ namespace Udemy.Infrastructure.Repository
                    .Where(sm => sm.UserId == userId)
                    .ToListAsync();
         }
-        public async Task Create(SocialMedia socialMedia)
+        public async Task<List<SocialMedia>> Create(List<SocialMedia> socialMedias)
         {
-            await dbContext.Set<SocialMedia>().AddAsync(socialMedia);
-            await dbContext.SaveChangesAsync();
+            foreach (var socialMedia in socialMedias)
+            {
+                await dbContext.Set<SocialMedia>().AddAsync(socialMedia);
+                await dbContext.SaveChangesAsync();
+            }
+            return socialMedias;
+
         }
 
-        public async Task Update(SocialMedia socialMedia)
+        public async Task Update(List<SocialMedia> socialMedias)
         {
-            dbContext.Set<SocialMedia>().Update(socialMedia);
-            await dbContext.SaveChangesAsync();
+            foreach (var socialMedia in socialMedias)
+            {
+                dbContext.Set<SocialMedia>().Update(socialMedia);
+                await dbContext.SaveChangesAsync();
+            }
+
         }
         public async Task Delete(int Id, int userId)
         {
@@ -44,7 +53,7 @@ namespace Udemy.Infrastructure.Repository
 
             if (socialMedia != null)
             {
-                dbContext.SocialMedias.Remove(socialMedia);
+                socialMedia.IsDeleted = true;
                 await dbContext.SaveChangesAsync();
             }
 
