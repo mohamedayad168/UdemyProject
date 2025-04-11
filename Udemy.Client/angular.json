@@ -21,16 +21,15 @@
 
             "assets": ["src/favicon.ico", "src/assets"],
 
-          "styles": [
-  "node_modules/bootstrap/dist/css/bootstrap.min.css",
-  "@angular/material/prebuilt-themes/azure-blue.css",
-  "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
-  "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-  "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
-  "node_modules/primeicons/primeicons.css",
-  "src/styles.css"
-]
-,
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
+              "node_modules/primeicons/primeicons.css",
+              "src/styles.css"
+            ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]

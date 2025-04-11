@@ -1,0 +1,348 @@
+<div class="card">
+  <p-toast />
+  <p-toolbar styleClass="mb-6">
+    <ng-template #start>
+      <p-button
+        label="New"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew()"
+      />
+      <p-button
+        severity="danger"
+        label="Delete"
+        icon="pi pi-trash"
+        outlined
+        (onClick)="deleteSelectedProducts()"
+        [disabled]="!selectedProducts || !selectedProducts.length"
+      />
+    </ng-template>
+
+    <ng-template #end>
+      <p-fileUpload
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1000000"
+        label="Import"
+        chooseLabel="Import"
+        auto
+        customUpload
+        class="mr-2 inline-block"
+        [chooseButtonProps]="{ severity: 'secondary' }"
+      />
+      <p-button
+        label="Export"
+        icon="pi pi-upload"
+        severity="secondary"
+        (onClick)="exportCSV()"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="items()"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'title',
+      'description',
+      'country.name',
+      'representative.name',
+      'status'
+    ]"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedProducts"
+    [rowHover]="true"
+    [loading]="items().length == 0"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">Manage Products</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            (input)="filterTable($event)"
+            placeholder="Search..."
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+        <th style="min-width: 4rem">Id</th>
+        <th pSortableColumn="name" style="min-width: 16rem">
+          Name
+          <p-sortIcon field="name" />
+        </th>
+        <th>Image</th>
+        <th pSortableColumn="price" style="min-width: 8rem">
+          Price
+          <p-sortIcon field="price" />
+        </th>
+        <th pSortableColumn="category" style="min-width: 10rem">
+          Category
+          <p-sortIcon field="category" />
+        </th>
+        <th pSortableColumn="rating" style="min-width: 12rem">
+          Reviews
+          <p-sortIcon field="rating" />
+        </th>
+        <th pSortableColumn="inventoryStatus" style="min-width: 12rem">
+          Status
+          <p-sortIcon field="inventoryStatus" />
+        </th>
+        <th style="min-width: 12rem"></th>
+      </tr>
+    </ng-template>
+
+    <!-- product record -->
+    @if (items().length > 0) {
+    <ng-template #body let-product>
+      <tr>
+        <td style="width: 3rem">
+          <p-tableCheckbox [value]="product" />
+        </td>
+        <!--  -->
+        @if (keys()['id']) {
+        <td style="min-width: 4rem">{{ product["id"] }}</td>
+        }
+        <!--  -->
+        @if (keys()['title']) {
+        <td style="min-width: 16rem">{{ product["title"] }}</td>
+        }
+        <!--  -->
+        @if (keys()['imageUrl']) {
+        <td>
+          <img
+            [src]="product['imageUrl']"
+            [alt]="product['name']"
+            style="width: 64px"
+            class="rounded"
+          />
+        </td>
+        }
+        <!--  -->
+        @if(keys()['price']){
+        <td>{{ product["price"] | currency : "USD" }}</td>
+        }
+        <!--  -->
+        @if(keys()['category']){
+        <td>{{ product["category"] }}</td>
+        }
+        <!--  -->
+        @if (keys()['rating']) {
+        <td>
+          <p-rating
+            [(ngModel)]="product.rating"
+            [readonly]="true"
+          /><!--[cancel]="false"-->
+        </td>
+        }
+        <!--  -->
+        @if (keys()['status']) {
+        <td>
+          <p-tag
+            [value]="product['status']"
+            [severity]="getSeverity(product['status'])"
+          />
+        </td>
+        }
+        <!--  -->
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="editProduct(product)"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="deleteProduct(product)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+    }@else{
+    <ng-template #body let-product>
+      <tr>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+      </tr>
+    </ng-template>
+    }
+
+    <ng-template #summary>
+      <div class="flex items-center justify-between">
+        In total there are {{ items().length }} products.
+      </div>
+    </ng-template>
+  </p-table>
+
+  <!-- edit/create dialog -->
+  <p-dialog
+    [(visible)]="productDialog"
+    [style]="{ width: '450px' }"
+    header="Product Details"
+    [modal]="true"
+  >
+    <ng-template #content>
+      <div class="flex flex-col gap-6">
+        @if (keys()['imageUrl']) {
+        <img
+          [src]="item['imageUrl']"
+          [alt]="item['imageUrl']"
+          class="block m-auto pb-4"
+          *ngIf="item['imageUrl']"
+        />
+        }
+        <!--  -->
+        @if(keys()['imageUrl']) {
+        <div>
+          <label for="name" class="block font-bold mb-3">Name</label>
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="item['title']"
+            required
+            autofocus
+            fluid
+          />
+          <small class="text-red-500" *ngIf="submitted && !item['title']"
+            >Name is required.</small
+          >
+        </div>
+
+        }
+        <!--  -->
+        @if (keys()['description']) {
+        <div>
+          <label for="description" class="block font-bold mb-3"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            pTextarea
+            [(ngModel)]="item['description']"
+            required
+            rows="3"
+            cols="20"
+            fluid
+          ></textarea>
+        </div>
+        }
+        <!--  -->
+        @if (keys()['status']) {
+        <div>
+          <label for="inventoryStatus" class="block font-bold mb-3"
+            >Status</label
+          >
+          <p-select
+            [(ngModel)]="item['status']"
+            inputId="inventoryStatus"
+            [options]="statuses()"
+            optionLabel="label"
+            placeholder="Select a Status"
+            fluid
+          />
+        </div>
+        }
+        <!--  -->
+        @if(keys()['category']) {
+        <div>
+          <span class="block font-bold mb-4">Category</span>
+          <div class="grid grid-cols-12 gap-4">
+            <div class="flex items-center gap-2 col-span-6">
+              <p-radiobutton
+                id="category1"
+                name="category"
+                value="Accessories"
+                [(ngModel)]="item['category']"
+              />
+              <label for="category1">Accessories</label>
+            </div>
+            <div class="flex items-center gap-2 col-span-6">
+              <p-radiobutton
+                id="category2"
+                name="category"
+                value="Clothing"
+                [(ngModel)]="item['category']"
+              />
+              <label for="category2">Clothing</label>
+            </div>
+            <div class="flex items-center gap-2 col-span-6">
+              <p-radiobutton
+                id="category3"
+                name="category"
+                value="Electronics"
+                [(ngModel)]="item['category']"
+              />
+              <label for="category3">Electronics</label>
+            </div>
+            <div class="flex items-center gap-2 col-span-6">
+              <p-radiobutton
+                id="category4"
+                name="category"
+                value="Fitness"
+                [(ngModel)]="item['category']"
+              />
+              <label for="category4">Fitness</label>
+            </div>
+          </div>
+        </div>
+        }
+        <!--  -->
+        @if(keys()['price']) {
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-6">
+            <label for="price" class="block font-bold mb-3">Price</label>
+            <p-inputnumber
+              id="price"
+              [(ngModel)]="item['price']"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              fluid
+            />
+          </div>
+          <!-- <div class="col-span-6">
+                          <label for="quantity" class="block font-bold mb-3">Quantity</label>
+                          <p-inputnumber id="quantity" [(ngModel)]="item['quantity']" fluid />
+                      </div> -->
+        </div>
+        }
+      </div>
+    </ng-template>
+
+    <ng-template #footer>
+      <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+      <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>

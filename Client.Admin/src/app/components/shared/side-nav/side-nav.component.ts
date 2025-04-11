@@ -40,11 +40,47 @@ export class SideNavComponent {
         separator: true,
       },
       {
-        label: 'Documents',
+        label: 'Dashboard',
         items: [
           {
-            label: 'Properties',
-            icon: 'pi pi-plus',
+            label: 'Home',
+            icon: 'pi pi-database',
+            shortcut: '⌘+N',
+            command: () => {
+              this.router.navigate(['/']);
+            },
+          },
+          {
+            label: 'Stats',
+            icon: 'pi pi-chart-bar',
+            shortcut: '⌘+S',
+          },
+        ],
+      },
+      {
+        label: 'Courses',
+        items: [
+          {
+            label: 'All',
+            icon: 'pi pi-chart-bar',
+            shortcut: '⌘+N',
+            command: () => {
+              this.router.navigate(['/courses']);
+            },
+          },
+          {
+            label: 'Search',
+            icon: 'pi pi-search',
+            shortcut: '⌘+S',
+          },
+        ],
+      },
+      {
+        label: 'Instructors',
+        items: [
+          {
+            label: 'All',
+            icon: 'pi pi-chart-bar',
             shortcut: '⌘+N',
             command: () => {
               this.router.navigate(['/admin/properties']);
@@ -58,10 +94,28 @@ export class SideNavComponent {
         ],
       },
       {
-        label: 'Profile',
+        label: 'Students',
         items: [
           {
-            label: 'Settings',
+            label: 'All',
+            icon: 'pi pi-database',
+            shortcut: '⌘+N',
+            command: () => {
+              this.router.navigate(['/admin/properties']);
+            },
+          },
+          {
+            label: 'Stats',
+            icon: 'pi pi-chart-bar',
+            shortcut: '⌘+S',
+          },
+        ],
+      },
+      {
+        label: 'Admins',
+        items: [
+          {
+            label: 'Accounts',
             icon: 'pi pi-cog',
             shortcut: '⌘+O',
           },
@@ -69,12 +123,7 @@ export class SideNavComponent {
             label: 'Messages',
             icon: 'pi pi-inbox',
             badge: '2',
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            shortcut: '⌘+Q',
-          },
+          }
         ],
       },
       {

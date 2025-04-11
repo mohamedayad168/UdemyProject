@@ -38,27 +38,28 @@ export class AuthService {
     // this.loadingService.start();
 
     this.httpClient
-      .post<IUser>(`${environment.apiUrl}/api/account/login`, { email, password })
+      .post<IUser>(`${environment.apiUrl}/api/account/login`, {
+        email,
+        password,
+      })
       .subscribe({
         next: (user) => {
           console.log(user);
- 
+
           this._authState.update((pre) => {
             pre.user = user;
             pre.isAuthenticated = true;
             pre.dialogVisible = false;
             return pre;
           });
- 
         },
         error: (error) => {
           console.error(error);
- 
+
           this._authState.update((pre) => {
             pre.error = error.message;
             return pre;
           });
-          
         },
         complete: () => {
           // this.loadingService.stop();
@@ -69,27 +70,39 @@ export class AuthService {
   loadUser() {
     // this.loadingService.start();
 
-    this.httpClient
-      .get<IUser>(`${environment.apiUrl}/api/account/user-info`)
-      .subscribe({
-        next: (user) => {
-          console.log(user);
- 
-          this._authState.update((pre) => {
+    const observable = this.httpClient.get<IUser>(
+      `${environment.apiUrl}/api/account/user-info`
+    );
+
+    observable.subscribe({
+      next: (user) => {
+        console.log('load user', user);
+
+        this._authState.update((pre) => {
+          if (!user) {
+            throw new Error('User not found');
+          }
             pre.user = user;
             pre.isAuthenticated = true;
-            return pre;
-          });
-        },
-        error: (error) => {
-          console.error(error);
- 
-          this._authState.update((pre) => {
-            pre.error = error.message;
-            return pre;
-          });
-        }
-      });
+          
+          return pre;
+        });
+      },
+      error: (error) => {
+        console.error(error);
+
+        this._authState.update((pre) => {
+          pre.error = error.message;
+          return pre;
+        });
+      },
+      complete: () => {
+        document.getElementById('initial-splash')?.remove();
+        console.log(this._authState());
+      },
+    });
+
+    return observable;
   }
 
   openDieloag() {
@@ -108,5 +121,4 @@ export class AuthService {
       return pre;
     });
   }
-
 }
