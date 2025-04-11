@@ -1,0 +1,47 @@
+<div class="flex my-32 gap-6 container">
+  <div class="w-3/4">
+    <mat-stepper
+      (selectionChange)="onStepChange($event)"
+      #stepper
+      class="bg-white border border-gray-200 shadow-sm"
+      [linear]="true"
+    >
+      <mat-step [completed]="completionStatus().card" label="Payment">
+        <div id="payment-element"></div>
+        <div class="flex justify-end mt-1"></div>
+        <div class="flex justify-between mt-6">
+          <button routerLink="" mat-stroked-button>Home</button>
+          <button
+            [disabled]="!completionStatus().card"
+            matStepperNext
+            mat-flat-button
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <mat-step label="Confirmation">
+        <app-checkout-review
+          [confirmationToken]="confirmationToken"
+        ></app-checkout-review>
+        <div class="flex justify-between mt-6">
+          <button matStepperPrevious mat-stroked-button>Back</button>
+          <button
+            [disabled]="!confirmationToken || loading"
+            mat-flat-button
+            (click)="confirmPayment(stepper)"
+          >
+            @if(loading){
+            <mat-spinner diameter="20"></mat-spinner>
+            }@else {
+            <span>Pay {{ cartService.totals()?.total | currency }}</span>
+            }
+          </button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+  <div class="w-1/4">
+    <app-order-summary></app-order-summary>
+  </div>
+</div>

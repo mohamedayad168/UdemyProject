@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Course } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
+import { CourseCDTO } from '../models/course-cdto';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,9 @@ export class CourseService {
   }
 
 
-
+  createCourse(course: CourseCDTO): Observable<any> {
+    return this.http.post<any>(environment.baseurl, course);  // Sends a POST request with the course data
+  }
   getCourseById(
     id: number,
     detailed: boolean = false

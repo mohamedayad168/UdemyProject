@@ -11,6 +11,16 @@ import { GetStartedComponent } from './pages/get-started/get-started.component';
 import { LoginasinstractorComponent } from './pages/loginasinstractor/loginasinstractor.component';
 import { PrivecypolicyComponent } from './pages/privecypolicy/privecypolicy.component';
 import { TermsComponent } from './pages/terms/terms.component';
+import { CourseViewComponent } from './pages/course-view/course-view.component';
+import { InstructorHomeComponent } from './instructor/instructor-home/instructor-home.component';
+import { InstructorChallengeComponent } from './instructor/instructor-challenge/instructor-challenge.component';
+import { CongratulationComponent } from './instructor/congratulation/congratulation.component';
+import { GetstartwvedioComponent } from './instructor/getstartwvedio/getstartwvedio.component';
+import { FirstpageaftercreateComponent } from './instructor/firstpageaftercreate/firstpageaftercreate.component';
+import { TitelbageComponent } from './instructor/titelbage/titelbage.component';
+import { CreatecoursebageComponent } from './instructor/createcoursebage/createcoursebage.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 export const routes: Routes = [
   {
     path: '',
@@ -34,24 +44,74 @@ export const routes: Routes = [
     component: CartPageComponent,
   },
   {
+    path: 'checkout',
+    component: CheckoutComponent,
+  },
+  {
+    path: 'checkout/success',
+    component: CheckoutSuccessComponent,
+  },
+  {
     title: 'My Learning',
     path: 'my-learning',
     component: MyLearningPageComponent,
   },
   {
+    path: 'instructor/home',
+    component: InstructorHomeComponent,
+  },
+  {
     path: 'teach',
     component: CometeachwithusComponent,
   },
-  { path: 'privacy-policy', component:PrivecypolicyComponent},
-  { path: 'get-started', component: GetStartedComponent },
-  { path: 'loginasinstractor', component: LoginasinstractorComponent },
-  { path: 'terms-of-use', component: TermsComponent },
+  {
+    path: 'privacy-policy',
+    component: PrivecypolicyComponent,
+  },
+  {
+    path: 'get-started',
+    component: GetStartedComponent,
+  },
+  {
+    path: 'loginasinstractor',
+    component: LoginasinstractorComponent,
+  },
+  {
+    path: 'terms-of-use',
+    component: TermsComponent,
+  },
+  {
+    path: 'instructor/record-vedio',
+    component: GetstartwvedioComponent,
+  },
+  {
+    path: 'course/view/:id',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
+  },
+  {
+    path: 'instructor/congratulation',
+    component: CongratulationComponent,
+  },
+  {
+    path: 'instructor/challenge',
+    component: InstructorChallengeComponent,
+  },
+  {
+    path: 'createcourse/entercoursetitel',
+    component: TitelbageComponent,
+  },
+  {
+    path: 'createcourse/FGCOURSE',
+    component: FirstpageaftercreateComponent,
+  },
+  {
+    path: 'createcourse/createcoursebage',
+    component: CreatecoursebageComponent,
+  },
   {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
-
- 
-
 ];

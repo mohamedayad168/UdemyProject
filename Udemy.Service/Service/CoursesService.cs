@@ -73,6 +73,8 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
+
+
             var course = mapper.Map<Course>(courseDto);
 
             var instructorExists = await repository.Instructors
@@ -86,6 +88,8 @@ namespace Udemy.Service.Service
             await repository.SaveAsync();
 
             return mapper.Map<CourseRDTO>(course);
+
+
         }
 
         public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
