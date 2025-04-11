@@ -54,6 +54,22 @@ public class CartService(
         await repository.SaveAsync();
     }
 
+    public async Task DeleteCart(int studentId)
+    {
+        await CheckIfStudentExistsAsync(studentId);
+
+        var cart = await GetStudentCartAndCreateIfDoesntExistAsync(studentId);
+        cart.ClientSecret = null;
+        cart.PaymentIntentId = null;
+        foreach(var cartCourse in cart.CartCourses)
+        {
+            await CheckIfCourseExistAsync(cartCourse.CourseId);
+            repository.CartCourse.DeleteCartCourse(cartCourse);
+        }
+
+        await repository.SaveAsync();
+    }
+
     public async Task DeleteCourseFromStudentCartAsync(int courseId , int studentId)
     {
         await CheckIfStudentExistsAsync(studentId);

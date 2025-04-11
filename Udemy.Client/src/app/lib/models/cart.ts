@@ -1,5 +1,7 @@
 export type Cart = {
   studentId: number;
+  paymentIntentId?: string;
+  clientSecret?: string;
   courses: CartCourse[];
 };
 
