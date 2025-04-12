@@ -50,7 +50,7 @@ namespace Udemy.API.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstructorCDTO instructorDto)
         {
             if (instructorDto == null)

@@ -1,3 +1,4 @@
+import { InstructorAudianceComponent } from './instructor/instructor-audiance/instructor-audiance.component';
 import { Routes } from '@angular/router';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
@@ -21,6 +22,8 @@ import { TitelbageComponent } from './instructor/titelbage/titelbage.component';
 import { CreatecoursebageComponent } from './instructor/createcoursebage/createcoursebage.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
+import { InstructorGetstartedComponent } from './instructor/instructor-getstarted/instructor-getstarted.component';
+import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
 export const routes: Routes = [
   {
     path: '',
@@ -59,6 +62,18 @@ export const routes: Routes = [
   {
     path: 'instructor/home',
     component: InstructorHomeComponent,
+  },
+  {
+    path: 'instructor/get-started',
+    component: InstructorGetstartedComponent,
+  },
+  {
+    path: 'instructor/instructor-audiance',
+    component: InstructorAudianceComponent,
+  },
+  {
+    path: 'instructor/new',
+    component: AddInstructorComponent,
   },
   {
     path: 'teach',
