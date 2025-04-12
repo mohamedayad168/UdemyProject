@@ -80,12 +80,15 @@ public class AccountController(
     [HttpGet("user-info")]
     public async Task<IActionResult> GetUserInfo()
     {
+        logger.LogInformation("GetUserInfo method is called");
         if (User.Identity?.IsAuthenticated == false)
             return NoContent();
 
         var user = await signInManager.UserManager.GetUserByEmail(User);
         var userDto = mapper.Map<UserDto>(user);
-
+        
+        var roles = await signInManager.UserManager.GetRolesAsync(user);
+        userDto.Roles = roles ?? [];
         return Ok(userDto);
     }
 

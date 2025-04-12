@@ -1,0 +1,30 @@
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  previewImageLink: string;
+  status: 'Archived' | 'Published';
+  imageUrl: string;
+  categories: { id: number; name: string }[];
+  category: string;
+  imageLinks: string[];
+  location: any;
+  createdDate: Date;
+  modifiedDate: null;
+  isDeleted: boolean;
+  courseLevel: string;
+  discount: number;
+  duration: number;
+  language: string;
+  videoUrl: string;
+  noSubscribers: number;
+  isFree: boolean;
+  isApproved: boolean;
+  currentPrice: number;
+  rating: number;
+  subCategoryId: number;
+  categoryId: number;
+  instructorId: number;
+  instructorName: null;
+}
