@@ -1,13 +1,13 @@
-﻿using Udemy.Core.Entities;
+﻿using Udemy.Service.DataTransferObjects;
 
 namespace Udemy.Service.IService
 {
     public interface ISocialMediaService
     {
-        Task<SocialMedia> GetSocialMediaByIdAsync(int id, int userId);
-        Task Create(List<SocialMedia> socialMedia);
-        Task<IEnumerable<SocialMedia>> GetSocialMediaByUserIdAsync(int userId);
-        Task Update(List<SocialMedia> socialMedia);
-        Task Delete(int id, int userId);
+        Task<List<SocialMediaDto>> GetUserSocialMedias(int userId);
+        Task<SocialMediaDto> GetSocialMedia(int id, int userId);
+        Task<SocialMediaDto> CreateSocialMedia(int userId, SocialMediaDto dto);
+        Task<SocialMediaDto> UpdateSocialMedia(int id, int userId, SocialMediaDto dto);
+        Task DeleteSocialMedia(int id, int userId);
     }
 }

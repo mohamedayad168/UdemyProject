@@ -6,10 +6,10 @@ namespace Udemy.Service.AutoMapperConfigration
 {
     public class SocialMediaMappingProfile : Profile
     {
-        SocialMediaMappingProfile()
+        public SocialMediaMappingProfile()
         {
             CreateMap<SocialMedia, SocialMediaDto>().ReverseMap();
-            CreateMap<List<SocialMedia>, List<SocialMediaDto>>().ReverseMap();
+
         }
     }
 }

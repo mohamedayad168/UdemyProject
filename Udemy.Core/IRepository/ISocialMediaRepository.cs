@@ -4,10 +4,11 @@ namespace Udemy.Core.IRepository
 {
     public interface ISocialMediaRepository
     {
-        Task<SocialMedia> GetSocialMediaByIdAsync(int id, int userId);
-        Task<IEnumerable<SocialMedia>> GetSocialMediaByUserIdAsync(int userId);
-        Task<List<SocialMedia>> Create(List<SocialMedia> socialMedia);
-        Task Update(List<SocialMedia> socialMedia);
+        Task<List<SocialMedia>> GetByUserIdAsync(int userId);
+        Task<SocialMedia?> GetByIdAsync(int id, int userId);
+        Task<SocialMedia> CreateAsync(SocialMedia socialMedia);
+        Task<SocialMedia> UpdateAsync(SocialMedia socialMedia);
+        Task<bool> ExistsForUser(int userId, string platform);
         Task Delete(int id, int userId);
 
     }
