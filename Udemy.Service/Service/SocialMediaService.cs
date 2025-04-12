@@ -34,7 +34,8 @@ namespace Udemy.Service.Service
             {
                 UserId = userId,
                 Name = dto.Name,
-                Link = dto.Link
+                Link = dto.Link,
+                Id = dto.Id,
             };
 
             var created = await repositoryManager.SocialMedia.CreateAsync(socialMedia);

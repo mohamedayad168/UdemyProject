@@ -8,7 +8,7 @@ namespace Udemy.Presentation.Controllers
 {
     //  [Authorize]
     [ApiController]
-    [Route("api/users/{userId}/social-medias")]
+    [Route("api/[controller]")]
     public class SocialMediaController(IServiceManager serviceManager, IHttpContextAccessor httpContextAccessor) : ControllerBase
     {
         [HttpGet]
@@ -60,18 +60,51 @@ namespace Udemy.Presentation.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateSocialMedia(
+
+      [FromBody] List<SocialMediaDto> dto)
+        {
+            try
+            {
+                var updated = new List<SocialMediaDto>();
+                // VerifyUserAccess(userId);
+                foreach (var item in dto)
+                {
+                    updated.Add(await serviceManager.SocialMediaService.CreateSocialMedia(item.UserId, item));
+                }
+
+
+                return Ok(updated);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialMedia(
-       int userId,
-       int id,
-       [FromBody] SocialMediaDto dto)
+       int id, int userId,
+       [FromBody] List<SocialMediaDto> dto)
         {
             try
             {
                 // VerifyUserAccess(userId);
+                foreach (var item in dto)
+                {
+                    await serviceManager.SocialMediaService.UpdateSocialMedia(id, userId, item);
+                }
 
-                var updated = await serviceManager.SocialMediaService.UpdateSocialMedia(id, userId, dto);
-                return Ok(updated);
+
+                return Ok();
             }
             catch (KeyNotFoundException ex)
             {

@@ -1,29 +1,29 @@
 export interface Instructor {
   id?: number;
-  name: string;
-  title: string;
-  bio: string;
+  name?: string;
+  Title: string;
+  Bio: string;
+  UserName: string;
+  Email: string;
 
-  email: string;
+  Password: string;
+  ConfirmPassword: string;
 
-  password: string;
-  confirmPassword: string;
+  PhoneNumber: string;
 
-  phoneNumber: string;
+  FirstName: string;
 
-  firstName: string;
+  LastName: string;
 
-  lastName: string;
+  CountryName: string;
 
-  countryName: string;
+  City: string;
 
-  city: string;
+  State: string;
 
-  state: string;
+  Age: number;
 
-  age: number;
-
-  gender: string;
+  Gender: string;
 
   totalCourses?: number | null;
   totalReviews?: number | null;
@@ -33,21 +33,21 @@ export interface Instructor {
 export const dummyInstructor: Instructor = {
   id: 1,
   name: 'John Doe',
-  title: 'Senior Instructor',
-  bio: 'John Doe is a seasoned instructor with over 10 years of experience in teaching programming languages and software development. He has a passion for educating others and making complex topics accessible to all.',
+  Title: 'Senior Instructor',
+  Bio: 'John Doe is a seasoned instructor with over 10 years of experience in teaching programming languages and software development. He has a passion for educating others and making complex topics accessible to all.',
   totalReviews: 1200,
   totalCourses: 15,
   totalStudents: 5000,
-  email: '',
-
-  password: '',
-  confirmPassword: '',
-  phoneNumber: '',
-  firstName: '',
-  lastName: '',
-  countryName: '',
-  city: '',
-  state: '',
-  age: 0,
-  gender: '',
+  Email: '',
+  UserName: 'join',
+  Password: '',
+  ConfirmPassword: '',
+  PhoneNumber: '',
+  FirstName: '',
+  LastName: '',
+  CountryName: '',
+  City: '',
+  State: '',
+  Age: 0,
+  Gender: '',
 };
