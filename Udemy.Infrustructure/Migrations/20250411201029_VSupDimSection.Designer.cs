@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Udemy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411201029_VSupDimSection")]
+    partial class VSupDimSection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -360,9 +363,9 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "31d45892-9945-425e-9ab8-e54fc943beef",
+                            ConcurrencyStamp = "715ecdbd-0982-4e7a-b76f-d39aef5c26f4",
                             CountryName = "United States",
-                            CreatedDate = new DateTime(2025, 4, 11, 23, 1, 32, 261, DateTimeKind.Local).AddTicks(477),
+                            CreatedDate = new DateTime(2025, 4, 11, 22, 10, 28, 855, DateTimeKind.Local).AddTicks(316),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -372,9 +375,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@gmail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOvR4TjC011CQmGWlvjGr0xYMCfwXIL50JHZTTOnOpcsWKNbZ7Q0DH7hsQJXYMdqgw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG8IDxl6Y87vG/GagMfFpwDH4lOiynGjMKQCNLobO49plvqpQnjtaPz1j3N3fqHW7g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a8aa8a24-a18d-442b-9387-21da7be925fe",
+                            SecurityStamp = "64de5aff-084a-4dd7-8cc2-71bb39321e9c",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -1054,169 +1057,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.ToTable("Subcategories");
                 });
 
-            modelBuilder.Entity("Udemy.Core.Views.VDimUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("HasFacebook")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasInstagram")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasLinkedin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasX")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsInstructor")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsStudent")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Wallet")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VDimUser");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Views.VDimcourse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("BestSeller")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Duration")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("InstructorId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFree")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NoSubscribers")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("OriginalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VDimcourse");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Views.VSupDimQuiz", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MultipleChoiceCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrueOrFalseCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "QuizId");
-
-                    b.ToTable("VSupDimQuiz");
-                });
-
             modelBuilder.Entity("Udemy.Core.Views.VSupDimSection", b =>
                 {
                     b.Property<int>("CourseId")
@@ -1244,106 +1084,6 @@ namespace Udemy.Infrastructure.Migrations
                     b.HasKey("CourseId", "SectionId");
 
                     b.ToTable("VSupDimSection");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Views.vw_FactCart", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CartDateKey")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "StudentId", "CartId");
-
-                    b.ToTable("vw_FactCart");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Views.vw_FactEnrollment", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CertificationUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompletionDateKey")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Grade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GradeDateKey")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ProgressPercentage")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Rating")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StartDateKey")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CourseId", "StudentId");
-
-                    b.ToTable("vw_FactEnrollment");
-                });
-
-            modelBuilder.Entity("Udemy.Core.Views.vw_FactOrder", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ModifiedDateKey")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderDateKey")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("OrderId", "StudentId");
-
-                    b.ToTable("vw_FactOrder");
                 });
 
             modelBuilder.Entity("Udemy.Core.Entities.Instructor", b =>
@@ -1379,9 +1119,9 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "41ba4084-01b8-4621-bb89-c4bca2a2f613",
+                            ConcurrencyStamp = "72af8547-65ae-49c4-938d-faf50ec7e030",
                             CountryName = "United States",
-                            CreatedDate = new DateTime(2025, 4, 11, 23, 1, 32, 299, DateTimeKind.Local).AddTicks(7118),
+                            CreatedDate = new DateTime(2025, 4, 11, 22, 10, 28, 891, DateTimeKind.Local).AddTicks(4580),
                             Email = "instructor@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Instructor",
@@ -1391,9 +1131,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "INSTRUCTOR@gmail.com",
                             NormalizedUserName = "INSTRUCTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAA7mD6908fiM/p5bBPDjfWyYkvTmc2AHXVmB01hJc23Kc084eueoSFRgK8X1KCLrg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKL9BRO3lmKA+lbzHc+oHx7O9IxacMVaPa+IggIUOV9lJoFb2LRCym0nanq47poEvw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "195cd78e-4ab4-4961-8ebd-9ab9ab16de84",
+                            SecurityStamp = "a9df0f44-8865-468d-b150-237a95bcadd1",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "instructor",
@@ -1423,9 +1163,9 @@ namespace Udemy.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             City = "New York",
-                            ConcurrencyStamp = "f8006ac1-9af4-450c-b2d7-f409144a5b76",
+                            ConcurrencyStamp = "a2ec21cb-d668-4436-ba4b-cff1bef16105",
                             CountryName = "United States",
-                            CreatedDate = new DateTime(2025, 4, 11, 23, 1, 32, 339, DateTimeKind.Local).AddTicks(2298),
+                            CreatedDate = new DateTime(2025, 4, 11, 22, 10, 28, 927, DateTimeKind.Local).AddTicks(8299),
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Student",
@@ -1435,9 +1175,9 @@ namespace Udemy.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@gmail.com",
                             NormalizedUserName = "STUDENT",
-                            PasswordHash = "AQAAAAIAAYagAAAAENNv9Gt2rBf/09qtjy8OE1TF1k1xAG0INz/5zDFMTBmUzszAP9CZquixR0S5GOP/rA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECU628twUynzvtD/3yF0v7p88mxEvwUUuFfkVhPBYPzyglZBUjOWDYAyfFYyHuLqHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "83b0d1b9-71a2-407a-b555-71f184e7e6ef",
+                            SecurityStamp = "41eb8e02-3e95-455b-901d-9764913ccb3c",
                             State = "New York",
                             TwoFactorEnabled = false,
                             UserName = "student",
