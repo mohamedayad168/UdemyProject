@@ -19,13 +19,7 @@ namespace Udemy.Service.Service
 
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
-        public async Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId)
-        {
-            var courses = await repository.Courses.GetAllByCategoryId(categoryId);
-
-            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
-        }
-
+      
         public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
@@ -120,6 +114,20 @@ namespace Udemy.Service.Service
             await repository.Courses.DeleteAsync(id);
 
         }
+        public async Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId)
+        {
+            var courses = await repository.Courses.FindByCondition(c => c.SubCategoryId == subcategoryId, false)
+                                                  .ToListAsync();
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+
+        }
+        public async Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId)
+        {
+            var courses = await repository.Courses.GetAllByCategoryId(categoryId);
+
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+        }
+
 
 
     }

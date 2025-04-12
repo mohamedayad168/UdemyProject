@@ -28,14 +28,13 @@ export class CourseService {
 
 
   getCoursesByCategory(categoryId: number): Observable<Course[]> {
-    return this.http.get<Course[]>(
-      `${environment.baseurl}/courses/category/${categoryId}`
-    );
+    
+    return this.http.get<Course[]>(`${environment.baseurl}/categories/${categoryId}/courses`);
   }
 
-
   createCourse(course: CourseCDTO): Observable<any> {
-    return this.http.post<any>(environment.baseurl, course);  // Sends a POST request with the course data
+   
+    return this.http.post<any>(`${environment.baseurl}/Courses`, course); 
   }
   getCourseById(
     id: number,
@@ -49,4 +48,6 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
+ 
+  
 }

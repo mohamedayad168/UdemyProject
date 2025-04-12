@@ -72,5 +72,16 @@ namespace Udemy.Presentation.Controllers
             await _service.SubCategoriesService.DeleteAsync(id);
             return NoContent();
         }
+
+
+        [HttpGet("/api/categories/{categoryId:int}/subcategories")]
+        public async Task<IActionResult> GetSubCategoriesByCategoryId(int categoryId)
+        {
+            var subCategories = await _service.SubCategoriesService.GetByCategoryIdAsync(categoryId, false);
+            return Ok(subCategories);
+        }
+
+
+
     }
 }
