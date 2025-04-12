@@ -1,19 +1,44 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Course } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
 import { CourseCDTO } from '../models/course-cdto';
+import { CourseSearch } from '../models/course-search';
+import { CourseParams } from '../models/course-params';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  // private apiUrl = `${environment.baseurl}/courses`;
+  private baseUrl = `${environment.baseurl}/courses`;
+  coursesWithParameters = signal<CourseSearch[] | null>(null);
 
   constructor(private http: HttpClient) {}
+
+  getCourseWithParameters(courseParams: CourseParams) {
+    let params = new HttpParams();
+
+    params = params.append('pageSize', courseParams.pageSize);
+    params = params.append('PageNumber', courseParams.pageNumber);
+    params = params.append('SearchTerm', courseParams.searchTerm);
+
+    return this.http
+      .get<CourseSearch[]>(this.baseUrl + '/search', {
+        params,
+      })
+      .pipe(
+        map((courses) => {
+          this.coursesWithParameters.set(courses);
+
+          console.log(this.coursesWithParameters());
+
+          return courses;
+        })
+      );
+  }
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(
@@ -26,15 +51,14 @@ export class CourseService {
     return this.http.get<Category[]>(`${environment.baseurl}/categories`);
   }
 
-
   getCoursesByCategory(categoryId: number): Observable<Course[]> {
-    
-    return this.http.get<Course[]>(`${environment.baseurl}/categories/${categoryId}/courses`);
+    return this.http.get<Course[]>(
+      `${environment.baseurl}/categories/${categoryId}/courses`
+    );
   }
 
   createCourse(course: CourseCDTO): Observable<any> {
-   
-    return this.http.post<any>(`${environment.baseurl}/Courses`, course); 
+    return this.http.post<any>(`${environment.baseurl}/Courses`, course);
   }
   getCourseById(
     id: number,
@@ -48,6 +72,4 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
- 
-  
 }

@@ -132,9 +132,9 @@ namespace Udemy.Service.Service
         {
             var courses = await repository.Courses.FindAll(false)
                             .Where(x =>
-                                x.Title.ToLower().Contains(requestParamter.SrarchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Name.ToLower().Contains(requestParamter.SrarchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SrarchTerm.Trim().ToLower()) 
+                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) 
                             )
                             .Include(c => c.Instructor)
                             .Include(c => c.CourseGoals)
