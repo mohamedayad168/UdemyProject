@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
+using System;
 
 namespace Udemy.Infrastructure.Repository;
 public class RepositoryManager : IRepositoryManager
@@ -21,6 +22,8 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IUserRepository> userRepository;
     private readonly Lazy<ISubCategoriesRepository> subCategoriesRepository;
     private readonly Lazy<ICartCourseRepository> cartCourseRepository;
+    private readonly Lazy<IlessonRepo> LessonRepo;
+ 
     public RepositoryManager(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
     {
         this.applicationDbContext = applicationDbContext;
@@ -37,6 +40,8 @@ public class RepositoryManager : IRepositoryManager
         userRepository = new Lazy<IUserRepository>(() => new UserRepository(applicationDbContext, userManager));
         subCategoriesRepository = new Lazy<ISubCategoriesRepository>(() => new SubCategoriesRepository(applicationDbContext));
         cartCourseRepository = new Lazy<ICartCourseRepository>(() => new CartCourseRepository(applicationDbContext));
+        LessonRepo = new Lazy<IlessonRepo>(() => new LessonRepo(applicationDbContext));
+      
     }
 
     public ICoursesRepository Courses => coursesRepo.Value;
@@ -53,6 +58,8 @@ public class RepositoryManager : IRepositoryManager
     public IUserRepository User => userRepository.Value;
 
     public ISubCategoriesRepository SubCategories => subCategoriesRepository.Value;
+
+    public IlessonRepo Lessons => LessonRepo.Value;
 
     public async Task SaveAsync()
     {

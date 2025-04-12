@@ -22,5 +22,6 @@ public interface IRepositoryManager
     ISubCategoriesRepository SubCategories { get; }
     ICartCourseRepository CartCourse { get; }
 
+    IlessonRepo Lessons { get; }
     Task SaveAsync();
 }

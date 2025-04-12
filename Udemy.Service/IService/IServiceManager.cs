@@ -15,4 +15,6 @@ public interface IServiceManager
     ISubCategoriesService SubCategoriesService { get; }
     IPaymentService PaymentService { get; }
     ISocialMediaService SocialMediaService { get; }
+    ILessonService LessonService { get; }
+
 }
