@@ -1,1 +1,7 @@
-<app-crud-table [keys]="keys" [crudService]="coursesService" [items]="coursesService.items()!" [statuses]="statuses"/>
+<app-crud-table
+  [columnConfig]="columnConfig"
+   [crudService]="coursesService"
+  [items]="coursesService.page()"
+  [statuses]="statuses"
+
+/>

@@ -3,6 +3,7 @@ using Udemy.Core.Entities;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Udemy.Service.AutoMapperConfigration;
 public class AnswerMappingProfile: Profile
@@ -13,4 +14,5 @@ public class AnswerMappingProfile: Profile
         CreateMap<Answer, AnswerForCreationDto>().ReverseMap();
         CreateMap<Answer, AnswerForUpdatingDto>().ReverseMap();
     }
+    
 }

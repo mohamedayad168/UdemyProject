@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -17,6 +23,8 @@ import { MatDivider } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { BusyService } from '../../../services/busy.service';
 import { CartService } from '../../../services/cart/cart.service';
+import { CourseService } from '../../../services/course.service';
+import { CourseParams } from '../../../models/course-params';
 
 @Component({
   selector: 'app-header',
@@ -43,6 +51,18 @@ export class HeaderComponent {
   accountService = inject(AccountService);
   private router = inject(Router);
   cartService = inject(CartService);
+  courseService = inject(CourseService);
+  courseParams = new CourseParams();
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
+  onSearchChange() {
+    this.courseService.getCourseWithParameters(this.courseParams).subscribe({
+      next: () => {
+        this.searchInput.nativeElement.value = '';
+      },
+    });
+  }
+
   logout() {
     this.accountService.logout().subscribe({
       next: () => {
@@ -52,32 +72,3 @@ export class HeaderComponent {
     });
   }
 }
-// export class HeaderComponent implements OnInit {
-//   categories!: string[];
-//   accountService = inject(AccountService);
-
-//   constructor(private categoryservice: CategoryService) {}
-
-//   ngOnInit() {
-//     this.loadCategories();
-//   }
-
-//   loadCategories(): void {
-//     this.categoryservice.getCategories().subscribe(
-//       (data) => {
-//         this.categories = data.categories;
-//         console.log('Categories loaded:', this.categories);
-//       },
-//       (error) => {
-//         console.error('Error loading categories:', error);
-//       }
-//     );
-//   }
-
-//   isDarkMode = false;
-
-//   toggleDarkMode() {
-//     this.isDarkMode = !this.isDarkMode;
-//     document.body.classList.toggle('dark-mode', this.isDarkMode);
-//   }
-// }

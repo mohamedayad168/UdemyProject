@@ -30,6 +30,7 @@ public class StudentsController(IServiceManager serviceManager,UserManager<Appli
         var studentsDto = await serviceManager.EnrollmentService.GetStudentCoursesAsync(int.Parse(userId));
         return Ok(studentsDto);
     }
+  
 
     [HttpGet("{id}", Name = "GetStudentById")]
     public async Task<IActionResult> GetStudentById(int id)
@@ -38,6 +39,8 @@ public class StudentsController(IServiceManager serviceManager,UserManager<Appli
 
         return Ok(studentDto);
     }
+
+
 
     [HttpPost]
     public async Task<IActionResult> CreateStudent(StudentForCreationDto studentDto)

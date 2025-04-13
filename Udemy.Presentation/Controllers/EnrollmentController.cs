@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,15 @@ namespace Udemy.Presentation.Controllers
 
     [Route("api/enrollments")]
     [ApiController]
+    [Authorize]
     public class EnrollmentController : ControllerBase
     {
         private readonly IServiceManager _service;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EnrollmentController(IServiceManager service)
+        public EnrollmentController(IServiceManager service , UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _service = service;
         }
 
@@ -39,7 +44,7 @@ namespace Udemy.Presentation.Controllers
             var enrollments = await _service.EnrollmentService.GetEnrollmentsByCourseIdAsync(courseId);
             return Ok(enrollments);
         }
-
+        [AllowAnonymous]
         [HttpGet("ratings/{courseId}")]
         public async Task<IActionResult> GetRatingsByCourse(int courseId)
         {
@@ -47,16 +52,32 @@ namespace Udemy.Presentation.Controllers
             return Ok(ratings);
         }
 
+        //add a rating
+        [HttpPost("ratings/{courseId}")]
+        public async Task<IActionResult> AddRating(CourseRatingCDTO courseRatingCDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            bool parseResult = int.TryParse(_userManager.GetUserId(User), out int userId);
+            if (!parseResult)
+            {
+                return BadRequest("User not found");
+            }
 
-     
-        [HttpGet("{studentId}/{courseId}")]
+            var rating=await _service.EnrollmentService.CreateCourseRatingsAsync(userId, courseRatingCDTO);
+            return Ok(rating);
+        }
+
+
+        [HttpGet("student/{studentId}/course/{courseId}")]
         public async Task<IActionResult> GetEnrollment(int studentId, int courseId)
         {
             var enrollment = await _service.EnrollmentService.GetEnrollmentAsync(studentId, courseId);
             if (enrollment == null) return NotFound();
             return Ok(enrollment);
         }
-
        
         [HttpPost]
         public async Task<IActionResult> CreateEnrollment([FromBody] EnrollmentCDTO enrollmentDto)

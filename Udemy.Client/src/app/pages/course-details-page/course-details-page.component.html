@@ -29,7 +29,7 @@
             <i class="bi bi-star-fill"></i
           ></span>
           <a href="#reviews" class="link-light-purple me-2"
-            >( {{ courseDetails.noSubscribers }} Students)</a
+            >( {{ courseDetails.noSubscribers | number }} Students)</a
           >
         </div>
 
@@ -99,34 +99,34 @@
                   <vg-player (onPlayerReady)="onPlayerReady($event)">
                     <vg-overlay-play></vg-overlay-play>
                     <vg-buffering></vg-buffering>
-  
+
                     <vg-scrub-bar>
                         <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                         <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
                     </vg-scrub-bar>
-  
+
                     <vg-controls>
                         <vg-play-pause></vg-play-pause>
                         <vg-playback-button></vg-playback-button>
-  
+
                         <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-  
+
                         <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-  
+
                         <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-  
+
                         <vg-track-selector></vg-track-selector>
                         <vg-mute></vg-mute>
                         <vg-volume></vg-volume>
-  
+
                         <vg-fullscreen></vg-fullscreen>
                     </vg-controls>
-  
+
                     <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
                         <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     </video>
                 </vg-player>
-  
+
                 </div> -->
       </ng-template>
 
@@ -161,18 +161,20 @@
               <span class="price-original">E£{{ courseDetails.price }}</span>
             </div>
             <div class="d-grid gap-2">
-              <div class="d-flex gap-2">
+              <div class="d-flex gap-2 mb-1.5">
                 <button
                   (click)="addCourseToStudentCart(courseDetails.id)"
                   type="button"
-                  class="btn btn-purchase flex-grow-1"
+                  class="flex-grow-1"
+                  style="background-color: #7d00fe"
+                  mat-flat-button
                 >
                   Add to cart
                 </button>
               </div>
-              <button type="button" class="btn btn-outline-dark">
+              <!-- <button type="button" class="btn btn-outline-dark">
                 Buy now
-              </button>
+              </button> -->
             </div>
             <h5 class="h6 fw-bold">This course includes:</h5>
             <ul class="list-unstyled small text-muted">

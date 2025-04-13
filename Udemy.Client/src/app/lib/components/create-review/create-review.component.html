@@ -1,0 +1,58 @@
+@if(showReview){
+ <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6 mb-10">
+  <h2 class="text-2xl text-center font-bold mb-4">Your Review</h2>
+ <!-- ✅ Submitted Review -->
+    <div>
+      <div class="flex items-center mb-2 text-yellow-500 text-xl">
+        <p-rating [ngModel]="reviewModel.rating" [readonly]="true" [stars]="5"
+        [iconOnClass]="'bi bi-star-fill text-warning'" [iconOffClass]="'bi bi-star'"></p-rating>
+      </div>
+      <p class="text-gray-700 italic mb-4">{{ reviewModel.comment }}</p>
+
+      <!-- ✏️ Edit/Delete Buttons -->
+      <div class="flex gap-2">
+        <button (click)="editReview()" class="px-4 py-2 bg-[#6d28d2] text-white rounded hover:bg-[#6c28d2e4]">Edit</button>
+        <button (click)="deleteReview()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500">Delete</button>
+      </div>
+    </div>
+</div>
+}
+@else{
+<div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6 mb-10">
+  <h2 class="text-2xl text-center font-bold mb-4">Write a Review</h2>
+  <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
+
+  <!-- Star Rating -->
+  <div class="flex items-center  mb-4 space-x-1">
+    <span class="text-gray-700 font-medium">Your Rating:</span>
+    <div class="flex text-yellow-400 text-2xl cursor-pointer">
+      <p-rating [(ngModel)]="reviewModel.rating" name="rating" required
+      #rating="ngModel"
+      [readonly]="false" [stars]="5" [iconOnClass]="'bi bi-star-fill text-warning'" [iconOffClass]="'bi bi-star'"></p-rating>
+
+    </div>
+
+  </div>
+
+  @if(!rating.invalid){
+     <!-- Review Textarea -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700 mb-1" for="review">
+      Leave a Comment
+    </label>
+    <textarea id="review" name="review" rows="4"
+      class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6c28d249]"
+      placeholder="Share your thoughts about the course..."
+      [(ngModel)]="reviewModel.comment"
+      ></textarea>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    class="bg-[#6d28d2] hover:bg-[#6c28d2d3] text-white font-semibold px-6 py-2 rounded-md transition duration-200">
+    Submit Review
+  </button>
+  }
+</form>
+</div>
+}

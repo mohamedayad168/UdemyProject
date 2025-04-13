@@ -25,6 +25,24 @@ namespace Udemy.Service.Service
             _mapper = mapper;
         }
 
+
+        public async Task<CourseRatingCDTO> CreateCourseRatingsAsync(int studentId, CourseRatingCDTO courseRatingDto)
+        {
+            var enrollment = _repository.Enrollments.
+                FindByCondition(e => (e.StudentId == studentId) && (e.CourseId == courseRatingDto.CourseId), false)
+                             .FirstOrDefault();
+            if (enrollment is null)
+                throw new KeyNotFoundException("Enrollment not found.");
+            enrollment.Rating = courseRatingDto.Rating;
+            enrollment.comment = courseRatingDto.Comment;
+            _repository.Enrollments.Update(enrollment);
+            await  _repository.SaveAsync();
+
+            return courseRatingDto;
+
+        }
+
+
         public async Task<IEnumerable<StudentCourseRDTO>> GetStudentCoursesAsync(int studentId)
         {
             var enrollments= _repository.Enrollments
@@ -106,7 +124,12 @@ namespace Udemy.Service.Service
         public async Task<EnrollmentRDTO?> GetEnrollmentAsync(int studentId, int courseId)
         {
             var enrollment = await _repository.Enrollments.GetEnrollmentAsync(studentId, courseId, trackChanges: false);
-            return _mapper.Map<EnrollmentRDTO?>(enrollment);
+            var enrollmentDto = _mapper.Map<EnrollmentRDTO?>(enrollment);
+            if(enrollmentDto is null) 
+                throw new KeyNotFoundException("Enrollment not found.");
+            enrollmentDto.StudentName=$"{enrollment.Student.FirstName} {enrollment.Student.LastName}";
+            enrollmentDto.CourseTitle=enrollment.Course.Title;
+            return enrollmentDto;
         }
 
         public async Task<EnrollmentRDTO> CreateEnrollmentAsync(EnrollmentCDTO enrollmentDto)

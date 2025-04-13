@@ -1,24 +1,16 @@
-import {
-  computed,
-  inject,
-  Inject,
-  Injectable,
-  signal,
-  Signal,
-} from '@angular/core';
-import { StorageService } from '../storage/storage.service';
-import { CourseDetail } from '../../models/CourseDetail.model';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Cart } from '../../models/cart';
-import { AccountService } from '../account.service';
 import { map } from 'rxjs';
+import { SnackbarService } from '../../interceptors/snackbar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   private http = inject(HttpClient);
+  private snackbarService = inject(SnackbarService);
   private baseUrl = environment.baseurl;
   cart = signal<Cart | null>(null);
   totals = computed(() => {
@@ -74,7 +66,10 @@ export class CartService {
       .subscribe({
         next: () => {
           this.getCart().subscribe({
-            next: (cart) => this.cart.set(cart),
+            next: (cart) => {
+              this.cart.set(cart);
+              this.snackbarService.success('Course Added Successfully');
+            },
           });
         },
       });
@@ -86,7 +81,10 @@ export class CartService {
       .subscribe({
         next: () => {
           this.getCart().subscribe({
-            next: (cart) => this.cart.set(cart),
+            next: (cart) => {
+              this.cart.set(cart);
+              this.snackbarService.success('Course Deleted Successfully');
+            },
           });
         },
       });
