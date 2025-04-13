@@ -23,7 +23,7 @@ namespace Udemy.Service.Service
 
 
         public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
-      
+
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
@@ -52,7 +52,7 @@ namespace Udemy.Service.Service
                         .Include(c => c.Sections)
 
                         .ThenInclude(s => s.Lessons)
-                       
+
                         .FirstOrDefaultAsync();
 
             return course is null ?
@@ -148,7 +148,7 @@ namespace Udemy.Service.Service
                             .Where(x =>
                                 x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
                                 x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) 
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
                             )
                             .Include(c => c.Instructor)
                             .Include(c => c.CourseGoals)

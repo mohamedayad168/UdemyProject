@@ -3,6 +3,7 @@ import { IAuthState, IUser } from '../../types/auth';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { LoadingService } from '../loading/loading.service';
+import { Router } from '@angular/router';
 // import { LoginService } from '../popups/login/login.service';
 
 @Injectable({
@@ -18,12 +19,31 @@ export class AuthService {
 
   private httpClient = inject(HttpClient);
   private loadingService = inject(LoadingService);
+  private router = inject(Router);
 
   get authState(): Signal<IAuthState> {
     return this._authState.asReadonly();
   }
 
-  reset() {
+  logout() {
+    //clear set cookies from browser
+    const observable = this.httpClient.post<IUser>(
+      `${environment.apiUrl}/api/account/logout`,null
+    );
+
+    observable.subscribe({
+      next: (user) => {
+        console.log(user);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+      complete: () => {
+        // this.loadingService.stop();
+      },
+    });
+    
+    this.router.navigate(['/login']);
     this._authState.set({
       user: null,
       error: '',
@@ -52,12 +72,13 @@ export class AuthService {
             pre.dialogVisible = false;
             return pre;
           });
+          this.router.navigate(['/']);
         },
         error: (error) => {
           console.error(error);
 
           this._authState.update((pre) => {
-            pre.error = error.message;
+            pre.error = error.error;
             return pre;
           });
         },
@@ -76,12 +97,14 @@ export class AuthService {
 
     observable.subscribe({
       next: (user) => {
+        if (!user) {
+          this.router.navigate(['/login']);
+          return;
+        }
         console.log('load user', user);
 
         this._authState.update((pre) => {
-          if (!user) {
-            throw new Error('User not found');
-          }
+ 
             pre.user = user;
             pre.isAuthenticated = true;
           
@@ -89,8 +112,8 @@ export class AuthService {
         });
       },
       error: (error) => {
-        console.error(error);
-
+        this.router.navigate(['/login']);
+        console.error("rrr");
         this._authState.update((pre) => {
           pre.error = error.message;
           return pre;

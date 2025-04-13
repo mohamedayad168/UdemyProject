@@ -1,7 +1,7 @@
 <app-crud-table
-  [columnConfig]="columnConfig"
-   [crudService]="coursesService"
+  [crudService]="coursesService"
   [items]="coursesService.page()"
   [statuses]="statuses"
-
+  [columnConfigs]="columnConfigs"
+  [createFormConfigs]="createFormConfigs"
 />

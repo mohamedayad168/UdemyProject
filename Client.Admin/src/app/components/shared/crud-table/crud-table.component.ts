@@ -35,13 +35,14 @@ import { map } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
 import { IPage } from '../../../types/IPage';
 
-type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'select' | 'file';
+type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'select' | 'file'| 'radio' | 'tag' | 'rating'| 'image'| 'money';
 
 export interface FormFieldConfig {
   [key: string]: any;
   label: string;
   type: FieldType;
   required?: boolean;
+  width?: string;
   options?: { label: string; value: any }[]; // for selects
 }
 
@@ -50,6 +51,7 @@ export interface IColumnConfig {
   width?: string;
   type:'money'| 'text' | 'date' | 'image' | 'tag'  | 'rating'
   header: string;
+  sortable?: boolean;
 }
 
 interface Column {
@@ -162,8 +164,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
-  columnConfig = input.required<IColumnConfig[]>();
-  createFormFields = input.required<FormFieldConfig[]>();
+  columnConfigs = input.required<IColumnConfig[]>();
+  createFormConfigs = input.required<FormFieldConfig[]>();
   
 
   cols!: Column[];
@@ -355,5 +357,15 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   loadData(event: TableLazyLoadEvent) {
     this.crudService().getPage(event.first! / event.rows! + 1, event.rows!);
+  }
+
+  onImageChange(event: any) {
+    // const file = event.target.files[0];
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   (this.item as any)['imageUrl'] = reader.result;
+    // };
+    // reader.readAsDataURL(file);event.target.files[0];
+    (this.item as any)['imageUrl'] =  event.target.files[0];
   }
 }

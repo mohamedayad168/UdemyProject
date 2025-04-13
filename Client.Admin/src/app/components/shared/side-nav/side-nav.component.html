@@ -1,10 +1,10 @@
-<aside class="flex flex-col gap-4 bg-sidenav shadow h-full">
+<aside class="flex flex-col gap-4 bg-sidenav shadow h-full p-2" *ngIf="authService.authState().isAuthenticated">
   <nav>
-    <p-menu
+    <!-- <p-menu
       [model]="userNavItems"
       class="flex justify-center [&_.p-menu-separator]:border-none"
       styleClass="w-full md:w-60 bg-transparent border-none"
-    >
+    > -->
       <!-- <ng-template #start>
         <span class="inline-flex items-center gap-1 px-2 py-2">
           <svg
@@ -24,7 +24,7 @@
       </ng-template> -->
 
 
-      <ng-template #submenuheader let-item >
+      <!-- <ng-template #submenuheader let-item >
         <span class="text-primary font-bold">{{ item.label }}</span>
       </ng-template>
 
@@ -34,14 +34,14 @@
           <span [class]="item.icon"></span>
           <span class="ml-2">{{ item.label }}</span>
           <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-          <!-- <span
+          <span
             *ngIf="item.shortcut"
             class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
           >
             {{ item.shortcut }}
-          </span> -->
+          </span>
         </a>
-      </ng-template>
+      </ng-template> -->
 
 
       <!-- <ng-template #end>
@@ -62,7 +62,7 @@
       </ng-template> -->
 
 
-    </p-menu>
+    <!-- </p-menu> -->
 
 
     <!-- <ul
@@ -94,10 +94,11 @@
 
     
     <!-- admin nav -->
-    <!-- <p-panelmenu
+    <p-panelmenu
       *ngIf="authService.authState().user?.roles!.includes('Admin')"
       [model]="adminNavItems"
-      styleClass="w-full md:w-80"
+      styleClass="w-full md:w-60 "
+      
     >
       <ng-template #item let-item>
         <ng-container *ngIf="item.route; else urlRef">
@@ -132,6 +133,6 @@
           </ng-template>
         </ng-template>
       </ng-template>
-    </p-panelmenu> -->
+    </p-panelmenu>
   </nav>
 </aside>
