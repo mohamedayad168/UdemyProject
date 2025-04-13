@@ -122,14 +122,28 @@ export const routes: Routes = [
     component: FirstpageaftercreateComponent,
   },
   {
-    path: 'createcourse/createcoursebage',
-    component: CreatecoursebageComponent,
+    path: 'course/view/:id/lesson/:lessonId',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent }, 
 
   {
     path:'instructorprofile',component:InstructordetailsComponent
   },
+  {
+    path: 'course/view/:id',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
+
+
+    },
+    {
+        path: 'createcourse/createcoursebage',
+        component: CreatecoursebageComponent,
+    }
+    ,
+
   {
     title: '404',
     path: '**',

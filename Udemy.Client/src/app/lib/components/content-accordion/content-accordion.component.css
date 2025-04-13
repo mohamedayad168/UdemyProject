@@ -1,0 +1,103 @@
+
+  /* Accordion Container */
+  .example-accordion {
+    width: 90%;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  /* Accordion Item */
+  .example-accordion-item {
+    border-bottom: 1px solid #ddd;
+    transition: all 0.3s ease;
+  }
+
+  /* Section Header */
+  .example-accordion-item-header {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .example-accordion-item-header:hover {
+    background-color: #e9ecef;
+
+  }
+
+  /* Arrow Icon */
+  .icon {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .expanded .icon {
+    transform: rotate(180deg);
+  }
+
+  /* Section Body */
+  .example-accordion-item-body {
+    padding: 0;
+    background: #fff;
+  }
+
+  /* Lesson List */
+  .lesson-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lesson-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s ease-in-out;
+  }
+
+  .lesson-item-active {
+    background: #d1d2e0;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .lesson-item:hover {
+    background: #d1d2e0;
+  }
+
+  /* Lesson Title */
+  .lesson-title {
+    font-weight: 500;
+  }
+
+  /* Lesson Duration */
+  .lesson-duration {
+    font-size: 14px;
+    color: gray;
+  }
+  .example-action-buttons {
+    padding-bottom: 20px;
+  }
+
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+    margin-left: 8px;
+  }

@@ -32,6 +32,7 @@
     "@videogular/ngx-videogular": "^10.0.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "ng-circle-progress": "^1.7.1",
     "ngx-bootstrap": "^19.0.2",
     "postcss": "^8.5.3",
     "powerbi-client-angular": "^5.0.0",
