@@ -41,20 +41,33 @@ export interface CourseDetail {
     };
     courseGoals: string[];
     courseRequirements: string[];
-    sections: {
-        id: number;
-        title: string;
-        duration: number;
-        noLessons: number;
-        lessons: {
-            id: number;
-            title: string;
-            duration: number;
-            type: string;
-            videoUrl: string | null;
-            articleContent: string | null;
-        }[];
-    }[];
+    sections: Section[];
+}
+
+
+export interface Section {
+    id: number;
+    title: string;
+    duration: number;
+    noLessons: number;
+    lessons: Lesson[];
+}
+
+export interface Lesson {
+  id: number;
+  title: string;
+  duration: number;
+  type: string;
+  videoUrl: string | null;
+  articleContent: string | null;
+}
+
+export interface CourseContent{
+  courseId: number;
+  currentSectionId: number;
+  currentLessonId: number;
+  sections: Section[];
+
 }
 
 export const dummyCourseDetails: CourseDetail = {

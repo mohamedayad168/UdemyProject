@@ -43,21 +43,24 @@ export const routes: Routes = [
     path: 'teach',
     component: CometeachwithusComponent,
   },
-  { path: 'privacy-policy', component:PrivecypolicyComponent},
+  { path: 'privacy-policy', component: PrivecypolicyComponent },
   { path: 'get-started', component: GetStartedComponent },
   { path: 'loginasinstractor', component: LoginasinstractorComponent },
   { path: 'terms-of-use', component: TermsComponent },
   {
-    path:'course/view/:id',
-    component:CourseViewComponent,
-    data: { hideHeader: true }
+    path: 'course/view/:id/lesson/:lessonId',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
+  },
+  {
+    path: 'course/view/:id',
+    component: CourseViewComponent,
+    data: { hideHeader: true },
+
   },
   {
     title: '404',
     path: '**',
     component: NotFoundPageComponent,
   },
-
-
-
 ];

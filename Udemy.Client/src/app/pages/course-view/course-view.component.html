@@ -1,147 +1,73 @@
-<div class="bg-[#1D1E27] flex items-center justify-between px-4 py-2">
-  <!-- Left section: logo + course title -->
-  <div class="flex items-center space-x-4">
-    <!-- Logo -->
-    <img
-    routerLink="/"
+@if(courseDetails){
+  <div class="bg-[#1D1E27] flex items-center justify-between px-4 py-2">
+
+    <!-- Left section: logo + course title -->
+    <div class="flex items-center space-x-4">
+      <!-- Logo -->
+
+
+
+      <img routerLink="/"
     src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy-inverted.svg"
     alt="app logo"
     style="max-height: 2rem; cursor: pointer"
     class="ps-3"
       />
 
-      <div class="border-1! border-l-solid! border-[#595c73] h-1! mx-2! py-3"></div>
 
-    <!-- Course title -->
-    <div class="text-sm text-gray-300 whitespace-nowrap">
-      Learn to think like a programmer with Python
+
+
+        <div class="border-1! border-l-solid! border-[#595c73] h-1! mx-2! py-3"></div>
+
+      <!-- Course title -->
+      <div class="text-sm text-gray-300 whitespace-nowrap">
+        {{courseDetails.title}}
+      </div>
+    </div>
+
+    <!-- Right section: progress, share, and more -->
+    <div class="flex items-center space-x-4">
+      <!-- Your progress -->
+      <div class="flex items-center space-x-1 text-sm text-gray-300 cursor-pointer">
+        <span>Your progress: {{enrollment.progress??0}} %</span>
+
+      </div>
     </div>
   </div>
 
-  <!-- Right section: progress, share, and more -->
-  <div class="flex items-center space-x-4">
-    <!-- Your progress -->
-    <div class="flex items-center space-x-1 text-sm text-gray-300 cursor-pointer">
-      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5"
-           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M9 12l2 2 4-4m-7.5 8.25h9a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0016.5 4.5h-9A2.25 2.25 0 005.25 6.75v11.25A2.25 2.25 0 007.5 20.25z"></path>
-      </svg>
-      <span>Your progress</span>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5"
-           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      </svg>
-    </div>
+  <!-- Video player Section -->
+  <div class="h-[80vh]">
+    <vg-player (onPlayerReady)="onPlayerReady($event)"  class="w-full h-full" >
+      <vg-overlay-play (dblclick)="toggleFullscreen()"></vg-overlay-play>
+      <vg-buffering></vg-buffering>
+
+      <!-- Clickable scrub bar -->
+      <vg-scrub-bar [vgSlider]="true">
+        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+      </vg-scrub-bar>
+
+      <vg-controls>
+        <vg-play-pause ></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+        <vg-scrub-bar></vg-scrub-bar>
+        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+        <vg-fullscreen></vg-fullscreen>
+      </vg-controls>
+
+      <video [vgMedia]="$any(media)"  #media id="singleVideo" [src]="videoUrl" preload="auto" crossorigin>
+
+      </video>
+
+    </vg-player>
   </div>
-</div>
+  <!-- <nav class="tw-border-b tw-border-gray-200 tw-bg-white">
+    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-6">
+      <div class="tw-flex tw-items-center tw-space-x-8 tw-py-2">
 
-<!-- Video player Section -->
-<div class="h-[80vh]">
-  <vg-player (onPlayerReady)="onPlayerReady($event)" class="w-full h-full" >
-    <vg-overlay-play (dblclick)="toggleFullscreen()"></vg-overlay-play>
-    <vg-buffering></vg-buffering>
-
-    <!-- Clickable scrub bar -->
-    <vg-scrub-bar [vgSlider]="true">
-      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-    </vg-scrub-bar>
-
-    <vg-controls>
-      <vg-play-pause ></vg-play-pause>
-      <vg-playback-button></vg-playback-button>
-      <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-      <vg-scrub-bar></vg-scrub-bar>
-      <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-      <vg-mute></vg-mute>
-      <vg-volume></vg-volume>
-      <vg-fullscreen></vg-fullscreen>
-    </vg-controls>
-
-    <video [vgMedia]="$any(media)"  #media id="singleVideo" preload="auto" crossorigin>
-      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-    </video>
-
-  </vg-player>
-</div>
-<!-- <nav class="tw-border-b tw-border-gray-200 tw-bg-white">
-  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-6">
-    <div class="tw-flex tw-items-center tw-space-x-8 tw-py-2">
-
-      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="tw-flex tw-items-center tw-space-x-4 tw-text-sm tw-font-medium">
-
-        <li [ngbNavItem]="1">
-          <button ngbNavLink
-                  [class]="tabClass(1)"
-                  >
-            My Courses
-          </button>
-          <ng-template ngbNavContent>
-            <h1 class="text-center h-100">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p>Loading...</p>
-              <p>Course Content</p>
-            </h1>
-          </ng-template>
-        </li>
-
-        <li [ngbNavItem]="2" [destroyOnHide]="false">
-           <button ngbNavLink
-           [class]="tabClass(2)"
-                  >
-            Overview
-          </button>
-          <ng-template ngbNavContent>
-            <h2 class="text-center">Report Unavailable</h2>
-          </ng-template>
-        </li>
-
-        <li [ngbNavItem]="3" [destroyOnHide]="false">
-           <button ngbNavLink
-           [class]="tabClass(3)"                 >
-            Reviews
-          </button>
-          <ng-template ngbNavContent>
-            <h2 class="text-center">Report Unavailable</h2>
-          </ng-template>
-        </li>
-
-        <li [ngbNavItem]="4" [destroyOnHide]="false">
-           <button ngbNavLink
-           [class]="tabClass(4)"
-                 >
-            Q&A
-          </button>
-          <ng-template ngbNavContent>
-            <h2 class="text-center">Report Unavailable</h2>
-          </ng-template>
-        </li>
-
-        <li [ngbNavItem]="5" [destroyOnHide]="false">
-          <button ngbNavLink [class]="tabClass(5)">
-            FW
-          </button>
-          <ng-template ngbNavContent>
-            <h2 class="text-center">Report Unavailable</h2>
-          </ng-template>
-        </li>
-      </ul>
-
-    </div>
-  </div>
-</nav>
-
-<main class="container mt-4">
-  <div class="container">
-    <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  </div>
-</main> -->
-
-<nav class="border-b border-gray-200 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
-      <div class="flex items-center space-x-8 py-2">
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="tw-flex tw-items-center tw-space-x-4 tw-text-sm tw-font-medium">
 
           <li [ngbNavItem]="1">
@@ -195,7 +121,7 @@
 
           <li [ngbNavItem]="5" [destroyOnHide]="false">
             <button ngbNavLink [class]="tabClass(5)">
-              Exams
+              FW
             </button>
             <ng-template ngbNavContent>
               <h2 class="text-center">Report Unavailable</h2>
@@ -203,11 +129,95 @@
           </li>
         </ul>
 
-  </div>
-  </div>
-</nav>
-<main class="container mt-4">
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-4">
     <div class="container">
       <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>
-  </main>
+  </main> -->
+
+  <nav class="border-b border-gray-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
+        <div class="flex items-center space-x-8 py-2">
+          <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="tw-flex tw-items-center tw-space-x-4 tw-text-sm tw-font-medium">
+
+            <li [ngbNavItem]="1">
+              <button ngbNavLink
+                      [class]="tabClass(1)"
+                      >
+                Course content
+              </button>
+              <ng-template ngbNavContent>
+                @if(courseDetails){
+                  <app-content-accordion class="self-center" [courseContent]="courseContent" [(activeLesson)]="currentLessonId"></app-content-accordion>
+                }
+                @else {
+                  <h1 class="text-center h-100">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading...</p>
+                    <p>Course Content</p>
+                  </h1>
+                }
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="2" [destroyOnHide]="false">
+               <button ngbNavLink
+               [class]="tabClass(2)"
+                      >
+                Overview
+              </button>
+              <ng-template ngbNavContent>
+                <app-course-over-view  [courseDetails]="courseDetails"></app-course-over-view>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="3" [destroyOnHide]="false">
+               <button ngbNavLink
+               [class]="tabClass(3)"                 >
+                Reviews
+              </button>
+              <ng-template ngbNavContent>
+
+                @if(courseDetails){
+                <app-create-review class="w-3xl" [reviewUpdated$]="reviewUpdated$" [courseRating]="courseRating"></app-create-review>
+                <app-course-reviews [reviewUpdated$]="reviewUpdated$"  [courseId]="courseDetails.id" class="w-3xl"></app-course-reviews>
+                }
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="4" [destroyOnHide]="false">
+               <button ngbNavLink
+               [class]="tabClass(4)"
+                     >
+                Q&A
+              </button>
+              <ng-template ngbNavContent>
+                <h2 class="text-center">Report Unavailable</h2>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="5" [destroyOnHide]="false">
+              <button ngbNavLink [class]="tabClass(5)">
+                Quiz
+              </button>
+              <ng-template ngbNavContent>
+                <h2 class="text-center">Report Unavailable</h2>
+              </ng-template>
+            </li>
+          </ul>
+
+    </div>
+    </div>
+  </nav>
+  <main class="container mt-4">
+      <div class="container">
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </div>
+    </main>
+}

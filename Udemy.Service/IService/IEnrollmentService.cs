@@ -18,25 +18,12 @@ namespace Udemy.Service.IService
         Task<IEnumerable<StudentCourseRDTO>> GetStudentCoursesAsync(int studentId);
 
         Task<CourseRatingRDTO> GetCourseRatingsAsync(int courseId);
+
+        Task<CourseRatingCDTO> CreateCourseRatingsAsync(int studentId,CourseRatingCDTO courseRatingDto);
         Task<EnrollmentRDTO?> GetEnrollmentAsync(int studentId, int courseId);
         Task<EnrollmentRDTO> CreateEnrollmentAsync(EnrollmentCDTO enrollmentDto);
         Task UpdateEnrollmentAsync(int studentId, int courseId, EnrollmentUDTO enrollmentDto);
         Task DeleteEnrollmentAsync(int studentId, int courseId);
-    }
-
-    public class StudentCourseRDTO
-    {
-        public int StudentId { get; set; }
-        public string StudentName { get; set; } = string.Empty;
-        public int CourseId { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string InstructorName { get; set; } = string.Empty;
-        public string ImageUrl { get; set; } = string.Empty;
-        public string CourseProgress { get; set; } = string.Empty;
-
-        public decimal? ProgressPercentage { get; set; } = 0; //Added new property
-
-
     }
 
 

@@ -1,0 +1,46 @@
+<div class="course-content mb-6 md:mx-auto max-w-[800px]">
+  <h2 class="h4 fw-bold mb-3">Course content</h2>
+  <p class="text-muted small mb-3">{{numberOfSections}} sections • {{numberOfLessons}} lectures</p> <div class="accordion" id="courseAccordion">
+
+     <cdk-accordion class="example-accordion" [multi]="true" >
+      @for (section of courseContent()?.sections; track section; let index = $index) {
+        <cdk-accordion-item #accordionItem="cdkAccordionItem"  [expanded]="section.id===courseContent()?.currentSectionId" class="example-accordion-item" >
+          <button
+            class="example-accordion-item-header d-flex align-items-center w-100"
+            (click)="accordionItem.toggle()"
+            tabindex="0"
+            [attr.id]="'accordion-header-' + index"
+            [attr.aria-expanded]="accordionItem.expanded"
+            [attr.aria-controls]="'accordion-body-' + index">
+            <span>{{ section.title }}</span>
+            <span class="example-accordion-item-description ms-auto d-flex align-items-center">
+              <span class="me-2 text-muted">({{ section.lessons.length }} lessons)</span>
+              <i class="icon bi bi-chevron-down" [ngClass]="{'expanded': accordionItem.expanded}"></i>
+            </span>
+          </button>
+
+
+
+          @if(accordionItem.expanded) {
+            <div
+              class="example-accordion-item-body m-0"
+              role="region"
+              [attr.id]="'accordion-body-' + index"
+              [attr.aria-labelledby]="'accordion-header-' + index">
+              <ul class="lesson-list">
+                @for (lesson of section.lessons; track lesson) {
+                    <li [class]="itemStyle(lesson.id)" [routerLink]="`/course/view/${courseContent()?.courseId}/lesson/${lesson.id}`"
+                     (click)="updateCurrentLessonId($event,lesson.id)">
+                        <span class="lesson-title text-sm">{{ lesson.title }}</span>
+                        <span class="lesson-duration text-sm inline-block self-end">{{ lesson.duration }} mins</span>
+
+                    </li>
+
+                }
+              </ul>
+            </div>
+          }
+        </cdk-accordion-item>
+      }
+    </cdk-accordion>
+  </div>

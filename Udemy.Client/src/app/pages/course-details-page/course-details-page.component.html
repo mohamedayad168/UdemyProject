@@ -20,12 +20,12 @@
                           <i class="bi bi-star-fill"></i></span>
                        <a href="#reviews" class="link-light-purple me-2">( {{courseDetails.noSubscribers}} Students)</a>
                      </div>
-  
+
                   <p class="mb-2 small">Created by <a href="#" class="link-light-purple fw-bold">{{courseDetails.instructor?.name}}</a></p> <div class="small">
                   </div>
               </div>
-  
-  
+
+
               <!-- Modal template -->
               <ng-template #content let-modal>
                 <div class="modal-header w-100  border-0 text-white bg-dark">
@@ -36,13 +36,13 @@
                   <vg-player (onPlayerReady)="onPlayerReady($event)" >
                     <vg-overlay-play (dblclick)="toggleFullscreen()"></vg-overlay-play>
                     <vg-buffering></vg-buffering>
-  
+
                     <!-- Clickable scrub bar -->
                     <vg-scrub-bar [vgSlider]="true">
                       <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                       <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
                     </vg-scrub-bar>
-  
+
                     <vg-controls>
                       <vg-play-pause ></vg-play-pause>
                       <vg-playback-button></vg-playback-button>
@@ -53,7 +53,7 @@
                       <vg-volume></vg-volume>
                       <vg-fullscreen></vg-fullscreen>
                     </vg-controls>
-  
+
                     <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
                       <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     </video>
@@ -63,41 +63,41 @@
                   <vg-player (onPlayerReady)="onPlayerReady($event)">
                     <vg-overlay-play></vg-overlay-play>
                     <vg-buffering></vg-buffering>
-  
+
                     <vg-scrub-bar>
                         <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                         <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
                     </vg-scrub-bar>
-  
+
                     <vg-controls>
                         <vg-play-pause></vg-play-pause>
                         <vg-playback-button></vg-playback-button>
-  
+
                         <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-  
+
                         <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-  
+
                         <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-  
+
                         <vg-track-selector></vg-track-selector>
                         <vg-mute></vg-mute>
                         <vg-volume></vg-volume>
-  
+
                         <vg-fullscreen></vg-fullscreen>
                     </vg-controls>
-  
+
                     <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
                         <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     </video>
                 </vg-player>
-  
+
                 </div> -->
-  
+
               </ng-template>
-  
+
               <div class="col-lg-4 order-lg-2 position-sticky sticky-top" >
                 <div class="card sidebar-card" >
-  
+
                       <div class="preview-placeholder position-relative" (click)="openVerticallyCentered(content)">
                        <img [src]="courseDetails.imageUrl" alt="Course Thumbnail" class="img-fluid w-100" >
                        <div
@@ -109,7 +109,7 @@
                        Preview this course
                        </div>
                      </div>
-  
+
                      <div class="card-body">
                          <div class="mb-2">
                              <span class="price-current">E£ {{courseDetails.currentPrice}}</span> <span class="price-original">E£{{courseDetails.price}}</span>
@@ -127,25 +127,25 @@
                      </div>
                 </div>
             </div>
-  
+
           </div>
       </div>
     </div>
-  
+
     <div class="container mt-5">
       <div class="row">
           <div class="col-lg-8">
-  
+
               <div class="section-box">
                   <h2>What you'll learn</h2>
                   <ul class="checklist row">
                     @for(goal of courseDetails.courseGoals; track courseDetails.courseGoals.indexOf(goal)){
                       <li class="col-md-6 mb-2">{{goal}}</li>
                     }
-  
+
                   </ul>
               </div>
-  
+
               <div class="course-content mb-6">
                 <h2 class="h4 fw-bold mb-3">Course content</h2>
                 <p class="text-muted small mb-3">{{numberOfSections}} sections • {{numberOfLessons}} lectures • {{courseDetails.duration}} total length</p> <div class="accordion" id="courseAccordion">
@@ -165,7 +165,7 @@
                             <i class="icon bi bi-chevron-down" [ngClass]="{'expanded': accordionItem.expanded}"></i>
                           </span>
                         </button>
-  
+
                         @if(accordionItem.expanded) {
                           <div
                             class="example-accordion-item-body"
@@ -186,7 +186,7 @@
                     }
                   </cdk-accordion>
                 </div>
-  
+
             <div class="mb-4 mt-4">
                  <h2 class="h4 fw-bold mb-3">Requirements</h2>
                  <ul class="default-list">
@@ -194,25 +194,26 @@
                   {
                     <li>{{req}}</li>
                   }
-  
+
               </ul>
              </div>
-  
+
           <app-instructor-bio [instructorId]="courseDetails.instructor.id"></app-instructor-bio>
-  
+
           <app-course-reviews [courseId]="courseDetails.id"></app-course-reviews>
-    </div>
+
+        </div>
           </div>
       </div>
   </div>
+
   }
-  
+
   @else {
-  
+
     <div class="spinner-container">
       <mat-spinner></mat-spinner>
     </div>
-  
-  
+
+
   }
-  
