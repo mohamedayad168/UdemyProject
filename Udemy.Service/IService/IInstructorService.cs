@@ -12,5 +12,7 @@ namespace Udemy.Service.IService
         Task<InstructorRDTO> CreateAsync(InstructorCDTO dto);
         Task<bool> UpdateAsync(int id, InstructorUTO dto);
         Task<bool> DeleteAsync(int id);
+        Task<InstructorRDTO> GetInstructorDetails(int instructorId);
+        Task<IEnumerable<CourseRDTO>> GetCoursesByInstructor(int instructorId);
     }
 }

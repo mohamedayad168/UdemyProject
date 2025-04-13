@@ -15,5 +15,6 @@ namespace Udemy.Core.IRepository
         Task<Instructor?> GetInstructorByTitleAsync(string title, bool trackChanges);
         Task CreateInstructorAsync(Instructor instructor);
         Task DeleteInstructorAsync(Instructor instructor);
+        Task<IEnumerable<Course>> GetCoursesByInstructorIdAsync(int instructorId);
     }
 }

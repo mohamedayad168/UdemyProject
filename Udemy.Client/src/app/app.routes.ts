@@ -24,6 +24,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 import { InstructorGetstartedComponent } from './instructor/instructor-getstarted/instructor-getstarted.component';
 import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
+import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
 export const routes: Routes = [
   {
     path: '',
@@ -123,6 +124,11 @@ export const routes: Routes = [
   {
     path: 'createcourse/createcoursebage',
     component: CreatecoursebageComponent,
+  },
+  { path: 'instructors/details/:id', component: InstructordetailsComponent }, 
+
+  {
+    path:'instructorprofile',component:InstructordetailsComponent
   },
   {
     title: '404',

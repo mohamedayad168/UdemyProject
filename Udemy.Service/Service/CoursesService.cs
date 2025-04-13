@@ -36,9 +36,12 @@ namespace Udemy.Service.Service
                         .Include(c => c.SubCategory)
                         .ThenInclude(sc => sc.Category)
                         .Include(c => c.CourseGoals)
+                           .Include(c => c.Instructor)
                         .Include(c => c.CourseRequirements)
                         .Include(c => c.Sections)
+
                         .ThenInclude(s => s.Lessons)
+                       
                         .FirstOrDefaultAsync();
 
             return course is null ?

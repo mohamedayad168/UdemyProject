@@ -14,4 +14,5 @@ export class InstructorServiceService {
   getInstructorById(id: number): Observable<Instructor> {
     return this.http.get<Instructor>(`${this.apiUrl}/${id}`);
   }
+  
 }
