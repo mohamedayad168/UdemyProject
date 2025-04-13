@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -58,6 +59,59 @@ namespace Udemy.Service.Service
             await repository.SaveAsync();
             return true;
         }
+        public async Task<IEnumerable<CourseRDTO>> GetCoursesByInstructor(int instructorId)
+        {
+            // Fetch the courses associated with the given instructorId
+            var courses = await repository.Instructors.GetCoursesByInstructorIdAsync(instructorId);
+
+            if (courses == null || !courses.Any())
+            {
+                throw new NotFoundException("No courses found for this instructor.");
+            }
+
+            // Map courses to CourseRDTO (you can use AutoMapper or manually map them)
+            var courseRDTOs = courses.Select(course => new CourseRDTO
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                InstructorName =$"{course.Instructor.FirstName} {course.Instructor.LastName}", 
+                Price = course.Price,
+               
+             
+            }).ToList();
+
+            return courseRDTOs;
+        }
+
+        public async Task<InstructorRDTO> GetInstructorDetails(int instructorId)
+        {
+            // Fetch the instructor details based on instructorId
+            var instructor = await repository.Instructors.GetInstructorByIdAsync(instructorId,true);
+
+            if (instructor == null)
+            {
+                throw new NotFoundException("Instructor not found.");
+            }
+
+            // Map the instructor entity to InstructorRDTO
+            var instructorRDTO = new InstructorRDTO
+            {
+                Id = instructor.Id,
+                Name = instructor.FirstName+""+instructor.LastName,
+                Title = instructor.Title,
+                Bio = instructor.Bio,
+                UserName = instructor.UserName,
+                Email = instructor.Email,
+ 
+                TotalCourses = instructor.TotalCourses,
+                TotalReviews = instructor.TotalReviews,
+                TotalStudents = instructor.TotalStudents
+            };
+
+            return instructorRDTO;
+        }
+
 
     }
 }

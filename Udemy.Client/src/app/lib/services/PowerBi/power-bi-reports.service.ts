@@ -24,4 +24,8 @@ export class PowerBiReportsService {
       "'";
     return reportUrl;
   }
+
+
+
+
 }

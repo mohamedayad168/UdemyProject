@@ -5,10 +5,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../lib/services/user.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-learning-page',
-  imports: [NgbNavModule, CommonModule,MatProgressBarModule],
+  imports: [NgbNavModule, CommonModule,MatProgressBarModule,RouterLink],
 
   templateUrl: './my-learning-page.component.html',
   styleUrl: './my-learning-page.component.css'

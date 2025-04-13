@@ -10,10 +10,10 @@
               <h2 class="text-center mb-4">Your Courses</h2>
               <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
               @for(course of userLearning; track course){
-                  <!-- Product 1 -->
                   <div class="col">
                       <div class="card h-100 shadow-sm">
-                          <img [src]="course.imageUrl" class="card-img-top" alt="{{course.title}}">
+                          <img [src]="course.imageUrl" class="card-img-top hover:cursor-pointer!"
+                          routerLink="/course/view/{{course.courseId}}" alt="{{course.title}}">
                           <div class="card-body">
                               <h5 class="card-title">{{course.title}}</h5>
                               <p class="card-text">{{course.instructorName}}</p>

@@ -4,6 +4,7 @@ using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
+using Udemy.Service.IService;
 
 namespace Udemy.Service.AutoMapperConfigration
 {
@@ -23,6 +24,11 @@ namespace Udemy.Service.AutoMapperConfigration
             CreateMap<CourseRequirement, CourseRequirementRDTO>().ReverseMap(); ;
             CreateMap<CourseRequirementCTO, CourseRequirement>();
             CreateMap<CourseRequirementUTO, CourseRequirement>();
+
+
+            CreateMap<Lesson, LessonRDto>().ReverseMap(); 
+            CreateMap<Lesson, LessonCDto>().ReverseMap(); 
+            CreateMap<Lesson, LessonDto>().ReverseMap();
         }
 
     }

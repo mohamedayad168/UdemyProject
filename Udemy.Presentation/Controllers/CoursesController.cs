@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Udemy.Core.Entities;
 using System.Security.Claims;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
@@ -8,6 +9,7 @@ using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -22,17 +24,25 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
         [HttpGet("category/{id:int}")]
-        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesByCategory([FromRoute] int id)
+       
+
+        [HttpGet("page")]
+        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
         {
-            var courses = await serviceManager.CoursesService.GetAllByCategoryId(id);
+            var courses = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
             return Ok(courses);
         }
 
         [HttpGet("page")]
         public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
+        [HttpGet("search")]
+        public async Task<IActionResult> GetCoursesWithSearch([FromQuery]CourseRequestParameter requestParameter)
         {
             var coursesPage = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
             return Ok(coursesPage);
+            var courses = await serviceManager.CoursesService.GetAllWithSearchAsync(requestParameter);
+
+            return Ok(courses);
         }
 
 
@@ -108,5 +118,18 @@ namespace Udemy.Presentation.Controllers
             await serviceManager.CoursesService.DeleteAsync(id);
             return NoContent();
         }
+        [HttpGet("subcategories/{subcategoryId}/courses")]
+        public async Task<ActionResult<CourseRDTO>> GetCoursesBySubcategory(int subcategoryId)
+        {
+            var courses = await serviceManager.CoursesService.GetAllBySubcategoryId(subcategoryId);
+            if (courses == null || !courses.Any())
+            {
+                return NotFound();
+            }
+            return Ok(courses);
+        }
     }
 }
+
+    
+

@@ -17,5 +17,7 @@ namespace Udemy.Service.IService
 
         //
         public Task DeleteAsync(int id);
+        Task<IEnumerable<SubCategoryRDTO>> GetByCategoryIdAsync(int categoryId, bool trackChanges);
+
     }
 }

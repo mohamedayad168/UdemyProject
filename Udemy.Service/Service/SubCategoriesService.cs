@@ -141,12 +141,39 @@ namespace Udemy.Service.Service
                 }
             };
         }
-        
-     
-        
-        
-        
-        
+
+
+
+        public async Task<IEnumerable<SubCategoryRDTO>> GetByCategoryIdAsync(int categoryId, bool trackChanges)
+        {
+            // Check if category exists
+            var category = await repository.Categories
+                .FindByCondition(c => c.Id == categoryId, trackChanges)
+                .FirstOrDefaultAsync() ?? throw new NotFoundException($"Category with id: {categoryId} doesn't exist");
+
+            // Get subcategories
+            var subCategories = await repository.SubCategories
+                .FindByCondition(sc => sc.CategoryId == categoryId, trackChanges)
+                .Include(sc => sc.Category)
+                .ToListAsync();
+
+            // Map to DTOs
+            var result = subCategories.Select(sc => new SubCategoryRDTO()
+            {
+                Id = sc.Id,
+                Name = sc.Name,
+                Category = new CategoryRDTO()
+                {
+                    Id = sc.Category.Id,
+                    Name = sc.Category.Name
+                }
+            });
+
+            return result;
         }
+
+
+
     }
+}
 

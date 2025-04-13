@@ -48,8 +48,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);
-
+        builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);//assembly.getexectedassembly
 
         builder.Entity<IdentityRole<int>>().HasData(
             new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },

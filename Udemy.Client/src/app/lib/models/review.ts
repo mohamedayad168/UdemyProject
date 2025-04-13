@@ -12,6 +12,13 @@ export interface CourseRating {
     ratings: rating[];
 }
 
+export interface PostReview {
+    courseId: number;
+    rating?: number;
+    comment?: string;
+}
+
+
 export const dummyRatings: CourseRating= {
     courseId: 1,
     instructorId: 1,

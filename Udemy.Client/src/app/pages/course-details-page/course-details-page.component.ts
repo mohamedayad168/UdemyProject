@@ -5,7 +5,7 @@ import {
   CourseDetail,
   dummyCourseDetails,
 } from '../../lib/models/CourseDetail.model';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
@@ -24,6 +24,7 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CartService } from '../../lib/services/cart/cart.service';
 import { AccountService } from '../../lib/services/account.service';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-course-details-page',
@@ -37,6 +38,8 @@ import { AccountService } from '../../lib/services/account.service';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
+    MatButton,
+    DecimalPipe,
     // NgbActiveModal removed as it is not a standalone component or NgModule
   ],
   templateUrl: './course-details-page.component.html',

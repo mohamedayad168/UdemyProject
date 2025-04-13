@@ -9,7 +9,7 @@ namespace Udemy.Presentation.Controllers;
 
 [ApiController]
 [Route("api/Carts")]
-[Authorize(Roles = UserRole.Student)]
+//[Authorize(Roles = UserRole.Student)]
 public class CartsController(IServiceManager serviceManager) : ControllerBase
 {
     [HttpGet("/api/all-carts")]

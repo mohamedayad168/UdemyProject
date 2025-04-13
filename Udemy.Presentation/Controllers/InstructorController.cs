@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Udemy.Core.Entities;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using Udemy.Service.Service;
 
 namespace Udemy.API.Controllers
 {
@@ -50,7 +52,7 @@ namespace Udemy.API.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstructorCDTO instructorDto)
         {
             if (instructorDto == null)
@@ -82,6 +84,30 @@ namespace Udemy.API.Controllers
                 return NotFound($"Instructor with ID {id} not found.");
 
             return NoContent();
+        }
+        [HttpGet]
+        [Route("details")]
+        public async Task<ActionResult<InstructorRDTO>> GetInstructorDetails(int instructorId)
+        {
+            var instructor = await _serviceManager.InstructorService.GetInstructorDetails(instructorId);
+            if (instructor == null)
+            {
+                return NotFound("Instructor not found");
+            }
+
+            return Ok(instructor);
+        }
+
+        [HttpGet("{instructorId:int}/courses")]
+        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetInstructorCourses(int instructorId)
+        {
+            var courses = await _serviceManager.InstructorService.GetCoursesByInstructor(instructorId);
+            if (courses == null || !courses.Any())
+            {
+                return NotFound("No courses found for the instructor");
+            }
+
+            return Ok(courses);
         }
     }
 }

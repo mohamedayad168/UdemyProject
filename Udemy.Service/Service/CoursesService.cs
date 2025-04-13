@@ -28,6 +28,8 @@ namespace Udemy.Service.Service
         }
 
         public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+      
+        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
@@ -51,9 +53,12 @@ namespace Udemy.Service.Service
                         .Include(c => c.SubCategory)
                         .ThenInclude(sc => sc.Category)
                         .Include(c => c.CourseGoals)
+                           .Include(c => c.Instructor)
                         .Include(c => c.CourseRequirements)
                         .Include(c => c.Sections)
+
                         .ThenInclude(s => s.Lessons)
+                       
                         .FirstOrDefaultAsync();
 
             return course is null ?
@@ -129,7 +134,36 @@ namespace Udemy.Service.Service
             await repository.Courses.DeleteAsync(id);
 
         }
+        public async Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId)
+        {
+            var courses = await repository.Courses.FindByCondition(c => c.SubCategoryId == subcategoryId, false)
+                                                  .ToListAsync();
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
 
+        }
+        public async Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId)
+        {
+            var courses = await repository.Courses.GetAllByCategoryId(categoryId);
+
+            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+        }
+
+        public async Task<IEnumerable<CourseSearchDto>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
+        {
+            var courses = await repository.Courses.FindAll(false)
+                            .Where(x =>
+                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) 
+                            )
+                            .Include(c => c.Instructor)
+                            .Include(c => c.CourseGoals)
+                            .Take(requestParamter.PageSize)
+                            .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
+                            .ToListAsync();
+
+            return mapper.Map<IEnumerable<CourseSearchDto>>(courses);
+        }
 
     }
 }

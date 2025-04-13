@@ -1,45 +1,63 @@
-<div class="reviews-container">
-  <div class="rating-header">
-      <span class="rating-number">
-        <i class="bi bi-star-fill text-warning me-2"></i>{{courseRating.rating}}
-      </span>
+@if(courseRating ){
 
-      <span class="rating-count">course rating · {{courseRating.totalReviews}} ratings</span>
-  </div>
+  @if(!showReviews){
+    <h1 class="text-center h-100">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading...</p>
+      <p>Reviews</p>
+    </h1>
+  }
+  @else {
+    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6 mb-10">
+      <h2 class="font-bold ">Course Reviews</h2>
+      <div class="rating-header">
+          <span class="rating-number">
+            <i class="bi bi-star-fill text-warning me-2"></i>{{courseRating.rating}}
+          </span>
 
-  <!-- Review 1 -->
-   @if(courseRating.ratings.length > 0){
-    @for(rating of courseRating.ratings; track rating)
-    {
-     <div class="review-card">
-       <div class="review-header">
-           <div class="reviewer-initials">{{rating.studentName.charAt(0)}}</div>
-           <div class="reviewer-name">{{rating.studentName}}</div>
-       </div>
-       <div class="review-content">
-           <div class="stars">
-             <p-rating [(ngModel)]="rating.rating" [readonly]="true">
-             <ng-template #officon>
-                 <i class="bi bi-star text-muted"></i>
-             </ng-template>
-               <ng-template #onicon>
-                 <i class="bi bi-star-fill text-warning"></i>
-             </ng-template>
-             </p-rating>
-             <span class="review-date">{{rating.date|date}}</span>
+          <span class="rating-count">course rating · {{courseRating.totalReviews}} ratings</span>
+      </div>
+
+      <!-- Review 1 -->
+       @if(courseRating.ratings.length > 0){
+        @for(rating of courseRating.ratings; track rating)
+        {
+         <div class="review-card">
+           <div class="review-header">
+               <div class="reviewer-initials">{{rating.studentName.charAt(0)}}</div>
+               <div class="reviewer-name">{{rating.studentName}}</div>
            </div>
-           <p class="review-text">
-               {{rating.comment}}
-           </p>
+           <div class="review-content">
+               <div class="stars">
+                 <p-rating [(ngModel)]="rating.rating" [readonly]="true">
+                 <ng-template #officon>
+                     <i class="bi bi-star text-muted"></i>
+                 </ng-template>
+                   <ng-template #onicon>
+                     <i class="bi bi-star-fill text-warning"></i>
+                 </ng-template>
+                 </p-rating>
+                 <span class="review-date">{{rating.date|date}}</span>
+               </div>
+               <p class="review-text">
+                   {{rating.comment}}
+               </p>
+           </div>
        </div>
-   </div>
-    }
-   <div class="show-all">
-       <a href="#" class="show-all-btn">Show all reviews</a>
-   </div>
-   }
-   @else {
-     <h2 class="text-center">No reviews yet</h2>
-   }
+        }
+       <div class="show-all">
+           <a href="#" class="show-all-btn">Show all reviews</a>
+       </div>
+       }
+       @else {
+         <h2 class="text-center">No reviews yet</h2>
+       }
 
-</div>
+    </div>
+  }
+}
+@else {
+  <h2 class="text-center">No reviews yet</h2>
+}

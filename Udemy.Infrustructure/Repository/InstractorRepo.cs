@@ -49,5 +49,13 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
             dbContext.Set<Instructor>().Update(instructor);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Course>> GetCoursesByInstructorIdAsync(int instructorId)
+        {
+            return await dbContext.Courses
+                  .Include(c => c.Instructor)
+                                 .Where(course => course.InstructorId == instructorId)
+                                 .ToListAsync();
+        }
     }
 }

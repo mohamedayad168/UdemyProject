@@ -9,14 +9,14 @@ export class SnackbarService {
 
   error(message: string) {
     this.snackbar.open(message, 'Close', {
-      duration: 5000,
+      duration: 2000,
       panelClass: ['snack-error'],
     });
   }
 
   success(message: string) {
     this.snackbar.open(message, 'Close', {
-      duration: 5000,
+      duration: 2000,
       panelClass: ['snack-success'],
     });
   }
