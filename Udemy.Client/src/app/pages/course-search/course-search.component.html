@@ -1,0 +1,12 @@
+<div class="container my-24">
+  @if(!courseService.courseSearchLoaded()){
+  <div class="flex justify-center mb-80 mt-20">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+  }@else if (courseService.coursesWithParameters()?.length) { @for (course of
+  courseService.coursesWithParameters(); track course.id) {
+  <app-course-search-item [course]="course"></app-course-search-item>
+  } }@else {
+  <app-empty-course-search></app-empty-course-search>
+  }
+</div>

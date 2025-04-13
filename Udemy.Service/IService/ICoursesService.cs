@@ -24,7 +24,7 @@ namespace Udemy.Service.IService
 
         //
         public Task DeleteAsync(int id);
-
+        Task<IEnumerable<CourseSearchDto>> GetAllWithSearchAsync(CourseRequestParameter requestParamter);
     }
 
 

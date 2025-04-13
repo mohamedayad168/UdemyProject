@@ -24,6 +24,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 import { InstructorGetstartedComponent } from './instructor/instructor-getstarted/instructor-getstarted.component';
 import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
+import { CourseSearchComponent } from './pages/course-search/course-search.component';
 import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
 export const routes: Routes = [
   {
@@ -33,6 +34,10 @@ export const routes: Routes = [
   {
     path: 'courses/:id',
     component: CourseDetailsPageComponent,
+  },
+  {
+    path: 'course/search',
+    component: CourseSearchComponent,
   },
   {
     path: 'login',
@@ -126,24 +131,21 @@ export const routes: Routes = [
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
-  { path: 'instructors/details/:id', component: InstructordetailsComponent }, 
+  { path: 'instructors/details/:id', component: InstructordetailsComponent },
 
   {
-    path:'instructorprofile',component:InstructordetailsComponent
+    path: 'instructorprofile',
+    component: InstructordetailsComponent,
   },
   {
     path: 'course/view/:id',
     component: CourseViewComponent,
     data: { hideHeader: true },
-
-
-    },
-    {
-        path: 'createcourse/createcoursebage',
-        component: CreatecoursebageComponent,
-    }
-    ,
-
+  },
+  {
+    path: 'createcourse/createcoursebage',
+    component: CreatecoursebageComponent,
+  },
   {
     title: '404',
     path: '**',

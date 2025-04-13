@@ -17,15 +17,24 @@
       class="position-relative d-flex align-items-center w-100 mx-4"
       style="max-width: 28rem"
       #searchForm="ngForm"
+      (ngSubmit)="onSearchChange()"
     >
       <input
         type="search"
         class="form-control w-100 p-2 text-sm border rounded-3"
         placeholder="Search"
         name="search"
+        [(ngModel)]="courseParams.searchTerm"
+        #searchInput
       />
 
       <button
+        routerLink="/course/search"
+        [queryParams]="{
+          searchTerm: courseParams.searchTerm,
+          pageNumber: courseParams.pageNumber,
+          pageSize: courseParams.pageSize
+        }"
         mat-icon-button
         type="submit"
         class="position-absolute top-50 translate-middle-y end-0 me-3 d-flex align-items-center bg-transparent"

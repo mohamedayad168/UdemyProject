@@ -30,6 +30,14 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> GetCoursesWithSearch([FromQuery]CourseRequestParameter requestParameter)
+        {
+            var courses = await serviceManager.CoursesService.GetAllWithSearchAsync(requestParameter);
+
+            return Ok(courses);
+        }
+
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CourseRDTO?>> GetCourseByIdAsync([FromRoute] int id, [FromQuery] bool detailed = false)
