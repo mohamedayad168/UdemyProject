@@ -82,7 +82,19 @@ namespace Udemy.Service.Service
                 Description = course.Description,
                 InstructorName = $"{course.Instructor.FirstName} {course.Instructor.LastName}",
                 Price = course.Price,
+                Discount = course.Discount,
+                CurrentPrice = course.CurrentPrice,
+                IsFree = course.IsFree,
+                NoSubscribers = course.NoSubscribers,
+                Rating = course.Rating,
+                ImageUrl = course.ImageUrl,
+                Language = course.Language,
+                CourseLevel = course.CourseLevel,
+                Status = course.Status,
 
+                IsApproved = course.IsApproved,
+
+                SubCategoryId = course.SubCategoryId
 
             }).ToList();
 

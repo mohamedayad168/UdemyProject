@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { CourseService } from '../../lib/services/course.service';
+import { environment } from '../../../environments/environment';
+import { Course } from '../../lib/models/course.model';
 
 @Component({
   selector: 'app-instructordetails',
@@ -14,65 +16,49 @@ import { CourseService } from '../../lib/services/course.service';
 })
 export class InstructordetailsComponent implements OnInit {
   instructorId!: number;
-  instructor: any = null;
-  courses: any[] = [];
+  instructor!: Instructor;
+  courses: Course[] = [];
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private instructorService: InstructorService) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.instructorId = +params['id']; // Convert param to number
+    this.route.params.subscribe(params => {
+      this.instructorId = +params['id'];
       this.fetchInstructorDetails();
       this.fetchInstructorCourses();
     });
   }
 
-  // Fetch instructor details
+
+
   fetchInstructorDetails(): void {
-    this.http
-      .get<any>(
-        `http://localhost:5191/api/instructors/details?instructorId=${this.instructorId}`
-      )
-      .subscribe(
-        (response) => {
-          this.instructor = response;
-          console.log('Instructor details:', this.instructor);
-        },
-        (error) => {
-          console.error('Error fetching instructor details:', error);
-        }
-      );
+    console.log('Fetching instructor details for ID:', this.instructorId);
+    this.instructorService.getInstructorDetails(this.instructorId).subscribe({
+      next: (response) => {
+        this.instructor = response;
+        console.log('Instructor details:', this.instructor);
+      },
+      error: (error) => {
+        console.error('Error fetching instructor details:', error);
+      }
+    });
   }
-
-  // Fetch instructor's courses
+  
   fetchInstructorCourses(): void {
-    this.http
-      .get<any[]>(
-        `http://localhost:5191/api/instructors/${this.instructorId}/courses`
-      )
-      .subscribe(
-        (response) => {
-          // Fix image paths
-          this.courses = response.map((course) => {
-            if (course.imageUrl && !course.imageUrl.startsWith('http')) {
-              course.imageUrl = `http://localhost:5191/images/courses/${course.imageUrl}`;
-            }
-            return course;
-          });
-          console.log('Courses:', this.courses);
-        },
-        (error) => {
-          console.error('Error fetching instructor courses:', error);
-        }
-      );
+    console.log('Fetching courses for instructor ID:', this.instructorId);
+    this.instructorService.getInstructorCourses(this.instructorId).subscribe({
+      next: (response) => {
+        this.courses = response.map(course => {
+          if (course.imageUrl && !course.imageUrl.startsWith('http')) {
+            course.imageUrl = `${environment.baseurl}/images/courses/${course.imageUrl}`;
+          }
+          return course;
+        });
+        console.log('Courses:', this.courses);
+      },
+      error: (error) => {
+        console.error('Error fetching instructor courses:', error);
+      }
+    });
   }
-
-  // Add scroll helpers for left/right arrows
-  scrollLeft(container: HTMLElement): void {
-    container.scrollBy({ left: -300, behavior: 'smooth' });
-  }
-
-  scrollRight(container: HTMLElement): void {
-    container.scrollBy({ left: 300, behavior: 'smooth' });
-  }
-}
+}  
