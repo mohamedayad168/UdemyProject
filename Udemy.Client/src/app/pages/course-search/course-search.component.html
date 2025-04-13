@@ -6,7 +6,18 @@
   }@else if (courseService.coursesWithParameters()?.length) { @for (course of
   courseService.coursesWithParameters(); track course.id) {
   <app-course-search-item [course]="course"></app-course-search-item>
-  } }@else {
+  }
+  <div class="flex justify-center mt-5">
+    <ngb-pagination
+      [collectionSize]="120"
+      [(page)]="page"
+      [maxSize]="5"
+      [rotate]="true"
+      [ellipses]="false"
+      [boundaryLinks]="true"
+    />
+  </div>
+  }@else {
   <app-empty-course-search></app-empty-course-search>
   }
 </div>

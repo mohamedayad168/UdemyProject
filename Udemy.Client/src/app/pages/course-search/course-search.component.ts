@@ -1,9 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { CourseService } from '../../lib/services/course.service';
 import { CourseSearchItemComponent } from '../course-search-item/course-search-item.component';
-import { NavigationStart, Router, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationStart,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { EmptyCourseSearchComponent } from '../empty-course-search/empty-course-search.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { CourseParams } from '../../lib/models/course-params';
 
 @Component({
   selector: 'app-course-search',
@@ -11,6 +18,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     CourseSearchItemComponent,
     EmptyCourseSearchComponent,
     MatProgressSpinner,
+    NgbPaginationModule,
   ],
   templateUrl: './course-search.component.html',
   styleUrl: './course-search.component.css',
@@ -18,6 +26,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class CourseSearchComponent {
   courseService = inject(CourseService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
+  page = 1;
 
   constructor() {
     this.router.events.subscribe((event) => {
@@ -28,5 +38,20 @@ export class CourseSearchComponent {
         }
       }
     });
+  }
+
+  ngOnInit() {
+    const searchTerm = this.route.snapshot.queryParamMap.get('searchTerm')!;
+    const pageNumber = +this.route.snapshot.queryParamMap.get('pageNumber')!;
+    const pageSize = +this.route.snapshot.queryParamMap.get('pageSize')!;
+
+    const courseParams = new CourseParams();
+    courseParams.pageNumber = pageNumber;
+    courseParams.pageSize = pageSize;
+    courseParams.searchTerm = searchTerm;
+
+    this.courseService.getCourseWithParameters(courseParams).subscribe();
+
+    console.log(searchTerm, pageNumber, pageSize);
   }
 }
