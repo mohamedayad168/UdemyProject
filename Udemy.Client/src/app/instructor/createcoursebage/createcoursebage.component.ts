@@ -1,13 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CourseService } from '../../lib/services/course.service';
 import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
 import { CourseCDTO } from '../../lib/models/course-cdto';
 @Component({
   selector: 'app-createcoursebage',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './createcoursebage.component.html',
   styleUrl: './createcoursebage.component.css',
 })
@@ -81,14 +87,33 @@ export class CreatecoursebageComponent implements OnInit {
 
   courseVideoUrl: string = '';
   imageUrl: string = '';
+  courseForm: FormGroup;
 
   constructor(
     private categoryService: CategoryService,
-    private courseService: CourseService
-  ) {}
+    private courseService: CourseService,
+    private fb: FormBuilder
+  ) {
+    this.courseForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(60)]],
+      description: ['', [Validators.required, Validators.minLength(300)]],
+      language: ['English (US)', Validators.required],
+      level: ['Select Level --', Validators.required],
+      category: [0, Validators.required],
+      subcategory: [0, Validators.required],
+      imageUrl: [''],
+      videoUrl: [''],
+      price: [0, Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.loadCategories();
+    this.courseForm.get('category')?.valueChanges.subscribe((categoryId) => {
+      if (categoryId) {
+        this.loadSubcategories(categoryId);
+      }
+    });
   }
 
   loadCategories() {
@@ -104,12 +129,31 @@ export class CreatecoursebageComponent implements OnInit {
     );
   }
 
+  // loadSubcategories(categoryId: number) {
+  //   this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
+  //     (data) => {
+  //       this.subcategories = data;
+  //       if (this.subcategories.length > 0) {
+  //         this.selectedSubcategory = this.subcategories[0].id;
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching subcategories:', error);
+  //     }
+  //   );
+  // }
   loadSubcategories(categoryId: number) {
     this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
       (data) => {
         this.subcategories = data;
         if (this.subcategories.length > 0) {
-          this.selectedSubcategory = this.subcategories[0].id;
+          this.courseForm.patchValue({
+            subcategory: this.subcategories[0].id,
+          });
+        } else {
+          this.courseForm.patchValue({
+            subcategory: 0,
+          });
         }
       },
       (error) => {
@@ -151,24 +195,33 @@ export class CreatecoursebageComponent implements OnInit {
   }
 
   saveLandingPage() {
+    if (this.courseForm.invalid) {
+      this.courseForm.markAllAsTouched();
+      return;
+    }
+
     this.isSaving = true;
 
-    const newCourse: CourseCDTO = {
-      Title: this.courseTitle,
-      Description: this.courseDescription,
-      Language: this.selectedLanguage,
-      Level: this.selectedLevel,
-      CategoryId: this.selectedCategory,
-      SubcategoryId: this.selectedSubcategory,
-      ImageUrl: this.imageUrl,
-      VideoUrl: this.courseVideoUrl,
+    const formValue = this.courseForm.value;
+    const courseData: CourseCDTO = {
+      Title: formValue.title,
+      Description: formValue.description,
+      Language: formValue.language,
+      CourseLevel: formValue.level,
+      CategoryId: formValue.category,
+      SubcategoryId: formValue.subcategory,
+      ImageUrl: 'formValue.imageUrl',
+      VideoUrl: 'formValue.videoUrl',
+      Price: formValue.price,
+      InstructorId: 61222,
     };
 
-    // Call the service to create a new course
-    this.courseService.createCourse(newCourse).subscribe(
+    this.courseService.createCourse(courseData).subscribe(
       (response) => {
         console.log('Course created successfully:', response);
         this.isSaving = false;
+
+        this.courseForm.reset();
       },
       (error) => {
         console.error('Error creating course:', error);

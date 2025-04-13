@@ -69,7 +69,7 @@ namespace Udemy.API.Controllers
 
             var createdInstructor = await _serviceManager.InstructorService.CreateAsync(instructorDto);
             var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
-
+            await signInManager.UserManager.UpdateSecurityStampAsync(instructor);
             await signInManager.UserManager.AddToRoleAsync(instructor, UserRole.Instructor);
 
 

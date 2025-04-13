@@ -142,6 +142,12 @@ namespace Udemy.Service.Service
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
+
+
+        Task<IEnumerable<CourseRDTO>> ICoursesService.GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
         public async Task<IEnumerable<CourseSearchDto>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
         {
             var courses = await repository.Courses.FindAll(false)
@@ -157,11 +163,6 @@ namespace Udemy.Service.Service
                             .ToListAsync();
 
             return mapper.Map<IEnumerable<CourseSearchDto>>(courses);
-        }
-
-        Task<IEnumerable<CourseRDTO>> ICoursesService.GetPageAsync(RequestParamter requestParamter, bool trackChanges)
-        {
-            throw new NotImplementedException();
         }
     }
 }

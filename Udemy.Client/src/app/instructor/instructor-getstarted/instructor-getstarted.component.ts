@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 @Component({
   selector: 'app-instructor-getstarted',
   imports: [],
   templateUrl: './instructor-getstarted.component.html',
-  styleUrl: './instructor-getstarted.component.css'
+  styleUrl: './instructor-getstarted.component.css',
 })
-export class InstructorGetstartedComponent {
-
-}
+export class InstructorGetstartedComponent {}

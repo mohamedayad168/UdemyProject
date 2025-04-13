@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using Udemy.Core.Entities;
 using Udemy.Core.Utils;
 using Udemy.Presentation.Extenstions;
@@ -18,10 +18,10 @@ namespace Udemy.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController(
-    SignInManager<ApplicationUser> signInManager ,
-    IMapper mapper ,
-    IServiceManager serviceManager ,
-    ILogger<AccountController> logger ,
+    SignInManager<ApplicationUser> signInManager,
+    IMapper mapper,
+    IServiceManager serviceManager,
+    ILogger<AccountController> logger,
     UserManager<ApplicationUser> userManager
 
 ) : ControllerBase
@@ -33,7 +33,7 @@ public class AccountController(
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
-        var result = await signInManager.UserManager.CheckPasswordAsync(user , loginDto.Password);
+        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
@@ -48,16 +48,16 @@ public class AccountController(
 
         foreach (var role in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role , role));
+            claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var identity = new ClaimsIdentity(claims , "Identity.Application");
+        var identity = new ClaimsIdentity(claims, "Identity.Application");
 
         var principal = new ClaimsPrincipal(identity);
 
         await signInManager.SignOutAsync();
 
-        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme , principal , new AuthenticationProperties
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
         {
             IsPersistent = true
         });
@@ -66,6 +66,53 @@ public class AccountController(
         userDto.Roles = roles ?? [];
 
         return Ok(userDto);
+    }
+    [HttpPost("instructor/login")]
+    public async Task<IActionResult> instructorLogin(LoginDto loginDto)
+    {
+        var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+        if (user is null)
+            return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
+
+        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
+        if (!result)
+            return BadRequest($"Password: {loginDto.Password} is Wrong");
+
+        var roles = await signInManager.UserManager.GetRolesAsync(user);
+        //if (roles.Contains("Instructor"))
+        //{
+
+        //}
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.UserName)
+
+        };
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        var identity = new ClaimsIdentity(claims, "Identity.Application");
+
+        var principal = new ClaimsPrincipal(identity);
+
+        await signInManager.SignOutAsync();
+
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
+        {
+            IsPersistent = true
+        });
+
+        var userDto = mapper.Map<UserDto>(user);
+        userDto.Roles = roles ?? [];
+
+        return Ok(userDto);
+
+
     }
 
     [Authorize]
@@ -86,7 +133,7 @@ public class AccountController(
 
         var user = await signInManager.UserManager.GetUserByEmail(User);
         var userDto = mapper.Map<UserDto>(user);
-        
+
         var roles = await signInManager.UserManager.GetRolesAsync(user);
         userDto.Roles = roles ?? [];
         return Ok(userDto);
@@ -100,7 +147,7 @@ public class AccountController(
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
-    
+
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp(UserForCreationDto register)
     {
@@ -114,7 +161,7 @@ public class AccountController(
             var createdStudent = await serviceManager.StudentService.CreateStudentAsync(studentForCreation);
             var studentEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
 
-            await signInManager.UserManager.AddToRoleAsync(studentEntity , UserRole.Student);
+            await signInManager.UserManager.AddToRoleAsync(studentEntity, UserRole.Student);
 
             return Ok(createdStudent);
         }

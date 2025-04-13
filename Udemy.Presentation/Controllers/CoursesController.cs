@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Udemy.Core.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
-using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -24,7 +20,7 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
         [HttpGet("category/{id:int}")]
-       
+
 
         [HttpGet("page")]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
@@ -33,11 +29,11 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
 
-         
+
         [HttpGet("search")]
-        public async Task<IActionResult> GetCoursesWithSearch([FromQuery]CourseRequestParameter requestParameter)
+        public async Task<IActionResult> GetCoursesWithSearch([FromQuery] CourseRequestParameter requestParameter)
         {
-            
+
             var courses = await serviceManager.CoursesService.GetAllWithSearchAsync(requestParameter);
 
             return Ok(courses);
@@ -68,7 +64,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Instructor")]
+        // [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> CreateCourseAsync([FromBody] CourseCDTO course)
         {
 
@@ -129,5 +125,5 @@ namespace Udemy.Presentation.Controllers
     }
 }
 
-    
+
 
