@@ -130,9 +130,8 @@ export const routes: Routes = [
     component: CourseViewComponent,
     data: { hideHeader: true },
 
- 
-    }
 
+    },
     {
         path: 'createcourse/createcoursebage',
         component: CreatecoursebageComponent,
