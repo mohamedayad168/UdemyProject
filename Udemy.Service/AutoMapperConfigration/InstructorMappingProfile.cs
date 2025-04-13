@@ -11,9 +11,9 @@ public class InstructorMappingProfile : Profile
     public InstructorMappingProfile()
     {
         CreateMap<Instructor, InstructorRDTO>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
             .ReverseMap();
-        CreateMap<Instructor, InstractorCDTO>().ReverseMap();
+        CreateMap<Instructor, InstructorCDTO>().ReverseMap();
         CreateMap<Instructor, InstructorUTO>().ReverseMap();
     }
 }

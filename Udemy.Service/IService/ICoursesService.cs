@@ -14,7 +14,7 @@ namespace Udemy.Service.IService
         public Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
-
+        Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int SubcategoryId);
         public Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges);
 
         //write
@@ -53,7 +53,7 @@ namespace Udemy.Service.IService
             Instructor = new InstructorRDTO()
             {
                 Id = course.Instructor.Id,
-                Name = course.Instructor.FirstName + " " + course.Instructor.LastName,
+                UserName = course.Instructor.FirstName + " " + course.Instructor.LastName,
                 Title = course.Instructor.Title,
                 Bio = course.Instructor.Bio
             };

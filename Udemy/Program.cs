@@ -54,17 +54,17 @@ var app = builder.Build();
 app.ConfigureExceptionHandler();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseCors("AllowAngularDevelopment");
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-else
-{
-    app.UseCors("AllowAngularProduction");
-    //app.UseHsts();
-}
+//}
+//else
+//{
+//    app.UseCors("AllowAngularProduction");
+//    //app.UseHsts();
+//}
 
 
 

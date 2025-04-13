@@ -1,7 +1,10 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { InstructorBioComponent } from '../../lib/components/page-specefic/course-details/instructor-bio/instructor-bio.component';
 import { CourseReviewsComponent } from '../../lib/components/page-specefic/course-details/course-reviews/course-reviews.component';
-import { CourseDetail,dummyCourseDetails } from '../../lib/models/CourseDetail.model';
+import {
+  CourseDetail,
+  dummyCourseDetails,
+} from '../../lib/models/CourseDetail.model';
 import { CommonModule } from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -20,6 +23,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CartService } from '../../lib/services/cart/cart.service';
+import { AccountService } from '../../lib/services/account.service';
 
 @Component({
   selector: 'app-course-details-page',
@@ -36,13 +40,14 @@ import { CartService } from '../../lib/services/cart/cart.service';
     // NgbActiveModal removed as it is not a standalone component or NgModule
   ],
   templateUrl: './course-details-page.component.html',
-  styleUrl: './course-details-page.component.css'
+  styleUrl: './course-details-page.component.css',
 })
 export class CourseDetailsPageComponent {
   courseDetails!: CourseDetail;
   activatedRoute = inject(ActivatedRoute);
   courseService = inject(CourseService);
   cartService = inject(CartService);
+  accountService = inject(AccountService);
   router = inject(Router);
   route = inject(ActivatedRoute);
   private modalService = inject(NgbModal);
@@ -86,6 +91,14 @@ export class CourseDetailsPageComponent {
 
   openVerticallyCentered(content: TemplateRef<any>) {
     this.modalService.open(content, { centered: true, size: 'lg' });
+  }
+
+  addCourseToStudentCart(courseId: number) {
+    if (!this.accountService.currentUser()) {
+      this.router.navigateByUrl('/login');
+    } else {
+      this.cartService.addCourseToStudentCart(courseId);
+    }
   }
 
   preloadText = 'auto';

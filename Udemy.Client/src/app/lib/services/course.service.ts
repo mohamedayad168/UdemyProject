@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Course } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
+import { CourseCDTO } from '../models/course-cdto';
 
 @Injectable({
   providedIn: 'root',
@@ -27,13 +28,14 @@ export class CourseService {
 
 
   getCoursesByCategory(categoryId: number): Observable<Course[]> {
-    return this.http.get<Course[]>(
-      `${environment.baseurl}/courses/category/${categoryId}`
-    );
+    
+    return this.http.get<Course[]>(`${environment.baseurl}/categories/${categoryId}/courses`);
   }
 
-
-
+  createCourse(course: CourseCDTO): Observable<any> {
+   
+    return this.http.post<any>(`${environment.baseurl}/Courses`, course); 
+  }
   getCourseById(
     id: number,
     detailed: boolean = false
@@ -46,4 +48,6 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
+ 
+  
 }

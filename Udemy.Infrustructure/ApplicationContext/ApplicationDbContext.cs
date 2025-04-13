@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
 using Udemy.Infrastructure.UserSeed;
 using Udemy.Infrastructure.Configuration;
+using Udemy.Core.Views;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser , IdentityRole<int> , int>
 {
@@ -31,14 +32,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser , Identity
     public DbSet<SubCategory> Subcategories { get; set; }
     public DbSet<CartCourse> CartCourse { get; set; }
 
+    //view
+    public DbSet<VSupDimSection> VSupDimSection { get; set; }
+    public DbSet<vw_FactEnrollment> vw_FactEnrollment { get; set; }
+    public DbSet<vw_FactOrder> vw_FactOrder { get; set; }
+    public DbSet<VSupDimQuiz> VSupDimQuiz { get; set; }
+    public DbSet<vw_FactCart> vw_FactCart { get; set; }
+    public DbSet<VDimUser> VDimUser { get; set; }
+    public DbSet<VDimcourse> VDimcourse { get; set; }
+
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
 
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);
-
+        builder.ApplyConfigurationsFromAssembly(typeof(CourseGoalsConfiguration).Assembly);//assembly.getexectedassembly
 
         builder.Entity<IdentityRole<int>>().HasData(
             new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },

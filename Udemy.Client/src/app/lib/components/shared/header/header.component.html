@@ -35,51 +35,42 @@
       </button>
     </form>
 
-    <div class="d-flex  gap-5 align-items-center">
-      <a
+    <div class="d-flex gap-4 align-items-center">
+      <button
         routerLink="/teach"
         mat-stroked-button
         class="text-primary"
         matTooltip="Become an instructor"
       >
         Teach with Us
-      </a>
+      </button>
 
       @if(accountService.currentUser()){
-        <a routerLink="my-learning" mat-button class="text-primary">
-          My Learning
-        </a>
-        <a
-          routerLink="cart"
-          routerLinkActive="active"
-          matBadge="{{ cartService.cartItems()?.length }}"
-          matBadgeSize="large"
-          style="color: black"
-          class="custom-bage mt-2 me-2 position-relative"
-        >
-          <mat-icon>shopping_cart</mat-icon>
-        </a>
-        <button mat-button [matMenuTriggerFor]="menu">
-          <mat-icon>arrow_drop_down</mat-icon>
-          <div class="user-initials">
-            {{ accountService.currentUser()?.firstName?.charAt(0) }}
-          </div>
-        </button>
+      <button routerLink="my-learning" mat-stroked-button class="text-primary">
+        My Learning
+      </button>
+      <a
+        routerLink="cart"
+        routerLinkActive="active"
+        matBadge="{{ cartService.cart()?.courses?.length }}"
+        matBadgeSize="large"
+        class="custom-bage mt-2 me-2 position-relative"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>arrow_drop_down</mat-icon>
+        <div class="user-initials">
+          {{ accountService.currentUser()?.firstName?.charAt(0) }}
+        </div>
+      </button>
       }@else {
-        <button
-          routerLink="/login"
-          mat-stroked-button
-          class="text-primary"
-        >
-          Login
-        </button>
-        <button
-          routerLink="/signup"
-          mat-stroked-button
-          class="text-primary"
-        >
-          Register
-        </button>
+      <button routerLink="/login" mat-stroked-button class="text-primary">
+        Login
+      </button>
+      <button routerLink="/signup" mat-stroked-button class="text-primary">
+        Register
+      </button>
       }
     </div>
   </div>

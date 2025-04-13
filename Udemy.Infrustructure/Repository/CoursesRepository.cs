@@ -76,5 +76,15 @@ namespace Udemy.Infrastructure.Repository
             var courses = await _context.Courses.Include(x => x.SubCategory).Where(x => x.SubCategory.CategoryId == categoryId).Take(20).AsNoTracking().ToListAsync();
             return courses;
         }
+        public async Task<IEnumerable<Course>> GetAllBySubcategoryId(int subcategoryId)
+        {
+            var courses = await _context.Courses
+                .Where(c => c.SubCategoryId == subcategoryId && !c.IsDeleted)
+                .ToListAsync();
+            return courses;
+        }
+
+      
+    
     }
 }

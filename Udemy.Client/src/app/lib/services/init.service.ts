@@ -1,17 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { AccountService } from './account.service';
-import { forkJoin, Observable, of } from 'rxjs';
-import { User } from '../models/user.model';
+import { forkJoin } from 'rxjs';
+import { CartService } from './cart/cart.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InitService {
   private accountService = inject(AccountService);
+  private cartService = inject(CartService);
 
   init() {
-    let user = this.accountService.getUserInfo();
+    const user = this.accountService.getUserInfo();
+    const cart = this.cartService.getCart();
 
-    return user;
+    return forkJoin({
+      cart: cart,
+      user: user,
+    });
   }
 }

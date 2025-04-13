@@ -1,0 +1,27 @@
+<div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
+  <div class="flex items-center justify-between gap-6">
+    <a routerLink="/courses/{{ course().id }}" class="shrink order-1">
+      <img src="{{ course().imageUrl }}" alt="course image" class="h-20 w-20" />
+    </a>
+
+    <div class="flex items-center justify-between order-3">
+      <div class="text-end order-4 w-32">
+        <p class="font-bold text-xl">{{ course().price | currency }}</p>
+      </div>
+    </div>
+
+    <div class="w-full flex-1 space-y-4 order-2 max-w-md">
+      <a routerLink="/courses/{{ course().id }}" class="font-medium">
+        {{ course().title }}
+      </a>
+
+      <div class="flex items-center gap-4 mt-2">
+        <button (click)="removeItemFromCart()" mat-button color="warn">
+          <mat-icon>delete</mat-icon>
+
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

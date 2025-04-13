@@ -14,6 +14,7 @@ import { lastValueFrom } from 'rxjs';
 import { loadingInterceptor } from './lib/interceptors/loading.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import { errorInterceptor } from './lib/interceptors/error.interceptor';
 function initializeApp(initService: InitService) {
   return () =>
     lastValueFrom(initService.init()).finally(() => {
@@ -27,9 +28,9 @@ function initializeApp(initService: InitService) {
 export const appConfig: ApplicationConfig = {
   providers: [
     providePrimeNG({
-        theme: {
-            preset: Aura
-        }
+      theme: {
+        preset: Aura,
+      },
     }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),

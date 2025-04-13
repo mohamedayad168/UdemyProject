@@ -6,6 +6,7 @@ import { MatCard } from '@angular/material/card';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { CartService } from '../../lib/services/cart/cart.service';
 
 @Component({
   selector: 'app-login-page',
@@ -19,11 +20,12 @@ import { MatButton } from '@angular/material/button';
     MatError,
   ],
   templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.css'
+  styleUrl: './login-page.component.css',
 })
 export class LoginPageComponent {
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
+  private cartService = inject(CartService);
   private router = inject(Router);
   errorMessage = signal<string>('');
 
@@ -36,6 +38,7 @@ export class LoginPageComponent {
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
         this.accountService.getUserInfo().subscribe();
+        this.cartService.getCart().subscribe();
         this.router.navigateByUrl('');
       },
       error: (error) => this.errorMessage.set(error),

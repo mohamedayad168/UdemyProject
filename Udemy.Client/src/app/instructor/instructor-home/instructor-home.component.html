@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Creation UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-gray-800">
+    <!-- Top Bar -->
+    <div
+      class="border border-gray-300 p-4 flex justify-between items-center max-w-5xl mx-auto mt-6 rounded-md"
+    >
+      <span class="text-sm text-gray-600">Jump Into Course Creation</span>
+      <button
+      (click)="goToCourseCreate()" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 text-sm"
+      >
+        Create Your Course
+      </button>
+    </div>
+
+    <!-- Intro Text -->
+    <div class="text-center mt-6 text-gray-600 text-sm">
+      Based on your experience, we think these resources will be helpful.
+    </div>
+
+    <!-- Cards Container -->
+    <div class="max-w-5xl mx-auto mt-6 space-y-4">
+      <!-- Card: Create an Engaging Course -->
+      <div class="flex items-center p-4 border rounded shadow-sm">
+        <img
+          src="../../../assets/image/Screenshot 2025-04-10 154719.png"
+          alt="Engaging Course"
+          class="w-32 h-32 object-contain mr-4"
+        />
+        <div>
+          <h2 class="text-lg font-semibold">Create an Engaging Course</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Whether you've been teaching for years or are teaching for the first
+            time, you can make an engaging course...
+          </p>
+          <a
+            href="instructor/get-started"
+            class="text-sm font-medium mt-2 inline-block"
+            ><span class="text-purple-700">Get Started</span></a
+          >
+        </div>
+      </div>
+
+      <!-- Row with Two Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Card: Get Started with Video -->
+        <div class="flex p-4 border rounded shadow-sm">
+          <img
+            src="../../../assets/image/Screenshot 2025-04-10 154752.png"
+            alt="Get Started with Video"
+            class="w-24 h-24 object-contain mr-4"
+          />
+          <div>
+            <h3 class="font-semibold">Get Started with Video</h3>
+            <p class="text-sm text-gray-600 mt-1">
+              Quality video lectures can set your course apart. Use our
+              resources to learn the basics.
+            </p>
+            <a
+            routerLink="/instructor/record-vedio"
+              class="text-purple-700 text-sm font-medium mt-2 inline-block"
+              >Get Started</a
+            >
+          </div>
+        </div>
+
+        <!-- Card: Build Your Audience -->
+        <div class="flex p-4 border rounded shadow-sm">
+          <img
+            src="../../../assets/image/Screenshot 2025-04-10 154813.png"
+            alt="Build Your Audience"
+            class="w-24 h-24 object-contain mr-4"
+          />
+          <div>
+            <h3 class="font-semibold">Build Your Audience</h3>
+            <p class="text-sm text-gray-600 mt-1">
+              Set your course up for success by building your audience.
+            </p>
+            <a
+           
+              class="text-purple-700 text-sm font-medium mt-2 inline-block"
+              >Get Started</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: New Instructor Challenge -->
+      <div class="flex items-center p-4 border rounded shadow-sm">
+        <img
+          src="../../../assets/image/Screenshot 2025-04-10 154835.png"
+          alt="Instructor Challenge"
+          class="w-24 h-24 object-contain mr-4"
+        />
+        <div>
+          <h3 class="font-semibold">Join the New Instructor Challenge!</h3>
+          <p class="text-sm text-gray-600 mt-1">
+            Get exclusive tips and resources designed to help you launch your
+            first course faster...
+          </p>
+          <a
+          routerLink="/instructor/challenge"
+            class="text-purple-700 text-sm font-medium mt-2 inline-block"
+            >Get Started</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Resources Section -->
+    <div class="max-w-5xl mx-auto mt-12 text-center">
+      <p class="text-sm text-gray-700 mb-6">
+        Have questions? Here are our most popular instructor resources.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-sm text-center">
+        <div>
+          <div class="text-2xl mb-1">🎥</div>
+          <p>Test Video</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1">🤝</div>
+          <p>Instructor Community</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1">📚</div>
+          <p>Teaching Center</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1">📈</div>
+          <p>Marketplace Insights</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1">🛠️</div>
+          <p>Help and Support</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Call to Action -->
+    <div class="text-center mt-10 mb-12">
+      <p class="text-sm text-gray-700 mb-2">Are You Ready to Begin?</p>
+      <button
+        class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 text-sm"
+      >
+        Create Your Course
+      </button>
+    </div>
+  </body>
+</html>

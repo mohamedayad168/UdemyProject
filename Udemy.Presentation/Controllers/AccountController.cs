@@ -18,10 +18,10 @@ namespace Udemy.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController(
-    SignInManager<ApplicationUser> signInManager,
-    IMapper mapper,
-    IServiceManager serviceManager,
-    ILogger<AccountController> logger,
+    SignInManager<ApplicationUser> signInManager ,
+    IMapper mapper ,
+    IServiceManager serviceManager ,
+    ILogger<AccountController> logger ,
     UserManager<ApplicationUser> userManager
 
 ) : ControllerBase
@@ -55,16 +55,18 @@ public class AccountController(
 
         var principal = new ClaimsPrincipal(identity);
 
+        await signInManager.SignOutAsync();
+
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme , principal , new AuthenticationProperties
+        {
+            IsPersistent = true
+        });
 
         var userDto = mapper.Map<UserDto>(user);
         userDto.Roles = roles ?? [];
 
         return Ok(userDto);
     }
-
-
-
-
 
     [Authorize]
     [HttpPost("logout")]
@@ -75,25 +77,20 @@ public class AccountController(
         return NoContent();
     }
 
-
-
-
-
-
     [HttpGet("user-info")]
     public async Task<IActionResult> GetUserInfo()
     {
+        logger.LogInformation("GetUserInfo method is called");
         if (User.Identity?.IsAuthenticated == false)
             return NoContent();
 
         var user = await signInManager.UserManager.GetUserByEmail(User);
         var userDto = mapper.Map<UserDto>(user);
-
+        
+        var roles = await signInManager.UserManager.GetRolesAsync(user);
+        userDto.Roles = roles ?? [];
         return Ok(userDto);
     }
-
-
-
 
     [HttpGet]
     public IActionResult GetAuthState()
@@ -103,6 +100,7 @@ public class AccountController(
             isAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
+    
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp(UserForCreationDto register)
     {

@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
-using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -33,7 +30,7 @@ namespace Udemy.Service.Service
         }
 
 
-        public async Task<InstructorRDTO> CreateAsync(InstractorCDTO dto)
+        public async Task<InstructorRDTO> CreateAsync(InstructorCDTO dto)
         {
             var instructorEntity = mapper.Map<Instructor>(dto);
             await repository.Instructors.CreateInstructorAsync(instructorEntity);

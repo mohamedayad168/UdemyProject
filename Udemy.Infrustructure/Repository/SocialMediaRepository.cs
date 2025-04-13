@@ -13,30 +13,41 @@ namespace Udemy.Infrastructure.Repository
             this.dbContext = dbContext;
         }
 
-        public async Task<SocialMedia> GetSocialMediaByIdAsync(int id, int userId)
+        public async Task<List<SocialMedia>> GetByUserIdAsync(int userId)
+        {
+            return await dbContext.SocialMedias
+                .Where(sm => sm.UserId == userId)
+                .OrderBy(sm => sm.Name)
+                .ToListAsync();
+        }
+
+        public async Task<SocialMedia?> GetByIdAsync(int id, int userId)
         {
             return await dbContext.SocialMedias
                 .FirstOrDefaultAsync(sm => sm.Id == id && sm.UserId == userId);
-
         }
 
-        public async Task<IEnumerable<SocialMedia>> GetSocialMediaByUserIdAsync(int userId)
+        public async Task<SocialMedia> CreateAsync(SocialMedia socialMedia)
+        {
+            await dbContext.SocialMedias.AddAsync(socialMedia);
+            await dbContext.SaveChangesAsync();
+            return socialMedia;
+        }
+
+        public async Task<SocialMedia> UpdateAsync(SocialMedia socialMedia)
+        {
+
+            dbContext.SocialMedias.Update(socialMedia);
+            await dbContext.SaveChangesAsync();
+            return socialMedia;
+        }
+        public async Task<bool> ExistsForUser(int userId, string platform)
         {
             return await dbContext.SocialMedias
-                   .Where(sm => sm.UserId == userId)
-                   .ToListAsync();
-        }
-        public async Task Create(SocialMedia socialMedia)
-        {
-            await dbContext.Set<SocialMedia>().AddAsync(socialMedia);
-            await dbContext.SaveChangesAsync();
+                .AnyAsync(sm => sm.UserId == userId && sm.Name == platform);
         }
 
-        public async Task Update(SocialMedia socialMedia)
-        {
-            dbContext.Set<SocialMedia>().Update(socialMedia);
-            await dbContext.SaveChangesAsync();
-        }
+
         public async Task Delete(int Id, int userId)
         {
             var socialMedia = await dbContext.SocialMedias
@@ -44,7 +55,7 @@ namespace Udemy.Infrastructure.Repository
 
             if (socialMedia != null)
             {
-                dbContext.SocialMedias.Remove(socialMedia);
+                socialMedia.IsDeleted = true;
                 await dbContext.SaveChangesAsync();
             }
 
