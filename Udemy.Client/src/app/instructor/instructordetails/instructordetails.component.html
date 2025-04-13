@@ -1,10 +1,7 @@
-
-
-
 <!-- Instructor Details Section -->
-<div *ngIf="instructor ">
+<div *ngIf="instructor">
   <div class="text-center mb-8">
-    <h1 class="text-4xl font-bold text-gray-900 tracking-tight">
+    <h1 class="text-4xl font-bold text-black tracking-tight">
       {{ instructor.firstName }} {{ instructor.lastName }}
     </h1>
     <h2 class="text-2xl text-gray-600 mt-2 font-light">{{ instructor.title }}</h2>
@@ -35,15 +32,15 @@
   <!-- Courses Section -->
   <div class="overflow-x-auto">
     <div class="flex gap-6 w-max pb-4">
-      <div *ngFor="let course of courses" class="w-80 flex-shrink-0 shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition duration-300 bg-white">
-        
+      <div *ngFor="let course of courses" class="w-80 flex-shrink-0 shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition duration-300 bg-white transform hover:scale-105 hover:cursor-pointer"
+           [routerLink]="['/course', course.id]"> <!-- Corrected routerLink -->
+
         <!-- Course Image -->
         <img
-          [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
-          (error)="course.imageUrl = 'https://via.placeholder.com/300x150'"
-          alt="{{ course.title }}"
-          class="rounded-lg h-40 w-full object-cover"
-        />
+        [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
+        alt="{{ course.title }}"
+        class="rounded h-40 w-full object-cover"
+      />
 
         <!-- Course Details -->
         <div class="p-4">
