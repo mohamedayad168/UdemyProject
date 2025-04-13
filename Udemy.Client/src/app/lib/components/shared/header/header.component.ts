@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms';
 import { BusyService } from '../../../services/busy.service';
 import { CartService } from '../../../services/cart/cart.service';
 import { CourseService } from '../../../services/course.service';
-import { CourseParams } from '../../../models/course-params';
 
 @Component({
   selector: 'app-header',
@@ -52,12 +51,16 @@ export class HeaderComponent {
   private router = inject(Router);
   cartService = inject(CartService);
   courseService = inject(CourseService);
-  courseParams = new CourseParams();
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   onSearchChange() {
-    this.courseService.getCourseWithParameters(this.courseParams).subscribe({
+    this.courseService.getCourseWithParameters().subscribe({
       next: () => {
+        this.courseService.courseParams.update((params) => {
+          params.pageNumber = 1;
+
+          return params;
+        });
         this.searchInput.nativeElement.value = '';
       },
     });

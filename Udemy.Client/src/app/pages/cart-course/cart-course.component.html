@@ -15,18 +15,28 @@
         {{ course().title }}
       </a>
 
-      <div class="flex items-center gap-4 mt-2">
+      <div class="mt-2">
         <button
-          style="color: red"
+          style="color: white; background-color: red"
           (click)="removeItemFromCart()"
-          mat-button
-          color="warn"
+          mat-flat-button
         >
-          <mat-icon>delete</mat-icon>
-
-          Delete
+          <mat-icon>delete</mat-icon>Delete
         </button>
       </div>
     </div>
   </div>
 </div>
+
+@if(isLoading){
+<div
+  class="fixed inset-0 z-40 flex items-center justify-center bg-gray-100"
+  style="opacity: 70%"
+>
+  <mat-progress-spinner
+    diameter="50"
+    mode="indeterminate"
+    color="primary"
+  ></mat-progress-spinner>
+</div>
+}
