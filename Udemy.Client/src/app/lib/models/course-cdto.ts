@@ -1,10 +1,10 @@
 export interface CourseCDTO {
-    title: string;
-    description: string;
-    language: string;
-    level: string;
-    category: number;
-    subcategory: number;
-    imageUrl: string;
-    videoUrl: string;
-  }
+  Title: string;
+  Description: string;
+  Language: string;
+  Level: string;
+  CategoryId: number;
+  SubcategoryId: number;
+  ImageUrl: string;
+  VideoUrl: string;
+}
