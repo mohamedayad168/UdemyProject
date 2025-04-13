@@ -23,7 +23,7 @@ namespace Udemy.Service.Service
 
 
         public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
-      
+
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
@@ -32,7 +32,7 @@ namespace Udemy.Service.Service
                 Data = mapper.Map<IEnumerable<CourseRDTO>>(courses),
                 PageSize = requestParamter.PageSize,
                 CurrentPage = requestParamter.PageNumber,
-                TotalItems = repository.Courses.Count()
+                // TotalItems = repository.Courses.Count()
             };
 
             return paginatedRes;
@@ -52,7 +52,7 @@ namespace Udemy.Service.Service
                         .Include(c => c.Sections)
 
                         .ThenInclude(s => s.Lessons)
-                       
+
                         .FirstOrDefaultAsync();
 
             return course is null ?
@@ -148,7 +148,7 @@ namespace Udemy.Service.Service
                             .Where(x =>
                                 x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
                                 x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) 
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
                             )
                             .Include(c => c.Instructor)
                             .Include(c => c.CourseGoals)
@@ -159,5 +159,9 @@ namespace Udemy.Service.Service
             return mapper.Map<IEnumerable<CourseSearchDto>>(courses);
         }
 
+        Task<IEnumerable<CourseRDTO>> ICoursesService.GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

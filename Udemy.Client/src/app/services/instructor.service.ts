@@ -9,7 +9,7 @@ import { SocialMediaLink } from '../lib/models/SocialMedia.model';
   providedIn: 'root',
 })
 export class InstructorService {
-  private apiUrl = `${environment.baseurl}/api/instructors`;
+  private apiUrl = `${environment.baseurl}/instructors`;
 
   constructor(private http: HttpClient) {}
 
@@ -42,13 +42,17 @@ export class InstructorService {
   }
 
   saveSocialMediaLinks(links: SocialMediaLink[]): Observable<any> {
-    return this.http.post(`${environment.baseurl}/api/SocialMedia/create`, links);
+    return this.http.post(
+      `${environment.baseurl}/api/SocialMedia/create`,
+      links
+    );
   }
 
   getInstructorDetails(instructorId: number): Observable<Instructor> {
-    return this.http.get<Instructor>(`${this.apiUrl}/details?instructorId=${instructorId}`);
+    return this.http.get<Instructor>(
+      `${this.apiUrl}/details?instructorId=${instructorId}`
+    );
   }
-  
 
   getInstructorCourses(instructorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${instructorId}/courses`);

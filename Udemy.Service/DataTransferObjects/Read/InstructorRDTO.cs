@@ -4,7 +4,6 @@ namespace Udemy.Service.DataTransferObjects.Read
 {
     public class InstructorRDTO
     {
-
         public int? Id { get; set; }
 
 
@@ -20,14 +19,6 @@ namespace Udemy.Service.DataTransferObjects.Read
         [StringLength(50)]
         public string? Bio { get; set; }
 
-     
-        public string Name { get; set; }
-
-
-
-        public int? TotalCourses { get; set; }
-        public int? TotalReviews { get; set; }
-        public int? TotalStudents { get; set; }
 
 
     }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Utils;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
-using Udemy.Service.Service;
 
 namespace Udemy.API.Controllers
 {
@@ -13,10 +16,16 @@ namespace Udemy.API.Controllers
     public class InstructorController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
+        private readonly IMapper mapper;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public InstructorController(IServiceManager serviceManager)
+        public InstructorController(IServiceManager serviceManager, IMapper mapper, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _serviceManager = serviceManager;
+            this.mapper = mapper;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
 
@@ -53,12 +62,18 @@ namespace Udemy.API.Controllers
 
 
         [HttpPost("create")]
-        public async Task<ActionResult<InstructorRDTO>> Create([FromBody] InstructorCDTO instructorDto)
+        public async Task<ActionResult<Instructor>> Create([FromBody] InstructorCDTO instructorDto)
         {
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
 
             var createdInstructor = await _serviceManager.InstructorService.CreateAsync(instructorDto);
+            var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
+
+            await signInManager.UserManager.AddToRoleAsync(instructor, UserRole.Instructor);
+
+
+
             return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, createdInstructor);
         }
 
@@ -87,7 +102,7 @@ namespace Udemy.API.Controllers
         }
         [HttpGet]
         [Route("details")]
-        public async Task<ActionResult<InstructorRDTO>> GetInstructorDetails(int instructorId)
+        public async Task<ActionResult<Instructor>> GetInstructorDetails(int instructorId)
         {
             var instructor = await _serviceManager.InstructorService.GetInstructorDetails(instructorId);
             if (instructor == null)
