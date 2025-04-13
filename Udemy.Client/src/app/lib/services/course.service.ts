@@ -14,7 +14,8 @@ import { CourseParams } from '../models/course-params';
 })
 export class CourseService {
   private baseUrl = `${environment.baseurl}/courses`;
-  coursesWithParameters = signal<CourseSearch[] | null>(null);
+  courseSearchLoaded = signal(false);
+  coursesWithParameters = signal<CourseSearch[] | null>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -33,8 +34,7 @@ export class CourseService {
         map((courses) => {
           this.coursesWithParameters.set(courses);
 
-          console.log(this.coursesWithParameters());
-
+          this.courseSearchLoaded.set(true);
           return courses;
         })
       );

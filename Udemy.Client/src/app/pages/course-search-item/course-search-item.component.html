@@ -1,0 +1,90 @@
+@if(course()){
+<div
+  class="popover-container"
+  (mouseleave)="onContainerLeave()"
+  #popoverContainer
+  [ngbPopover]="popoverContent"
+  #popover="ngbPopover"
+  triggers="manual"
+  (mouseenter)="openPopover()"
+  placement="auto"
+  popoverClass="active"
+>
+  <div (click)="onClick()" class="flex gap-4 my-4 group cursor-pointer">
+    <div class="border-2 border-gray-300 h-40 overflow-hidden">
+      <img
+        [src]="course().imageUrl"
+        class="w-full h-full object-cover group-hover:brightness-60 duration-300"
+        alt="course image"
+      />
+    </div>
+    <div class="grow">
+      <div class="flex justify-between mb-1.5">
+        <div
+          class="font-bold text-2xl duration-300 group-hover:text-purple-700"
+        >
+          {{ course().title }}
+        </div>
+        <div class="font-bold text-2xl">{{ course().price | currency }}</div>
+      </div>
+      <div class="text-lg w-3/4">{{ course().description }}</div>
+      <div class="capitalize text-gray-500">{{ course().instructorName }}</div>
+
+      <div>
+        <span class="font-bold text-yellow-800 mr-1">{{
+          course().rating ?? 0
+        }}</span>
+        <ngb-rating
+          [(rate)]="course().rating"
+          [readonly]="true"
+          [max]="5"
+          class="text-yellow-600 font-"
+        />
+      </div>
+      <div class="flex gap-1.5 text-gray-500">
+        <div>{{ course().duration }} total hours</div>
+        <div>.</div>
+        <div>{{ course().courseLevel }}</div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+</div>
+
+}
+
+<div
+  class="popover-container"
+  (mouseleave)="onContainerLeave()"
+  #popoverContainer
+>
+  <ng-template #popoverContent>
+    <div (mouseenter)="cancelClose()" (mouseleave)="startCloseTimer()">
+      <div
+        routerLink="/courses/{{ course().id }}"
+        class="mb-1 font-bold duration-300 cursor-pointer hover:text-purple-700"
+      >
+        {{ course().title }}
+      </div>
+
+      <div class="flex gap-1.5 text-gray-500">
+        <div>{{ course().duration }} total hours</div>
+        <div>.</div>
+        <div>{{ course().courseLevel }}</div>
+      </div>
+      <div>{{ course().description }}</div>
+      @for(goal of course().goals; track $index){
+      <div class="my-2"><i class="bi bi-check"></i> {{ goal }}</div>
+      }
+
+      <button
+        (click)="addCourseToCart()"
+        class="w-full bg-primary"
+        mat-flat-button
+      >
+        Add to cart
+      </button>
+    </div>
+  </ng-template>
+</div>

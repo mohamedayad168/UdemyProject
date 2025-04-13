@@ -13,5 +13,7 @@ public class CourseSearchDto
     public decimal Duration { get; set; }
     public string CourseLevel { get; set; }
     public string? ImageUrl { get; set; }
+    public decimal Price { get; set; }
+
     public List<string> Goals { get; set; } = new List<string>();
 }

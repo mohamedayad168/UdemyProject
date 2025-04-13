@@ -3,9 +3,10 @@ export type CourseSearch = {
   title: string;
   description: string;
   instructorName: string;
-  rating?: number;
+  rating: number;
   duration: number;
   courseLevel: string;
   imageUrl?: string;
+  price: number;
   goals: string[];
 };

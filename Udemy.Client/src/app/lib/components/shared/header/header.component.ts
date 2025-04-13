@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -47,11 +53,14 @@ export class HeaderComponent {
   cartService = inject(CartService);
   courseService = inject(CourseService);
   courseParams = new CourseParams();
+  @ViewChild('searchInput') searchInput!: ElementRef;
 
   onSearchChange() {
-    this.courseService.getCourseWithParameters(this.courseParams).subscribe();
-
-    // console.log(this.courseParams);
+    this.courseService.getCourseWithParameters(this.courseParams).subscribe({
+      next: () => {
+        this.searchInput.nativeElement.value = '';
+      },
+    });
   }
 
   logout() {
