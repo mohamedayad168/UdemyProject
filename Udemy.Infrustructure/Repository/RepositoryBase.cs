@@ -20,6 +20,11 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class, IBaseEntity
             : dbContext.Set<T>().Where(x => x.IsDeleted == false);
 
     }
+
+    public int Count()
+    {
+        return dbContext.Set<T>().Count();
+    }
     public IQueryable<T> FindByCondition(Expression<Func<T , bool>> expression , bool trackChanges)
     {
         return !trackChanges

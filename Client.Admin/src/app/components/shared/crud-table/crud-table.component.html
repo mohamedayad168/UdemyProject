@@ -41,10 +41,17 @@
 
   <p-table
     #dt
-    [value]="items()"
+    [value]="items().data"
     [rows]="10"
+    [lazy]="true" 
     [columns]="cols"
+    [totalRecords]="items().totalItems"
+    [pageLinks]="5"
     [paginator]="true"
+    (onLazyLoad)="loadData($event)"
+
+    (onPage)="onPageChange($event)"
+    
     [globalFilterFields]="[
       'title',
       'description',
@@ -55,7 +62,7 @@
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="selectedProducts"
     [rowHover]="true"
-    [loading]="items().length == 0"
+    [loading]="dt.loading"
     dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [showCurrentPageReport]="true"
@@ -107,57 +114,45 @@
     </ng-template>
 
     <!-- product record -->
-    @if (items().length > 0) {
+    @if (items().data.length > 0) {
     <ng-template #body let-product>
       <tr>
         <td style="width: 3rem">
           <p-tableCheckbox [value]="product" />
         </td>
-        <!--  -->
-        @if (keys()['id']) {
-        <td style="min-width: 4rem">{{ product["id"] }}</td>
-        }
-        <!--  -->
-        @if (keys()['title']) {
-        <td style="min-width: 16rem">{{ product["title"] }}</td>
-        }
-        <!--  -->
-        @if (keys()['imageUrl']) {
-        <td>
-          <img
-            [src]="product['imageUrl']"
-            [alt]="product['name']"
-            style="width: 64px"
-            class="rounded"
-          />
+        @for (column of columnConfig(); track $index) {
+          <td [style.min-width]="column.width??'unset'"  >
+          @switch (column.type) {
+            @case ('image') {
+                <img
+                  [src]="product['imageUrl']"
+                  [alt]="product['name']"
+                  style="width: 64px"
+                  class="rounded"
+                />
+            }
+            @case ('tag') {
+                 <p-tag
+                  [value]="product['status']"
+                  [severity]="getStatusSeverity(product['status'])"
+                />
+             }
+            @case ('rating') {
+                 <p-rating
+                  [(ngModel)]="product.rating"
+                  [readonly]="true"
+                /><!--[cancel]="false"-->
+             }
+            @case ('money') {
+               {{ product["price"] | currency : "USD" }} 
+            }
+          }
         </td>
+
         }
-        <!--  -->
-        @if(keys()['price']){
-        <td>{{ product["price"] | currency : "USD" }}</td>
-        }
-        <!--  -->
-        @if(keys()['category']){
-        <td>{{ product["category"] }}</td>
-        }
-        <!--  -->
-        @if (keys()['rating']) {
-        <td>
-          <p-rating
-            [(ngModel)]="product.rating"
-            [readonly]="true"
-          /><!--[cancel]="false"-->
-        </td>
-        }
-        <!--  -->
-        @if (keys()['status']) {
-        <td>
-          <p-tag
-            [value]="product['status']"
-            [severity]="getSeverity(product['status'])"
-          />
-        </td>
-        }
+ 
+ 
+ 
         <!--  -->
         <td>
           <p-button
@@ -197,7 +192,7 @@
 
     <ng-template #summary>
       <div class="flex items-center justify-between">
-        In total there are {{ items().length }} products.
+        In total there are {{ items().totalItems }} products.
       </div>
     </ng-template>
   </p-table>

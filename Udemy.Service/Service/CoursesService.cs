@@ -4,6 +4,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -26,11 +27,19 @@ namespace Udemy.Service.Service
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
-        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
-            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
+            var paginatedRes = new PaginatedRes<CourseRDTO>
+            {
+                Data = mapper.Map<IEnumerable<CourseRDTO>>(courses),
+                PageSize = requestParamter.PageSize,
+                CurrentPage = requestParamter.PageNumber,
+                TotalItems = repository.Courses.Count()
+            };
+
+            return paginatedRes;
         }
 
 

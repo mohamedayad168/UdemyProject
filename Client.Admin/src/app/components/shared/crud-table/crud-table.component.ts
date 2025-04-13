@@ -9,7 +9,7 @@ import {
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Course } from '../../../types/Course';
 import { CoursesService } from '../../../services/courses/courses.service';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule, TablePageEvent } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { Ripple } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
@@ -33,6 +33,24 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { map } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
+import { IPage } from '../../../types/IPage';
+
+type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'select' | 'file';
+
+export interface FormFieldConfig {
+  [key: string]: any;
+  label: string;
+  type: FieldType;
+  required?: boolean;
+  options?: { label: string; value: any }[]; // for selects
+}
+
+export interface IColumnConfig {
+  [key: string]: any;
+  width?: string;
+  type:'money'| 'text' | 'date' | 'image' | 'tag'  | 'rating'
+  header: string;
+}
 
 interface Column {
   field: string;
@@ -43,6 +61,18 @@ interface Column {
 interface ExportColumn {
   title: string;
   dataKey: string;
+}
+
+export interface ICrudTableItemStatus {
+  label: string;
+  value:
+    | 'success'
+    | 'info'
+    | 'warn'
+    | 'danger'
+    | 'secondary'
+    | 'contrast'
+    | undefined;
 }
 
 let emptyItem: Course = {
@@ -129,10 +159,12 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   selectedProducts!: T[] | null;
   submitted: boolean = false;
 
-  items = input.required<T[]>();
-  statuses = input.required<{ label: string; value: string }[]>();
+  items = input.required<IPage<T>>();
+  statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
-  keys = input.required<{ [key: string]: any }>();
+  columnConfig = input.required<IColumnConfig[]>();
+  createFormFields = input.required<FormFieldConfig[]>();
+  
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -242,7 +274,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   findIndexById(id: string): number {
     let index = -1;
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items()[i].id === id) {
+      if (this.items().data[i].id === id) {
         index = i;
         break;
       }
@@ -261,58 +293,67 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     return id;
   }
 
-  getSeverity(status: T['status']) {
-    switch (status) {
-      case 'Published':
-        return 'success';
-      case 'Archived':
-        return 'warn';
-      default: //'OUTOFSTOCK'
-        return 'danger';
-    }
+  getStatusSeverity(status: T['status']): ICrudTableItemStatus['value'] {
+    return this.statuses().find((s) => s.label == status)?.value ?? 'danger';
   }
 
   saveProduct() {
     this.submitted = true;
 
     if (this.item!.title?.trim()) {
-      // if (this.item!.id) {
-      //   this.items.update((pre) => {
-      //     const index = pre.findIndex((item) => item.id === this.item!.id);
-      //     if (index !== -1) {
-      //       pre[index] = this.item!;
-      //     }
-      //     return pre;
-      //   });
+      if (this.item!.id) {
+        // this.items.update((pre) => {
+        //   const index = pre.findIndex((item) => item.id === this.item!.id);
+        //   if (index !== -1) {
+        //     pre[index] = this.item!;
+        //   }
+        //   return pre;
+        // });
 
-      //   this.messageService.add({
-      //     severity: 'success',
-      //     summary: 'Successful',
-      //     detail: 'IItem1 Updated',
-      //     life: 3000,
-      //   });
-      // } else {
-      //   this.item!.id = this.createId();
-      //   this.item!.imageUrl = 'item-placeholder.svg';
-      //   this.items.update((pre) => {
-      //     pre.push(this.item!);
-      //     return pre;
-      //   });
-      //   this.messageService.add({
-      //     severity: 'success',
-      //     summary: 'Successful',
-      //     detail: 'IItem1 Created',
-      //     life: 3000,
-      //   });
-      // }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'IItem1 Updated',
+          life: 3000,
+        });
+      } else {
 
-      // this.items = [...this.items];
+        this.crudService().create(this.item!).subscribe({
+          next: (data) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'IItem1 Created',
+              life: 3000,
+            });
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'danger',
+              summary: 'Error',
+              detail: 'Error creating' + error,
+              life: 3000,
+            });
+          } 
+        });
+
+        (this.item as any)['imageUrl'] = 'item-placeholder.svg';
+
+        
+      }
+
       this.productDialog = false;
       this.item = {} as T;
     }
   }
 
   filterTable($event: any) {
-    this.dt.filterGlobal($event.target.value, 'contains')
+    this.dt.filterGlobal($event.target.value, 'contains');
+  }
+
+  onPageChange(event: TablePageEvent) {}
+
+  loadData(event: TableLazyLoadEvent) {
+    this.crudService().getPage(event.first! / event.rows! + 1, event.rows!);
   }
 }

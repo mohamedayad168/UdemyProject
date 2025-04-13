@@ -28,3 +28,24 @@ export interface Course {
   instructorId: number;
   instructorName: null;
 }
+
+export interface ICourseCDTO {
+  title: string;
+  description: string;
+  status: string;
+  courseLevel: string;
+  price: number;
+  currentPrice: number;
+  language: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  isFree: boolean;
+  isApproved: boolean;
+  isDeleted: boolean;
+  subCategoryId: number;
+  instructorId: number;
+  rating: number;
+  noSubscribers: number;
+  createdDate: string; // ISO string format
+  discount: number;
+}
