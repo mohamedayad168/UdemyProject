@@ -10,3 +10,13 @@ export type CourseSearch = {
   price: number;
   goals: string[];
 };
+
+export type CoursePagingResult = {
+  totalItems: number;
+  pageSize: number;
+  currentPage: number;
+  totalPages: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  data: CourseSearch[];
+};

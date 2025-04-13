@@ -30,9 +30,10 @@ export class CourseSectionComponent implements OnInit {
   subcategories: SubCategory[] = [];
   courses: Course[] = [];
 
-  // Update the type to allow null
   selectedCategoryId: number | null = null;
-  selectedSubcategoryId: number | null = null;  // Allow null for subcategoryId
+  selectedSubcategoryId: number | null = null;
+
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   constructor(
     private categoryService: CategoryService,
@@ -47,37 +48,33 @@ export class CourseSectionComponent implements OnInit {
     this.categoryService.getCategories().subscribe((data) => {
       this.categories = data;
 
-      // Select the first category by default
       if (this.categories.length > 0) {
         this.selectedCategoryId = this.categories[0].id;
-        this.onCategoryClick(this.selectedCategoryId); // Automatically load subcategories and courses
+        this.onCategoryClick(this.selectedCategoryId);
       }
     });
   }
 
   onCategoryClick(categoryId: number) {
     this.selectedCategoryId = categoryId;
-    this.selectedSubcategoryId = null; // Reset to null when category is clicked
-    this.courses = []; // Clear courses when a new category is selected
+    this.selectedSubcategoryId = null;
+    this.courses = [];
 
-    // Get subcategories for the selected category
     this.categoryService.getSubcategoriesByCategory(categoryId).subscribe((data) => {
       this.subcategories = data;
 
-      // Select the first subcategory by default if there are subcategories
       if (this.subcategories.length > 0) {
         this.selectedSubcategoryId = this.subcategories[0].id;
-        this.loadCoursesBySubcategory(this.selectedSubcategoryId); // Load courses for the first subcategory
+        this.loadCoursesBySubcategory(this.selectedSubcategoryId);
       }
     });
   }
 
   onSubcategoryClick(subcategoryId: number) {
     this.selectedSubcategoryId = subcategoryId;
-    this.loadCoursesBySubcategory(subcategoryId);  // Load courses for the selected subcategory
+    this.loadCoursesBySubcategory(subcategoryId);
   }
 
-  // Load courses based on subcategory ID
   loadCoursesBySubcategory(subcategoryId: number | null): void {
     if (subcategoryId !== null) {
       this.categoryService.getCoursesBySubcategory(subcategoryId).subscribe(
@@ -85,25 +82,18 @@ export class CourseSectionComponent implements OnInit {
           this.courses = courses;
         },
         (error) => {
-          console.error('Error fetching courses by subcategory:', error.message);
-          console.error('Status:', error.status);
-          console.error('Full error:', error);
+          console.error('Error fetching courses by subcategory', error);
         }
       );
     }
   }
 
- 
-  onSubcategoryChange(subcategoryId: number): void {
-    this.selectedSubcategoryId = subcategoryId;
-    this.loadCoursesBySubcategory(subcategoryId); 
+  scroll(direction: 'left' | 'right') {
+    const container = this.scrollContainer.nativeElement;
+    const scrollAmount = 340;
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
   }
-  scrollLeft(container: HTMLElement) {
-    container.scrollBy({ left: -300, behavior: 'smooth' });
-  }
-  
-  scrollRight(container: HTMLElement) {
-    container.scrollBy({ left: 300, behavior: 'smooth' });
-  }
-  
 }

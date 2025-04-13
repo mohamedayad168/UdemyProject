@@ -91,7 +91,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         } else {
           this.cartService.deleteCart();
           // this.router.navigateByUrl('/checkout/success');
-          this.snackbar.success('Thanks For Your Order');
+          this.snackbar.success('Payment Confirmed');
           this.router.navigateByUrl('');
         }
       }
