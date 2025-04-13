@@ -2,9 +2,12 @@
 <div *ngIf="instructor">
   <div class="text-center mb-8">
     <h1 class="text-4xl font-bold text-black tracking-tight">
-      {{ instructor.firstName }} {{ instructor.lastName }}
+      <h1 class="text-4xl font-bold text-black tracking-tight">
+        {{ instructor.name }}
+      </h1>
     </h1>
-    <h2 class="text-2xl text-gray-600 mt-2 font-light">{{ instructor.title }}</h2>
+    <h2 class="text-2xl text-gray-600 mt-2 font-light">{{ instructor.Title }}</h2>
+
 
     <div class="mt-4 flex justify-center items-center gap-4">
       <span *ngIf="instructor.totalCourses" class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -23,7 +26,8 @@
     <!-- About Section -->
     <div class="mt-8">
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">About Me</h2>
-      <p class="text-lg text-gray-700 leading-relaxed">{{ instructor.bio }}</p>
+      <p class="text-lg text-gray-700 leading-relaxed">{{ instructor.Bio }}</p>
+
     </div>
   </div>
 
@@ -33,11 +37,11 @@
   <div class="overflow-x-auto">
     <div class="flex gap-6 w-max pb-4">
       <div *ngFor="let course of courses" class="w-80 flex-shrink-0 shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition duration-300 bg-white transform hover:scale-105 hover:cursor-pointer"
-           [routerLink]="['/course', course.id]"> <!-- Corrected routerLink -->
+           [routerLink]="['/courses', course.id]"> <!-- Corrected routerLink -->
 
         <!-- Course Image -->
         <img
-        [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
+        [src]="course. imageUrl || 'https://via.placeholder.com/300x150'"
         alt="{{ course.title }}"
         class="rounded h-40 w-full object-cover"
       />
@@ -54,14 +58,14 @@
 
           <!-- Course Info -->
           <div class="text-xs text-gray-600 mb-2">
-            <span class="font-medium">{{ course.instructorName || instructor.firstName + ' ' + instructor.lastName }}</span> • 
+            <span class="font-medium">{{ course.instructorName ||  instructor.name}}</span> • 
             <span>{{ course.rating || 'N/A' }} ★</span> • 
             <span>{{ course.noSubscribers | number }} students</span>
           </div>
 
           <div class="text-xs text-gray-500 mb-2">
-            <span>{{ course.duration }} hrs</span> | 
-            <span>{{ course.courseLevel }}</span> | 
+         
+            <span>{{ course.courseLevel }}</span> 
             <span>{{ course.language }}</span>
           </div>
 
