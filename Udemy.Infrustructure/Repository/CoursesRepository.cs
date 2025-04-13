@@ -3,6 +3,9 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.DataTransferObjects;
+using Udemy.Infrastructure.Extensions;
 
 namespace Udemy.Infrastructure.Repository
 {
@@ -17,7 +20,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task DeleteAsync(int id)
         {
-            var course = await GetByIdAsync(id, false) ??
+            var course = await GetByIdAsync(id , false) ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
 
             course.IsDeleted = true;
@@ -26,25 +29,25 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges)
         {
-            return await FindByCondition(c => !c.IsDeleted, trackChanges).ToListAsync();
+            return await FindByCondition(c => !c.IsDeleted , trackChanges).ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id, bool trackChanges)
+        public async Task<Course> GetByIdAsync(int id , bool trackChanges)
         {
-            return await FindByCondition(c => c.Id == id && !c.IsDeleted, trackChanges)
+            return await FindByCondition(c => c.Id == id && !c.IsDeleted , trackChanges)
                 .FirstOrDefaultAsync() ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
         }
 
-        public async Task<Course?> GetByTitleAsync(string title, bool trackChanges)
+        public async Task<Course?> GetByTitleAsync(string title , bool trackChanges)
         {
-            return await FindByCondition(c => c.Title == title && !c.IsDeleted, trackChanges)
+            return await FindByCondition(c => c.Title == title && !c.IsDeleted , trackChanges)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        public async Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamter , bool trackChanges)
         {
-            return await FindByCondition(c => !c.IsDeleted, trackChanges)
+            return await FindByCondition(c => !c.IsDeleted , trackChanges)
                 .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
                 .Take(requestParamter.PageSize)
                 .Include(c => c.Instructor)
@@ -54,7 +57,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task ToggleApprovedAsync(int id)
         {
-            var course = await GetByIdAsync(id, true) ??
+            var course = await GetByIdAsync(id , true) ??
                 throw new NotFoundException($"Course with id: {id} not found");
 
             course.IsApproved = !course.IsApproved;
@@ -84,7 +87,37 @@ namespace Udemy.Infrastructure.Repository
             return courses;
         }
 
-      
-    
+        public async Task<IEnumerable<Course>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
+        {
+            var courses = await FindAll(false)
+                            .Where(x =>
+                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
+                            )
+                            .Include(c => c.Instructor)
+                            .Include(c => c.CourseGoals)
+                            .Sort(requestParamter.OrderBy)
+                            .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
+                            .Take(requestParamter.PageSize)
+                            .ToListAsync();
+
+            return courses;
+        }
+
+        public async Task<int> GetAllWithSearchCountAsync(CourseRequestParameter requestParamter)
+        {
+            var coursesCount = await FindAll(false)
+                            .Where(x =>
+                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
+                            )
+                            .Include(c => c.Instructor)
+                            .Include(c => c.CourseGoals)
+                            .CountAsync();
+
+            return coursesCount;
+        }
     }
 }

@@ -18,6 +18,7 @@ import { CartService } from '../../lib/services/cart/cart.service';
     MatLabel,
     MatButton,
     MatError,
+    RouterLink,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css',
