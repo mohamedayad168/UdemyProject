@@ -25,7 +25,7 @@ public class Course : BaseEntity
 
     [StringLength(20)]
     public string? BestSeller { get; set; }  
-    public decimal CurrentPrice { get; private set; }
+    public decimal CurrentPrice { get; set; }
 
     [Column(TypeName = "DECIMAL(2, 1)")]
     [Range(0.0, 5.0)]

@@ -29,7 +29,7 @@ namespace Udemy.Service.DataTransferObjects.Read
         public int NoSubscribers { get; set; }
         public bool IsFree { get; set; }
         public bool IsApproved { get; set; }
-        public decimal CurrentPrice { get; private set; }
+        public decimal CurrentPrice { get; set; }
         [Range(0.0, 5.0)]
         public decimal? Rating { get; set; }
         public int SubCategoryId { get; set; }
