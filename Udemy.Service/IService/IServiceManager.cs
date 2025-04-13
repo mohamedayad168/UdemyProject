@@ -17,4 +17,5 @@ public interface IServiceManager
     ISocialMediaService SocialMediaService { get; }
     ILessonService LessonService { get; }
 
+
 }

@@ -33,13 +33,11 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
 
-        [HttpGet("page")]
-        public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
+         
         [HttpGet("search")]
         public async Task<IActionResult> GetCoursesWithSearch([FromQuery]CourseRequestParameter requestParameter)
         {
-            var coursesPage = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
-            return Ok(coursesPage);
+            
             var courses = await serviceManager.CoursesService.GetAllWithSearchAsync(requestParameter);
 
             return Ok(courses);

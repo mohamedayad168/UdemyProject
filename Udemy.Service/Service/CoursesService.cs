@@ -20,16 +20,10 @@ namespace Udemy.Service.Service
 
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
-        public async Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId)
-        {
-            var courses = await repository.Courses.GetAllByCategoryId(categoryId);
 
-            return mapper.Map<IEnumerable<CourseRDTO>>(courses);
-        }
 
         public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
       
-        public async Task<IEnumerable<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
