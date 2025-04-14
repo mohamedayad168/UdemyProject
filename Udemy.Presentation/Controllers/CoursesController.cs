@@ -70,16 +70,16 @@ namespace Udemy.Presentation.Controllers
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (userIdClaim == null)
-                return Unauthorized();
+            //if (userIdClaim == null)
+            //    return Unauthorized();
 
-            var Id = int.Parse(userIdClaim);
+            //var Id = int.Parse(userIdClaim);
 
-            if (User.IsInRole("Instructor"))
-            {
-                if (course.InstructorId != Id)
-                    return Forbid("Instructors can only create courses for themselves.");
-            }
+            //if (User.IsInRole("Instructor"))
+            //{
+            //    if (course.InstructorId != Id)
+            //        return Forbid("Instructors can only create courses for themselves.");
+            //}
 
 
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);

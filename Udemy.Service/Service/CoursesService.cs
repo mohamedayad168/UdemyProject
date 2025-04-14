@@ -95,7 +95,10 @@ namespace Udemy.Service.Service
 
             await repository.SaveAsync();
 
-            return mapper.Map<CourseRDTO>(course);
+            var courseRDTO = mapper.Map<CourseRDTO>(course);
+            var instructor = await repository.Instructors.GetInstructorByIdAsync(courseRDTO.InstructorId, false);
+            courseRDTO.InstructorName = instructor.UserName;
+            return courseRDTO;
 
 
         }

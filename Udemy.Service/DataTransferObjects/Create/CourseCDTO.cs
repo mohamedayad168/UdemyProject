@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 //using Microsoft.AspNetCore.Http;
 namespace Udemy.Service.DataTransferObjects.Create
 {
@@ -18,7 +17,8 @@ namespace Udemy.Service.DataTransferObjects.Create
 
         public string Language { get; set; } = "en";
 
-        public IFormFile? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Status { get; set; } = "Archived";
 
         public string? VideoUrl { get; set; }
         public int SubCategoryId { get; set; }

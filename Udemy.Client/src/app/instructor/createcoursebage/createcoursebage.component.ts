@@ -216,17 +216,26 @@ export class CreatecoursebageComponent implements OnInit {
       InstructorId: 61222,
     };
 
-    this.courseService.createCourse(courseData).subscribe(
-      (response) => {
+    this.courseService.createCourse(courseData).subscribe({
+      next: (response) => {
         console.log('Course created successfully:', response);
         this.isSaving = false;
 
         this.courseForm.reset();
       },
-      (error) => {
-        console.error('Error creating course:', error);
-        this.isSaving = false;
-      }
-    );
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }
+// (response) => {
+//   console.log('Course created successfully:', response);
+//   this.isSaving = false;
+
+//   this.courseForm.reset();
+// },
+// (error) => {
+//   console.error('Error creating course:', error);
+//   this.isSaving = false;
+// }
