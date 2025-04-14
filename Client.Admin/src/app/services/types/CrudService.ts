@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { IPage } from '../../types/IPage';
 
 export class CrudService<T> {
+  apiRoute!: string;
   private _items = signal<T[] | null>(null);
   private _page = signal<IPage<T>>({
     totalItems: 0,
@@ -48,7 +49,7 @@ export class CrudService<T> {
   getPage(page: number, size: number) {
     return this.httpClient
       .get(
-        `${environment.apiUrl}/api/courses/page?pageNumber=${page}&pageSize=${size}`
+        `${environment.apiUrl}/${this.apiRoute}/page?pageNumber=${page}&pageSize=${size}`
       )
       .subscribe({
         next: (data) => {
@@ -68,24 +69,18 @@ export class CrudService<T> {
     return this.httpClient.get(`http://localhost:5191/courses/${id}`);
   }
 
-  create(newItem: T) {
-    return this.httpClient.post('http://localhost:5191/courses', {
-      title: 'New Course',
-      description: 'New Course Description',
-      duration: 60,
-      creationDate: new Date(),
-      topRated: false,
-    });
+  create(newItem: any) {
+    return this.httpClient.post(`${environment.apiUrl}/${this.apiRoute}`, newItem);
   }
 
   delete(idOrArgs: string | string[]) {
     if (Array.isArray(idOrArgs)) {
       return this.httpClient.delete(
-        `http://localhost:5191/courses/${idOrArgs}`
+        `${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`
       );
     }
 
-    return this.httpClient.delete(`http://localhost:5191/courses/${idOrArgs}`);
+    return this.httpClient.delete(`${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`);
   }
 
   filter(callback: (filterItem: T) => boolean): void {
