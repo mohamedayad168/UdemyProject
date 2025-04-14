@@ -32,7 +32,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
-import { map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
 import { IPage } from '../../../types/IPage';
 
@@ -142,6 +142,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   // newItem: T = new Object() as T;
   selectedProducts!: T[] | null;
   submitted: boolean = false;
+  searchTerm = new Subject<string>();
 
   items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
@@ -165,6 +166,15 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   ngOnInit() {
     this.newItem = { ...this.emptyItem() };
     this.loadDemoData();
+    this.searchTerm
+      .pipe(
+        debounceTime(500), // 1 second delay
+        distinctUntilChanged()
+      )
+      .subscribe((term) => {
+        console.log('searchTerm', term);
+        this.crudService().search(term);
+      });
   }
 
   exportCSV() {
@@ -243,31 +253,32 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log(newItem);
-        this.crudService().delete(newItem.id).subscribe({
-          next: (status) => {
-            console.log(status)
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Successful',
-              detail: 'IItem1 Deleted',
-              life: 3000,
-            });
-          },
-          error: (error) => {
-            console.error(error);
-            this.messageService.add({
-              severity: 'danger',
-              summary: 'Error',
-              detail: 'Error deleting' + error,
-              life: 3000,
-            });
-          },
-        })
+        this.crudService()
+          .delete(newItem.id)
+          .subscribe({
+            next: (status) => {
+              console.log(status);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'IItem1 Deleted',
+                life: 3000,
+              });
+            },
+            error: (error) => {
+              console.error(error);
+              this.messageService.add({
+                severity: 'danger',
+                summary: 'Error',
+                detail: 'Error deleting' + error,
+                life: 3000,
+              });
+            },
+          });
 
         // this.crudService().filter((val) => val.id !== newItem.id);
 
         this.newItem = { ...this.emptyItem() };
- 
       },
     });
   }
@@ -383,5 +394,10 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     // };
     // reader.readAsDataURL(file);event.target.files[0];
     (this.newItem as any)['imageUrl'] = event.target.files[0];
+  }
+
+  search(event: any) {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.next(input.value);
   }
 }

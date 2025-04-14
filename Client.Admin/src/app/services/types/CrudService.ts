@@ -70,7 +70,10 @@ export class CrudService<T> {
   }
 
   create(newItem: any) {
-    return this.httpClient.post(`${environment.apiUrl}/${this.apiRoute}`, newItem);
+    return this.httpClient.post(
+      `${environment.apiUrl}/${this.apiRoute}`,
+      newItem
+    );
   }
 
   delete(idOrArgs: string | string[]) {
@@ -80,12 +83,32 @@ export class CrudService<T> {
       );
     }
 
-    return this.httpClient.delete(`${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`);
+    return this.httpClient.delete(
+      `${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`
+    );
   }
 
   filter(callback: (filterItem: T) => boolean): void {
     this.items.update((pre) => {
       return pre!.filter(callback);
     });
+  }
+
+  search(searchTerm: string) {
+    this.httpClient
+      .get(
+        `${environment.apiUrl}/${this.apiRoute}/search?searchTerm=${searchTerm}&orderBy=title`
+      )
+      .subscribe({
+        next: (data) => {
+          this._page.set(data as IPage<T>);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+        complete: () => {
+          // this.cd.markForCheck();
+        },
+      });
   }
 }

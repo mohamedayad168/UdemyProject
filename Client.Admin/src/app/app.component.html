@@ -321,7 +321,7 @@
 
 <app-header class="z-50"/>
 
-<div class="flex flex-1 overflow-hidden">
+<div  class="flex flex-1 overflow-hidden">
   <app-side-nav />
   <main class="flex-1 flex justify-center [&>*:not(router-outlet)]:w-full p-4 h-full overflow-auto">
     <router-outlet />
@@ -329,3 +329,9 @@
 </div>
 
 <app-login/>
+
+@if (loadingService.loading()) {
+ <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/30 pointer-events-none z-100">
+  <p-progress-spinner class="" ariaLabel="loading" />
+ </div>
+}

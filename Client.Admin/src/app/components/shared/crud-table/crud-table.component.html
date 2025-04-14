@@ -64,6 +64,7 @@
     dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [showCurrentPageReport]="true"
+    
   >
     <ng-template #caption>
       <div class="flex items-center justify-between">
@@ -73,7 +74,7 @@
           <input
             pInputText
             type="text"
-            (input)="filterTable($event)"
+            (input)="search($event)"
             placeholder="Search..."
           />
         </p-iconfield>
