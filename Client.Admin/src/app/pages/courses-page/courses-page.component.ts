@@ -223,7 +223,7 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadData() {
-    this.coursesService.getPage(1, 10);
+    this.coursesService.getPage({ pageNumber: 1, pageSize: 10,orderBy:'id desc' });
     // .subscribe({
     //   next: (data) => {
     //     this.items.set(data as IItem1[]);

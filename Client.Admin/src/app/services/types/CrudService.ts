@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { IPage } from '../../types/IPage';
+import { IPaginatedSearchRequest } from './Requests';
 
 export class CrudService<T> {
   apiRoute!: string;
@@ -46,10 +47,14 @@ export class CrudService<T> {
       });
   }
 
-  getPage(page: number, size: number) {
+  getPage(searchRequest: IPaginatedSearchRequest<T>) {
     return this.httpClient
       .get(
-        `${environment.apiUrl}/${this.apiRoute}/page?pageNumber=${page}&pageSize=${size}`
+        `${environment.apiUrl}/${this.apiRoute}/page?
+        pageNumber=${searchRequest.pageNumber??1}&
+        pageSize=${searchRequest.pageSize??10}&
+        searchTerm=${searchRequest.searchTerm??''}&
+        orderBy=${searchRequest.orderBy??'id'}`
       )
       .subscribe({
         next: (data) => {
@@ -94,10 +99,10 @@ export class CrudService<T> {
     });
   }
 
-  search(searchTerm: string) {
+  search(searchTerm: string, orderBy: string) {
     this.httpClient
       .get(
-        `${environment.apiUrl}/${this.apiRoute}/search?searchTerm=${searchTerm}&orderBy=title`
+        `${environment.apiUrl}/${this.apiRoute}/page?searchTerm=${searchTerm}&orderBy=ititle`
       )
       .subscribe({
         next: (data) => {

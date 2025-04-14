@@ -168,12 +168,18 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     this.loadDemoData();
     this.searchTerm
       .pipe(
-        debounceTime(500), // 1 second delay
-        distinctUntilChanged()
+        debounceTime(500),
+        distinctUntilChanged((prev, curr) => {
+          // Always allow change if curr is empty (to trigger search)
+          console.log('prev: ' + prev, 'cur: ' + curr);
+          if (curr.trim() === '' && prev.trim() == '') return true;
+          if (curr.trim() === '' && prev.trim() != '') return false;
+          return prev === curr;
+        })
       )
       .subscribe((term) => {
         console.log('searchTerm', term);
-        this.crudService().search(term);
+        this.crudService().getPage({ searchTerm: term });
       });
   }
 
@@ -269,7 +275,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
                   ...val,
                   data: val.data.filter((item) => item.id !== newItem.id),
                 };
-              })
+              });
             },
             error: (error) => {
               console.error(error);
@@ -384,7 +390,10 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   onPageChange(event: TablePageEvent) {}
 
   loadData(event: TableLazyLoadEvent) {
-    this.crudService().getPage(event.first! / event.rows! + 1, event.rows!);
+    this.crudService().getPage({
+      pageNumber: event.first! / event.rows! + 1,
+      pageSize: event.rows!,
+    });
   }
 
   onImageChange(event: any) {

@@ -27,11 +27,22 @@ namespace Udemy.Presentation.Controllers
        
 
         [HttpGet("page")]
-        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
+        public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetPageCoursesAsync([FromQuery] PaginatedSearchReq searchReq)
         {
-            var courses = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
-            return Ok(courses);
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, false, false);
+            return Ok(paginatedResponse);
         }
+
+
+        [HttpGet("deleted/page")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetDeletedPage([FromQuery] PaginatedSearchReq searchReq)
+        {
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, true, false);
+            return Ok(paginatedResponse);
+        }
+
+
 
          
         [HttpGet("search")]
