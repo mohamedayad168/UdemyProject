@@ -49,15 +49,16 @@ export class SideNavComponent {
         label: 'Dashboard',
         items: [
           {
-            label: 'Custom',
+            label: 'BI',
             icon: 'pi pi-book',
             routerLink: ['/'],
           },
           {
-            label: 'BI',
+            label: 'Custom',
             icon: 'pi pi-book',
-            routerLink: ['/bi'],
+            routerLink: ['/custom'],
           },
+          
         ],
       },
       
