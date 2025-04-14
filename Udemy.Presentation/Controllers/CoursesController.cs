@@ -124,42 +124,41 @@ namespace Udemy.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
-
+            // Retrieve the course by id
             var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
             if (course == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Course not found." });
             }
 
+            // Retrieve the instructor associated with the course
             var instructor = await serviceManager.InstructorService.GetByIdAsync(course.InstructorId, true);
             if (instructor == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Instructor not found." });
             }
 
-           
+            // Deleting the course
             await serviceManager.CoursesService.DeleteAsync(id);
 
+            // Decrement the instructor's course count
             instructor.TotalCourses -= 1;
 
-            if (instructor.Id == null)
-            {
-                return BadRequest("Instructor ID is required.");
-            }
-
+            // Update the instructor's data
             var instructorUpdated = await serviceManager.InstructorService.UpdateAsync(instructor.Id.Value, new InstructorUTO
             {
-                
                 TotalCourses = instructor.TotalCourses
             });
 
             if (!instructorUpdated)
             {
-                return BadRequest("Failed to update instructor.");
+                return BadRequest(new { message = "Failed to update instructor." });
             }
 
-            return NoContent();
+            return NoContent(); // Return 204 No Content for successful deletion
         }
+
+
 
         [HttpGet("subcategories/{subcategoryId}/courses")]
         public async Task<ActionResult<CourseRDTO>> GetCoursesBySubcategory(int subcategoryId)

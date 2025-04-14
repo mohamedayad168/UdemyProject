@@ -15,6 +15,8 @@ public class InstructorMappingProfile : Profile
 
         CreateMap<Core.Entities.Instructor, InstructorCDTO>().ReverseMap();
         CreateMap<Core.Entities.Instructor, InstructorUTO>().ReverseMap();
+        CreateMap<Core.Entities.Instructor, InstructorRDTO>().ReverseMap();
+
         CreateMap<Instructor, Instructor>();
     }
 }

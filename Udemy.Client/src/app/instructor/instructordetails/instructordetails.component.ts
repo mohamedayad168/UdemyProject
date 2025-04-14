@@ -19,7 +19,7 @@ export class InstructordetailsComponent implements OnInit {
   instructor!: Instructor;
   courses: Course[] = [];
 
-  constructor(private route: ActivatedRoute, private CourseService:CourseService ,private instructorService: InstructorService, private router: Router ) {}
+  constructor( private router: Router ,private route: ActivatedRoute, private courseservive:CourseService,private instructorService: InstructorService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -28,30 +28,9 @@ export class InstructordetailsComponent implements OnInit {
       this.fetchInstructorCourses();
     });
   }
-  
-  editCourse(courseId: number): void {
-    this.router.navigate(['/edit-course', courseId]);
-  }
 
-  deleteCourse(courseId: number): void {
-    if (confirm('Are you sure you want to delete this course?')) {
-      this.CourseService.deleteCourse(courseId).subscribe({
-        next: () => {
-          
-          this.courses = this.courses.filter(c => c.id !== courseId);
-          
-       
-          this.instructor.totalCourses = this.courses.length;
-  
-          alert('Course deleted successfully.');
-        },
-        error: (err) => {
-          console.error('Error deleting course:', err);
-          alert('Failed to delete course.');
-        }
-      });
-    }
-  }
+
+
   fetchInstructorDetails(): void {
     console.log('Fetching instructor details for ID:', this.instructorId);
     this.instructorService.getInstructorDetails(this.instructorId).subscribe({
@@ -64,7 +43,28 @@ export class InstructordetailsComponent implements OnInit {
       }
     });
   }
-  
+  deleteCourse(courseId: number): void {
+    if (confirm('Are you sure you want to delete this course?')) {
+      this.courseservive.deleteCourse(courseId).subscribe({
+        next: () => {
+          // Remove the course from the list
+          this.courses = this.courses.filter(c => c.id !== courseId);
+          // Update the instructor's totalCourses count
+          this.instructor.totalCourses = this.courses.length;
+          alert('Course deleted successfully.');
+        },
+        error: (err) => {
+          console.error('Error deleting course:', err);
+          alert('Failed to delete course.');
+        }
+      });
+    }
+  }
+  editCourse(courseId: number): void {
+    // Navigate to the edit-course page with the courseId as a parameter
+    this.router.navigate(['/edit-course', courseId]);
+  }
+
   fetchInstructorCourses(): void {
     console.log('Fetching courses for instructor ID:', this.instructorId);
     this.instructorService.getInstructorCourses(this.instructorId).subscribe({
@@ -81,6 +81,5 @@ export class InstructordetailsComponent implements OnInit {
         console.error('Error fetching instructor courses:', error);
       }
     });
-    
   }
 }  
