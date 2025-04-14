@@ -103,4 +103,13 @@
   .btn-purple:active {
     background-color: var(--p-highlight-purple);
   }
+
+
+
+  .chart100{
+    canvas{
+      width: 100% !important;
+      height: fit-content !important;
+    }
+  }
 }
