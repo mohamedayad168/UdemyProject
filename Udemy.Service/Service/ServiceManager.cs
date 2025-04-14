@@ -24,7 +24,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ICartService> cartService;
     private readonly Lazy<ISubCategoriesService> subCategoriesService;
     private readonly Lazy<IPaymentService> paymentService;
-
+    private readonly Lazy<ILessonService> lessonService;
 
 
     public ServiceManager(
@@ -52,7 +52,7 @@ public class ServiceManager : IServiceManager
         paymentService = new Lazy<IPaymentService>(() => new PaymentService(Configuration, repositoryManager, mapper));
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
-
+        lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper));
     }
 
     public ICoursesService CoursesService => coursesService.Value;
@@ -71,4 +71,5 @@ public class ServiceManager : IServiceManager
 
     public ISubCategoriesService SubCategoriesService => subCategoriesService.Value;
 
+    public ILessonService LessonService => lessonService.Value;
 }

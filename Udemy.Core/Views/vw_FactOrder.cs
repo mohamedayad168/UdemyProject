@@ -10,6 +10,8 @@ namespace Udemy.Core.Views
     {
         public int? OrderId { get; set; }
         public int? StudentId { get; set; }
+        public int? CourseId { get; set; }
+        public decimal? OrderPrice { get; set; }
         public string? PaymentMethod { get; set; }
         public string? Status { get; set; }
         public int? TotalAmount { get; set; }

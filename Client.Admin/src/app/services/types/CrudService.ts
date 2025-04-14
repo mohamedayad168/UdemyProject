@@ -1,9 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { IPage } from '../../types/IPage';
 
 export class CrudService<T> {
   private _items = signal<T[] | null>(null);
+  private _page = signal<IPage<T>>({
+    totalItems: 0,
+    pageSize: 0,
+    currentPage: 0,
+    totalPages: 0,
+    hasPrevious: false,
+    hasNext: false,
+    data: [],
+  });
 
   httpClient = inject(HttpClient);
 
@@ -13,6 +23,10 @@ export class CrudService<T> {
       this.getAll();
     }
     return this._items;
+  }
+
+  get page() {
+    return this._page;
   }
 
   getAll() {
@@ -38,8 +52,8 @@ export class CrudService<T> {
       )
       .subscribe({
         next: (data) => {
-          this._items.set(data as T[]);
-          console.log(this.items());
+          this._page.set(data as IPage<T>);
+          console.log(this._page());
         },
         error: (error) => {
           console.error(error);
@@ -54,7 +68,7 @@ export class CrudService<T> {
     return this.httpClient.get(`http://localhost:5191/courses/${id}`);
   }
 
-  add() {
+  create(newItem: T) {
     return this.httpClient.post('http://localhost:5191/courses', {
       title: 'New Course',
       description: 'New Course Description',

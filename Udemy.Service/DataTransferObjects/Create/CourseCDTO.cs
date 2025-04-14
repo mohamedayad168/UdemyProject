@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
-
+//using Microsoft.AspNetCore.Http;
 namespace Udemy.Service.DataTransferObjects.Create
 {
     public class CourseCDTO
@@ -24,7 +25,7 @@ namespace Udemy.Service.DataTransferObjects.Create
         [StringLength(20)]
         public string Language { get; set; } = "en";
         [StringLength(500)]
-        public string? ImageUrl { get; set; }
+        public IFormFile? ImageUrl { get; set; }
         [StringLength(500)]
         public string? VideoUrl { get; set; }
         public bool IsFree { get; set; }

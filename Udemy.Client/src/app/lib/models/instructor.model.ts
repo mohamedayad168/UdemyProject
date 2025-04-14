@@ -28,6 +28,7 @@ export interface Instructor {
   totalCourses?: number | null;
   totalReviews?: number | null;
   totalStudents?: number | null;
+ 
 }
 
 export const dummyInstructor: Instructor = {

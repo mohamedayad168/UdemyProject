@@ -23,6 +23,12 @@ namespace Udemy.Service.AutoMapperConfigration
                   .ForMember(dto => dto.Discount, opt => opt.MapFrom(src => src.Discount ?? 0m))
                 .ReverseMap();
 
+            CreateMap<Course , CourseSearchDto>()
+                .ForMember(dto => dto.InstructorName , e => e.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
+                .ForMember(dto => dto.Goals, opt => opt.MapFrom(src => src.CourseGoals.Select(e => e.Goal).ToList()))
+                .ReverseMap();
+
+
             // Mapping from Course to CourseCDTO and vice versa
             CreateMap<Course, CourseCDTO>().ReverseMap();
 
