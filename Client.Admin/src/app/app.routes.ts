@@ -9,12 +9,19 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'custom',
     pathMatch: 'full',
     title: 'Dashboard',
     component: HomePageComponent,
     canActivate: [authGuard],
     // canActivateChild: [childrenGuard],
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    title: 'Power BI',
+    component: BiPageComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'courses',
@@ -23,13 +30,7 @@ export const routes: Routes = [
     component: CoursesPageComponent,
     canActivate: [authGuard],
   },
-  {
-    path: 'bi',
-    pathMatch: 'full',
-    title: 'Power BI',
-    component: BiPageComponent,
-    canActivate: [authGuard],
-  },
+  
   {
     path: 'login',
     pathMatch: 'full',
@@ -41,6 +42,6 @@ export const routes: Routes = [
     path: '**',
     title: 'Not Found',
     component: NotFoundPageComponent,
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
 ];

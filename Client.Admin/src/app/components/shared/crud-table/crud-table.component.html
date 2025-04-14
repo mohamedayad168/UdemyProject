@@ -64,6 +64,7 @@
     dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [showCurrentPageReport]="true"
+    
   >
     <ng-template #caption>
       <div class="flex items-center justify-between">
@@ -73,7 +74,7 @@
           <input
             pInputText
             type="text"
-            (input)="filterTable($event)"
+            (input)="search($event)"
             placeholder="Search..."
           />
         </p-iconfield>
@@ -190,31 +191,42 @@
       <div class="flex flex-col gap-6">
         @for (item of createFormConfigs(); track $index) { @switch (item.type) {
         @case ('image') {
-        <div
-          class="relative hover:cursor-pointer hover:opacity-80 transition-all"
-        >
-          <img
-            [src]="item['imageUrl'] ?? '/placeholders/course.png'"
-            alt="course image"
-            class="block m-auto pb-4"
-          />
-          <input
-            type="file"
-            (change)="onImageChange($event)"
-            accept="image/*"
-            class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer"
-          />
-        </div>
-        } @case ('select') {
         <div>
-          <label for="inventoryStatus" class="block font-bold mb-3"
-            >Status</label
+          <label for="">{{ item.label }}</label>
+          <div
+            class="relative hover:cursor-pointer hover:opacity-80 transition-all"
+          >
+            <img
+              [src]="item['imageUrl'] ?? '/placeholders/course.png'"
+              alt="course image"
+              class="block m-auto pb-4"
+            />
+            <input
+              type="file"
+              (change)="onImageChange($event)"
+              accept="image/*"
+              class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer"
+            />
+          </div>
+        </div>
+        }@case ('file') {
+        <div>
+          <label for="">{{ item.label }}</label>
+          <p-fileupload #fu mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload"    maxFileSize="1000000" />
+
+        </div>
+        } 
+        @case ('select') {
+        <div>
+          <label [for]="item['key']+$index" class="block font-bold mb-3"
+            >{{ item.label }}</label
           >
           <p-select
-            [(ngModel)]="item['status']"
-            inputId="inventoryStatus"
+            [(ngModel)]="newItem[item['key']]"
+            [inputId]="item['key']+$index"
             [options]="item.options"
             optionLabel="label"
+            optionValue="value"
             placeholder="Select a Status"
             fluid
           />
@@ -229,7 +241,7 @@
                 id="category{{ $index }}"
                 name="category"
                 value="{{ radio.value }}"
-                [(ngModel)]="item['category']"
+                [(ngModel)]="newItem['category']"
               />
               <label for="category{{ $index }}">{{ radio.label }}</label>
             </div>
@@ -242,7 +254,7 @@
             <label for="price" class="block font-bold mb-3">Price</label>
             <p-inputnumber
               id="price"
-              [(ngModel)]="item['price']"
+              [(ngModel)]="newItem['price']"
               mode="currency"
               currency="USD"
               locale="en-US"
@@ -262,7 +274,7 @@
           <textarea
             id="description"
             pTextarea
-            [(ngModel)]="item['description']"
+            [(ngModel)]="newItem['description']"
             required
             rows="3"
             cols="20"
@@ -271,14 +283,14 @@
         </div>
         } @default {
         <div>
-          <label [for]="item['key']" class="block font-bold mb-3">{{
+          <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
             item.label
           }}</label>
           <input
             type="text"
             pInputText
-            [id]="item['key']"
-            [(ngModel)]="item['key']"
+            [id]="item['key'] + $index"
+            [(ngModel)]="newItem[item['key']]"
             required
             autofocus
             fluid
@@ -290,6 +302,8 @@
         } } }
       </div>
     </ng-template>
+
+    <input type="file" #file />
 
     <ng-template #footer>
       <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />

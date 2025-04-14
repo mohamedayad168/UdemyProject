@@ -76,7 +76,7 @@ namespace Udemy.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> CreateCourseAsync([FromBody] CourseCDTO course)
+        public async Task<IActionResult> CreateCourseAsync(  CourseCDTO course)
         {
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

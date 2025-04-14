@@ -8,6 +8,37 @@ import {
 import { CoursesService } from '../../services/courses/courses.service';
 import { Course } from '../../types/Course';
 
+let emptyItem: Course = {
+  id: '',
+  title: '',
+  description: '',
+  price: 0,
+  previewImageLink: '',
+  status: 'Archived',
+  imageUrl: '',
+  categories: [],
+  category: '',
+  imageLinks: [],
+  location: '',
+  createdDate: new Date(),
+  modifiedDate: null,
+  isDeleted: false,
+  courseLevel: '',
+  discount: 0,
+  duration: 0,
+  language: '',
+  videoUrl: '',
+  noSubscribers: 0,
+  isFree: false,
+  isApproved: false,
+  currentPrice: 0,
+  rating: 0,
+  subCategoryId: 0,
+  categoryId: 0,
+  instructorId: 0,
+  instructorName: null,
+};
+
 @Component({
   selector: 'app-courses-page',
   standalone: true,
@@ -17,7 +48,36 @@ import { Course } from '../../types/Course';
 })
 export class CoursesPageComponent implements OnInit {
   coursesService = inject(CoursesService);
-
+  emptyItem: Course = {
+    id: '',
+    title: '',
+    description: '',
+    price: 0,
+    previewImageLink: '',
+    status: 'Archived',
+    imageUrl: '',
+    categories: [],
+    category: '',
+    imageLinks: [],
+    location: '',
+    createdDate: new Date(),
+    modifiedDate: null,
+    isDeleted: false,
+    courseLevel: '',
+    discount: 0,
+    duration: 0,
+    language: '',
+    videoUrl: '',
+    noSubscribers: 0,
+    isFree: false,
+    isApproved: false,
+    currentPrice: 0,
+    rating: 0,
+    subCategoryId: 0,
+    categoryId: 0,
+    instructorId: 0,
+    instructorName: null,
+  };
   columnConfigs: IColumnConfig[] = [
     {
       key: 'id',
@@ -57,10 +117,10 @@ export class CoursesPageComponent implements OnInit {
       key: 'status',
       type: 'tag',
       header: 'Status',
-    }
+    },
   ];
 
-/**
+  /**
  * [key: string]: any;
   label: string;
   type: FieldType;
@@ -91,10 +151,10 @@ export class CoursesPageComponent implements OnInit {
         { label: 'Published', value: 'Published' },
         { label: 'Draft', value: 'Draft' },
         { label: 'Bestseller', value: 'bestseller' },
-      ]
+      ],
     },
     {
-      key: 'category',
+      key: 'courseLevel',
       label: 'Course Level',
       type: 'text',
       required: true,
@@ -102,7 +162,7 @@ export class CoursesPageComponent implements OnInit {
     {
       key: 'price',
       label: 'Price',
-      type: 'number',
+      type: 'text',
       required: true,
     },
     {
@@ -112,14 +172,46 @@ export class CoursesPageComponent implements OnInit {
       required: true,
     },
     {
-      key: 'ImageUrl',
-      label: 'Title',
+      key: 'image',
+      label: 'Poster',
+      type: 'image',
+      required: true,
+    },
+    {
+      key: 'video',
+      label: 'Demo Video',
+      type: 'file',
+      required: true,
+    },
+    {
+      key: 'isFree',
+      label: 'Free',
+      type: 'radio',
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+      required: true,
+    },
+    {
+      key: 'subCategoryId',
+      label: 'Sub Category',
+      type: 'select',
+      options: [
+        { label: 'Angular', value: 1 },
+        { label: 'React', value: 2 },
+        { label: 'Vue', value: 3 },
+      ],
+      required: true,
+    },
+    {
+      key: 'instructorId',
+      label: 'Instructor Id',
       type: 'text',
       required: true,
     },
-  ]
+  ];
 
- 
   statuses: ICrudTableItemStatus[] = [
     { label: 'Archieved', value: 'secondary' },
     { label: 'Published', value: 'success' },

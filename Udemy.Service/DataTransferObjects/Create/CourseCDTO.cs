@@ -25,9 +25,9 @@ namespace Udemy.Service.DataTransferObjects.Create
         [StringLength(20)]
         public string Language { get; set; } = "en";
         [StringLength(500)]
-        public IFormFile? ImageUrl { get; set; }
+        public IFormFile? Image { get; set; }
         [StringLength(500)]
-        public string? VideoUrl { get; set; }
+        public IFormFile? Video { get; set; }
         public bool IsFree { get; set; }
         public bool IsApproved { get { return false; } }
         public bool IsDeleted { get { return false; } }
