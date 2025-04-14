@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { InstructorService } from '../../services/instructor.service';
 import { Instructor } from '../../lib/models/instructor.model';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { CourseService } from '../../lib/services/course.service';
@@ -19,7 +19,7 @@ export class InstructordetailsComponent implements OnInit {
   instructor!: Instructor;
   courses: Course[] = [];
 
-  constructor(private route: ActivatedRoute, private instructorService: InstructorService) {}
+  constructor(private route: ActivatedRoute, private CourseService:CourseService ,private instructorService: InstructorService, private router: Router ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -28,9 +28,30 @@ export class InstructordetailsComponent implements OnInit {
       this.fetchInstructorCourses();
     });
   }
+  
+  editCourse(courseId: number): void {
+    this.router.navigate(['/edit-course', courseId]);
+  }
 
-
-
+  deleteCourse(courseId: number): void {
+    if (confirm('Are you sure you want to delete this course?')) {
+      this.CourseService.deleteCourse(courseId).subscribe({
+        next: () => {
+          
+          this.courses = this.courses.filter(c => c.id !== courseId);
+          
+       
+          this.instructor.totalCourses = this.courses.length;
+  
+          alert('Course deleted successfully.');
+        },
+        error: (err) => {
+          console.error('Error deleting course:', err);
+          alert('Failed to delete course.');
+        }
+      });
+    }
+  }
   fetchInstructorDetails(): void {
     console.log('Fetching instructor details for ID:', this.instructorId);
     this.instructorService.getInstructorDetails(this.instructorId).subscribe({
@@ -60,5 +81,6 @@ export class InstructordetailsComponent implements OnInit {
         console.error('Error fetching instructor courses:', error);
       }
     });
+    
   }
 }  

@@ -1,69 +1,98 @@
-<div class="min-h-screen flex flex-col md:flex-row">
-    <!-- Left Side with Photo -->
-    <div class="w-full md:w-1/2 bg-white flex items-center justify-center p-12">
-      <div class="max-w-md text-center">
-        <img 
-          src="/assets/image/desktop-illustration-step-1-x2.webp" 
-          alt="Udemy Instructor" 
-          class="rounded-lg  w-full"
-        >
+<div class="min-h-screen flex flex-col">
+  <!-- Combined header and form section -->
+  <div class="flex-1 w-full bg-gray-50 p-4 md:p-8">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8">
+      <!-- Image on left (or top on mobile) -->
+      <div class="md:w-1/2 flex justify-center">
+        <img
+          src="/assets/image/desktop-illustration-step-1-x2.webp"
+          alt="Udemy Instructor"
+          class="rounded-lg w-full max-w-md"
+        />
       </div>
-    </div>
-  
-    <!-- Right Side with Login Form -->
-    <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
-      <div class="w-full max-w-md">
-        <div class="text-center mb-8">
-          <h1 class="text-2xl font-bold text-gray-800 mb-2">Login to continue your learning journey</h1>
-        </div>
-  
-        <!-- Email Field -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-          <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-        </div>
-  
-        <!-- Continue with Email Button -->
-        <button class="w-full py-2 px-4 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 mb-6">
-          Continue with email
-        </button>
-  
-        <!-- Divider -->
-        <div class="relative mb-6">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
+
+      <!-- Form on right (or bottom on mobile) -->
+      <div class="md:w-1/2">
+        <div class="bg-white rounded-lg shadow-sm p-6 md:p-8">
+          <!-- Heading -->
+          <h1 class="text-3xl text-center mb-6">Login</h1>
+
+          <!-- Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <!-- Email Field -->
+            <div class="mb-4">
+              <label class="block font-medium mb-1">Email</label>
+              <input
+                formControlName="email"
+                type="email"
+                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="name@example.com"
+                [ngClass]="{
+                  'border-red-500':
+                    loginForm.get('email')?.invalid &&
+                    (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+                }"
+              />
+              <div
+                *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+                class="text-red-500 text-xs mt-1"
+              >
+                <div *ngIf="loginForm.get('email')?.hasError('required')">Email is required</div>
+                <div *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email</div>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-6">
+              <label class="block font-medium mb-1">Password</label>
+              <input
+                formControlName="password"
+                type="password"
+                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Password"
+                [ngClass]="{
+                  'border-red-500':
+                    loginForm.get('password')?.invalid &&
+                    (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
+                }"
+              />
+              <div
+                *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                class="text-red-500 text-xs mt-1"
+              >
+                <div *ngIf="loginForm.get('password')?.hasError('required')">Password is required</div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage() === 'Invalid credentials'" class="text-red-500 text-sm mb-4">
+              Wrong email or password
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="w-full px-6 py-2 bg-purple-200 text-purple-900 rounded-md hover:bg-purple-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="loginForm.invalid"
+            >
+              Log In
+            </button>
+          </form>
+
+          <!-- Sign Up Link -->
+          <div class="mt-6 text-center text-sm">
+            <p>
+              You don't have an account?
+              <a
+                routerLink="/get-started"
+                class="!text-purple-600 font-bold"
+              >
+                Sign Up
+              </a>
+            </p>
           </div>
-          <div class="relative flex justify-center">
-            <span class="px-2 bg-white text-sm text-gray-500">Other login options</span>
-          </div>
         </div>
-  
-        <!-- Social Login Options -->
-        <div class="mt-4 space-y-4">
-            <a href="https://www.facebook.com/v12.0/dialog/oauth?client_id=YOUR_FACEBOOK_APP_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_STATE_PARAM" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-blue-600 text-white">
-              <i class="fab fa-facebook-f mr-2"></i> 
-            </a>
-            <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=YOUR_GOOGLE_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=email" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-red-600 text-white">
-              <i class="fab fa-google mr-2"></i> 
-            </a>
-            <a href="https://appleid.apple.com/auth/authorize?client_id=YOUR_APPLE_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=email" class="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center bg-black text-white">
-              <i class="fab fa-apple mr-2"></i>
-            </a>
-          </div>
-          
-  
-        <!-- Sign Up Link -->
-        <p class="mt-2">dont have account? 
-            <a
-      routerLink="/instructor/home'"
-      class="ms-2 text-primary text-decoration-none"
-      style="font-weight: 500"
-    >
-      sign up </a>
-          </p>
-  
-   
-      
       </div>
     </div>
   </div>
+</div>

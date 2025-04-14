@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Udemy.Core.Entities;
 using System.Security.Claims;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -20,7 +24,7 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
         [HttpGet("category/{id:int}")]
-
+       
 
         [HttpGet("page")]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
@@ -29,11 +33,11 @@ namespace Udemy.Presentation.Controllers
             return Ok(courses);
         }
 
-
+         
         [HttpGet("search")]
-        public async Task<IActionResult> GetCoursesWithSearch([FromQuery] CourseRequestParameter requestParameter)
+        public async Task<IActionResult> GetCoursesWithSearch([FromQuery]CourseRequestParameter requestParameter)
         {
-
+            
             var courses = await serviceManager.CoursesService.GetAllWithSearchAsync(requestParameter);
 
             return Ok(courses);
@@ -62,31 +66,24 @@ namespace Udemy.Presentation.Controllers
 
         }
 
-        [HttpGet("{id:int}/asks")]
-        public async Task<ActionResult<IEnumerable<AskRDTO>>> GetAsksByCourseIdAsync([FromRoute] int id, [FromQuery] RequestParamter requestParameter)
-        {
-            var asks = await serviceManager.AskService.GetAsksByCourseIdAsync(id, requestParameter, false);
-            return Ok(asks);
-        }
-
 
         [HttpPost]
-        // [Authorize(Roles = "Admin,Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> CreateCourseAsync([FromBody] CourseCDTO course)
         {
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //if (userIdClaim == null)
-            //    return Unauthorized();
+            if (userIdClaim == null)
+                return Unauthorized();
 
-            //var Id = int.Parse(userIdClaim);
+            var Id = int.Parse(userIdClaim);
 
-            //if (User.IsInRole("Instructor"))
-            //{
-            //    if (course.InstructorId != Id)
-            //        return Forbid("Instructors can only create courses for themselves.");
-            //}
+            if (User.IsInRole("Instructor"))
+            {
+                if (course.InstructorId != Id)
+                    return Forbid("Instructors can only create courses for themselves.");
+            }
 
 
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
@@ -116,12 +113,42 @@ namespace Udemy.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
+
+            var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await serviceManager.InstructorService.GetByIdAsync(course.InstructorId, true);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+           
             await serviceManager.CoursesService.DeleteAsync(id);
+
+            instructor.TotalCourses -= 1;
+
+            if (instructor.Id == null)
+            {
+                return BadRequest("Instructor ID is required.");
+            }
+
+            var instructorUpdated = await serviceManager.InstructorService.UpdateAsync(instructor.Id.Value, new InstructorUTO
+            {
+                
+                TotalCourses = instructor.TotalCourses
+            });
+
+            if (!instructorUpdated)
+            {
+                return BadRequest("Failed to update instructor.");
+            }
+
             return NoContent();
         }
-
-
-
 
         [HttpGet("subcategories/{subcategoryId}/courses")]
         public async Task<ActionResult<CourseRDTO>> GetCoursesBySubcategory(int subcategoryId)
@@ -133,13 +160,8 @@ namespace Udemy.Presentation.Controllers
             }
             return Ok(courses);
         }
-
-
-
-
-
     }
 }
 
-
+    
 

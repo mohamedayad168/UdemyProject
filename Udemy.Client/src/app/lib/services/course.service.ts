@@ -75,4 +75,8 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
+  
+  deleteCourse(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
+  }
 }

@@ -26,6 +26,8 @@ import { InstructorGetstartedComponent } from './instructor/instructor-getstarte
 import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
 import { CourseSearchComponent } from './pages/course-search/course-search.component';
 import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
+import { EditCourseComponent } from './instructor/edit-course/edit-course.component'; 
+import { EditinstructorPageComponent } from './instructor/editinstructor-page/editinstructor-page.component';
 export const routes: Routes = [
   {
     path: '',
@@ -146,6 +148,11 @@ export const routes: Routes = [
     path: 'createcourse/createcoursebage',
     component: CreatecoursebageComponent,
   },
+  {
+    path: 'instructors/:id/courses',
+   component:EditCourseComponent
+  },
+  {path:'edit-instructor-Page', component:EditinstructorPageComponent},
   {
     title: '404',
     path: '**',

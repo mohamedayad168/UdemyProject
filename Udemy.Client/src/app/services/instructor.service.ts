@@ -9,6 +9,9 @@ import { SocialMediaLink } from '../lib/models/SocialMedia.model';
   providedIn: 'root',
 })
 export class InstructorService {
+  login(value: Partial<{ email: string | null; password: string | null; }>) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = `${environment.baseurl}/instructors`;
 
   constructor(private http: HttpClient) {}
@@ -48,6 +51,7 @@ export class InstructorService {
     );
   }
 
+  
   getInstructorDetails(instructorId: number): Observable<Instructor> {
     return this.http.get<Instructor>(
       `${this.apiUrl}/details?instructorId=${instructorId}`
@@ -57,4 +61,5 @@ export class InstructorService {
   getInstructorCourses(instructorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${instructorId}/courses`);
   }
+  
 }
