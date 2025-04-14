@@ -17,6 +17,7 @@ import { UserService } from '../../lib/services/user.service';
 import { AccountService } from '../../lib/services/account.service';
 import { PostReview } from '../../lib/models/review';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { QNAComponent } from "../../lib/components/qna/qna.component";
 
 @Component({
   selector: 'app-course-view',
@@ -28,8 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ContentAccordionComponent,
     CommonModule,
     RouterModule, CourseOverViewComponent, CourseReviewsComponent, CreateReviewComponent,
-    MatProgressSpinnerModule
-  ],
+    MatProgressSpinnerModule, QNAComponent],
   templateUrl: './course-view.component.html',
   styleUrl: './course-view.component.css'
 })

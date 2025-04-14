@@ -30,6 +30,23 @@ public class AskService(
         return askDtos;
     }
 
+    public async Task<IEnumerable<AskRDTO>> GetAsksByCourseIdAsync(int courseId,
+        RequestParamter requestParamter, bool trackChanges)
+    {
+        await CheckIfCourseExistsAsync(courseId);
+        
+        var asks = await repository.Ask.FindByCondition(x => x.CourseId == courseId, trackChanges)
+            .Include(x => x.User)
+            .Include(x => x.Course).Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
+            .Take(requestParamter.PageSize)
+            .Select(ask => new AskRDTO(ask)).ToListAsync();
+            
+        return asks;
+
+    }
+
+
+
     public async Task<AskDto?> GetUserCourseAskByIdAsync(
         int id,int userId ,int courseId ,bool trackChanges
     )

@@ -1,0 +1,14 @@
+<div>
+  <p #textbox [class.show-less]="expand === false" class="text-sm text-gray-700 mt-1">
+    <ng-content></ng-content>
+  </p>
+  <a
+    class="text-sm! text-purple-600! cursor-pointer!"
+    (click)="toggle()"
+    *ngIf="
+      textbox.offsetHeight < textbox.scrollHeight ||
+      (expand === true && textbox.offsetHeight > 40)
+    "
+    >{{ anchor }}</a
+  >
+</div>
