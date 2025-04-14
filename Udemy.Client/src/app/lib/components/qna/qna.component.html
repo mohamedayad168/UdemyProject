@@ -42,10 +42,11 @@
   </button>
 </div>
 <section class="max-w-4xl mx-auto bg-white rounded-lg p-6 mb-10">
-  <h2 class="text-2xl font-semibold mb-4">
-    All questions in this course <span class="text-gray-500 text-sm">(18)</span>
-  </h2>
-  @if(courseQuestions){
+
+  @if(courseQuestions.length>0){
+    <h2 class="text-2xl font-semibold mb-4">
+      All questions in this course <span class="text-gray-500 text-sm">(18)</span>
+    </h2>
   @for (question of courseQuestions; track question) {
       <!-- Question 1 -->
   <div class="hover:bg-gray-100 p-4 rounded-lg mb-2">
