@@ -1,0 +1,51 @@
+<p-table [value]="crudService().page().data" [tableStyle]="{ 'min-width': '60rem' }" class="bg-secondary">
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <span class="text-xl font-bold">Products</span>
+            <p-button icon="pi pi-refresh" rounded raised />
+        </div>
+    </ng-template>
+    <ng-template #header *ngIf="header()">
+        <tr class="w-full">
+            @for (item of columnConfigs(); track $index) {
+            <th>
+                {{ item.header }}
+            </th>
+            }
+        </tr>
+    </ng-template>
+    <ng-template #body let-product>
+        <tr>
+            @for (item of columnConfigs(); track $index) {
+            <td>
+                @switch (item.type) {
+                    @case ('image') {
+                        <img
+                        [src]="product[item['key']]"
+                        [alt]="product.title"
+                        class="w-24 rounded"
+                    /> 
+                    }
+                    @case ('money') {
+                         {{ product[item['key']] | currency: 'USD' }} 
+    
+                    }
+                    @case ('tag') {
+                        <p-tag [value]="product[item['key']]" [severity]="getSeverity(product[item['key']])" />
+    
+                    }
+                    @case ('rating') {
+                        <p-rating [(ngModel)]="product[item['key']]" [readonly]="true"   />
+                    }
+                    @default {
+                        {{ product[item['key']] }}
+                    }
+                }
+            </td>
+            }
+ 
+  
+  
+        </tr>
+    </ng-template>
+ </p-table>

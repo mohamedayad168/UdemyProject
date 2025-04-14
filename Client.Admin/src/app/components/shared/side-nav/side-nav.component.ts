@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { NgIf } from '@angular/common';
 import { PanelMenu } from 'primeng/panelmenu';
@@ -23,7 +23,7 @@ import { AvatarModule } from 'primeng/avatar';
     BadgeModule,
     RippleModule,
     AvatarModule,
-  ],
+   ],
   providers: [MessageService],
 })
 export class SideNavComponent {
@@ -133,41 +133,55 @@ export class SideNavComponent {
 
     this.adminNavItems = [
       {
-        label: 'Router',
-        icon: 'pi pi-palette',
+        label: 'Reports',
+        icon: 'pi pi-chart-bar',
+        expanded: true,
         items: [
           {
-            label: 'Installation',
-            icon: 'pi pi-eraser',
-            route: '/installation',
+            label: 'Custom',
+            icon: 'pi pi-book',
+            route: '/',
           },
           {
-            label: 'Configuration',
-            icon: 'pi pi-heart',
-            route: '/configuration',
+            label: 'BI',
+            icon: 'pi pi-book',
+            route: 'bi',
           },
         ],
       },
       {
-        label: 'Programmatic',
-        icon: 'pi pi-link',
-        command: () => {
-          this.router.navigate(['/installation']);
-        },
-      },
-      {
-        label: 'External',
-        icon: 'pi pi-home',
+        label: 'Courses',
+        icon: 'pi pi-video',
         items: [
           {
-            label: 'Angular',
-            icon: 'pi pi-star',
-            url: 'https://angular.io/',
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
           },
+        ],
+      },
+      {
+        label: 'Instructors',
+        icon: 'pi pi-video',
+        items: [
           {
-            label: 'Vite.js',
-            icon: 'pi pi-bookmark',
-            url: 'https://vitejs.dev/',
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ],
+      },
+      {
+        label: 'Students',
+        icon: 'pi pi-video',
+        items: [
+          {
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
           },
         ],
       },

@@ -23,7 +23,7 @@ namespace Udemy.Service.Service
 
 
         public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
-      
+
         {
             var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
 
@@ -52,7 +52,7 @@ namespace Udemy.Service.Service
                         .Include(c => c.Sections)
 
                         .ThenInclude(s => s.Lessons)
-                       
+
                         .FirstOrDefaultAsync();
 
             return course is null ?

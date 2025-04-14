@@ -46,12 +46,16 @@ export class HeaderComponent implements OnInit {
         label: 'Options',
         items: [
           {
-            label: 'Refresh',
-            icon: 'pi pi-refresh',
+            label: 'account',
+            icon: 'pi pi-cog',
+            routerLink: '/account',
           },
           {
-            label: 'Export',
-            icon: 'pi pi-upload',
+            label: 'logout',
+            icon: 'pi pi-sign-out',
+            command: () => {
+              this.authService.logout();
+            }
           },
         ],
       },

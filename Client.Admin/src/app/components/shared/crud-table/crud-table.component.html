@@ -43,15 +43,13 @@
     #dt
     [value]="items().data"
     [rows]="10"
-    [lazy]="true" 
+    [lazy]="true"
     [columns]="cols"
     [totalRecords]="items().totalItems"
     [pageLinks]="5"
     [paginator]="true"
     (onLazyLoad)="loadData($event)"
-
     (onPage)="onPageChange($event)"
-    
     [globalFilterFields]="[
       'title',
       'description',
@@ -87,29 +85,18 @@
         <th style="width: 3rem">
           <p-tableHeaderCheckbox />
         </th>
-        <th style="min-width: 4rem">Id</th>
-        <th pSortableColumn="name" style="min-width: 16rem">
-          Name
-          <p-sortIcon field="name" />
+        @for (item of columnConfigs(); track $index) {
+        <th
+          pSortableColumn="{{ item['key'] }}"
+          style.min-width="{{ item.width ?? 'unset' }}"
+        >
+          {{ item.header }}
+          <p-sortIcon *ngIf="item.sortable" field="{{ item['key'] }}" />
         </th>
-        <th>Image</th>
-        <th pSortableColumn="price" style="min-width: 8rem">
-          Price
-          <p-sortIcon field="price" />
-        </th>
-        <th pSortableColumn="category" style="min-width: 10rem">
-          Category
-          <p-sortIcon field="category" />
-        </th>
-        <th pSortableColumn="rating" style="min-width: 12rem">
-          Reviews
-          <p-sortIcon field="rating" />
-        </th>
-        <th pSortableColumn="inventoryStatus" style="min-width: 12rem">
-          Status
-          <p-sortIcon field="inventoryStatus" />
-        </th>
-        <th style="min-width: 12rem"></th>
+        }
+
+        <!-- edit/delete btns -->
+        <th></th>
       </tr>
     </ng-template>
 
@@ -120,39 +107,34 @@
         <td style="width: 3rem">
           <p-tableCheckbox [value]="product" />
         </td>
-        @for (column of columnConfig(); track $index) {
-          <td [style.min-width]="column.width??'unset'"  >
-          @switch (column.type) {
-            @case ('image') {
-                <img
-                  [src]="product['imageUrl']"
-                  [alt]="product['name']"
-                  style="width: 64px"
-                  class="rounded"
-                />
-            }
-            @case ('tag') {
-                 <p-tag
-                  [value]="product['status']"
-                  [severity]="getStatusSeverity(product['status'])"
-                />
-             }
-            @case ('rating') {
-                 <p-rating
-                  [(ngModel)]="product.rating"
-                  [readonly]="true"
-                /><!--[cancel]="false"-->
-             }
-            @case ('money') {
-               {{ product["price"] | currency : "USD" }} 
-            }
-          }
+        @for (column of columnConfigs(); track $index) {
+        <td [style.min-width]="column.width ?? 'unset'">
+          @switch (column.type) { @case ('image') {
+          <img
+            [src]="product[column['key']]"
+            [alt]="product[column['label']]"
+            style="width: 64px"
+            class="rounded"
+          />
+          } @case ('tag') {
+          <p-tag
+            [value]="product[column['key']]"
+            [severity]="getStatusSeverity(product[column['key']])"
+          />
+          } @case ('rating') {
+          <p-rating
+            [(ngModel)]="product[column['key']]"
+            [readonly]="true"
+          /><!--[cancel]="false"-->
+          } @case ('money') {
+          {{ product[column["key"]] | currency : "USD" }}
+          } @default {
+          {{ product[column["key"]] }}
+          } }
         </td>
 
         }
- 
- 
- 
+
         <!--  -->
         <td>
           <p-button
@@ -206,35 +188,73 @@
   >
     <ng-template #content>
       <div class="flex flex-col gap-6">
-        @if (keys()['imageUrl']) {
-        <img
-          [src]="item['imageUrl']"
-          [alt]="item['imageUrl']"
-          class="block m-auto pb-4"
-          *ngIf="item['imageUrl']"
-        />
-        }
-        <!--  -->
-        @if(keys()['imageUrl']) {
-        <div>
-          <label for="name" class="block font-bold mb-3">Name</label>
+        @for (item of createFormConfigs(); track $index) { @switch (item.type) {
+        @case ('image') {
+        <div
+          class="relative hover:cursor-pointer hover:opacity-80 transition-all"
+        >
+          <img
+            [src]="item['imageUrl'] ?? '/placeholders/course.png'"
+            alt="course image"
+            class="block m-auto pb-4"
+          />
           <input
-            type="text"
-            pInputText
-            id="name"
-            [(ngModel)]="item['title']"
-            required
-            autofocus
+            type="file"
+            (change)="onImageChange($event)"
+            accept="image/*"
+            class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer"
+          />
+        </div>
+        } @case ('select') {
+        <div>
+          <label for="inventoryStatus" class="block font-bold mb-3"
+            >Status</label
+          >
+          <p-select
+            [(ngModel)]="item['status']"
+            inputId="inventoryStatus"
+            [options]="item.options"
+            optionLabel="label"
+            placeholder="Select a Status"
             fluid
           />
-          <small class="text-red-500" *ngIf="submitted && !item['title']"
-            >Name is required.</small
-          >
         </div>
-
-        }
-        <!--  -->
-        @if (keys()['description']) {
+        } @case ('radio') {
+        <div>
+          <span class="block font-bold mb-4">{{ item.label }}</span>
+          <div class="grid grid-cols-12 gap-4">
+            @for (radio of item.options; track $index) {
+            <div class="flex items-center gap-2 col-span-6">
+              <p-radiobutton
+                id="category{{ $index }}"
+                name="category"
+                value="{{ radio.value }}"
+                [(ngModel)]="item['category']"
+              />
+              <label for="category{{ $index }}">{{ radio.label }}</label>
+            </div>
+            }
+          </div>
+        </div>
+        } @case ('money') {
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-6">
+            <label for="price" class="block font-bold mb-3">Price</label>
+            <p-inputnumber
+              id="price"
+              [(ngModel)]="item['price']"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              fluid
+            />
+          </div>
+          <!-- <div class="col-span-6">
+                                <label for="quantity" class="block font-bold mb-3">Quantity</label>
+                                <p-inputnumber id="quantity" [(ngModel)]="item['quantity']" fluid />
+                            </div> -->
+        </div>
+        } @case ('textarea') {
         <div>
           <label for="description" class="block font-bold mb-3"
             >Description</label
@@ -249,87 +269,25 @@
             fluid
           ></textarea>
         </div>
-        }
-        <!--  -->
-        @if (keys()['status']) {
+        } @default {
         <div>
-          <label for="inventoryStatus" class="block font-bold mb-3"
-            >Status</label
-          >
-          <p-select
-            [(ngModel)]="item['status']"
-            inputId="inventoryStatus"
-            [options]="statuses()"
-            optionLabel="label"
-            placeholder="Select a Status"
+          <label [for]="item['key']" class="block font-bold mb-3">{{
+            item.label
+          }}</label>
+          <input
+            type="text"
+            pInputText
+            [id]="item['key']"
+            [(ngModel)]="item['key']"
+            required
+            autofocus
             fluid
           />
+          <small class="text-red-500" *ngIf="submitted && !item['key']"
+            >{{ item.label }} is required.</small
+          >
         </div>
-        }
-        <!--  -->
-        @if(keys()['category']) {
-        <div>
-          <span class="block font-bold mb-4">Category</span>
-          <div class="grid grid-cols-12 gap-4">
-            <div class="flex items-center gap-2 col-span-6">
-              <p-radiobutton
-                id="category1"
-                name="category"
-                value="Accessories"
-                [(ngModel)]="item['category']"
-              />
-              <label for="category1">Accessories</label>
-            </div>
-            <div class="flex items-center gap-2 col-span-6">
-              <p-radiobutton
-                id="category2"
-                name="category"
-                value="Clothing"
-                [(ngModel)]="item['category']"
-              />
-              <label for="category2">Clothing</label>
-            </div>
-            <div class="flex items-center gap-2 col-span-6">
-              <p-radiobutton
-                id="category3"
-                name="category"
-                value="Electronics"
-                [(ngModel)]="item['category']"
-              />
-              <label for="category3">Electronics</label>
-            </div>
-            <div class="flex items-center gap-2 col-span-6">
-              <p-radiobutton
-                id="category4"
-                name="category"
-                value="Fitness"
-                [(ngModel)]="item['category']"
-              />
-              <label for="category4">Fitness</label>
-            </div>
-          </div>
-        </div>
-        }
-        <!--  -->
-        @if(keys()['price']) {
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-6">
-            <label for="price" class="block font-bold mb-3">Price</label>
-            <p-inputnumber
-              id="price"
-              [(ngModel)]="item['price']"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              fluid
-            />
-          </div>
-          <!-- <div class="col-span-6">
-                          <label for="quantity" class="block font-bold mb-3">Quantity</label>
-                          <p-inputnumber id="quantity" [(ngModel)]="item['quantity']" fluid />
-                      </div> -->
-        </div>
-        }
+        } } }
       </div>
     </ng-template>
 

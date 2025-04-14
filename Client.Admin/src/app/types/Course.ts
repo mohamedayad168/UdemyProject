@@ -37,7 +37,7 @@ export interface ICourseCDTO {
   price: number;
   currentPrice: number;
   language: string;
-  imageUrl?: string;
+  image?: File | string;
   videoUrl?: string;
   isFree: boolean;
   isApproved: boolean;
