@@ -18,7 +18,7 @@ import { Course } from '../../types/Course';
 export class CoursesPageComponent implements OnInit {
   coursesService = inject(CoursesService);
 
-  columnConfig: IColumnConfig[] = [
+  columnConfigs: IColumnConfig[] = [
     {
       key: 'id',
       width: '4rem',
@@ -32,9 +32,15 @@ export class CoursesPageComponent implements OnInit {
       header: 'Title',
     },
     {
+      key: 'imageUrl',
+      type: 'image',
+      header: 'Image',
+    },
+    {
       key: 'price',
       type: 'money',
       header: 'Price',
+      sortable: true,
     },
     {
       key: 'category',
@@ -45,6 +51,7 @@ export class CoursesPageComponent implements OnInit {
       key: 'rating',
       type: 'rating',
       header: 'Reviews',
+      sortable: true,
     },
     {
       key: 'status',
@@ -61,17 +68,17 @@ export class CoursesPageComponent implements OnInit {
   options?: { label: string; value: any }[]; // for selects
  */
 
-  formFieldConfig: FormFieldConfig[] = [
+  createFormConfigs: FormFieldConfig[] = [
     {
       key: 'title',
-      label: 'Title',
+      label: 'Name',
       type: 'text',
       required: true,
     },
     {
       key: 'description',
       label: 'Description',
-      type: 'text',
+      type: 'textarea',
       required: true,
     },
     {
@@ -83,11 +90,11 @@ export class CoursesPageComponent implements OnInit {
         { label: 'Archieved', value: 'Archieved' },
         { label: 'Published', value: 'Published' },
         { label: 'Draft', value: 'Draft' },
-        { label: 'bestseller', value: 'bestseller' },
+        { label: 'Bestseller', value: 'bestseller' },
       ]
     },
     {
-      key: 'courseLevel',
+      key: 'category',
       label: 'Course Level',
       type: 'text',
       required: true,

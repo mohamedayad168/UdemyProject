@@ -9,7 +9,7 @@ import { SocialMediaLink } from '../lib/models/SocialMedia.model';
   providedIn: 'root',
 })
 export class InstructorService {
-  private apiUrl = `${environment.baseurl}/api/instructors`;
+  private apiUrl = `${environment.baseurl}/instructors`;
 
   constructor(private http: HttpClient) {}
 

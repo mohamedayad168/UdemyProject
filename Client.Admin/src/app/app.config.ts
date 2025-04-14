@@ -35,7 +35,7 @@ const MyPreset = definePreset(Aura, {
       textLight: '#adadb8',
       textDark: '#DEDEE3',
       bgLight: '#53535f',
-      bgDark: '#adadb8',
+      bgDark: '#18181b',
     },
     info: {
       textLight: '#53535f',

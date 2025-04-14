@@ -1,5 +1,5 @@
 <header
-  class="grid grid-cols-3 [&>*]:flex justify-between p-2 shadow-yn bg-header"
+  class="grid grid-cols-2 [&>*]:flex justify-between p-2 shadow-yn bg-header"
 >
   <h1 class="items-center ms-1 gap-2">
     <a
@@ -24,9 +24,9 @@
     <label for="on_label">On Label</label>
   </p-floatlabel> -->
 
-  <p-inputgroup styleClass="border1 border-gray-500 rounded-lg">
-    <!-- <p-floatlabel variant="on" > -->
-    <input pInputText  class="bg-transparent" placeholder="search"  /><!--[(ngModel)]="searchService.input"-->
+  <!-- <p-inputgroup styleClass="border1 border-gray-500 rounded-lg">
+    <p-floatlabel variant="on" >
+    <input pInputText [(ngModel)]="searchService.input" class="bg-transparent" placeholder="search"  /> 
     <p-inputgroup-addon>
       <p-button
         icon="pi pi-search"
@@ -37,12 +37,15 @@
       />
     </p-inputgroup-addon>
 
-    <!-- </p-floatlabel> -->
-  </p-inputgroup>
+    </p-floatlabel>
+  </p-inputgroup> -->
 
   <div class="justify-end gap-3 items-center">
     <!-- login -->
-    @if(authService.authState().isAuthenticated){ }@else{
+    @if(authService.authState().isAuthenticated){
+
+
+     }@else{
     <p-button
       class="justify-end"
       styleClass=" !rounded-sm btn-primary font-bold"
@@ -50,17 +53,19 @@
       label="Login"
       (click)="authService.openDieloag()"
     />
-    <p-button
+    <!-- <p-button
       class="justify-end"
       styleClass=" !rounded-sm btn-purple"
       size="small"
       label="Sign Up"
       (click)="authService.openDieloag()"
-    />
+    /> -->
     }
 
     <!-- user icon/user image -->
     @if(authService.authState().isAuthenticated){
+    <p-menu #menu [model]="items" [popup]="true" styleClass="mt-2" />
+
     <button (click)="menu.toggle($event)"  aria-label="User" class="cursor-pointer flex items-center gap-2">
       <p>{{ authService.authState().user?.firstName }}</p>
       <!-- <img
@@ -75,10 +80,9 @@
     </button>
     }@else{
     <button class="cursor-pointer px-2" aria-label="User">
-      <i (click)="menu.toggle($event)" class="pi pi-user !text-xl"></i>
+      <i   class="pi pi-user !text-xl"></i>
     </button>
     }
-    <p-menu #menu [model]="items" [popup]="true" styleClass="mt-2" />
   </div>
 
   <!-- <nav>

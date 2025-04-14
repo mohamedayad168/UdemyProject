@@ -98,7 +98,7 @@ export class AddInstructorComponent {
       Age: formValue.age,
       Gender: formValue.gender,
       Title: formValue.title,
-      Bio: formValue.biography,
+      bio: formValue.biography,
     };
 
     this.InstructorService.saveInstructorProfile(instructorProfile).subscribe({
