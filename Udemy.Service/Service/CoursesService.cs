@@ -22,20 +22,20 @@ namespace Udemy.Service.Service
         }
 
 
-        public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
 
         {
-            var courses = await repository.Courses.GetPageAsync(requestParamter, trackChanges);
+            var paginatedCourseRes = await repository.Courses.GetPageAsync(searchReq, isDeleted, trackChanges);
 
-            var paginatedRes = new PaginatedRes<CourseRDTO>
+            var paginatedDtoRes = new PaginatedRes<CourseRDTO>
             {
-                Data = mapper.Map<IEnumerable<CourseRDTO>>(courses),
-                PageSize = requestParamter.PageSize,
-                CurrentPage = requestParamter.PageNumber,
-                // TotalItems = repository.Courses.Count()
+                Data = mapper.Map<IEnumerable<CourseRDTO>>(paginatedCourseRes.Data),
+                PageSize = searchReq.PageSize,
+                CurrentPage = searchReq.PageNumber,
+                TotalItems = repository.Courses.Count()
             };
 
-            return paginatedRes;
+            return paginatedDtoRes;
         }
 
 

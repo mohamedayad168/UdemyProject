@@ -12,15 +12,30 @@ namespace Udemy.Presentations.Controllers;
 
 [ApiController]
 [Route("api/students")]
-public class StudentsController(IServiceManager serviceManager,UserManager<ApplicationUser> _userManager) : ControllerBase
+public class StudentsController(IServiceManager serviceManager, UserManager<ApplicationUser> _userManager) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllStudents([FromQuery] RequestParamter? requestParamter)
     {
-        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false , requestParamter);
+        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false, requestParamter);
         return Ok(studentsDto);
     }
-   [Authorize]
+    
+    
+    
+    
+    [HttpGet("page")]
+    public async Task<IActionResult> GetStudentsPage([FromQuery] PaginatedSearchReq? paginatedReq)
+    {
+        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false, paginatedReq);
+        return Ok(studentsDto);
+    }
+
+
+
+
+
+    [Authorize]
     [HttpGet("my-learnings")]
     public async Task<IActionResult> GetMyLearnings()
     {
@@ -30,12 +45,12 @@ public class StudentsController(IServiceManager serviceManager,UserManager<Appli
         var studentsDto = await serviceManager.EnrollmentService.GetStudentCoursesAsync(int.Parse(userId));
         return Ok(studentsDto);
     }
-  
+
 
     [HttpGet("{id}", Name = "GetStudentById")]
     public async Task<IActionResult> GetStudentById(int id)
     {
-        var studentDto = await serviceManager.StudentService.GetStudentByIdAsync(id , false);
+        var studentDto = await serviceManager.StudentService.GetStudentByIdAsync(id, false);
 
         return Ok(studentDto);
     }
@@ -47,13 +62,13 @@ public class StudentsController(IServiceManager serviceManager,UserManager<Appli
     {
         var student = await serviceManager.StudentService.CreateStudentAsync(studentDto);
 
-        return CreatedAtAction("GetStudentById" , new { id = student.Id } , student);
+        return CreatedAtAction("GetStudentById", new { id = student.Id }, student);
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateStudent(int id , StudentForUpdatingDto studentDto)
+    public async Task<IActionResult> UpdateStudent(int id, StudentForUpdatingDto studentDto)
     {
-        await serviceManager.StudentService.UpdateStudentAsync(id , studentDto);
+        await serviceManager.StudentService.UpdateStudentAsync(id, studentDto);
 
         return NoContent();
     }

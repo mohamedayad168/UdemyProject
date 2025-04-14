@@ -5,6 +5,7 @@ using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 using Udemy.Core.Utils;
+using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -25,11 +26,27 @@ public class StudentService(
 
     public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
     {
-        var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
+        throw new NotImplementedException();
+        //var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
 
-        var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
+        //var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
 
-        return studentsDto;
+        //return studentsDto;
+    }
+
+    public async Task<PaginatedRes<StudentDto>> GetStudentPageAsync(bool trackChanges, PaginatedSearchReq paginatedReq)
+    {
+        var students = await repository.Student.GetAllStudentsAsync(false, paginatedReq);
+
+        var paginatedRes = new PaginatedRes<StudentDto>
+        {
+            Data = mapper.Map<IEnumerable<StudentDto>>(students),
+            PageSize = paginatedReq.PageSize,
+            CurrentPage = paginatedReq.PageNumber,
+            TotalItems = repository.Courses.Count()
+        };
+
+        return paginatedRes;
     }
 
     public async Task<StudentDto> GetStudentByIdAsync(int id , bool trackChanges)

@@ -10,50 +10,67 @@ using Microsoft.Extensions.Logging;
 
 namespace Udemy.Infrastructure.Repository
 {
-    public class CoursesRepository(ApplicationDbContext context ) : RepositoryBase<Course>(context), ICoursesRepository
+    public class CoursesRepository(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepository
     {
         public async Task DeleteAsync(int id)
         {
-            var course = await GetByIdAsync(id , true) ??
+            var course = await GetByIdAsync(id, true) ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
-            Console.WriteLine($"--------------------deleted course {course.IsDeleted}");
 
             course.IsDeleted = true;
-            Console.WriteLine($"-------------------deleted course {course.IsDeleted}");
             await SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges)
         {
-            return await FindByCondition(c => !c.IsDeleted , trackChanges).ToListAsync();
+            return await FindByCondition(c => !c.IsDeleted, trackChanges).ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id , bool trackChanges)
+
+
+        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
         {
-            return await FindByCondition(c => c.Id == id && !c.IsDeleted , trackChanges)
+            var query = FindAll(false).Where(x =>
+                                (x.IsDeleted == isDeleted) &&
+                                (x.Title.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                                x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()))
+                            );
+
+            var courses = await query.Sort(searchReq.OrderBy)
+                                    .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
+                                    .Take(searchReq.PageSize)
+                                    .Include(c => c.Instructor)
+                                    .Include(c => c.SubCategory)
+                                    .ToListAsync();
+
+            var response = new PaginatedRes<Course>
+            {
+                CurrentPage = searchReq.PageNumber,
+                PageSize = searchReq.PageSize,
+                TotalItems = await query.CountAsync(),
+                Data = courses,
+            };
+            return response;
+        }
+
+
+        public async Task<Course> GetByIdAsync(int id, bool trackChanges)
+        {
+            return await FindByCondition(c => c.Id == id && !c.IsDeleted, trackChanges)
                 .FirstOrDefaultAsync() ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
         }
 
-        public async Task<Course?> GetByTitleAsync(string title , bool trackChanges)
+        public async Task<Course?> GetByTitleAsync(string title, bool trackChanges)
         {
-            return await FindByCondition(c => c.Title == title && !c.IsDeleted , trackChanges)
+            return await FindByCondition(c => c.Title == title && !c.IsDeleted, trackChanges)
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamter , bool trackChanges)
-        {
-            return await FindByCondition(c => !c.IsDeleted , trackChanges)
-                .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                .Take(requestParamter.PageSize)
-                .Include(c => c.Instructor)
-                .Include(c => c.SubCategory)
-                .ToListAsync();
         }
 
         public async Task ToggleApprovedAsync(int id)
         {
-            var course = await GetByIdAsync(id , true) ??
+            var course = await GetByIdAsync(id, true) ??
                 throw new NotFoundException($"Course with id: {id} not found");
 
             course.IsApproved = !course.IsApproved;
@@ -115,5 +132,6 @@ namespace Udemy.Infrastructure.Repository
 
             return coursesCount;
         }
+        
     }
 }

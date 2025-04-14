@@ -22,7 +22,7 @@ export class PreviewTableComponent<T> {
     columnConfigs = input.required<IColumnConfig[]>();
     header = input<boolean>(true);
   ngOnInit() {
-      this.crudService().getPage(1, 5);
+      this.crudService().getPage({pageNumber: 1, pageSize: 5,orderBy:'noSubscribers desc'});
   }
 
   getSeverity(status: string) {

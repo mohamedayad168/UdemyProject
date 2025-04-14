@@ -12,7 +12,7 @@ namespace Udemy.Service.IService
         //read
         public Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges);
         Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId);
-        public Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges);
+        public Task<PaginatedRes<CourseRDTO>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
 
