@@ -264,6 +264,12 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
                 detail: 'IItem1 Deleted',
                 life: 3000,
               });
+              this.crudService().page.update((val) => {
+                return {
+                  ...val,
+                  data: val.data.filter((item) => item.id !== newItem.id),
+                };
+              })
             },
             error: (error) => {
               console.error(error);
