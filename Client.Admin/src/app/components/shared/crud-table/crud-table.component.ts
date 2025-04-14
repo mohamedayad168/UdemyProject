@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Input,
   input,
   model,
   OnInit,
@@ -31,25 +32,39 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
-import { map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
 import { IPage } from '../../../types/IPage';
 
-type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'select' | 'file';
+type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'number'
+  | 'checkbox'
+  | 'date'
+  | 'select'
+  | 'file'
+  | 'radio'
+  | 'tag'
+  | 'rating'
+  | 'image'
+  | 'money';
 
 export interface FormFieldConfig {
   [key: string]: any;
   label: string;
   type: FieldType;
   required?: boolean;
+  width?: string;
   options?: { label: string; value: any }[]; // for selects
 }
 
 export interface IColumnConfig {
   [key: string]: any;
   width?: string;
-  type:'money'| 'text' | 'date' | 'image' | 'tag'  | 'rating'
+  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating';
   header: string;
+  sortable?: boolean;
 }
 
 interface Column {
@@ -74,37 +89,6 @@ export interface ICrudTableItemStatus {
     | 'contrast'
     | undefined;
 }
-
-let emptyItem: Course = {
-  id: '',
-  title: '',
-  description: '',
-  price: 0,
-  previewImageLink: '',
-  status: 'Archived',
-  imageUrl: '',
-  categories: [],
-  category: '',
-  imageLinks: [],
-  location: '',
-  createdDate: new Date(),
-  modifiedDate: null,
-  isDeleted: false,
-  courseLevel: '',
-  discount: 0,
-  duration: 0,
-  language: '',
-  videoUrl: '',
-  noSubscribers: 0,
-  isFree: false,
-  isApproved: false,
-  currentPrice: 0,
-  rating: 0,
-  subCategoryId: 0,
-  categoryId: 0,
-  instructorId: 0,
-  instructorName: null,
-};
 
 type baseItem = {
   [key: string]: any;
@@ -155,16 +139,18 @@ type baseItem = {
 })
 export class CrudTableComponent<T extends baseItem> implements OnInit {
   productDialog: boolean = false;
-  item: T = new Object() as T;
+  // newItem: T = new Object() as T;
   selectedProducts!: T[] | null;
   submitted: boolean = false;
+  searchTerm = new Subject<string>();
 
   items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
-  columnConfig = input.required<IColumnConfig[]>();
-  createFormFields = input.required<FormFieldConfig[]>();
-  
+  columnConfigs = input.required<IColumnConfig[]>();
+  createFormConfigs = input.required<FormFieldConfig[]>();
+  emptyItem = input.required<T>();
+  newItem!: any;
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -178,7 +164,17 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.newItem = { ...this.emptyItem() };
     this.loadDemoData();
+    this.searchTerm
+      .pipe(
+        debounceTime(500), // 1 second delay
+        distinctUntilChanged()
+      )
+      .subscribe((term) => {
+        console.log('searchTerm', term);
+        this.crudService().search(term);
+      });
   }
 
   exportCSV() {
@@ -207,13 +203,14 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   }
 
   openNew() {
-    this.item = new Object() as T;
+    console.log(this.newItem);
+    this.newItem = { ...this.emptyItem() };
     this.submitted = false;
     this.productDialog = true;
   }
 
-  editProduct(item: T) {
-    this.item = { ...item };
+  editProduct(newItem: T) {
+    this.newItem = { ...newItem };
     this.productDialog = true;
   }
 
@@ -249,24 +246,45 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     this.submitted = false;
   }
 
-  deleteProduct(item: T) {
+  deleteProduct(newItem: T) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + item.title + '?',
+      message: 'Are you sure you want to delete ' + newItem.title + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.crudService().delete(item.id);
+        console.log(newItem);
+        this.crudService()
+          .delete(newItem.id)
+          .subscribe({
+            next: (status) => {
+              console.log(status);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'IItem1 Deleted',
+                life: 3000,
+              });
+              this.crudService().page.update((val) => {
+                return {
+                  ...val,
+                  data: val.data.filter((item) => item.id !== newItem.id),
+                };
+              })
+            },
+            error: (error) => {
+              console.error(error);
+              this.messageService.add({
+                severity: 'danger',
+                summary: 'Error',
+                detail: 'Error deleting' + error,
+                life: 3000,
+              });
+            },
+          });
 
-        this.crudService().filter((val) => val.id !== item.id);
+        // this.crudService().filter((val) => val.id !== newItem.id);
 
-        this.item = {} as T;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'IItem1 Deleted',
-          life: 3000,
-        });
+        this.newItem = { ...this.emptyItem() };
       },
     });
   }
@@ -299,17 +317,19 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   saveProduct() {
     this.submitted = true;
-
-    if (this.item!.title?.trim()) {
-      if (this.item!.id) {
+    console.log('saveProduct');
+    console.log(this.newItem);
+    if (this.newItem.title?.trim()) {
+      console.log('title +');
+      if (this.newItem.id) {
         // this.items.update((pre) => {
-        //   const index = pre.findIndex((item) => item.id === this.item!.id);
+        //   const index = pre.findIndex((newItem) => newItem.id === this.newItem!.id);
         //   if (index !== -1) {
-        //     pre[index] = this.item!;
+        //     pre[index] = this.newItem!;
         //   }
         //   return pre;
         // });
-
+        console.log('edit');
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
@@ -317,33 +337,43 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
           life: 3000,
         });
       } else {
+        const data = new FormData();
 
-        this.crudService().create(this.item!).subscribe({
-          next: (data) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Successful',
-              detail: 'IItem1 Created',
-              life: 3000,
-            });
-          },
-          error: (error) => {
-            this.messageService.add({
-              severity: 'danger',
-              summary: 'Error',
-              detail: 'Error creating' + error,
-              life: 3000,
-            });
-          } 
-        });
+        for (const key in this.newItem) {
+          console.log(this.newItem[key]);
+          if (key == 'image' || key == 'video') {
+            data.append(key, this.newItem[key][0], this.newItem[key].name);
+          }
+          data.append(key, this.newItem[key]);
+        }
+        console.log('create');
+        this.crudService()
+          .create(data)
+          .subscribe({
+            next: (data) => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'IItem1 Created',
+                life: 3000,
+              });
+            },
+            error: (error) => {
+              console.error(error);
+              this.messageService.add({
+                severity: 'danger',
+                summary: 'Error',
+                detail: 'Error creating' + error,
+                life: 3000,
+              });
+            },
+          });
 
-        (this.item as any)['imageUrl'] = 'item-placeholder.svg';
-
-        
+        (this.newItem as any)['imageUrl'] = 'newItem-placeholder.svg';
       }
 
       this.productDialog = false;
-      this.item = {} as T;
+      this.newItem = {} as T;
     }
   }
 
@@ -355,5 +385,25 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   loadData(event: TableLazyLoadEvent) {
     this.crudService().getPage(event.first! / event.rows! + 1, event.rows!);
+  }
+
+  onImageChange(event: any) {
+    console.dir(event.target!);
+    // this.newItem['imageUrl'] = URL.createObjectURL(event.target.files[0]); ;
+    // console.dir(event.target!.value!);
+    // console.dir(this.newItem['image']);
+    // console.log(this.newItem['imageUrl']);
+    // const file = event.target.files[0];
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   (this.newItem as any)['imageUrl'] = reader.result;
+    // };
+    // reader.readAsDataURL(file);event.target.files[0];
+    (this.newItem as any)['imageUrl'] = event.target.files[0];
+  }
+
+  search(event: any) {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.next(input.value);
   }
 }

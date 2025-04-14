@@ -1,95 +1,34 @@
-<aside class="flex flex-col gap-4 bg-sidenav shadow h-full">
+<aside class="flex flex-col gap-4 bg-sidenav shadow h-full " *ngIf="authService.authState().isAuthenticated">
   <nav>
     <p-menu
       [model]="userNavItems"
       class="flex justify-center [&_.p-menu-separator]:border-none"
       styleClass="w-full md:w-60 bg-transparent border-none"
     >
-      <!-- <ng-template #start>
-        <span class="inline-flex items-center gap-1 px-2 py-2">
-          <svg
-            width="33"
-            height="35"
-            viewBox="0 0 33 35"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="block mx-auto"
-          >
-            <path d="..." fill="var(--primary-color)" />
-          </svg>
-          <span class="text-xl font-semibold">
-            PRIME<span class="text-primary">APP</span>
-          </span>
-        </span>
-      </ng-template> -->
-
-
       <ng-template #submenuheader let-item >
         <span class="text-primary font-bold">{{ item.label }}</span>
       </ng-template>
 
 
       <ng-template #item let-item>
-        <a pRipple class="flex items-center p-menu-item-link">
+        <a [routerLink]="item.routerLink" pRipple class="flex items-center p-menu-item-link">
           <span [class]="item.icon"></span>
           <span class="ml-2">{{ item.label }}</span>
           <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-          <!-- <span
+          <span
             *ngIf="item.shortcut"
             class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
           >
             {{ item.shortcut }}
-          </span> -->
+          </span>
         </a>
       </ng-template>
-
-
-      <!-- <ng-template #end>
-        <button
-          pRipple
-          class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"
-        >
-          <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-            class="mr-2"
-            shape="circle"
-          />
-          <span class="inline-flex flex-col">
-            <span class="font-bold">Amy Elsner</span>
-            <span class="text-sm">Admin</span>
-          </span>
-        </button>
-      </ng-template> -->
 
 
     </p-menu>
 
 
-    <!-- <ul
-      class="flex flex-col gap-4 [&>*]:py-2 text-secondary [&_a]:flex [&_a]:gap-2 [&_a]:items-center"
-    >
-      <li>
-        <a [routerLink]="['/chat-ai']"
-          ><i class="pi pi-home"></i><span>Home</span></a
-        >
-      </li>
-      <li>
-        <a [routerLink]="['/chat-ai']"
-          ><i class="pi pi-info-circle"></i><span>About</span></a
-        >
-      </li>
-      <li>
-        <a [routerLink]="['/chat-ai']"
-          ><i class="pi pi-phone"></i><span>Contact</span></a
-        >
-      </li>
-      <li>
-        <a [routerLink]="['/chat-ai']" routerLinkActive="router-link-active">
-          <i class="pi pi-users"></i>
-          <span>AI Assistant</span>
-        </a>
-      </li>
-    </ul> -->
+    
 
 
     
@@ -97,7 +36,8 @@
     <!-- <p-panelmenu
       *ngIf="authService.authState().user?.roles!.includes('Admin')"
       [model]="adminNavItems"
-      styleClass="w-full md:w-80"
+      styleClass="w-full md:w-60 "
+      
     >
       <ng-template #item let-item>
         <ng-container *ngIf="item.route; else urlRef">

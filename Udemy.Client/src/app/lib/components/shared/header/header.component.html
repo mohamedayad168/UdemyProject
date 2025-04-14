@@ -1,5 +1,5 @@
 <header
-  class="border-bottom shadow-sm p-3 px-4 w-100 position-relative bg-white"
+  class="fixed top-0 left-0 right-0 z-50 border-bottom shadow-sm p-3 px-4 w-100 position-relative bg-white"
   style="max-height: 5rem"
 >
   <div
@@ -24,17 +24,12 @@
         class="form-control w-100 p-2 text-sm border rounded-3"
         placeholder="Search"
         name="search"
-        [(ngModel)]="courseParams.searchTerm"
+        [(ngModel)]="courseService.courseParams().searchTerm"
         #searchInput
       />
 
       <button
         routerLink="/course/search"
-        [queryParams]="{
-          searchTerm: courseParams.searchTerm,
-          pageNumber: courseParams.pageNumber,
-          pageSize: courseParams.pageSize
-        }"
         mat-icon-button
         type="submit"
         class="position-absolute top-50 translate-middle-y end-0 me-3 d-flex align-items-center bg-transparent"

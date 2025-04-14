@@ -1,1 +1,50 @@
-<iframe title="Studify-Admin Dashboard" class="w-full h-full" src="https://app.powerbi.com/view?r=eyJrIjoiMmMxYTVkNzctYmY2ZS00MGY1LThlYmEtZjc3ZDdkNWMzZTUzIiwidCI6ImRmODY3OWNkLWE4MGUtNDVkOC05OWFjLWM4M2VkN2ZmOTVhMCJ9&pageName=c0e3486d3c40daa30a58" frameborder="0" allowFullScreen="true"></iframe> 
+<div class="flex flex-col gap-4">
+  <section class="grid grid-cols-4 gap-4">
+    @for (item of [1, 2,3,4]; track $index) {
+    <div
+      class="relative w-full bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+      style="
+        background-image: url('https://cdn1.careeraddict.com/uploads/article/60468/computer-science-course.jpg');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-black/60 transition duration-300 ease-in-out"
+      ></div>
+      <div
+        class="relative w-full h-full px-4 py-4 md:py-6 sm:px-6 lg:px-4 flex items-center"
+      >
+        <div>
+          <div class="text-white text-lg flex space-x-2 items-center">
+            <div class="bg-white rounded-md p-2 flex items-center">
+              <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
+            </div>
+            <p>Finished Appt</p>
+          </div>
+          <h3 class="text-white text-3xl mt-2 font-bold">120</h3>
+          <h3 class="text-white text-lg mt-2 text-yellow-100">
+            4 not confirmed
+          </h3>
+        </div>
+      </div>
+    </div>
+    }
+  </section>
+  <section class="grid grid-cols-2 gap-4 [&>*]:rounded [&>*]:overflow-hidden">
+    <app-preview-table
+      class="col-span-1 bg-secondary p-2"
+      [columnConfigs]="columnConfigs"
+      [crudService]="coursesService"
+    />
+    <app-chart type="line" class="col-span-1 bg-secondary  p-2" />
+  </section>
+
+  <section>
+    <app-preview-table
+      class="block rounded overflow-hidden"
+      [header]="false"
+      [columnConfigs]="columnConfigs"
+      [crudService]="coursesService"
+    />
+  </section>
+</div>
+<!-- <p-chart type="line" [data]="data" [options]="options" class="h-[30rem]" /> -->

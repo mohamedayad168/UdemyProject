@@ -4,6 +4,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Udemy.Infrastructure.Repository;
 public class RepositoryManager : IRepositoryManager

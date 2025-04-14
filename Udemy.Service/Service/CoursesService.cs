@@ -145,27 +145,23 @@ namespace Udemy.Service.Service
             return mapper.Map<IEnumerable<CourseRDTO>>(courses);
         }
 
-
-
-        Task<IEnumerable<CourseRDTO>> ICoursesService.GetPageAsync(RequestParamter requestParamter, bool trackChanges)
+        public async Task<PaginatedRes<CourseSearchDto>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
         {
-            throw new NotImplementedException();
-        }
-        public async Task<IEnumerable<CourseSearchDto>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
-        {
-            var courses = await repository.Courses.FindAll(false)
-                            .Where(x =>
-                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
-                            )
-                            .Include(c => c.Instructor)
-                            .Include(c => c.CourseGoals)
-                            .Take(requestParamter.PageSize)
-                            .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                            .ToListAsync();
+            var courses = await repository.Courses.GetAllWithSearchAsync(requestParamter);
 
-            return mapper.Map<IEnumerable<CourseSearchDto>>(courses);
+            var coursesCount = await repository.Courses.GetAllWithSearchCountAsync(requestParamter);
+
+            var coursesDto = mapper.Map<IEnumerable<CourseSearchDto>>(courses);
+
+            var paginResult = new PaginatedRes<CourseSearchDto>()
+            {
+                Data = coursesDto,
+                CurrentPage = requestParamter.PageNumber,
+                PageSize = requestParamter.PageSize,
+                TotalItems = coursesCount
+            };
+
+            return paginResult;
         }
     }
 }

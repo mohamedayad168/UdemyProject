@@ -6,7 +6,7 @@ import { Course } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
 import { CourseCDTO } from '../models/course-cdto';
-import { CourseSearch } from '../models/course-search';
+import { CoursePagingResult, CourseSearch } from '../models/course-search';
 import { CourseParams } from '../models/course-params';
 
 @Injectable({
@@ -15,27 +15,29 @@ import { CourseParams } from '../models/course-params';
 export class CourseService {
   private baseUrl = `${environment.baseurl}/courses`;
   courseSearchLoaded = signal(false);
-  coursesWithParameters = signal<CourseSearch[] | null>([]);
+  CoursePagingResult = signal<CoursePagingResult | null>(null);
+  courseParams = signal<CourseParams>(new CourseParams());
 
   constructor(private http: HttpClient) {}
 
-  getCourseWithParameters(courseParams: CourseParams) {
+  getCourseWithParameters() {
     let params = new HttpParams();
 
-    params = params.append('pageSize', courseParams.pageSize);
-    params = params.append('PageNumber', courseParams.pageNumber);
-    params = params.append('SearchTerm', courseParams.searchTerm);
+    params = params.append('pageSize', this.courseParams().pageSize);
+    params = params.append('PageNumber', this.courseParams().pageNumber);
+    params = params.append('SearchTerm', this.courseParams().searchTerm);
+    params = params.append('orderBy', this.courseParams().orderBy);
 
     return this.http
-      .get<CourseSearch[]>(this.baseUrl + '/search', {
+      .get<CoursePagingResult>(this.baseUrl + '/search', {
         params,
       })
       .pipe(
-        map((courses) => {
-          this.coursesWithParameters.set(courses);
+        map((coursePagingResult) => {
+          this.CoursePagingResult.set(coursePagingResult);
 
           this.courseSearchLoaded.set(true);
-          return courses;
+          return coursePagingResult;
         })
       );
   }

@@ -13,8 +13,8 @@ namespace Udemy.Service.DataTransferObjects.Create
         public string CourseLevel { get; set; }
         [Range(0, 100000)]
         public decimal Price { get; set; }
-        public decimal? CurrentPrice { get { return Price; } }
-
+        public decimal CurrentPrice { get{ return Price; } }
+        [StringLength(20)]
         public string Language { get; set; } = "en";
 
         public string? ImageUrl { get; set; }

@@ -32,6 +32,12 @@ export class CartService {
     };
   });
 
+  enrollCoursesToStudent() {
+    const coursesId = this.cart()?.courses.map((cartCourse) => cartCourse.id);
+    console.log(coursesId);
+    return this.http.post(this.baseUrl + '/enrollments/courses', coursesId);
+  }
+
   getCart() {
     return this.http.get<Cart>(this.baseUrl + `/carts`).pipe(
       map((cart) => {
@@ -76,17 +82,15 @@ export class CartService {
   }
 
   deleteCourseFromStudentCart(courseId: number) {
-    return this.http
-      .delete(this.baseUrl + `/carts/courses/${courseId}`)
-      .subscribe({
-        next: () => {
-          this.getCart().subscribe({
-            next: (cart) => {
-              this.cart.set(cart);
-              this.snackbarService.success('Course Deleted Successfully');
-            },
-          });
-        },
-      });
+    return this.http.delete(this.baseUrl + `/carts/courses/${courseId}`).pipe(
+      map(() => {
+        this.getCart().subscribe({
+          next: (cart) => {
+            this.cart.set(cart);
+            this.snackbarService.success('Course Deleted Successfully');
+          },
+        });
+      })
+    );
   }
 }

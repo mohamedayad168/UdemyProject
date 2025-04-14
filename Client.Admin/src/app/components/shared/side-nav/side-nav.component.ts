@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterModule,
+} from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { NgIf } from '@angular/common';
 import { PanelMenu } from 'primeng/panelmenu';
@@ -38,136 +43,113 @@ export class SideNavComponent {
     this.userNavItems = [
       {
         separator: true,
+        styleClass: 'mt-2',
       },
       {
         label: 'Dashboard',
         items: [
           {
-            label: 'Home',
-            icon: 'pi pi-database',
-            shortcut: '⌘+N',
-            command: () => {
-              this.router.navigate(['/']);
-            },
+            label: 'BI',
+            icon: 'pi pi-book',
+            routerLink: ['/'],
           },
           {
-            label: 'Stats',
-            icon: 'pi pi-chart-bar',
-            shortcut: '⌘+S',
+            label: 'Custom',
+            icon: 'pi pi-book',
+            routerLink: ['/custom'],
           },
+          
         ],
       },
+      
       {
-        label: 'Courses',
+        label: 'Table',
         items: [
           {
-            label: 'All',
-            icon: 'pi pi-chart-bar',
-            shortcut: '⌘+N',
-            command: () => {
-              this.router.navigate(['/courses']);
-            },
+            label: 'Courses',
+            icon: 'pi pi-video',
+            routerLink: ['/courses'],
+            routerLinkActiveOptions: { exact: true },
+          },
+         
+          {
+            label: 'Students',
+            icon: 'pi pi-users',
+            routerLink: ['/courses'],
+            routerLinkActiveOptions: { exact: true },
           },
           {
-            label: 'Search',
-            icon: 'pi pi-search',
-            shortcut: '⌘+S',
-          },
-        ],
-      },
-      {
-        label: 'Instructors',
-        items: [
-          {
-            label: 'All',
-            icon: 'pi pi-chart-bar',
-            shortcut: '⌘+N',
-            command: () => {
-              this.router.navigate(['/admin/properties']);
-            },
+            label: 'Instructors',
+            icon: 'pi pi-user',
+            routerLink: ['/courses'],
+            routerLinkActiveOptions: { exact: true },
           },
           {
-            label: 'Search',
-            icon: 'pi pi-search',
-            shortcut: '⌘+S',
-          },
-        ],
-      },
-      {
-        label: 'Students',
-        items: [
-          {
-            label: 'All',
-            icon: 'pi pi-database',
-            shortcut: '⌘+N',
-            command: () => {
-              this.router.navigate(['/admin/properties']);
-            },
+            label: 'Issues',
+            icon: 'pi pi-exclamation-triangle',
+            routerLink: ['/courses'],
+            routerLinkActiveOptions: { exact: true },
           },
           {
-            label: 'Stats',
-            icon: 'pi pi-chart-bar',
-            shortcut: '⌘+S',
-          },
-        ],
-      },
-      {
-        label: 'Admins',
-        items: [
-          {
-            label: 'Accounts',
+            label: 'Admins',
             icon: 'pi pi-cog',
-            shortcut: '⌘+O',
           },
-          {
-            label: 'Messages',
-            icon: 'pi pi-inbox',
-            badge: '2',
-          }
         ],
-      },
-      {
-        separator: true,
       },
     ];
 
     this.adminNavItems = [
       {
-        label: 'Router',
-        icon: 'pi pi-palette',
+        separator: true,
+        label: 'Dashboard',
+        icon: 'pi pi-chart-bar',
+        // expanded: true,
         items: [
           {
-            label: 'Installation',
-            icon: 'pi pi-eraser',
-            route: '/installation',
+            label: 'Custom',
+            icon: 'pi pi-book',
+            route: '/',
           },
           {
-            label: 'Configuration',
-            icon: 'pi pi-heart',
-            route: '/configuration',
+            label: 'BI',
+            icon: 'pi pi-book',
+            route: 'bi',
           },
         ],
       },
       {
-        label: 'Programmatic',
-        icon: 'pi pi-link',
-        command: () => {
-          this.router.navigate(['/installation']);
-        },
-      },
-      {
-        label: 'External',
-        icon: 'pi pi-home',
+        label: 'Courses',
+        icon: 'pi pi-video',
         items: [
           {
-            label: 'Angular',
-            icon: 'pi pi-star',
-            url: 'https://angular.io/',
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
           },
+        ],
+      },
+      {
+        label: 'Instructors',
+        icon: 'pi pi-video',
+        items: [
           {
-            label: 'Vite.js',
-            icon: 'pi pi-bookmark',
-            url: 'https://vitejs.dev/',
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ],
+      },
+      {
+        label: 'Students',
+        icon: 'pi pi-video',
+        items: [
+          {
+            label: 'all courses',
+            icon: 'pi pi-database',
+            route: '/courses',
+            routerLinkActiveOptions: { exact: true },
           },
         ],
       },

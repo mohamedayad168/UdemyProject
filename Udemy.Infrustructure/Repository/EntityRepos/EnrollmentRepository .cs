@@ -33,5 +33,10 @@ namespace Udemy.Infrastructure.Repository
                 .Include(e => e.Course)
                 .FirstOrDefaultAsync();
         }
+
+        public void EnrollCourseToStudent(int studentId, int courseId)
+        {
+            Create(new Enrollment() { StudentId = studentId, CourseId = courseId, Status = "" });
+        }
     }
 }
