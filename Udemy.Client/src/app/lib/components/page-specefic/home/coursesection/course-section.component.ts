@@ -34,6 +34,8 @@ export class CourseSectionComponent implements OnInit {
   selectedSubcategoryId: number | null = null;
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('categoryScroll') categoryScroll!: ElementRef;
+  @ViewChild('subcategoryScroll') subcategoryScroll!: ElementRef;
 
   constructor(
     private categoryService: CategoryService,
@@ -47,7 +49,6 @@ export class CourseSectionComponent implements OnInit {
   getCategories() {
     this.categoryService.getCategories().subscribe((data) => {
       this.categories = data;
-
       if (this.categories.length > 0) {
         this.selectedCategoryId = this.categories[0].id;
         this.onCategoryClick(this.selectedCategoryId);
@@ -62,7 +63,6 @@ export class CourseSectionComponent implements OnInit {
 
     this.categoryService.getSubcategoriesByCategory(categoryId).subscribe((data) => {
       this.subcategories = data;
-
       if (this.subcategories.length > 0) {
         this.selectedSubcategoryId = this.subcategories[0].id;
         this.loadCoursesBySubcategory(this.selectedSubcategoryId);
@@ -88,10 +88,25 @@ export class CourseSectionComponent implements OnInit {
     }
   }
 
-  scroll(direction: 'left' | 'right') {
-    const container = this.scrollContainer.nativeElement;
-    const scrollAmount = 340;
-    container.scrollBy({
+  scrollCategories(direction: 'left' | 'right') {
+    const scrollAmount = 200;
+    this.categoryScroll.nativeElement.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  }
+
+  scrollSubcategories(direction: 'left' | 'right') {
+    const scrollAmount = 200;
+    this.subcategoryScroll.nativeElement.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  }
+
+  scrollCourses(direction: 'left' | 'right') {
+    const scrollAmount = 300;
+    this.scrollContainer.nativeElement.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
     });
