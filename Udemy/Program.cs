@@ -49,22 +49,27 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
+app.Use(async (contex, next) =>
+{
+    Console.WriteLine(
+        contex);
+    await next();
+});
 
 app.ConfigureExceptionHandler();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+//Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
     app.UseCors("AllowAngularDevelopment");
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
-//else
-//{
-//    app.UseCors("AllowAngularProduction");
-//    //app.UseHsts();
-//}
+}
+else
+{
+    app.UseCors("AllowAngularProduction");
+    app.UseHsts();
+}
 
 
 

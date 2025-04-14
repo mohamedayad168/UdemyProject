@@ -10,10 +10,11 @@ public class InstructorMappingProfile : Profile
 {
     public InstructorMappingProfile()
     {
-        CreateMap<Instructor, InstructorRDTO>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
-            .ReverseMap();
-        CreateMap<Instructor, InstructorCDTO>().ReverseMap();
-        CreateMap<Instructor, InstructorUTO>().ReverseMap();
+        CreateMap<Instructor, Instructor>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+
+        CreateMap<Core.Entities.Instructor, InstructorCDTO>().ReverseMap();
+        CreateMap<Core.Entities.Instructor, InstructorUTO>().ReverseMap();
+        CreateMap<Instructor, Instructor>();
     }
 }

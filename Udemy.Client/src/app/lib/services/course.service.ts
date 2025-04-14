@@ -60,7 +60,8 @@ export class CourseService {
   }
 
   createCourse(course: CourseCDTO): Observable<any> {
-    return this.http.post<any>(`${environment.baseurl}/Courses`, course);
+    console.log(course);
+    return this.http.post<any>(`${environment.baseurl}/courses`, course);
   }
   getCourseById(
     id: number,

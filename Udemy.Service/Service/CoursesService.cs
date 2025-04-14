@@ -32,7 +32,7 @@ namespace Udemy.Service.Service
                 Data = mapper.Map<IEnumerable<CourseRDTO>>(courses),
                 PageSize = requestParamter.PageSize,
                 CurrentPage = requestParamter.PageNumber,
-                TotalItems = repository.Courses.Count()
+                // TotalItems = repository.Courses.Count()
             };
 
             return paginatedRes;
@@ -95,7 +95,10 @@ namespace Udemy.Service.Service
 
             await repository.SaveAsync();
 
-            return mapper.Map<CourseRDTO>(course);
+            var courseRDTO = mapper.Map<CourseRDTO>(course);
+            var instructor = await repository.Instructors.GetInstructorByIdAsync(courseRDTO.InstructorId, false);
+            courseRDTO.InstructorName = instructor.UserName;
+            return courseRDTO;
 
 
         }

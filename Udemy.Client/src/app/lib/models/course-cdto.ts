@@ -1,10 +1,14 @@
+import { Instructor } from './instructor.model';
 export interface CourseCDTO {
-    title: string;
-    description: string;
-    language: string;
-    level: string;
-    category: number;
-    subcategory: number;
-    imageUrl: string;
-    videoUrl: string;
-  }
+  Title: string;
+  Description: string;
+  InstructorId: number;
+  Language: string;
+
+  CategoryId: number;
+  SubcategoryId: number;
+  ImageUrl: string;
+  VideoUrl: string;
+  CourseLevel: string;
+  Price: number;
+}

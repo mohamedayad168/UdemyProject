@@ -94,7 +94,7 @@ export const routes: Routes = [
     component: GetStartedComponent,
   },
   {
-    path: 'loginasinstractor',
+    path: 'loginasinstrctor',
     component: LoginasinstractorComponent,
   },
   {

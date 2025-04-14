@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CourseService } from '../../lib/services/course.service';
 import { CategoryService } from '../../lib/services/category.service';
-import { Category,SubCategory } from '../../lib/models/category.model';
+import { Category, SubCategory } from '../../lib/models/category.model';
 import { CourseCDTO } from '../../lib/models/course-cdto';
 @Component({
   selector: 'app-createcoursebage',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './createcoursebage.component.html',
-  styleUrl: './createcoursebage.component.css'
+  styleUrl: './createcoursebage.component.css',
 })
 export class CreatecoursebageComponent implements OnInit {
   // Course information
@@ -27,21 +33,87 @@ export class CreatecoursebageComponent implements OnInit {
   categories: Category[] = [];
   subcategories: SubCategory[] = [];
   languages = [
-    'English (US)', 'Spanish', 'French', 'German', 'Chinese (Simplified)', 'Chinese (Traditional)',
-    'Arabic', 'Hindi', 'Portuguese', 'Russian', 'Japanese', 'Korean', 'Italian', 'Turkish', 'Dutch',
-    'Polish', 'Swedish', 'Czech', 'Romanian', 'Greek', 'Hungarian', 'Danish', 'Finnish', 'Norwegian', 
-    'Hebrew', 'Thai', 'Vietnamese', 'Indonesian', 'Malay', 'Filipino', 'Bengali', 'Tamil', 'Punjabi',
-    'Ukrainian', 'Bulgarian', 'Croatian', 'Serbian', 'Slovak', 'Lithuanian', 'Latvian', 'Estonian',
-    'Icelandic', 'Swahili', 'Zulu', 'Afrikaans', 'Amharic', 'Georgian', 'Urdu', 'Kazakh', 'Pashto'
+    'English (US)',
+    'Spanish',
+    'French',
+    'German',
+    'Chinese (Simplified)',
+    'Chinese (Traditional)',
+    'Arabic',
+    'Hindi',
+    'Portuguese',
+    'Russian',
+    'Japanese',
+    'Korean',
+    'Italian',
+    'Turkish',
+    'Dutch',
+    'Polish',
+    'Swedish',
+    'Czech',
+    'Romanian',
+    'Greek',
+    'Hungarian',
+    'Danish',
+    'Finnish',
+    'Norwegian',
+    'Hebrew',
+    'Thai',
+    'Vietnamese',
+    'Indonesian',
+    'Malay',
+    'Filipino',
+    'Bengali',
+    'Tamil',
+    'Punjabi',
+    'Ukrainian',
+    'Bulgarian',
+    'Croatian',
+    'Serbian',
+    'Slovak',
+    'Lithuanian',
+    'Latvian',
+    'Estonian',
+    'Icelandic',
+    'Swahili',
+    'Zulu',
+    'Afrikaans',
+    'Amharic',
+    'Georgian',
+    'Urdu',
+    'Kazakh',
+    'Pashto',
   ];
 
   courseVideoUrl: string = '';
   imageUrl: string = '';
+  courseForm: FormGroup;
 
-  constructor(private categoryService: CategoryService,private courseService: CourseService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private courseService: CourseService,
+    private fb: FormBuilder
+  ) {
+    this.courseForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(60)]],
+      description: ['', [Validators.required, Validators.minLength(300)]],
+      language: ['English (US)', Validators.required],
+      level: ['Select Level --', Validators.required],
+      category: [0, Validators.required],
+      subcategory: [0, Validators.required],
+      imageUrl: [''],
+      videoUrl: [''],
+      price: [0, Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.loadCategories();
+    this.courseForm.get('category')?.valueChanges.subscribe((categoryId) => {
+      if (categoryId) {
+        this.loadSubcategories(categoryId);
+      }
+    });
   }
 
   loadCategories() {
@@ -57,12 +129,31 @@ export class CreatecoursebageComponent implements OnInit {
     );
   }
 
+  // loadSubcategories(categoryId: number) {
+  //   this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
+  //     (data) => {
+  //       this.subcategories = data;
+  //       if (this.subcategories.length > 0) {
+  //         this.selectedSubcategory = this.subcategories[0].id;
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching subcategories:', error);
+  //     }
+  //   );
+  // }
   loadSubcategories(categoryId: number) {
     this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
       (data) => {
         this.subcategories = data;
         if (this.subcategories.length > 0) {
-          this.selectedSubcategory = this.subcategories[0].id; 
+          this.courseForm.patchValue({
+            subcategory: this.subcategories[0].id,
+          });
+        } else {
+          this.courseForm.patchValue({
+            subcategory: 0,
+          });
         }
       },
       (error) => {
@@ -75,7 +166,9 @@ export class CreatecoursebageComponent implements OnInit {
   }
 
   updateDescriptionCount() {
-    const words = this.courseDescription.trim() ? this.courseDescription.trim().split(/\s+/) : [];
+    const words = this.courseDescription.trim()
+      ? this.courseDescription.trim().split(/\s+/)
+      : [];
     this.wordCount = words.length;
   }
 
@@ -89,11 +182,10 @@ export class CreatecoursebageComponent implements OnInit {
   onVideoUpload(event: any) {
     const file = event.target.files[0];
     const allowedTypes = ['video/mp4', 'video/avi', 'video/mov'];
-    
+
     if (file && allowedTypes.includes(file.type)) {
-      if (file.size <= 50 * 1024 * 1024) { 
-       
-        this.courseVideoUrl = URL.createObjectURL(file); 
+      if (file.size <= 50 * 1024 * 1024) {
+        this.courseVideoUrl = URL.createObjectURL(file);
       } else {
         alert('Video size should not exceed 50 MB');
       }
@@ -101,32 +193,49 @@ export class CreatecoursebageComponent implements OnInit {
       alert('Invalid file type. Please upload MP4, AVI, or MOV videos.');
     }
   }
-  
 
-    saveLandingPage() {
-      this.isSaving = true;
-  
-      const newCourse: CourseCDTO = {
-        title: this.courseTitle,
-        description: this.courseDescription,
-        language: this.selectedLanguage,
-        level: this.selectedLevel,
-        category: this.selectedCategory,
-        subcategory: this.selectedSubcategory,
-        imageUrl: this.imageUrl,
-        videoUrl: this.courseVideoUrl
-      };
-  
-      // Call the service to create a new course
-      this.courseService.createCourse(newCourse).subscribe(
-        (response) => {
-          console.log('Course created successfully:', response);
-          this.isSaving = false;
-        },
-        (error) => {
-          console.error('Error creating course:', error);
-          this.isSaving = false;
-        }
-      );
+  saveLandingPage() {
+    if (this.courseForm.invalid) {
+      this.courseForm.markAllAsTouched();
+      return;
     }
+
+    this.isSaving = true;
+
+    const formValue = this.courseForm.value;
+    const courseData: CourseCDTO = {
+      Title: formValue.title,
+      Description: formValue.description,
+      Language: formValue.language,
+      CourseLevel: formValue.level,
+      CategoryId: formValue.category,
+      SubcategoryId: formValue.subcategory,
+      ImageUrl: 'formValue.imageUrl',
+      VideoUrl: 'formValue.videoUrl',
+      Price: formValue.price,
+      InstructorId: 61222,
+    };
+
+    this.courseService.createCourse(courseData).subscribe({
+      next: (response) => {
+        console.log('Course created successfully:', response);
+        this.isSaving = false;
+
+        this.courseForm.reset();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
+}
+// (response) => {
+//   console.log('Course created successfully:', response);
+//   this.isSaving = false;
+
+//   this.courseForm.reset();
+// },
+// (error) => {
+//   console.error('Error creating course:', error);
+//   this.isSaving = false;
+// }

@@ -17,6 +17,14 @@ export class AccountService {
 
     return this.http.post<User>(environment.baseurl + '/account/login', values);
   }
+  loginIns(values: any) {
+    console.log('Login values:', values);
+
+    return this.http.post<User>(
+      environment.baseurl + '/account/instructor/login',
+      values
+    );
+  }
 
   getUserInfo() {
     return this.http.get<User>(environment.baseurl + '/account/user-info').pipe(

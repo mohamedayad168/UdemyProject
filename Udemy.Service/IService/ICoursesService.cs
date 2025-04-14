@@ -15,8 +15,9 @@ namespace Udemy.Service.IService
         public Task<PaginatedRes<CourseRDTO>> GetPageAsync(RequestParamter requestParamter, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
-        Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int SubcategoryId);
+
         public Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges);
+        Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId);
 
         //write
         public Task<CourseRDTO> CreateAsync(CourseCDTO course);
