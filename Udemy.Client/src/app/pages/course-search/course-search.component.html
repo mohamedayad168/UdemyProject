@@ -21,7 +21,25 @@
     ></mat-progress-spinner>
   </div>
 
-  } @for (course of courseService.CoursePagingResult()?.data; track course.id) {
+  }
+  <mat-form-field>
+    <mat-label>Sort By</mat-label>
+    <mat-select
+      (selectionChange)="onSortSelectionChange($event)"
+      [(value)]="selectedSort"
+    >
+      <mat-option value="title"
+        >Title <i class="bi bi-caret-up-fill"></i
+      ></mat-option>
+      <mat-option class="flex justify-between" value="price"
+        >Price <i class="bi bi-caret-up-fill"></i
+      ></mat-option>
+      <mat-option value="NoSubscribers desc"
+        >Subscribers <i class="bi bi-caret-down-fill"></i
+      ></mat-option>
+    </mat-select>
+  </mat-form-field>
+  @for (course of courseService.CoursePagingResult()?.data; track course.id) {
   <app-course-search-item [course]="course"></app-course-search-item>
   }
   <div class="flex justify-center mt-5">

@@ -5,6 +5,13 @@ import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { EmptyCourseSearchComponent } from '../empty-course-search/empty-course-search.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  MatFormField,
+  MatLabel,
+  MatOption,
+  MatSelectChange,
+  MatSelectModule,
+} from '@angular/material/select';
 
 @Component({
   selector: 'app-course-search',
@@ -13,6 +20,10 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     EmptyCourseSearchComponent,
     MatProgressSpinner,
     NgbPaginationModule,
+    MatSelectModule,
+    MatOption,
+    MatFormField,
+    MatLabel,
   ],
   templateUrl: './course-search.component.html',
   styleUrl: './course-search.component.css',
@@ -21,7 +32,7 @@ export class CourseSearchComponent {
   courseService = inject(CourseService);
   router = inject(Router);
   route = inject(ActivatedRoute);
-  // page = 1;
+  selectedSort = 'title';
   isLoading = false;
 
   constructor() {
@@ -63,5 +74,19 @@ export class CourseSearchComponent {
     });
 
     return this.courseService.getCourseWithParameters();
+  }
+
+  onSortSelectionChange(newSelectedSort: MatSelectChange) {
+    this.isLoading = true;
+
+    this.courseService.courseParams.update((params) => {
+      params.orderBy = newSelectedSort.value;
+
+      return params;
+    });
+
+    this.loadCourses(1).subscribe({
+      next: () => (this.isLoading = false),
+    });
   }
 }

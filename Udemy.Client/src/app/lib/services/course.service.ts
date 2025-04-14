@@ -26,6 +26,7 @@ export class CourseService {
     params = params.append('pageSize', this.courseParams().pageSize);
     params = params.append('PageNumber', this.courseParams().pageNumber);
     params = params.append('SearchTerm', this.courseParams().searchTerm);
+    params = params.append('orderBy', this.courseParams().orderBy);
 
     return this.http
       .get<CoursePagingResult>(this.baseUrl + '/search', {
