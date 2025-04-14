@@ -32,6 +32,12 @@ export class CartService {
     };
   });
 
+  enrollCoursesToStudent() {
+    const coursesId = this.cart()?.courses.map((cartCourse) => cartCourse.id);
+    console.log(coursesId);
+    return this.http.post(this.baseUrl + '/enrollments/courses', coursesId);
+  }
+
   getCart() {
     return this.http.get<Cart>(this.baseUrl + `/carts`).pipe(
       map((cart) => {

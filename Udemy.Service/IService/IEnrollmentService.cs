@@ -24,6 +24,7 @@ namespace Udemy.Service.IService
         Task<EnrollmentRDTO> CreateEnrollmentAsync(EnrollmentCDTO enrollmentDto);
         Task UpdateEnrollmentAsync(int studentId, int courseId, EnrollmentUDTO enrollmentDto);
         Task DeleteEnrollmentAsync(int studentId, int courseId);
+        Task EnrollCoursesToStudentAsync(int studentId , IEnumerable<int> coursesId);
     }
 
 

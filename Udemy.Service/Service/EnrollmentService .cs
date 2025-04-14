@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
+using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -159,6 +160,34 @@ namespace Udemy.Service.Service
 
             enrollment.IsDeleted = true; 
             await _repository.SaveAsync();
+        }
+
+        public async Task EnrollCoursesToStudentAsync(int studentId, IEnumerable<int> coursesId)
+        {
+            await CheckIfStudentExistsAsync(studentId);
+
+            foreach(var courseId in coursesId) 
+                await CheckIfCourseExistAsync(courseId);
+
+            foreach (var courseId in coursesId)
+                _repository.Enrollments.EnrollCourseToStudent(studentId, courseId);
+
+            await _repository.SaveAsync();
+        }
+
+
+        private async Task CheckIfCourseExistAsync(int courseId)
+        {
+            if (!await _repository.Courses.CheckIfCourseExistsAsync(courseId))
+                throw new BadRequestException($"Course with Id: {courseId} Doesn't Exists.");
+        }
+
+        private async Task CheckIfStudentExistsAsync(int id)
+        {
+            var student = await _repository.Student.GetStudentByIdAsync(id , true);
+
+            if (student is null)
+                throw new UserNotFoundException($"Student With Id: {id} Deosn't Exist");
         }
     }
 }

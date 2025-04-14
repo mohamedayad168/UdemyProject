@@ -11,5 +11,6 @@ namespace Udemy.Core.IRepository
         Task<IEnumerable<Enrollment>> GetEnrollmentsByStudentIdAsync(int studentId, bool trackChanges);
         Task<IEnumerable<Enrollment>> GetEnrollmentsByCourseIdAsync(int courseId, bool trackChanges);
         Task<Enrollment?> GetEnrollmentAsync(int studentId, int courseId, bool trackChanges);
+        void EnrollCourseToStudent(int studentId , int courseId);
     }
 }

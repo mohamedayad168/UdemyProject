@@ -89,6 +89,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         if (result.error) {
           throw new Error(result.error.message);
         } else {
+          this.cartService.enrollCoursesToStudent().subscribe();
           this.cartService.deleteCart();
           // this.router.navigateByUrl('/checkout/success');
           this.snackbar.success('Payment Confirmed');

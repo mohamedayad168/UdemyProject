@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
+using Udemy.Core.Utils;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
@@ -17,7 +19,7 @@ namespace Udemy.Presentation.Controllers
 
     [Route("api/enrollments")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = UserRole.Student)]
     public class EnrollmentController : ControllerBase
     {
         private readonly IServiceManager _service;
@@ -88,6 +90,15 @@ namespace Udemy.Presentation.Controllers
             return CreatedAtAction(nameof(GetEnrollment), new { studentId = enrollment.StudentId, courseId = enrollment.CourseId }, enrollment);
         }
 
+        [HttpPost("courses")]
+        public async Task<IActionResult> EntrollCoursesToStudent(IEnumerable<int> CoursesId)
+        {
+            int studentId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            await _service.EnrollmentService.EnrollCoursesToStudentAsync(studentId, CoursesId);
+
+            return Ok();
+        }
         
         [HttpPut("{studentId}/{courseId}")]
         public async Task<IActionResult> UpdateEnrollment(int studentId, int courseId, [FromBody] EnrollmentUDTO updateDto)
