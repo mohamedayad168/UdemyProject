@@ -32,6 +32,7 @@ public static class OrderQueryBuilder
 
         var orderQuery = orderQueryBuilder.ToString().TrimEnd(',' , ' ');
 
+        Console.WriteLine($"\n\n\n--------CreateOrderQuery-1-----{orderQuery}-----\n\n\n");
         return orderQuery;
     }
 

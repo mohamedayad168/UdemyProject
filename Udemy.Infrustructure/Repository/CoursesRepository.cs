@@ -30,14 +30,16 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
         {
-            var query = FindAll(false).Where(x =>
-                                (x.IsDeleted == isDeleted) &&
-                                (x.Title.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()))
-                            );
 
-            var courses = await query.Sort(searchReq.OrderBy)
+            var query = FindAll(false).Where(x =>
+                                            (x.IsDeleted == isDeleted) && (
+                                                x.Title.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
+                                                x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                                                x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower())
+                                                )
+                                             );
+
+            var courses = await query.Sort(searchReq.OrderBy!)
                                     .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
                                     .Take(searchReq.PageSize)
                                     .Include(c => c.Instructor)
@@ -132,6 +134,6 @@ namespace Udemy.Infrastructure.Repository
 
             return coursesCount;
         }
-        
+
     }
 }

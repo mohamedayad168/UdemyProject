@@ -390,6 +390,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   onPageChange(event: TablePageEvent) {}
 
   loadData(event: TableLazyLoadEvent) {
+    console.log('crud table -loadData');
     this.crudService().getPage({
       pageNumber: event.first! / event.rows! + 1,
       pageSize: event.rows!,

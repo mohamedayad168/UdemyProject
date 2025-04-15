@@ -48,13 +48,19 @@ export class CrudService<T> {
   }
 
   getPage(searchRequest: IPaginatedSearchRequest<T>) {
+    console.log({
+      pageNumber: searchRequest?.pageNumber ?? 1,
+      pageSize: searchRequest?.pageSize ?? 10,
+      searchTerm: searchRequest?.searchTerm ?? '',
+      orderBy: searchRequest?.orderBy ?? 'id',
+    })
     return this.httpClient
       .get(
-        `${environment.apiUrl}/${this.apiRoute}/page?
-        pageNumber=${searchRequest.pageNumber??1}&
-        pageSize=${searchRequest.pageSize??10}&
-        searchTerm=${searchRequest.searchTerm??''}&
-        orderBy=${searchRequest.orderBy??'id'}`
+        `${environment.apiUrl}/${this.apiRoute}/page?`+
+        `pageNumber=${searchRequest?.pageNumber ?? 1}&`+
+        `pageSize=${searchRequest?.pageSize ?? 10}&`+
+        `searchTerm=${searchRequest?.searchTerm ?? ''}&`+
+        `orderBy=${searchRequest?.orderBy ?? 'id'}`
       )
       .subscribe({
         next: (data) => {

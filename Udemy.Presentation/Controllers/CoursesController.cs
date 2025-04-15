@@ -26,6 +26,9 @@ namespace Udemy.Presentation.Controllers
         [HttpGet("page")]
         public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetPageCoursesAsync([FromQuery] PaginatedSearchReq searchReq)
         {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
             var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, false, false);
             return Ok(paginatedResponse);
         }
