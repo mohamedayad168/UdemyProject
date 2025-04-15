@@ -4,7 +4,9 @@ export interface CourseDetail {
     description: string;
     status: string;
     courseLevel: string;
-    discount: number;
+
+    isApproved?: boolean;
+        discount: number;
     price: number;
     duration: number;
     language: string;

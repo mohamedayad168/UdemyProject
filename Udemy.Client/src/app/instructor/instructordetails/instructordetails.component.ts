@@ -61,8 +61,7 @@ export class InstructordetailsComponent implements OnInit {
     }
   }
   editCourse(courseId: number): void {
-    // Navigate to the edit-course page with the courseId as a parameter
-    this.router.navigate(['/edit-course', courseId]);
+    this.router.navigate([`/updatecoursedetails/${courseId}`]);
   }
 
   fetchInstructorCourses(): void {
