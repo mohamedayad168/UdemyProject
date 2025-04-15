@@ -106,7 +106,7 @@ namespace Udemy.Presentation.Controllers
         public async Task<IActionResult> UpdateCourseAsync([FromBody] CourseUDTO courseUDTO)
         {
             var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
-            return Ok(courseRDTO); // ✅ This avoids the redirect and the 404
+            return Ok(courseRDTO);
         }
 
 
