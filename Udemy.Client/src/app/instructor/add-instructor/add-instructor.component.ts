@@ -25,7 +25,6 @@ import { Router } from '@angular/router';
 export class AddInstructorComponent {
   profileForm: FormGroup;
   private InstructorService = inject(InstructorService);
- 
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.profileForm = this.fb.group(
@@ -82,7 +81,6 @@ export class AddInstructorComponent {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
-    
     }
 
     const formValue = this.profileForm.value;
@@ -117,7 +115,6 @@ export class AddInstructorComponent {
             next: () => {
               alert('Profile and social media links saved successfully!');
               this.router.navigate(['instructor/home']);
-
             },
             error: (err) => {
               console.error('Error saving social media links:', err);

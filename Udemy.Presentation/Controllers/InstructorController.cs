@@ -64,17 +64,22 @@ namespace Udemy.API.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<Instructor>> Create([FromBody] InstructorCDTO instructorDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (instructorDto == null)
                 return BadRequest("Instructor data is required.");
 
             var createdInstructor = await _serviceManager.InstructorService.CreateAsync(instructorDto);
             var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
             await signInManager.UserManager.UpdateSecurityStampAsync(instructor);
-            await signInManager.UserManager.AddToRoleAsync(instructor, UserRole.Instructor);
+            await userManager.AddPasswordAsync(instructor, instructorDto.Password);
+            await userManager.AddToRoleAsync(instructor, UserRole.Instructor);
 
 
 
-            return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, createdInstructor);
+            return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, instructor);
         }
 
         [HttpPut("{id:int}")]
@@ -124,5 +129,18 @@ namespace Udemy.API.Controllers
 
             return Ok(courses);
         }
+
+        [HttpGet("check-email")]
+        public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+        {
+            return await userManager.FindByEmailAsync(email) != null;
+        }
+
+        [HttpGet("check-username")]
+        public async Task<ActionResult<bool>> CheckUsernameExists([FromQuery] string username)
+        {
+            return await userManager.FindByNameAsync(username) != null;
+        }
+
     }
 }
