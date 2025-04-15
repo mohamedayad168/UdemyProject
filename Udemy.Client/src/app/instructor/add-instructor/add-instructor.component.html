@@ -1,6 +1,6 @@
 <div class="max-w-5xl mx-auto p-10">
   <!-- Heading and Tabs -->
-  <h1 class="text-3xl font-semibold mb-6">Profile & settings</h1>
+  <h1 class="text-3xl font-semibold mb-6">Profile & Settings</h1>
 
   <div class="border-b border-gray-200 mb-8">
     <nav class="-mb-px flex space-x-8">
@@ -8,7 +8,7 @@
         href="#"
         class="text-purple-700 border-b-2 border-purple-700 pb-2 text-sm font-medium"
       >
-        Udemy profile
+        Instructor Profile
       </a>
     </nav>
   </div>
@@ -16,13 +16,15 @@
   <!-- Form -->
   <form
     [formGroup]="profileForm"
+    (ngSubmit)="onSubmit()"
     class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm"
   >
     <!-- First Name -->
     <div>
-      <label class="block font-medium mb-1">First Name</label>
+      <label for="firstName" class="block font-medium mb-1">First Name</label>
       <input
         type="text"
+        id="firstName"
         formControlName="firstName"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -51,9 +53,10 @@
 
     <!-- Last Name -->
     <div>
-      <label class="block font-medium mb-1">Last Name</label>
+      <label for="lastName" class="block font-medium mb-1">Last Name</label>
       <input
         type="text"
+        id="lastName"
         formControlName="lastName"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -82,18 +85,46 @@
 
     <!-- User Name -->
     <div>
-      <label class="block font-medium mb-1">User Name</label>
-      <input
-        type="text"
-        formControlName="userName"
-        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        [ngClass]="{
-          'border-red-500':
-            profileForm.get('userName')?.invalid &&
-            (profileForm.get('userName')?.dirty ||
-              profileForm.get('userName')?.touched)
-        }"
-      />
+      <label for="userName" class="block font-medium mb-1">Username</label>
+      <div class="relative">
+        <input
+          type="text"
+          id="userName"
+          formControlName="userName"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('userName')?.invalid &&
+              (profileForm.get('userName')?.dirty ||
+                profileForm.get('userName')?.touched)
+          }"
+        />
+        <div
+          *ngIf="isCheckingUsername"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2"
+        >
+          <svg
+            class="animate-spin h-4 w-4 text-purple-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      </div>
       <div
         *ngIf="
           profileForm.get('userName')?.invalid &&
@@ -108,23 +139,54 @@
         <div *ngIf="profileForm.get('userName')?.hasError('minlength')">
           Username must be at least 4 characters
         </div>
+        <div *ngIf="profileForm.get('userName')?.hasError('usernameTaken')">
+          Username is already taken
+        </div>
       </div>
     </div>
 
     <!-- Email -->
     <div>
-      <label class="block font-medium mb-1">Email</label>
-      <input
-        type="email"
-        formControlName="email"
-        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        [ngClass]="{
-          'border-red-500':
-            profileForm.get('email')?.invalid &&
-            (profileForm.get('email')?.dirty ||
-              profileForm.get('email')?.touched)
-        }"
-      />
+      <label for="email" class="block font-medium mb-1">Email</label>
+      <div class="relative">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('email')?.invalid &&
+              (profileForm.get('email')?.dirty ||
+                profileForm.get('email')?.touched)
+          }"
+        />
+        <div
+          *ngIf="isCheckingEmail"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2"
+        >
+          <svg
+            class="animate-spin h-4 w-4 text-purple-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      </div>
       <div
         *ngIf="
           profileForm.get('email')?.invalid &&
@@ -136,16 +198,20 @@
           Email is required
         </div>
         <div *ngIf="profileForm.get('email')?.hasError('email')">
-          Please enter a valid email
+          Please enter a valid email address
+        </div>
+        <div *ngIf="profileForm.get('email')?.hasError('emailTaken')">
+          Email is already taken
         </div>
       </div>
     </div>
 
     <!-- Password -->
     <div>
-      <label class="block font-medium mb-1">Password</label>
+      <label for="password" class="block font-medium mb-1">Password</label>
       <input
         type="password"
+        id="password"
         formControlName="password"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -174,12 +240,19 @@
 
     <!-- Confirm Password -->
     <div>
-      <label class="block font-medium mb-1">Confirm Password</label>
+      <label for="confirmPassword" class="block font-medium mb-1"
+        >Confirm Password</label
+      >
       <input
         type="password"
+        id="confirmPassword"
         formControlName="confirmPassword"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        [ngClass]="{'border-red-500': (profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched) || (profileForm.get('confirmPassword')?.invalid && profileForm.get('confirmPassword')?.touched)}"
+        [ngClass]="{
+          'border-red-500':
+            (profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched) ||
+            (profileForm.get('confirmPassword')?.invalid && profileForm.get('confirmPassword')?.touched)
+        }"
       />
       <div
         *ngIf="profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched"
@@ -200,9 +273,12 @@
 
     <!-- Phone Number -->
     <div>
-      <label class="block font-medium mb-1">Phone Number</label>
+      <label for="phoneNumber" class="block font-medium mb-1"
+        >Phone Number</label
+      >
       <input
         type="tel"
+        id="phoneNumber"
         formControlName="phoneNumber"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -231,9 +307,10 @@
 
     <!-- Country -->
     <div>
-      <label class="block font-medium mb-1">Country</label>
+      <label for="country" class="block font-medium mb-1">Country</label>
       <input
         type="text"
+        id="country"
         formControlName="country"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -259,9 +336,10 @@
 
     <!-- City -->
     <div>
-      <label class="block font-medium mb-1">City</label>
+      <label for="city" class="block font-medium mb-1">City</label>
       <input
         type="text"
+        id="city"
         formControlName="city"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -285,9 +363,10 @@
 
     <!-- State -->
     <div>
-      <label class="block font-medium mb-1">State</label>
+      <label for="state" class="block font-medium mb-1">State</label>
       <input
         type="text"
+        id="state"
         formControlName="state"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -312,9 +391,10 @@
 
     <!-- Age -->
     <div>
-      <label class="block font-medium mb-1">Age</label>
+      <label for="age" class="block font-medium mb-1">Age</label>
       <input
         type="number"
+        id="age"
         formControlName="age"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -344,8 +424,9 @@
 
     <!-- Gender -->
     <div>
-      <label class="block font-medium mb-1">Gender</label>
+      <label for="gender" class="block font-medium mb-1">Gender</label>
       <select
+        id="gender"
         formControlName="gender"
         class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         [ngClass]="{
@@ -355,9 +436,10 @@
               profileForm.get('gender')?.touched)
         }"
       >
-        <option value="">Select Gender</option>
+        <option value="" disabled>Select Gender</option>
         <option value="M">Male</option>
         <option value="F">Female</option>
+        <option value="O">Other</option>
       </select>
       <div
         *ngIf="
@@ -373,48 +455,15 @@
       </div>
     </div>
 
-    <!-- Facebook -->
-    <div>
-      <label class="block font-medium mb-1">Facebook</label>
-      <div class="flex">
-        <span
-          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
-        >
-          facebook.com/
-        </span>
-        <input
-          type="text"
-          formControlName="facebook"
-          placeholder="Username"
-          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          [ngClass]="{
-            'border-red-500':
-              profileForm.get('facebook')?.invalid &&
-              (profileForm.get('facebook')?.dirty ||
-                profileForm.get('facebook')?.touched)
-          }"
-        />
-      </div>
-      <div
-        *ngIf="
-          profileForm.get('facebook')?.invalid &&
-          (profileForm.get('facebook')?.dirty ||
-            profileForm.get('facebook')?.touched)
-        "
-        class="text-red-500 text-xs mt-1"
-      >
-        <div *ngIf="profileForm.get('facebook')?.hasError('required')">
-          Facebook username is required
-        </div>
-      </div>
-    </div>
-
     <!-- Title -->
     <div>
-      <label class="block font-medium mb-1">Title</label>
+      <label for="title" class="block font-medium mb-1"
+        >Professional Title</label
+      >
       <div class="flex items-center">
         <input
           type="text"
+          id="title"
           formControlName="title"
           class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
           [ngClass]="{
@@ -450,9 +499,88 @@
       </div>
     </div>
 
+    <!-- Biography -->
+    <div class="md:col-span-2">
+      <label for="biography" class="block font-medium mb-1">Biography</label>
+      <textarea
+        id="biography"
+        rows="4"
+        formControlName="biography"
+        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        [ngClass]="{
+          'border-red-500':
+            profileForm.get('biography')?.invalid &&
+            (profileForm.get('biography')?.dirty ||
+              profileForm.get('biography')?.touched)
+        }"
+      ></textarea>
+      <p class="text-xs text-gray-500 mt-1">
+        To help learners learn more about you, your bio should reflect your
+        Credibility, Empathy, Passion, and Personality. Your biography should
+        have at least 50 characters. Links and coupon codes are not permitted.
+      </p>
+      <div
+        *ngIf="
+          profileForm.get('biography')?.invalid &&
+          (profileForm.get('biography')?.dirty ||
+            profileForm.get('biography')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('biography')?.hasError('required')">
+          Biography is required
+        </div>
+        <div *ngIf="profileForm.get('biography')?.hasError('minlength')">
+          Biography must be at least 50 characters
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media Links Section -->
+    <div class="md:col-span-2">
+      <h2 class="text-lg font-semibold mb-4">Social Media Links</h2>
+    </div>
+
+    <!-- Facebook -->
+    <div>
+      <label for="facebook" class="block font-medium mb-1">Facebook</label>
+      <div class="flex">
+        <span
+          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
+        >
+          facebook.com/
+        </span>
+        <input
+          type="text"
+          id="facebook"
+          formControlName="facebook"
+          placeholder="Username"
+          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('facebook')?.invalid &&
+              (profileForm.get('facebook')?.dirty ||
+                profileForm.get('facebook')?.touched)
+          }"
+        />
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('facebook')?.invalid &&
+          (profileForm.get('facebook')?.dirty ||
+            profileForm.get('facebook')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('facebook')?.hasError('required')">
+          Facebook username is required
+        </div>
+      </div>
+    </div>
+
     <!-- Instagram -->
     <div>
-      <label class="block font-medium mb-1">Instagram</label>
+      <label for="instagram" class="block font-medium mb-1">Instagram</label>
       <div class="flex">
         <span
           class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
@@ -461,6 +589,7 @@
         </span>
         <input
           type="text"
+          id="instagram"
           formControlName="instagram"
           placeholder="Username"
           class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -486,45 +615,9 @@
       </div>
     </div>
 
-    <!-- Biography -->
-    <div class="md:col-span-1">
-      <label class="block font-medium mb-1">Biography</label>
-      <textarea
-        rows="4"
-        formControlName="biography"
-        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        [ngClass]="{
-          'border-red-500':
-            profileForm.get('biography')?.invalid &&
-            (profileForm.get('biography')?.dirty ||
-              profileForm.get('biography')?.touched)
-        }"
-      ></textarea>
-      <p class="text-xs text-gray-500 mt-1">
-        To help learners learn more about you, your bio should reflect your
-        Credibility, Empathy, Passion, and Personality. Your biography should
-        have at least 50 words, links and coupon codes are not permitted.
-      </p>
-      <div
-        *ngIf="
-          profileForm.get('biography')?.invalid &&
-          (profileForm.get('biography')?.dirty ||
-            profileForm.get('biography')?.touched)
-        "
-        class="text-red-500 text-xs mt-1"
-      >
-        <div *ngIf="profileForm.get('biography')?.hasError('required')">
-          Biography is required
-        </div>
-        <div *ngIf="profileForm.get('biography')?.hasError('minlength')">
-          Biography must be at least 50 characters
-        </div>
-      </div>
-    </div>
-
     <!-- LinkedIn -->
     <div>
-      <label class="block font-medium mb-1">LinkedIn</label>
+      <label for="linkedin" class="block font-medium mb-1">LinkedIn</label>
       <div class="flex">
         <span
           class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
@@ -533,6 +626,7 @@
         </span>
         <input
           type="text"
+          id="linkedin"
           formControlName="linkedin"
           placeholder="Username"
           class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -560,7 +654,7 @@
 
     <!-- Twitter -->
     <div>
-      <label class="block font-medium mb-1">Twitter/X</label>
+      <label for="twitter" class="block font-medium mb-1">Twitter/X</label>
       <div class="flex">
         <span
           class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
@@ -569,6 +663,7 @@
         </span>
         <input
           type="text"
+          id="twitter"
           formControlName="twitter"
           placeholder="Username"
           class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -597,11 +692,34 @@
     <!-- Save Button -->
     <div class="mt-8 md:col-span-2">
       <button
-        (click)="onSubmit()"
-        [disabled]="profileForm.invalid"
-        class="px-6 py-2 bg-purple-200 text-purple-900 rounded-md hover:bg-purple-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        type="submit"
+        [disabled]="profileForm.invalid || profileForm.pending"
+        class="px-6 py-2 bg-purple-200 text-purple-900 rounded-md hover:bg-purple-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
       >
-        Save
+        <span *ngIf="!profileForm.pending">Save</span>
+        <span *ngIf="profileForm.pending" class="flex items-center">
+          <svg
+            class="animate-spin -ml-1 mr-2 h-4 w-4 text-purple-900"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
       </button>
     </div>
   </form>

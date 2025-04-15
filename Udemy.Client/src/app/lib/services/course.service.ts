@@ -59,7 +59,7 @@ export class CourseService {
     );
   }
 
-  createCourse(course: CourseCDTO): Observable<any> {
+  createCourse(course: any): Observable<any> {
     console.log(course);
     return this.http.post<any>(`${environment.baseurl}/courses`, course);
   }
@@ -75,11 +75,11 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
-  
+
   deleteCourse(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
   }
   updateCourse(courseId: number, course: Course): Observable<Course> {
     return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course);
   }
-}  
+}

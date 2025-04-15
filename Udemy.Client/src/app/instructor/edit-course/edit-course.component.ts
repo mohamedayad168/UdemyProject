@@ -9,9 +9,9 @@ import { CourseService } from '../../lib/services/course.service';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-edit-course',
-  imports: [CommonModule,RouterModule,FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './edit-course.component.html',
-  styleUrl: './edit-course.component.css'
+  styleUrl: './edit-course.component.css',
 })
 export class EditCourseComponent implements OnInit {
   instructorId!: number;
@@ -31,12 +31,12 @@ export class EditCourseComponent implements OnInit {
     // Fetch instructor and their courses
     this.instructorService.getInstructorById(this.instructorId).subscribe({
       next: (instructorData) => {
-        this.instructor = instructorData;  
-        this.getInstructorCourses();  
+        this.instructor = instructorData;
+        this.getInstructorCourses();
       },
       error: (err) => {
         console.error('Error fetching instructor:', err);
-      }
+      },
     });
   }
 
@@ -48,13 +48,13 @@ export class EditCourseComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching instructor courses:', err);
-      }
+      },
     });
   }
 
   filterCourses(): void {
     // Filter courses based on the search query
-    this.filteredCourses = this.courses.filter(course =>
+    this.filteredCourses = this.courses.filter((course) =>
       course.title.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
@@ -64,7 +64,7 @@ export class EditCourseComponent implements OnInit {
       this.courseService.deleteCourse(courseId).subscribe({
         next: () => {
           // Remove the course from the list
-          this.courses = this.courses.filter(c => c.id !== courseId);
+          this.courses = this.courses.filter((c) => c.id !== courseId);
           this.filteredCourses = this.courses; // Update filtered courses
           this.instructor.totalCourses = this.courses.length;
           alert('Course deleted successfully.');
@@ -72,7 +72,7 @@ export class EditCourseComponent implements OnInit {
         error: (err) => {
           console.error('Error deleting course:', err);
           alert('Failed to delete course.');
-        }
+        },
       });
     }
   }
