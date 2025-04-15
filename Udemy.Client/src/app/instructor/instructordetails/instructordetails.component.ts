@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { InstructorService } from '../../services/instructor.service';
 import { Instructor } from '../../lib/models/instructor.model';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { CourseService } from '../../lib/services/course.service';
@@ -19,7 +19,7 @@ export class InstructordetailsComponent implements OnInit {
   instructor!: Instructor;
   courses: Course[] = [];
 
-  constructor(private route: ActivatedRoute, private instructorService: InstructorService) {}
+  constructor( private router: Router ,private route: ActivatedRoute, private courseservive:CourseService,private instructorService: InstructorService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -43,7 +43,28 @@ export class InstructordetailsComponent implements OnInit {
       }
     });
   }
-  
+  deleteCourse(courseId: number): void {
+    if (confirm('Are you sure you want to delete this course?')) {
+      this.courseservive.deleteCourse(courseId).subscribe({
+        next: () => {
+          // Remove the course from the list
+          this.courses = this.courses.filter(c => c.id !== courseId);
+          // Update the instructor's totalCourses count
+          this.instructor.totalCourses = this.courses.length;
+          alert('Course deleted successfully.');
+        },
+        error: (err) => {
+          console.error('Error deleting course:', err);
+          alert('Failed to delete course.');
+        }
+      });
+    }
+  }
+  editCourse(courseId: number): void {
+    // Navigate to the edit-course page with the courseId as a parameter
+    this.router.navigate(['/edit-course', courseId]);
+  }
+
   fetchInstructorCourses(): void {
     console.log('Fetching courses for instructor ID:', this.instructorId);
     this.instructorService.getInstructorCourses(this.instructorId).subscribe({

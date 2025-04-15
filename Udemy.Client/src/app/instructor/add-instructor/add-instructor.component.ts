@@ -1,6 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Instructor } from './../../lib/models/instructor.model';
-import { InstructorService } from './../../services/instructor.service';
+import { Instructor } from '../../lib/models/instructor.model';
+import { InstructorService } from '../../services/instructor.service';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-instructor',
@@ -24,8 +25,9 @@ import { delay, map } from 'rxjs/operators';
 export class AddInstructorComponent {
   profileForm: FormGroup;
   private InstructorService = inject(InstructorService);
+ 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.profileForm = this.fb.group(
       {
         firstName: ['', [Validators.required, Validators.minLength(2)]],
@@ -80,6 +82,7 @@ export class AddInstructorComponent {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
+    
     }
 
     const formValue = this.profileForm.value;
@@ -113,6 +116,8 @@ export class AddInstructorComponent {
           {
             next: () => {
               alert('Profile and social media links saved successfully!');
+              this.router.navigate(['instructor/home']);
+
             },
             error: (err) => {
               console.error('Error saving social media links:', err);

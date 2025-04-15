@@ -88,6 +88,39 @@
             }">
             {{ course.status }}
           </span>
+          <br>
+
+          <!-- Edit Button -->
+           
+      <!-- Edit + Delete Buttons Side by Side -->
+<div class="flex gap-2 mt-2">
+  <!-- Edit Button -->
+  <button 
+    (click)="editCourse(course.id); $event.stopPropagation()"
+    class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition"
+    title="Edit Course"
+  >
+    <span class="text-xs font-medium">Edit</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  </button>
+
+  <!-- Delete Button -->
+  <button 
+    (click)="deleteCourse(course.id); $event.stopPropagation()"
+    class="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition"
+    title="Delete Course"
+  >
+    <span class="text-xs font-medium">Delete</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+</div>
+
         </div>
       </div>
     </div>
