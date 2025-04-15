@@ -143,6 +143,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   selectedProducts!: T[] | null;
   submitted: boolean = false;
   searchTerm = new Subject<string>();
+  searchTermValue = '';
+  orderBy:{field: string, order: number} ={field: 'id', order: 1};
 
   items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
@@ -166,6 +168,12 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   ngOnInit() {
     this.newItem = { ...this.emptyItem() };
     this.loadDemoData();
+    this.crudService().getPage({
+      pageNumber: 1,
+      pageSize: 10,
+      orderBy: 'id',
+      searchTerm: '',
+    });
     this.searchTerm
       .pipe(
         debounceTime(500),
@@ -179,8 +187,13 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
       )
       .subscribe((term) => {
         console.log('searchTerm', term);
+        this.searchTermValue = term;
         this.crudService().getPage({ searchTerm: term });
       });
+  }
+  ngOnViewInit() {
+    this.dt.sortField = 'id';
+
   }
 
   exportCSV() {
@@ -390,9 +403,13 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   onPageChange(event: TablePageEvent) {}
 
   loadData(event: TableLazyLoadEvent) {
+    console.log('crud table -loadData');
+    console.log(event);
     this.crudService().getPage({
       pageNumber: event.first! / event.rows! + 1,
       pageSize: event.rows!,
+      orderBy:  this.getOrderDirection(this.orderBy),
+      searchTerm: this.searchTermValue,
     });
   }
 
@@ -414,5 +431,22 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   search(event: any) {
     const input = event.target as HTMLInputElement;
     this.searchTerm.next(input.value);
+  }
+  onSort(order: {field: string, order: number}) {
+    this.orderBy = order;
+    this.crudService().getPage({pageNumber: 1, pageSize: 10, orderBy: this.getOrderDirection(order), searchTerm: this.searchTermValue});
+  }
+
+  getOrderDirection(order:{field: string, order: number}){
+    return order.order >= 0 ? `${order.field} asc` : `${order.field} desc`;
+  }
+
+  getDirectionFromOrder(order: number){
+    console.log(order);
+    return order > 0 ? 'ascending' : 'descending';
+  }
+
+  showHideClassOnLoading(){
+    return this.crudService().isLoading() ? 'pointer-events-none' : '';
   }
 }

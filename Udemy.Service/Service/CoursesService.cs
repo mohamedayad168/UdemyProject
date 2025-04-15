@@ -32,7 +32,7 @@ namespace Udemy.Service.Service
                 Data = mapper.Map<IEnumerable<CourseRDTO>>(paginatedCourseRes.Data),
                 PageSize = searchReq.PageSize,
                 CurrentPage = searchReq.PageNumber,
-                TotalItems = repository.Courses.Count()
+                TotalItems = paginatedCourseRes.TotalItems
             };
 
             return paginatedDtoRes;

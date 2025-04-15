@@ -48,23 +48,18 @@
     [totalRecords]="items().totalItems"
     [pageLinks]="5"
     [paginator]="true"
-    (onLazyLoad)="loadData($event)"
-    (onPage)="onPageChange($event)"
-    [globalFilterFields]="[
-      'title',
-      'description',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
+    (onPage)="loadData($event)"
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="selectedProducts"
     [rowHover]="true"
     [loading]="dt.loading"
     dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    paginator
     [showCurrentPageReport]="true"
-    
+    [paginatorStyleClass]="showHideClassOnLoading()"
+    (onSort)="onSort($event)"
+    sortField="id"
   >
     <ng-template #caption>
       <div class="flex items-center justify-between">
@@ -75,6 +70,7 @@
             pInputText
             type="text"
             (input)="search($event)"
+            [class.pointer-events-none]="crudService().isLoading()"
             placeholder="Search..."
           />
         </p-iconfield>
@@ -88,8 +84,10 @@
         </th>
         @for (item of columnConfigs(); track $index) {
         <th
+          [class.pointer-events-none]="crudService().isLoading()"
           pSortableColumn="{{ item['key'] }}"
-          style.min-width="{{ item.width ?? 'unset' }}"
+          [pSortableColumnDisabled]="!item.sortable"
+           style.min-width="{{ item.width ?? 'unset' }}"
         >
           {{ item.header }}
           <p-sortIcon *ngIf="item.sortable" field="{{ item['key'] }}" />
