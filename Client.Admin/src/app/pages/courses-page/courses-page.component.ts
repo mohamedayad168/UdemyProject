@@ -84,6 +84,7 @@ export class CoursesPageComponent implements OnInit {
       width: '4rem',
       type: 'text',
       header: 'Id',
+      sortable: true,
     },
     {
       key: 'title',
