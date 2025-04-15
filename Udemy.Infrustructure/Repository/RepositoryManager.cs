@@ -24,7 +24,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ISubCategoriesRepository> subCategoriesRepository;
     private readonly Lazy<ICartCourseRepository> cartCourseRepository;
     private readonly Lazy<IlessonRepo> LessonRepo;
- 
+    private readonly Lazy<Isectionrepo> sectionRepo;
     public RepositoryManager(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
     {
         this.applicationDbContext = applicationDbContext;
@@ -42,7 +42,9 @@ public class RepositoryManager : IRepositoryManager
         subCategoriesRepository = new Lazy<ISubCategoriesRepository>(() => new SubCategoriesRepository(applicationDbContext));
         cartCourseRepository = new Lazy<ICartCourseRepository>(() => new CartCourseRepository(applicationDbContext));
         LessonRepo = new Lazy<IlessonRepo>(() => new LessonRepo(applicationDbContext));
-      
+        sectionRepo = new Lazy<Isectionrepo>(() => new SectionRepo(applicationDbContext));
+
+
     }
 
     public ICoursesRepository Courses => coursesRepo.Value;
@@ -60,7 +62,9 @@ public class RepositoryManager : IRepositoryManager
 
     public ISubCategoriesRepository SubCategories => subCategoriesRepository.Value;
 
+
     public IlessonRepo Lessons => LessonRepo.Value;
+    public Isectionrepo section => sectionRepo.Value;
 
     public async Task SaveAsync()
     {

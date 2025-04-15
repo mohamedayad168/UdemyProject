@@ -25,7 +25,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ISubCategoriesService> subCategoriesService;
     private readonly Lazy<IPaymentService> paymentService;
     private readonly Lazy<ILessonService> lessonService;
-
+    private readonly Lazy<ISectionService> sectionService;
 
     public ServiceManager(
         IRepositoryManager repositoryManager,
@@ -53,6 +53,8 @@ public class ServiceManager : IServiceManager
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
         lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper));
+        sectionService = new Lazy<ISectionService>(() => new SectionService(repositoryManager, mapper)); 
+
     }
 
     public ICoursesService CoursesService => coursesService.Value;
@@ -72,4 +74,5 @@ public class ServiceManager : IServiceManager
     public ISubCategoriesService SubCategoriesService => subCategoriesService.Value;
 
     public ILessonService LessonService => lessonService.Value;
+    public ISectionService SectionService => sectionService.Value; 
 }

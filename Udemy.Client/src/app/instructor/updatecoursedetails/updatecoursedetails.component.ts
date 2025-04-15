@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../../lib/models/course.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
-import { CourseDetail } from '../../lib/models/CourseDetail.model';
+import { CourseDetail, Lesson, Section } from '../../lib/models/CourseDetail.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../lib/services/category.service';
@@ -16,66 +16,31 @@ import { LessonService } from '../../lib/services/lesson.service';
   styleUrl: './updatecoursedetails.component.css'
 })
 export class UpdatecoursedetailsComponent implements OnInit {
-  courseId!: number; 
-  course: any = {}; 
-  categories: any[] = []; // Store available categories
-  subCategories: any[] = []; // Store available sub-categories
+  courseId!: number;
+  courseDetails: CourseDetail | null = null;
+  sections: Section[] = [];
+  lessons: Lesson[] = [];
   
   constructor(
     private courseService: CourseService,
-    private categoryService: CategoryService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private sectionService: SectionService,
+    private lessonService: LessonService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.courseId = +params.get('id')!; // Extract course ID from URL
-      this.loadCategories();
+    this.route.params.subscribe(params => {
+      this.courseId = +params['id'];
       this.loadCourseDetails();
+      this.loadSections();
     });
   }
-  // Load categories from the category service
-  loadCategories() {
-    this.categoryService.getCategories().subscribe(
-      (categories) => {
-        this.categories = categories;
-        // Optionally, set the category and sub-category based on the existing course details
-        if (this.course.categoryId) {
-          this.onCategoryChange(this.course.categoryId);
-        }
-      },
-      (error) => {
-        console.error('Error fetching categories', error);
-      }
-    );
-  }
 
-  // Handle category change and load corresponding sub-categories
-  onCategoryChange(event: Event) {
-    const categoryId = (event.target as HTMLSelectElement).value;
-    this.course.categoryId = +categoryId; // Casting the value to a number using unary plus
-  
-    this.categoryService.getSubcategoriesByCategory(this.course.categoryId).subscribe(
-      (subCategories) => {
-        this.subCategories = subCategories;
-      },
-      (error) => {
-        console.error('Error fetching sub-categories', error);
-      }
-    );
-  }
-
-  // Load the course details from the course service
-  loadCourseDetails() {
-    // Assuming the courseService has a method to get course details by ID
-    this.courseService.getCourseById(this.courseId).subscribe(
+  loadCourseDetails(): void {
+    this.courseService.getCourseById(this.courseId, true).subscribe(
       (course) => {
-        this.course = course;
-        // Call category change handler after loading the course to update sub-categories
-        if (this.course.categoryId) {
-          this.onCategoryChange(this.course.categoryId);
-        }
+        this.courseDetails = course;
       },
       (error) => {
         console.error('Error fetching course details', error);
@@ -83,16 +48,54 @@ export class UpdatecoursedetailsComponent implements OnInit {
     );
   }
 
-  // Update course details using the course service
-  updateCourse() {
-    this.courseService.updateCourse(this.courseId, this.course).subscribe(
-      (response) => {
-        console.log('Course updated successfully:', response);
-        this.router.navigate(['/courses']);
+  loadSections(): void {
+    this.sectionService.getSections(this.courseId).subscribe(
+      (sections) => {
+        this.sections = sections;
+        this.loadLessons();
       },
       (error) => {
-        console.error('Error updating course:', error);
+        console.error('Error fetching sections', error);
       }
     );
+  }
+
+  loadLessons(): void {
+    this.sections.forEach(section => {
+      this.lessonService.getLessons(section.id).subscribe(
+        (lessons) => {
+          this.lessons = [...this.lessons, ...lessons];
+        },
+        (error) => {
+          console.error('Error fetching lessons', error);
+        }
+      );
+    });
+  }
+
+  addLesson(sectionId: number): void {
+    // Implement logic to add a lesson (perhaps open a modal to input lesson details)
+  }
+
+  updateLesson(lessonId: number): void {
+    // Implement logic to update a lesson
+  }
+
+  removeLesson(lessonId: number): void {
+    // Implement logic to remove a lesson
+  }
+
+  saveCourseChanges(): void {
+    if (this.courseDetails) {
+      this.courseService.updateCourse(this.courseId, this.courseDetails).subscribe(
+        (updatedCourse) => {
+          this.courseDetails = updatedCourse;
+          alert('Course updated successfully!');
+        },
+        (error) => {
+          console.error('Error updating course', error);
+        }
+      );
+    }
   }
 }
