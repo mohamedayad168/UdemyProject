@@ -28,6 +28,7 @@ import { CourseSearchComponent } from './pages/course-search/course-search.compo
 import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
 import { EditCourseComponent } from './instructor/edit-course/edit-course.component'; 
 import { EditinstructorPageComponent } from './instructor/editinstructor-page/editinstructor-page.component';
+import { UpdatecoursedetailsComponent } from './instructor/updatecoursedetails/updatecoursedetails.component';
 export const routes: Routes = [
   {
     path: '',
@@ -36,6 +37,10 @@ export const routes: Routes = [
   {
     path: 'courses/:id',
     component: CourseDetailsPageComponent,
+  },
+  {
+    path: 'updatecoursedetails/:id',
+    component: UpdatecoursedetailsComponent,
   },
   {
     path: 'course/search',
@@ -135,10 +140,8 @@ export const routes: Routes = [
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
 
-  {
-    path: 'instructorprofile',
-    component: InstructordetailsComponent,
-  },
+  
+
   {
     path: 'course/view/:id',
     component: CourseViewComponent,

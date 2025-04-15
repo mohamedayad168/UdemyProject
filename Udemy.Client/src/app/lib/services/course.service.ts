@@ -79,4 +79,7 @@ export class CourseService {
   deleteCourse(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
   }
-}
+  updateCourse(courseId: number, course: Course): Observable<Course> {
+    return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course);
+  }
+}  

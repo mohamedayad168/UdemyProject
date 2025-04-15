@@ -13,6 +13,6 @@ export class InstructorHomeComponent {
     this.router.navigate(['/createcourse/FGCOURSE']);
   }
   goToCourseUPdate(){
-    this.router.navigate(["instructor/updatecourse"])
+    this.router.navigate(["instructors/:id/courses"])
   }
 }

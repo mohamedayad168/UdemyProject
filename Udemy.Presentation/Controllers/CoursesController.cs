@@ -102,12 +102,11 @@ namespace Udemy.Presentation.Controllers
             return CreatedAtAction("GetCourseByTitle", new { title = courseRDTO.Title }, courseRDTO);
         }
 
-
         [HttpPut]
         public async Task<IActionResult> UpdateCourseAsync([FromBody] CourseUDTO courseUDTO)
         {
             var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
-            return CreatedAtAction(nameof(GetCourseByTitleAsync), new { courseRDTO.Title }, courseRDTO);
+            return Ok(courseRDTO); // ✅ This avoids the redirect and the 404
         }
 
 

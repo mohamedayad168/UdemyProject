@@ -1,48 +1,55 @@
 <div class="container mt-4 px-4">
-  <h2 class="text-2xl font-semibold mb-4">Courses for Instructor #{{ instructorId }}</h2>
+  <h2 class="text-2xl font-semibold mb-4">Choose From Your Courses The Course You Want To Edit</h2>
 
-  <div *ngIf="courses.length > 0; else noCourses">
+  <!-- Search Bar with Icon -->
+  <div class="mb-4 flex items-center space-x-4">
+    <!-- Search Icon -->
+    <i class="fas fa-search text-gray-600"></i>
+    <!-- Search Input -->
+    <input 
+      type="text" 
+      [(ngModel)]="searchQuery" 
+      (input)="filterCourses()" 
+      placeholder="Search courses by name" 
+      class="w-2/3 px-4 py-2 border border-gray-300 rounded-md"
+    />
+  </div>
+
+  <!-- Number of Courses Header -->
+  <div class="mb-4 text-sm text-gray-600">
+    <p>Total Courses: {{ filteredCourses.length }}</p>
+  </div>
+
+  <div *ngIf="filteredCourses.length > 0; else noCourses">
     <div class="space-y-4">
-      <div class="flex flex-wrap justify-between gap-4" *ngFor="let course of courses">
+      <div class="flex flex-wrap justify-between gap-4" *ngFor="let course of filteredCourses">
         <div class="w-full sm:w-full md:w-full bg-white shadow-lg rounded-lg overflow-hidden">
-          <div class="p-4 flex items-center justify-between space-x-4">
+          <div class="p-4 flex items-center justify-between">
             <!-- Course Image -->
-            <div class="w-16 h-16 bg-gray-200 rounded-full overflow-hidden">
+            <div class="w-20 h-20 bg-gray-200 rounded-full overflow-hidden mr-4">
               <img *ngIf="course.imageUrl" [src]="course.imageUrl" alt="Course Image" class="w-full h-full object-cover">
             </div>
 
             <!-- Course Info -->
             <div class="flex-grow">
-              <h5 class="text-lg font-semibold">{{ course.title }}</h5>
+              <h5 class="text-xl font-semibold">{{ course.title }}</h5>
               <p class="text-gray-600 text-sm">{{ course.description }}</p>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex space-x-3 items-center">
-              <!-- View Course Button -->
-              <a [routerLink]="['/courses', course.id]" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M12.293 4.293a1 1 0 011.414 0L18 7.586V4a1 1 0 112 0v6a1 1 0 01-1 1h-6a1 1 0 110-2h3.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-                View Course
-              </a>
+            <!-- View Course Button (Icon) -->
+            <a [routerLink]="['/courses', course.id]" class="!text-blue-600 px-4 hover:text-blue-700 transition duration-300">
+              <i class="fas fa-eye">View      </i> <!-- Eye Icon -->
+            </a>
 
-              <!-- Edit Course Button -->
-              <a [routerLink]="['/edit-course', course.id]" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M17.663 4.337a2 2 0 00-2.828 0L4 12.172V16a1 1 0 001 1h3.828l7.835-7.835a2 2 0 000-2.828l-1.17-1.17a2 2 0 00-2.828 0L7.172 12 5 9.828l9.172-9.172a2 2 0 012.828 2.828z" clip-rule="evenodd" />
-                </svg>
-                Edit
-              </a>
+            <!-- Edit Course Button (Icon) -->
+            <a [routerLink]="['/updatecoursedetails', course.id]" class="!text-yellow-600 px-4 hover:text-yellow-700 transition duration-300">
+              <i class="fas fa-edit"> Edit      </i> <!-- Edit Icon -->
+            </a>
 
-              <!-- Delete Course Button -->
-              <button (click)="deleteCourse(course.id)" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h3a1 1 0 011 1v13a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1h3V3a1 1 0 011-1zm1 3V4h6v1H7z" clip-rule="evenodd" />
-                </svg>
-                Delete
-              </button>
-            </div>
+            <!-- Delete Course Button (Icon) -->
+            <button (click)="deleteCourse(course.id)" class="!text-red-600 px-4 hover:text-red-700 transition duration-300">
+              <i class="fas fa-trash-alt">Delete      </i> <!-- Trash Icon -->
+            </button>
           </div>
         </div>
       </div>
