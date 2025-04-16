@@ -1,5 +1,5 @@
 <aside
-  class="fixed w-full md:w-fit z-50 md:flex flex-col gap-4 border-e border-gray-950/30 md:border-e-0 md:shadow h-full bg-header md:bg-sidenav"
+  class="fixed md:static w-full md:w-fit z-50 md:flex flex-col gap-4 border-e border-gray-950/30 md:border-e-0 md:shadow h-full bg-header md:bg-sidenav"
   *ngIf="authService.authState().isAuthenticated"
   [class]="{
     'hidden': !authService.authState().dialogVisible
