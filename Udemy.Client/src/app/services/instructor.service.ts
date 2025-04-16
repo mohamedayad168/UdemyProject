@@ -59,18 +59,12 @@ export class InstructorService {
   }
 
   checkEmailExists(email: string): Observable<boolean> {
-    return this.http.get<boolean>(
-      `${this.apiUrl}/instructors/check-email?email=${email}`
-    );
+    return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);
   }
 
   checkUsernameExists(username: string): Observable<boolean> {
     return this.http.get<boolean>(
       `${this.apiUrl}/check-username?username=${username}`
     );
-  }
-
-  checkPhoneExists(phone: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/check-phone?phone=${phone}`);
   }
 }

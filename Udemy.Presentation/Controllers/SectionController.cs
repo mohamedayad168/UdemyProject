@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
@@ -20,7 +15,7 @@ namespace Udemy.Presentation.Controllers
             _service = service;
         }
 
-      
+
         [HttpGet]
         public async Task<IActionResult> GetAllSections()
         {
@@ -28,7 +23,7 @@ namespace Udemy.Presentation.Controllers
             return Ok(sections);
         }
 
-       
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSectionById(int id)
         {
@@ -39,7 +34,7 @@ namespace Udemy.Presentation.Controllers
             return Ok(section);
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateSection([FromBody] SectionCDTO sectionDto)
         {
@@ -53,7 +48,7 @@ namespace Udemy.Presentation.Controllers
             return Ok("Section created successfully");
         }
 
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSection(int id, [FromBody] SectionUDTO sectionDto)
         {
@@ -65,13 +60,6 @@ namespace Udemy.Presentation.Controllers
                 return NotFound();
 
             return Ok("Section updated successfully");
-        }
-
-        [HttpGet("ByCourse/{courseId}")]
-        public async Task<IActionResult> GetSectionsByCourseId(int courseId)
-        {
-            var result = await _service.SectionService.GetSectionsByCourseIdAsync(courseId, trackChanges: false);
-            return Ok(result);
         }
 
 
@@ -86,5 +74,5 @@ namespace Udemy.Presentation.Controllers
         }
     }
 }
-    
+
 

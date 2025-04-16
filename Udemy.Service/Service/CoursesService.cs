@@ -4,7 +4,6 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -12,7 +11,7 @@ using Udemy.Service.IService;
 
 namespace Udemy.Service.Service
 {
-    public class CoursesService(IRepositoryManager repository, IMapper mapper) : ICoursesService
+    public class CoursesService(IRepositoryManager repository, IMapper mapper, ICloudService cloudService) : ICoursesService
     {
         public async Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges)
         {
@@ -81,9 +80,20 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
+            string? imageUrl = null;
+            string? videoUrl = null;
 
+            if (courseDto.ImageUrl != null)
+                imageUrl = await cloudService.UploadImageAsync(courseDto.ImageUrl);
+
+            if (courseDto.VideoUrl != null)
+                videoUrl = await cloudService.UploadVideoAsync(courseDto.VideoUrl);
 
             var course = mapper.Map<Course>(courseDto);
+            course.ImageUrl = imageUrl;
+            course.VideoUrl = videoUrl;
+
+
 
             var instructorExists = await repository.Instructors
                 .FindByCondition(i => i.Id == courseDto.InstructorId, false).AnyAsync();

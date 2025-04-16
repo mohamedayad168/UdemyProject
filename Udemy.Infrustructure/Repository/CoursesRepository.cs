@@ -3,10 +3,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.Read;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Infrastructure.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace Udemy.Infrastructure.Repository
 {
@@ -29,7 +26,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<Course> UpdateAsync(Course course)
         {
-    
+
             var existingCourse = await context.Courses
                 .FirstOrDefaultAsync(c => c.Id == course.Id && !c.IsDeleted);
 
@@ -38,7 +35,7 @@ namespace Udemy.Infrastructure.Repository
                 throw new NotFoundException($"Course with ID {course.Id} not found.");
             }
 
-        
+
             existingCourse.Title = course.Title;
             existingCourse.Description = course.Description;
             existingCourse.Duration = course.Duration;
@@ -53,14 +50,14 @@ namespace Udemy.Infrastructure.Repository
             return existingCourse;
         }
 
-       
+
         public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
         }
-    
 
-public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
+
+        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
         {
 
             var query = FindAll(false).Where(x =>
@@ -116,7 +113,7 @@ public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchRe
             return await context.Courses.AnyAsync(c => c.Id == id);
         }
 
-       
+
 
         public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
         {
@@ -170,5 +167,7 @@ public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchRe
             context.Courses.Update(course);
             await context.SaveChangesAsync();
         }
+
+
     }
 }

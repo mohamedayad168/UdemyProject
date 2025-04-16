@@ -11,6 +11,10 @@
         id="courseTitle"
         formControlName="title"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [class.border-red-500]="
+          courseForm.get('title')?.invalid &&
+          (courseForm.get('title')?.dirty || courseForm.get('title')?.touched)
+        "
       />
       <p class="mt-2 text-sm text-gray-500">
         Remaining characters: {{ titleRemaining }}
@@ -26,7 +30,7 @@
           Title is required
         </div>
         <div *ngIf="courseForm.get('title')?.errors?.['maxlength']">
-          Title is too long
+          Title cannot exceed 60 characters
         </div>
       </div>
     </div>
@@ -44,6 +48,11 @@
         formControlName="description"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         maxlength="1500"
+        [class.border-red-500]="
+          courseForm.get('description')?.invalid &&
+          (courseForm.get('description')?.dirty ||
+            courseForm.get('description')?.touched)
+        "
       ></textarea>
       <p class="mt-2 text-sm text-gray-500">Word count: {{ wordCount }}</p>
       <div
@@ -72,6 +81,11 @@
         id="language"
         formControlName="language"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [class.border-red-500]="
+          courseForm.get('language')?.invalid &&
+          (courseForm.get('language')?.dirty ||
+            courseForm.get('language')?.touched)
+        "
       >
         <option *ngFor="let language of languages" [value]="language">
           {{ language }}
@@ -91,6 +105,7 @@
       </div>
     </div>
 
+    <!-- Course Price -->
     <div class="mb-4">
       <label for="coursePrice" class="block text-sm font-medium text-gray-700">
         Course Price ($):
@@ -109,6 +124,10 @@
           step="0.01"
           placeholder="0.00"
           class="block w-full rounded-lg border border-gray-300 py-3 pl-7 pr-12 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          [class.border-red-500]="
+            courseForm.get('price')?.invalid &&
+            (courseForm.get('price')?.dirty || courseForm.get('price')?.touched)
+          "
         />
         <div
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
@@ -127,10 +146,7 @@
           Price is required
         </div>
         <div *ngIf="courseForm.get('price')?.errors?.['min']">
-          Price must be positive
-        </div>
-        <div *ngIf="courseForm.get('price')?.errors?.['pattern']">
-          Please enter a valid amount (e.g. 19.99)
+          Price must be a positive number
         </div>
       </div>
     </div>
@@ -144,6 +160,11 @@
         id="category"
         formControlName="category"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [class.border-red-500]="
+          courseForm.get('category')?.invalid &&
+          (courseForm.get('category')?.dirty ||
+            courseForm.get('category')?.touched)
+        "
       >
         <option *ngFor="let category of categories" [value]="category.id">
           {{ category.name }}
@@ -172,6 +193,11 @@
         id="subcategory"
         formControlName="subcategory"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [class.border-red-500]="
+          courseForm.get('subcategory')?.invalid &&
+          (courseForm.get('subcategory')?.dirty ||
+            courseForm.get('subcategory')?.touched)
+        "
       >
         <option
           *ngFor="let subcategory of subcategories"
@@ -203,6 +229,10 @@
         id="level"
         formControlName="level"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [class.border-red-500]="
+          courseForm.get('level')?.invalid &&
+          (courseForm.get('level')?.dirty || courseForm.get('level')?.touched)
+        "
       >
         <option value="Select Level --" disabled>Select Level --</option>
         <option value="Beginner">Beginner</option>
@@ -231,6 +261,7 @@
         type="file"
         id="image"
         (change)="onImageUpload($event)"
+        accept="image/jpeg, image/jpg, image/png, image/gif"
         class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
       <p class="mt-2 text-sm text-gray-500">
@@ -238,9 +269,12 @@
         standards to be accepted. Important guidelines: 750x422 pixels; .jpg,
         .jpeg, .gif, or .png. No text on the image.
       </p>
+      <p class="mt-2 text-sm text-gray-500">
+        {{ imageFile ? imageFile.name : "No file chosen" }}
+      </p>
     </div>
 
-    <!-- Promotional Video URL -->
+    <!-- Promotional Video Upload -->
     <div class="mb-4">
       <label for="video" class="block text-sm font-medium text-gray-700">
         Promotional Video (MP4, AVI, MOV):
@@ -256,6 +290,9 @@
         Upload your promotional video here. It must meet our video standards:
         MP4, AVI, or MOV.
       </p>
+      <p class="mt-2 text-sm text-gray-500">
+        {{ videoFile ? videoFile.name : "No file chosen" }}
+      </p>
     </div>
 
     <!-- Save Button -->
@@ -263,9 +300,32 @@
       <button
         type="submit"
         [disabled]="isSaving || courseForm.invalid"
-        class="w-full py-3 bg-blue-500 text-white text-lg rounded-lg focus:outline-none hover:bg-blue-600 disabled:bg-gray-300"
+        class="w-full py-3 bg-blue-500 text-white text-lg rounded-lg focus:outline-none hover:bg-blue-600 disabled:bg-gray-300 flex items-center justify-center"
       >
-        {{ isSaving ? "Saving..." : "Save" }}
+        <span *ngIf="!isSaving">{{ "Save" }}</span>
+        <span *ngIf="isSaving" class="flex items-center">
+          <svg
+            class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
       </button>
     </div>
   </form>

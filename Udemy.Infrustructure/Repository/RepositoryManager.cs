@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
