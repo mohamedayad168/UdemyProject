@@ -22,6 +22,11 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
             await dbContext.Set<Section>().AddAsync(section);
             await dbContext.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Section>> GetSectionsByCourseIdAsync(int courseId, bool trackChanges)
+        {
+            return await FindByCondition(s => s.CourseId == courseId && (s.IsDeleted == false || s.IsDeleted == null), trackChanges)
+                         .ToListAsync();
+        }
 
         public async Task DeletesectionAsync(Section section)
         {

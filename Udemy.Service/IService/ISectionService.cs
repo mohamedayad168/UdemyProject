@@ -16,5 +16,7 @@ namespace Udemy.Service.IService
         Task<bool> CreateSectionAsync(SectionCDTO section);
         Task<bool> UpdateAsync(int id, SectionUDTO section);
         Task<bool> DeleteSectionAsync(int id);
+        Task<IEnumerable<SectionRDTO>> GetSectionsByCourseIdAsync(int courseId, bool trackChanges);
+
     }
 }

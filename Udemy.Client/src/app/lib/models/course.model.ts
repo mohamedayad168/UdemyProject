@@ -24,8 +24,8 @@ export interface Course {
     id: number;
     name: string;
   };
-  // 🔥 Add these lines:
+
   courseGoals: string[];
   courseRequirements: string[];
-  // sections: Section[];
+
 }

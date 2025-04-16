@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
 using Udemy.Service.Service;
 
@@ -70,14 +71,11 @@ namespace Udemy.Presentation.Controllers
 
         // PUT: api/Lesson/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonDto lessonDto)
+        public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
         {
-            if (lessonDto == null)
-            {
-                return BadRequest("Lesson data is null.");
-            }
+            
 
-            var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonDto);
+            var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
             if (isUpdated)
             {
                 return NoContent();

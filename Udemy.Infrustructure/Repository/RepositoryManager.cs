@@ -5,6 +5,7 @@ using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository.EntityRepos;
 using System;
 using Microsoft.Extensions.Logging;
+using Udemy.Service.DataTransferObjects.Read;
 
 namespace Udemy.Infrastructure.Repository;
 public class RepositoryManager : IRepositoryManager
@@ -24,7 +25,9 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ISubCategoriesRepository> subCategoriesRepository;
     private readonly Lazy<ICartCourseRepository> cartCourseRepository;
     private readonly Lazy<IlessonRepo> LessonRepo;
-    private readonly Lazy<Isectionrepo> sectionRepo;
+    private readonly Lazy<Isectionrepo> SectionRepo;
+
+
     public RepositoryManager(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
     {
         this.applicationDbContext = applicationDbContext;
@@ -42,7 +45,7 @@ public class RepositoryManager : IRepositoryManager
         subCategoriesRepository = new Lazy<ISubCategoriesRepository>(() => new SubCategoriesRepository(applicationDbContext));
         cartCourseRepository = new Lazy<ICartCourseRepository>(() => new CartCourseRepository(applicationDbContext));
         LessonRepo = new Lazy<IlessonRepo>(() => new LessonRepo(applicationDbContext));
-        sectionRepo = new Lazy<Isectionrepo>(() => new SectionRepo(applicationDbContext));
+     SectionRepo = new Lazy<Isectionrepo>(() => new SectionRepo (applicationDbContext));
 
 
     }
@@ -64,7 +67,10 @@ public class RepositoryManager : IRepositoryManager
 
 
     public IlessonRepo Lessons => LessonRepo.Value;
-    public Isectionrepo section => sectionRepo.Value;
+
+    public Isectionrepo Section => SectionRepo.Value;
+
+    
 
     public async Task SaveAsync()
     {

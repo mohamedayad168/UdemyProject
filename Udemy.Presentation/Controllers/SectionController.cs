@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -66,7 +67,14 @@ namespace Udemy.Presentation.Controllers
             return Ok("Section updated successfully");
         }
 
-       
+        [HttpGet("ByCourse/{courseId}")]
+        public async Task<IActionResult> GetSectionsByCourseId(int courseId)
+        {
+            var result = await _service.SectionService.GetSectionsByCourseIdAsync(courseId, trackChanges: false);
+            return Ok(result);
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSection(int id)
         {
@@ -78,5 +86,5 @@ namespace Udemy.Presentation.Controllers
         }
     }
 }
-    }
-}
+    
+

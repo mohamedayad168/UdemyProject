@@ -23,34 +23,39 @@ namespace Udemy.Service.Service
             _repository = repository;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<SectionRDTO>> GetSectionsByCourseIdAsync(int courseId, bool trackChanges)
+        {
+            var sections = await _repository.Section.GetSectionsByCourseIdAsync(courseId, trackChanges);
+            return _mapper.Map<IEnumerable<SectionRDTO>>(sections);
+        }
 
         public async Task<bool> CreateSectionAsync(SectionCDTO sectionCDto)
         {
             var section = _mapper.Map<Section>(sectionCDto);
-            await _repository.sectionrepo.CreatesectionAsync(section);
+            await _repository.Section.CreatesectionAsync(section);
             await _repository.SaveAsync();
             return true;
         }
 
         public async Task<bool> DeleteSectionAsync(int id)
         {
-            var section = await _repository.sectionrepo.GetByIdAsync(id, true);
+            var section = await _repository.Section.GetByIdAsync(id, true);
             if (section == null)
                 return false;
-            await _repository.sectionrepo.DeletesectionAsync(section);
+            await _repository.Section.DeletesectionAsync(section);
             await _repository.SaveAsync();
             return true;
         }
 
         public async Task<IEnumerable<SectionRDTO>> GetAllAsync(bool trackChanges)
         {
-            var sections = await _repository.sectionrepo.GetAllAsync(trackChanges);
+            var sections = await _repository.Section.GetAllAsync(trackChanges);
             return _mapper.Map<IEnumerable<SectionRDTO>>(sections);
         }
 
         public async Task<SectionRDTO> GetByIdAsync(int sectionId, bool trackchange)
         {
-            var section = await _repository.sectionrepo.GetByIdAsync(sectionId, trackchange);
+            var section = await _repository.Section.GetByIdAsync(sectionId, trackchange);
             if (section == null)
                 return null;
 
@@ -60,12 +65,12 @@ namespace Udemy.Service.Service
         public async Task<bool> UpdateAsync(int id, SectionUDTO sectionDto)
         {
          
-            var existingSection = await _repository.sectionrepo.GetByIdAsync(id, trackchange: true);
+            var existingSection = await _repository.Section.GetByIdAsync(id, trackchange: true);
             if (existingSection == null) return false;
 
             _mapper.Map(sectionDto, existingSection);
 
-            _repository.sectionrepo.Update(existingSection);
+            _repository.Section.Update(existingSection);
             await _repository.SaveAsync();
             return true;
         }
