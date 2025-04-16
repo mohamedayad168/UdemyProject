@@ -1,106 +1,114 @@
 import { Component, OnInit } from '@angular/core';
-import { Course } from '../../lib/models/course.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
-import {
-  CourseDetail,
-  Lesson,
-  Section,
-} from '../../lib/models/CourseDetail.model';
-import { CourseDetail } from '../../lib/models/CourseDetail.model';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CategoryService } from '../../lib/services/category.service';
-import { SectionService } from '../../lib/services/section.service';
-import { LessonService } from '../../lib/services/lesson.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CourseUpdateDTO } from '../../lib/models/course.model';
 
 @Component({
   selector: 'app-updatecoursedetails',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './updatecoursedetails.component.html',
-  styleUrl: './updatecoursedetails.component.css',
+  styleUrls: ['./updatecoursedetails.component.css'],
 })
 export class UpdatecoursedetailsComponent implements OnInit {
-  courseId!: number;
-  courseDetails: CourseDetail | null = null;
-  sections: Section[] = [];
-  lessons: Lesson[] = [];
-  
+  courseForm!: FormGroup;
+  imagePreviewUrl: string | null = null;
+  videoPreviewUrl: string | null = null;
+  isImage: boolean = true;
+  isVideo: boolean = false;
+  courseId: string = '';
+
   constructor(
-    private courseService: CourseService,
-    private sectionService: SectionService,
-    private lessonService: LessonService,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private courseService: CourseService
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.courseId = +params['id'];
-      this.loadCourseDetails();
-      this.loadSections();
+    this.courseForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(20)]],
+      description: ['',Validators.required],
+      courseLevel: ['', Validators.required],
+      discount: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      price: [0, [Validators.required, Validators.min(0)]],
+      language: ['', [Validators.required, Validators.maxLength(20)]],
+      goals: [''],
+      requirements: [''],
+      imageUrl: [''],
+      videoUrl: [''],
+      subCategoryId: [1, Validators.required],   
+      instructorId: [1, Validators.required]     
     });
+
+    this.courseId = this.route.snapshot.paramMap.get('id') || '';
+    if (this.courseId) {
+      this.courseService.getCourseById(+this.courseId).subscribe(course => {
+        this.courseForm.patchValue(course);
+        this.imagePreviewUrl = course.imageUrl;
+        this.videoPreviewUrl = course.videoUrl;
+      });
+    }
   }
 
-  loadCourseDetails(): void {
-    this.courseService.getCourseById(this.courseId, true).subscribe(
-      (course) => {
-        this.courseDetails = course;
-      },
-      (error) => {
-        console.error('Error fetching course details', error);
-      }
-    );
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file && file.type.startsWith('image')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewUrl = reader.result as string;
+        this.courseForm.patchValue({ imageUrl: this.imagePreviewUrl });
+        this.isImage = true;
+        this.isVideo = false;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  loadSections(): void {
-    this.sectionService.getSections(this.courseId).subscribe(
-      (sections) => {
-        this.sections = sections;
-        this.loadLessons();
-      },
-      (error) => {
-        console.error('Error fetching sections', error);
-      }
-    );
+  onVideoSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file && file.type.startsWith('video')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.videoPreviewUrl = reader.result as string;
+        this.courseForm.patchValue({ videoUrl: this.videoPreviewUrl });
+        this.isVideo = true;
+        this.isImage = false;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  loadLessons(): void {
-    this.sections.forEach(section => {
-      this.lessonService.getLessons(section.id).subscribe(
-        (lessons) => {
-          this.lessons = [...this.lessons, ...lessons];
+  onSubmit(): void {
+    console.log('Form submit triggered');
+    if (this.courseForm.valid && this.courseId) {
+      const updatedCourse: CourseUpdateDTO = {
+        id: +this.courseId,
+        isDeleted: false,
+        ...this.courseForm.value
+      };
+
+      this.courseService.updateCourse(+this.courseId, updatedCourse).subscribe(
+        () => {
+          alert('Course updated successfully');
+          
         },
         (error) => {
-          console.error('Error fetching lessons', error);
-        }
+          console.error('Error updating course:', error);
+          alert('An error occurred while updating the course.');
+          console.error('Error body:', error.error); // This often includes validation messages
+          console.log('Payload:', updatedCourse);
+         
+          
+            console.error('Validation errors:', error.error?.errors);
+          }
+        
+        
       );
-    });
-  }
-
-  addLesson(sectionId: number): void {
-    // Implement logic to add a lesson (perhaps open a modal to input lesson details)
-  }
-
-  updateLesson(lessonId: number): void {
-    // Implement logic to update a lesson
-  }
-
-  removeLesson(lessonId: number): void {
-    // Implement logic to remove a lesson
-  }
-
-  saveCourseChanges(): void {
-    if (this.courseDetails) {
-      this.courseService.updateCourse(this.courseId, this.courseDetails).subscribe(
-        (updatedCourse) => {
-          this.courseDetails = updatedCourse;
-          alert('Course updated successfully!');
-        },
-        (error) => {
-          console.error('Error updating course', error);
-        }
-      );
+    } else {
+      console.log('Form is invalid or missing courseId!');
+      alert('Please ensure the form is correctly filled.');
     }
   }
 }

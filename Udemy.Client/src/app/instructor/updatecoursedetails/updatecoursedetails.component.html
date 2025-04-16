@@ -1,208 +1,155 @@
-<div class="container mt-4 px-4">
-    <h2 class="text-2xl font-semibold mb-4">Update Course Details</h2>
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-700">Update Course Details</h2>
 
-    <!-- Form to update course details -->
-    <form (ngSubmit)="updateCourse()" #courseForm="ngForm">
-
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
         <!-- Course Title -->
         <div class="mb-4">
-            <label for="title" class="block text-sm font-semibold text-gray-700">Course Title</label>
-            <input 
-                type="text" 
-                id="title" 
-                name="title" 
-                [(ngModel)]="course.title" 
+            <label for="title" class="block text-gray-700 font-medium mb-2">Course Title</label>
+            <input
+                id="title"
+                formControlName="title"
+                type="text"
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
+            <div *ngIf="courseForm.get('title')?.touched && courseForm.get('title')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('title')?.hasError('required')">Title is required.</div>
+                <div *ngIf="courseForm.get('title')?.hasError('maxLength')">Title cannot exceed 20 characters.</div>
+            </div>
         </div>
 
         <!-- Description -->
         <div class="mb-4">
-            <label for="description" class="block text-sm font-semibold text-gray-700">Description</label>
-            <textarea 
-                id="description" 
-                name="description" 
-                [(ngModel)]="course.description" 
-                rows="4" 
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
+            <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+            <textarea
+                id="description"
+                formControlName="description"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             ></textarea>
-        </div>
-
-        <!-- Status -->
-        <div class="mb-4">
-            <label for="status" class="block text-sm font-semibold text-gray-700">Status</label>
-            <select 
-                id="status" 
-                name="status" 
-                [(ngModel)]="course.status"
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-            >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
         </div>
 
         <!-- Course Level -->
         <div class="mb-4">
-            <label for="courseLevel" class="block text-sm font-semibold text-gray-700">Course Level</label>
-            <select 
-                id="courseLevel" 
-                name="courseLevel" 
-                [(ngModel)]="course.courseLevel"
+            <label for="courseLevel" class="block text-gray-700 font-medium mb-2">Course Level</label>
+            <input
+                id="courseLevel"
+                formControlName="courseLevel"
+                type="text"
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-            >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-            </select>
-        </div>
-
-        <!-- Category -->
-        <div class="mb-4">
-            <label for="category" class="block text-sm font-semibold text-gray-700">Category</label>
-            <select 
-            id="category" 
-            name="category" 
-            [(ngModel)]="course.categoryId" 
-            (change)="onCategoryChange($event)" 
-            required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md"
-          >
-            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-          </select>
-        </div>
-
-        <!-- Sub-Category -->
-        <div class="mb-4">
-            <label for="subCategory" class="block text-sm font-semibold text-gray-700">Sub-Category</label>
-            <select 
-                id="subCategory" 
-                name="subCategory" 
-                [(ngModel)]="course.subCategoryId"
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-            >
-                <option *ngFor="let subCategory of subCategories" [value]="subCategory.id">{{ subCategory.name }}</option>
-            </select>
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <div *ngIf="courseForm.get('courseLevel')?.touched && courseForm.get('courseLevel')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('courseLevel')?.hasError('required')">Course Level is required.</div>
+            </div>
         </div>
 
         <!-- Discount -->
         <div class="mb-4">
-            <label for="discount" class="block text-sm font-semibold text-gray-700">Discount (%)</label>
-            <input 
-                type="number" 
-                id="discount" 
-                name="discount" 
-                [(ngModel)]="course.discount" 
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-                min="0" max="100"
+            <label for="discount" class="block text-gray-700 font-medium mb-2">Discount</label>
+            <input
+                id="discount"
+                type="number"
+                formControlName="discount"
+                min="0"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
+            <div *ngIf="courseForm.get('discount')?.touched && courseForm.get('discount')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('discount')?.hasError('min')">Discount must be at least 0.</div>
+                <div *ngIf="courseForm.get('discount')?.hasError('max')">Discount cannot exceed 100%.</div>
+            </div>
+            
         </div>
 
         <!-- Price -->
         <div class="mb-4">
-            <label for="price" class="block text-sm font-semibold text-gray-700">Price ($)</label>
-            <input 
-                type="number" 
-                id="price" 
-                name="price" 
-                [(ngModel)]="course.price" 
+            <label for="price" class="block text-gray-700 font-medium mb-2">Price</label>
+            <input
+                id="price"
+                type="number"
+                formControlName="price"
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-                min="0"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
-        </div>
-
-        <!-- Duration (in hours) -->
-        <div class="mb-4">
-            <label for="duration" class="block text-sm font-semibold text-gray-700">Duration (hours)</label>
-            <input 
-                type="number" 
-                id="duration" 
-                name="duration" 
-                [(ngModel)]="course.duration" 
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-                min="1"
-            />
+            <div *ngIf="courseForm.get('price')?.touched && courseForm.get('price')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('price')?.hasError('required')">Price is required.</div>
+                <div *ngIf="courseForm.get('price')?.hasError('min')">Price must be a positive value.</div>
+            </div>
         </div>
 
         <!-- Language -->
         <div class="mb-4">
-            <label for="language" class="block text-sm font-semibold text-gray-700">Language</label>
-            <input 
-                type="text" 
-                id="language" 
-                name="language" 
-                [(ngModel)]="course.language" 
+            <label for="language" class="block text-gray-700 font-medium mb-2">Language</label>
+            <input
+                id="language"
+                formControlName="language"
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
+            <div *ngIf="courseForm.get('language')?.touched && courseForm.get('language')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('language')?.hasError('required')">Language is required.</div>
+                <div *ngIf="courseForm.get('language')?.hasError('maxLength')">Language cannot exceed 20 characters.</div>
+            </div>
         </div>
 
-        <!-- Image URL -->
+        <!-- Goals -->
         <div class="mb-4">
-            <label for="imageUrl" class="block text-sm font-semibold text-gray-700">Image URL</label>
-            <input 
-                type="text" 
-                id="imageUrl" 
-                name="imageUrl" 
-                [(ngModel)]="course.imageUrl"
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-            />
-        </div>
-
-        <!-- Video URL -->
-        <div class="mb-4">
-            <label for="videoUrl" class="block text-sm font-semibold text-gray-700">Video URL</label>
-            <input 
-                type="text" 
-                id="videoUrl" 
-                name="videoUrl" 
-                [(ngModel)]="course.videoUrl"
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
-            />
-        </div>
-
-        <!-- Course Goals -->
-        <div class="mb-4">
-            <label for="courseGoals" class="block text-sm font-semibold text-gray-700">Course Goals</label>
-            <textarea 
-                id="courseGoals" 
-                name="courseGoals" 
-                [(ngModel)]="course.courseGoals" 
-                rows="4" 
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
+            <label for="goals" class="block text-gray-700 font-medium mb-2">Course Goals</label>
+            <textarea
+                id="goals"
+                formControlName="goals"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             ></textarea>
+            <div *ngIf="courseForm.get('goals')?.touched && courseForm.get('goals')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('goals')?.hasError('required')">Goals are required.</div>
+            </div>
         </div>
 
-        <!-- Course Requirements -->
+        <!-- Requirements -->
         <div class="mb-4">
-            <label for="courseRequirements" class="block text-sm font-semibold text-gray-700">Course Requirements</label>
-            <textarea 
-                id="courseRequirements" 
-                name="courseRequirements" 
-                [(ngModel)]="course.courseRequirements" 
-                rows="4" 
-                required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md"
+            <label for="requirements" class="block text-gray-700 font-medium mb-2">Course Requirements</label>
+            <textarea
+                id="requirements"
+                formControlName="requirements"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             ></textarea>
+            <div *ngIf="courseForm.get('requirements')?.touched && courseForm.get('requirements')?.invalid" class="text-red-500 text-sm">
+                <div *ngIf="courseForm.get('requirements')?.hasError('required')">Requirements are required.</div>
+            </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Upload Image</label>
+            <input
+                type="file"
+                (change)="onImageSelected($event)"
+                class="file:bg-gray-200 file:border file:border-gray-300 file:rounded-md file:px-4 file:py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div *ngIf="imagePreviewUrl" class="mt-4">
+                <p class="text-gray-700">Preview:</p>
+                <img [src]="imagePreviewUrl" width="200" *ngIf="isImage" />
+            </div>
+        </div>
+
+        <!-- Video Upload -->
+        <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Upload Video</label>
+            <input
+                type="file"
+                (change)="onVideoSelected($event)"
+                class="file:bg-gray-200 file:border file:border-gray-300 file:rounded-md file:px-4 file:py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          
         </div>
 
         <!-- Submit Button -->
-        <div class="mb-4">
-            <button 
-                type="submit" 
-                [disabled]="!courseForm.form.valid"
-                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+        <div>
+            <button
+                [disabled]="courseForm.invalid"
+                type="submit"
+                class="w-full py-3 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-                Save Changes
+                Update Course
             </button>
         </div>
     </form>

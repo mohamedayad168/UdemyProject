@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Course } from '../models/course.model';
+import { Course, CourseUpdateDTO } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
 import { CourseCDTO } from '../models/course-cdto';
@@ -79,7 +79,7 @@ export class CourseService {
   deleteCourse(courseId: number) {
     return this.http.delete(`${this.baseUrl}/${courseId}`);
   }
-  updateCourse(courseId: number, course: Course): Observable<Course> {
-    return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course);
-  }
+updateCourse(id: number, courseData: CourseUpdateDTO): Observable<any> {
+  return this.http.put(`${environment.baseurl}/courses/${id}`, courseData);
+}
 }
