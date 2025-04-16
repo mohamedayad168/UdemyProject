@@ -40,16 +40,16 @@
     </form>
 
     <div class="d-flex gap-4 align-items-center">
+      @if(accountService.currentUser()==null){
       <button
-        routerLink="/teach"
+        routerLink="/loginasinstrctor"
         mat-stroked-button
         class="text-primary"
         matTooltip="Become an instructor"
       >
         Teach with Us
       </button>
-
-      @if(accountService.currentUser()){
+      } @if(accountService.currentUser()?.roles?.includes('Student')){
       <button routerLink="my-learning" mat-stroked-button class="text-primary">
         My Learning
       </button>
@@ -68,7 +68,12 @@
           {{ accountService.currentUser()?.firstName?.charAt(0) }}
         </div>
       </button>
-      }@else {
+      } @else if (accountService.currentUser()?.roles?.includes('Instructor')) {
+      <button mat-menu-item class="px-3" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+      } @else {
       <button routerLink="/login" mat-stroked-button class="text-primary">
         Login
       </button>

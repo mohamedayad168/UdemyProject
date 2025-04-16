@@ -22,6 +22,8 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
                 .ToListAsync();
         }
 
+
+
         public async Task<Instructor?> GetInstructorByIdAsync(int id, bool trackChanges)
         {
             return await FindByCondition(i => i.Id == id && (i.IsDeleted == false || i.IsDeleted == null), trackChanges)
@@ -37,7 +39,10 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
 
         public async Task CreateInstructorAsync(Instructor instructor)
         {
-            await dbContext.Set<Instructor>().AddAsync(instructor);
+
+
+
+            dbContext.Entry(instructor).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
         }
 

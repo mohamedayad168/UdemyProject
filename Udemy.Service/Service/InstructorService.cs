@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using InstructorProfileAdd = Udemy.Service.DataTransferObjects.Create.InstructorProfileAdd;
 
 namespace Udemy.Service.Service
 {
@@ -23,19 +25,35 @@ namespace Udemy.Service.Service
             return mapper.Map<InstructorRDTO>(instructor);
         }
 
-        public async Task<DataTransferObjects.Read.InstructorRDTO> GetByTitleAsync(string title, bool trackChanges)
+        public async Task<InstructorRDTO> GetByTitleAsync(string title, bool trackChanges)
         {
             var instructor = await repository.Instructors.GetInstructorByTitleAsync(title, trackChanges);
             return mapper.Map<InstructorRDTO>(instructor);
         }
 
 
-        public async Task<Core.Entities.Instructor> CreateAsync(InstructorCDTO dto)
+        public async Task<InstructorRDTO> CreateAsync(InstructorCDTO dto)
         {
             var instructorEntity = mapper.Map<Core.Entities.Instructor>(dto);
 
             await repository.Instructors.CreateInstructorAsync(instructorEntity);
-            return instructorEntity;
+            var instructor = mapper.Map<InstructorRDTO>(instructorEntity);
+            return instructor;
+
+        }
+        public async Task<Instructor> AddInstructorData(InstructorProfileAdd dto, int userId)
+        {
+
+            Instructor instructor = new Instructor()
+            {
+                Id = userId,
+                Bio = dto.Bio,
+                Title = dto.Title,
+                Wallet = 0,
+
+            };
+            await repository.Instructors.CreateInstructorAsync(instructor);
+            return instructor;
 
         }
 

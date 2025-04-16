@@ -10,4 +10,5 @@ export type User = {
   age: number;
   gender: string;
   phoneNumber: string;
+  roles?: [string];
 };
