@@ -75,9 +75,9 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
-
-  deleteCourse(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
+  
+  deleteCourse(courseId: number) {
+    return this.http.delete(`${this.baseUrl}/${courseId}`);
   }
   updateCourse(courseId: number, course: Course): Observable<Course> {
     return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course);

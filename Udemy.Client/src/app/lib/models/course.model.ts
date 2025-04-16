@@ -8,8 +8,8 @@ export interface Course {
   price: number;
   duration: number;
   language: string;
-  imageUrl?: string;
-  videoUrl?: string;
+  imageUrl?: string| null;
+  videoUrl?: string| null;
   noSubscribers: number;
   isFree: boolean;
   isApproved: boolean;
@@ -19,8 +19,13 @@ export interface Course {
   subCategoryId: number;
   categoryId: number;
   instructorName: string;
+ 
   instructor: {
     id: number;
     name: string;
   };
+  // 🔥 Add these lines:
+  courseGoals: string[];
+  courseRequirements: string[];
+  // sections: Section[];
 }

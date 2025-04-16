@@ -17,7 +17,7 @@ namespace Udemy.Service.IService
 
         Task<IEnumerable<LessonRDto>> GetLessonsBySectionIdAsync(int sectionId, bool trackChanges);
         Task<bool> CreatelessonAsync(LessonCDto lessonc);
-        Task<bool> UpdateAsync(int id, LessonDto lessonD);
+        Task<bool> UpdateAsync(int id, LessonUDto lessonD);
         Task<bool> DeletelesssonAsync(int id);
         
     }

@@ -122,6 +122,7 @@ namespace Udemy.API.Controllers
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetInstructorCourses(int instructorId)
         {
             var courses = await _serviceManager.InstructorService.GetCoursesByInstructor(instructorId);
+
             if (courses == null || !courses.Any())
             {
                 return NotFound("No courses found for the instructor");

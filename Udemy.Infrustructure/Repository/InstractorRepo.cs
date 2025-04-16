@@ -52,7 +52,7 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
         {
             return await dbContext.Courses
                   .Include(c => c.Instructor)
-                                 .Where(course => course.InstructorId == instructorId)
+                                 .Where(course => course.InstructorId == instructorId && !course.IsDeleted)
                                  .ToListAsync();
         }
     }

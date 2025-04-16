@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Udemy.Core.Entities;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
+using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
-using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -70,7 +67,7 @@ namespace Udemy.Presentation.Controllers
 
         // PUT: api/Lesson/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonDto lessonDto)
+        public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonDto)
         {
             if (lessonDto == null)
             {
@@ -90,7 +87,7 @@ namespace Udemy.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteLesson(int id)
         {
-            var lesson = await _serviceManager.LessonService.GetByIdAsync(id,trackchange: false);
+            var lesson = await _serviceManager.LessonService.GetByIdAsync(id, trackchange: false);
             if (lesson == null)
             {
                 return NotFound();

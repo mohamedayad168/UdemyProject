@@ -11,11 +11,13 @@ namespace Udemy.Core.IRepository
         public Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges);
         public Task<Course?> GetByTitleAsync(string title, bool trackChanges);
         public Task<Course> GetByIdAsync(int id, bool trackChanges);
-
+        Task<Course> UpdateAsync(Course course);
+        Task SaveChangesAsync();
         //write
         //public Task<Course> CreateAsync(Course course);
         //public Task<Course> UpdateAsync(Course course);
         public Task ToggleApprovedAsync(int id);
+        Task DeleteCourseAsync(Course course);
 
         //
         public Task DeleteAsync(int id);
