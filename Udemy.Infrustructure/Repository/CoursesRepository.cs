@@ -3,10 +3,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.Read;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Infrastructure.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace Udemy.Infrastructure.Repository
 {
@@ -26,6 +23,38 @@ namespace Udemy.Infrastructure.Repository
             return await FindByCondition(c => !c.IsDeleted, trackChanges).ToListAsync();
         }
 
+
+        public async Task<Course> UpdateAsync(Course course)
+        {
+
+            var existingCourse = await context.Courses
+                .FirstOrDefaultAsync(c => c.Id == course.Id && !c.IsDeleted);
+
+            if (existingCourse == null)
+            {
+                throw new NotFoundException($"Course with ID {course.Id} not found.");
+            }
+
+
+            existingCourse.Title = course.Title;
+            existingCourse.Description = course.Description;
+            existingCourse.Duration = course.Duration;
+            existingCourse.Price = course.Price;
+            existingCourse.InstructorId = course.InstructorId;
+            existingCourse.SubCategoryId = course.SubCategoryId;
+            existingCourse.IsApproved = course.IsApproved;
+            existingCourse.IsDeleted = course.IsDeleted;
+
+            await context.SaveChangesAsync();
+
+            return existingCourse;
+        }
+
+
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
+        }
 
 
         public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
@@ -84,10 +113,7 @@ namespace Udemy.Infrastructure.Repository
             return await context.Courses.AnyAsync(c => c.Id == id);
         }
 
-        public async Task SaveChangesAsync()
-        {
-            await context.SaveChangesAsync();
-        }
+
 
         public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
         {
@@ -134,6 +160,14 @@ namespace Udemy.Infrastructure.Repository
 
             return coursesCount;
         }
+
+        public async Task DeleteCourseAsync(Course course)
+        {
+            course.IsDeleted = true;
+            context.Courses.Update(course);
+            await context.SaveChangesAsync();
+        }
+
 
     }
 }

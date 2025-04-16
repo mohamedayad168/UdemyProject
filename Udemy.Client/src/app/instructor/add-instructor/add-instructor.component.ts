@@ -12,7 +12,7 @@ import {
   AsyncValidatorFn,
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { delay, map, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,15 +25,24 @@ import { Router } from '@angular/router';
 export class AddInstructorComponent {
   profileForm: FormGroup;
   private InstructorService = inject(InstructorService);
- 
+  isCheckingEmail = false;
+  isCheckingUsername = false;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.profileForm = this.fb.group(
       {
         firstName: ['', [Validators.required, Validators.minLength(2)]],
         lastName: ['', [Validators.required, Validators.minLength(2)]],
-        userName: ['', [Validators.required, Validators.minLength(4)]],
-        email: ['', [Validators.required, Validators.email]],
+        userName: [
+          '',
+          [Validators.required, Validators.minLength(4)],
+          [this.usernameAvailabilityValidator()],
+        ],
+        email: [
+          '',
+          [Validators.required, Validators.email],
+          [this.emailAvailabilityValidator()],
+        ],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
         phoneNumber: [
@@ -59,30 +68,45 @@ export class AddInstructorComponent {
     );
   }
 
-  // // Async validator example
-  // emailAvailabilityValidator(): AsyncValidatorFn {
-  //   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-  //     if (!control.value) {
-  //       return of(null);
-  //     }
-  //     // Simulate API call - replace with actual service call
-  //     return of(control.value).pipe(
-  //       delay(500), // Simulate network delay
-  //       map((value) => {
-  //         // Replace with actual availability check
-  //         const takenEmails = ['test@test.com', 'admin@example.com'];
-  //         return takenEmails.includes(value) ? { emailTaken: true } : null;
-  //       })
-  //     );
-  //   };
-  // }
+  emailAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
 
-  // Rest of your component code remains the same...
+      this.isCheckingEmail = true;
+
+      return this.InstructorService.checkEmailExists(control.value).pipe(
+        map((exist) => {
+          console.log(exist);
+          this.isCheckingEmail = false;
+          return exist ? { emailTaken: true } : null;
+        })
+      );
+    };
+  }
+
+  usernameAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      this.isCheckingUsername = true;
+
+      return this.InstructorService.checkUsernameExists(control.value).pipe(
+        map((exist) => {
+          console.log(exist);
+          this.isCheckingUsername = false;
+          return exist ? { usernameTaken: true } : null;
+        })
+      );
+    };
+  }
   onSubmit(): void {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
-    
     }
 
     const formValue = this.profileForm.value;
@@ -117,7 +141,6 @@ export class AddInstructorComponent {
             next: () => {
               alert('Profile and social media links saved successfully!');
               this.router.navigate(['instructor/home']);
-
             },
             error: (err) => {
               console.error('Error saving social media links:', err);

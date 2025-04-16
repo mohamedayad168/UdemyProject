@@ -17,6 +17,17 @@ export class LessonService {
   getLessons(sectionId: number): Observable<Lesson[]> {
     return this.http.get<Lesson[]>(`${this.apiUrl}?sectionId=${sectionId}`);
   }
-
+  getLessonById(id: number): Observable<Lesson> {
+    return this.http.get<Lesson>(`${this.apiUrl}/${id}`);
+  }
+  createLesson(lesson: Lesson): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, lesson);
+  }
+  updateLesson(id: number, lesson: Lesson): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, lesson);
+  }
+  deleteLesson(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
   
 }

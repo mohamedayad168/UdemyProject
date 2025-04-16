@@ -4,7 +4,6 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -12,7 +11,7 @@ using Udemy.Service.IService;
 
 namespace Udemy.Service.Service
 {
-    public class CoursesService(IRepositoryManager repository, IMapper mapper) : ICoursesService
+    public class CoursesService(IRepositoryManager repository, IMapper mapper, ICloudService cloudService) : ICoursesService
     {
         public async Task<IEnumerable<CourseRDTO>> GetAllAsync(bool trackChanges)
         {
@@ -81,9 +80,20 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
+            string? imageUrl = null;
+            string? videoUrl = null;
 
+            if (courseDto.ImageUrl != null)
+                imageUrl = await cloudService.UploadImageAsync(courseDto.ImageUrl);
+
+            if (courseDto.VideoUrl != null)
+                videoUrl = await cloudService.UploadVideoAsync(courseDto.VideoUrl);
 
             var course = mapper.Map<Course>(courseDto);
+            course.ImageUrl = imageUrl;
+            course.VideoUrl = videoUrl;
+
+
 
             var instructorExists = await repository.Instructors
                 .FindByCondition(i => i.Id == courseDto.InstructorId, false).AnyAsync();
@@ -105,19 +115,23 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
         {
-            var course = mapper.Map<Course>(courseDto);
+      
+            var course = await repository.Courses.GetByIdAsync(courseDto.Id, true);
+            if (course == null)
+            {
+                throw new NotFoundException($"Course with ID {courseDto.Id} not found");
+            }
 
-            var courseWithSameTitle = await GetByTitleAsync(course.Title, false);
+            mapper.Map(courseDto, course); 
 
-            //check if same new title exists BUT can rename same course with same title
-            if (courseWithSameTitle is not null && course.Id != courseWithSameTitle.Id)
-                throw new BadRequestException($"title: {course.Title} already exists");
+         
+            await repository.Courses.UpdateAsync(course);
+            await repository.Courses.SaveChangesAsync(); 
 
-            repository.Courses.Update(course);
-            await repository.SaveAsync();
-
+           
             return mapper.Map<CourseRDTO>(course);
         }
+
 
         public async Task<bool> ToggleApprovedAsync(int id)
         {
@@ -128,9 +142,13 @@ namespace Udemy.Service.Service
 
         public async Task DeleteAsync(int id)
         {
-            await repository.Courses.DeleteAsync(id);
+            var course = await repository.Courses.GetByIdAsync(id, true);
+            if (course == null)
+                throw new Exception("Course not found");
 
+            await repository.Courses.DeleteCourseAsync(course);
         }
+
         public async Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId)
         {
             var courses = await repository.Courses.FindByCondition(c => c.SubCategoryId == subcategoryId, false)

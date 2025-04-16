@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-
 using Udemy.Core.IRepository;
 using Udemy.Service.IService;
 
@@ -25,15 +24,17 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ISubCategoriesService> subCategoriesService;
     private readonly Lazy<IPaymentService> paymentService;
     private readonly Lazy<ILessonService> lessonService;
+    private readonly Lazy<ISectionService> sectionService;
+
 
 
     public ServiceManager(
         IRepositoryManager repositoryManager,
-        IMapper mapper, IConfiguration Configuration)
+        IMapper mapper, IConfiguration Configuration, ICloudService cloudService)
 
 
     {
-        coursesService = new Lazy<ICoursesService>(() => new CoursesService(repositoryManager, mapper));
+        coursesService = new Lazy<ICoursesService>(() => new CoursesService(repositoryManager, mapper, cloudService));
         categoriesService = new Lazy<ICategoriesService>(() => new CategoriesService(repositoryManager, mapper));
 
         socialMediaService = new Lazy<ISocialMediaService>(() => new SocialMediaService(repositoryManager, mapper));
@@ -53,6 +54,9 @@ public class ServiceManager : IServiceManager
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
         lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper));
+
+        sectionService = new Lazy<ISectionService>(() => new SectionService(repositoryManager, mapper)); 
+
     }
 
     public ICoursesService CoursesService => coursesService.Value;
@@ -72,4 +76,7 @@ public class ServiceManager : IServiceManager
     public ISubCategoriesService SubCategoriesService => subCategoriesService.Value;
 
     public ILessonService LessonService => lessonService.Value;
+
+
+    public ISectionService SectionService => sectionService.Value; 
 }

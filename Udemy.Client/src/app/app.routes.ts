@@ -23,7 +23,7 @@ import { CreatecoursebageComponent } from './instructor/createcoursebage/createc
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 import { InstructorGetstartedComponent } from './instructor/instructor-getstarted/instructor-getstarted.component';
-import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
+
 import { CourseSearchComponent } from './pages/course-search/course-search.component';
 import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
 import { EditCourseComponent } from './instructor/edit-course/edit-course.component'; 
@@ -84,10 +84,7 @@ export const routes: Routes = [
     path: 'instructor/instructor-audiance',
     component: InstructorAudianceComponent,
   },
-  {
-    path: 'instructor/new',
-    component: AddInstructorComponent,
-  },
+  
   {
     path: 'teach',
     component: CometeachwithusComponent,

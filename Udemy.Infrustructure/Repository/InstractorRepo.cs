@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
-using Udemy.Core.ReadOptions;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
@@ -12,9 +8,11 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
     {
         private readonly ApplicationDbContext dbContext;
 
+
         public InstructorRepo(ApplicationDbContext context) : base(context)
         {
             dbContext = context;
+
         }
 
         public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync(bool trackChanges)
@@ -54,7 +52,7 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
         {
             return await dbContext.Courses
                   .Include(c => c.Instructor)
-                                 .Where(course => course.InstructorId == instructorId)
+                                 .Where(course => course.InstructorId == instructorId && !course.IsDeleted)
                                  .ToListAsync();
         }
     }

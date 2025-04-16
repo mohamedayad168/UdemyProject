@@ -50,7 +50,7 @@ namespace Udemy.Service.Service
             return true;
         }
 
-        public async Task<bool> UpdateAsync(int id, LessonDto lessonDto)
+        public async Task<bool> UpdateAsync(int id, LessonUDto lessonDto)
         {
             var lesson = await _repository.Lessons.GetByIdAsync(id, trackchange: true);
             if (lesson is null) return false;

@@ -14,6 +14,9 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
 builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAuthorization();
+builder.Services.ConfigureCloudinaryService();
+builder.Services.ConfigureCloudinarySettings(builder.Configuration);
+
 
 
 builder.Services.AddCors(options =>

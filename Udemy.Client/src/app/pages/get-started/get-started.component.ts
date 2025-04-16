@@ -46,12 +46,12 @@ export class GetStartedComponent { profileForm: FormGroup;
           [Validators.required, Validators.min(18), Validators.max(100)],
         ],
         gender: ['', Validators.required],
-        facebook: ['', Validators.required],
+        facebook: ['', ],
         title: ['', [Validators.required, Validators.maxLength(60)]],
-        instagram: ['', Validators.required],
+        instagram: ['', ],
         biography: ['', [Validators.required, Validators.minLength(50)]],
-        linkedin: ['', Validators.required],
-        twitter: ['', Validators.required],
+        linkedin: ['', ],
+        twitter: ['',],
       },
       { validators: this.passwordMatchValidator }
     );

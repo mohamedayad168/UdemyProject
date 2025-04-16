@@ -79,39 +79,39 @@ public class AccountController(
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
         var roles = await signInManager.UserManager.GetRolesAsync(user);
-        //if (roles.Contains("Instructor"))
-        //{
-
-        //}
-        var claims = new List<Claim>
+        if (roles.Contains("Instructor"))
+        {
+            var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.UserName)
+            new Claim(ClaimTypes.Name, user.UserName),
 
         };
 
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var identity = new ClaimsIdentity(claims, "Identity.Application");
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await signInManager.SignOutAsync();
+
+            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
+            {
+                IsPersistent = true
+            });
+
+            var userDto = mapper.Map<UserDto>(user);
+            userDto.Roles = roles ?? [];
+
+            return Ok(userDto);
         }
 
-        var identity = new ClaimsIdentity(claims, "Identity.Application");
-
-        var principal = new ClaimsPrincipal(identity);
-
-        await signInManager.SignOutAsync();
-
-        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
-        {
-            IsPersistent = true
-        });
-
-        var userDto = mapper.Map<UserDto>(user);
-        userDto.Roles = roles ?? [];
-
-        return Ok(userDto);
-
+        return BadRequest("you are not instructor please register as instructor");
 
     }
 
