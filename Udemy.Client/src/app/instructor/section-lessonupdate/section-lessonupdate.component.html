@@ -1,0 +1,99 @@
+<div class="container mx-auto my-8 p-4">
+  <h2 class="text-2xl font-bold mb-4">Manage Sections and Lessons</h2>
+
+  <!-- Display Sections -->
+  <div *ngFor="let section of sections" class="mb-6 p-4 border border-gray-300 rounded-lg">
+    <div class="section">
+      <!-- Edit Section Title -->
+      <h3 class="text-xl font-semibold mb-2">
+        <input
+          [(ngModel)]="section.title"
+          (blur)="editSectionTitle(section, section.title)"
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </h3>
+
+      <!-- Remove Section with All Lessons -->
+      <button
+        class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none mb-4"
+        (click)="removeSectionWithLessons(section.id)"
+      >
+        Remove Section with All Lessons
+      </button>
+
+      <!-- Display Lessons in each Section -->
+      <div *ngFor="let lesson of section.lessons" class="mt-4">
+        <div class="lesson p-4 border border-gray-200 rounded-lg">
+          <!-- Edit Lesson Title -->
+          <h4 class="text-lg font-medium mb-2">
+            <input
+              [(ngModel)]="lesson.title"
+              (blur)="updateLesson(lesson)"
+              class="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </h4>
+
+          <!-- Remove Lesson -->
+          <button
+            class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none"
+            (click)="removeLesson(lesson.id, section.id)"
+          >
+            Remove Lesson
+          </button>
+
+          <!-- Video Upload -->
+          <div class="mt-2">
+            <input
+              type="file"
+              (change)="onVideoSelected($event, lesson)"
+              class="border p-2 rounded-md"
+              accept="video/*"
+            />
+            <video
+              *ngIf="videoPreviewUrl[lesson.id]"
+              [src]="videoPreviewUrl[lesson.id]"
+              controls
+              class="mt-2 w-full h-auto"
+            ></video>
+            <div *ngIf="!videoPreviewUrl[lesson.id]" class="mt-2 text-gray-600">
+              <span>No video uploaded yet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Lesson Button for this Section -->
+      <button
+        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
+        (click)="triggerAddLesson(section.id, videoInput)"
+      >
+        Add New Lesson
+      </button>
+    </div>
+  </div>
+
+  <!-- Add New Section -->
+  <button
+    class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mt-6"
+    (click)="addSection()"
+  >
+    Add New Section
+  </button>
+
+  <!-- Hidden File Input for Adding New Lesson Video -->
+  <input
+    type="file"
+    #videoInput
+    accept="video/*"
+    style="display: none"
+    (change)="onNewLessonVideoSelected($event, selectedSectionId)"
+  />
+
+  <!-- Save All Changes -->
+  <button
+    class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 mt-4 ml-4"
+    (click)="saveChanges()"
+  >
+    Save Changes
+  </button>
+</div>

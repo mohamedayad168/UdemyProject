@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Section } from '../models/CourseDetail.model';
@@ -9,7 +9,7 @@ import { Section } from '../models/CourseDetail.model';
 })
 export class SectionService {
 
-  private apiUrl = `${environment.baseurl}/sections`;  
+  private apiUrl = `${environment.baseurl}/Section`;  
 
   constructor(private http: HttpClient) {}
 
@@ -17,20 +17,24 @@ export class SectionService {
   getSections(courseId: number): Observable<Section[]> {
     return this.http.get<Section[]>(`${this.apiUrl}?courseId=${courseId}`);
   }
-
-  getSectionById(sectionId: number): Observable<Section> {
-    return this.http.get<Section>(`${this.apiUrl}/${sectionId}`);
+  getSectionsByCourseId(courseId: number): Observable<Section[]> {
+    const params = new HttpParams().set('trackChanges', 'false');
+    return this.http.get<Section[]>(`${this.apiUrl}/course/${courseId}`, { params });
   }
+  
+  
+
   createSection(section: Section): Observable<any> {
     return this.http.post(`${this.apiUrl}`, section);
   }
-  updateSection(sectionId: number, section: Section): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${sectionId}`, section);
+ 
+  updateSection(id: number, section: Section): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/${id}`, section, { responseType: 'text' as 'json' });
   }
-  deleteSection(sectionId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${sectionId}`);
-  }
-  getSectionsByCourseId(courseId: number): Observable<Section[]> {
-    return this.http.get<Section[]>(`${this.apiUrl}/ByCourse/${courseId}`);
-  }
+  
+  
+ deleteSection(sectionId: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/${sectionId}`, { responseType: 'text' });
 }
+  }
+

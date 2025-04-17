@@ -28,7 +28,11 @@ namespace Udemy.Service.AutoMapperConfigration
 
             CreateMap<Lesson, LessonRDto>().ReverseMap(); 
             CreateMap<Lesson, LessonCDto>().ReverseMap(); 
-            CreateMap<Lesson, LessonDto>().ReverseMap();
+            CreateMap<Lesson, LessonUDto>().ReverseMap();
+
+            CreateMap<Section, SectionRDTO>().ReverseMap();
+            CreateMap<Section, SectionCDTO>().ReverseMap();
+            CreateMap<Section, SectionUDTO>().ReverseMap();
 
             CreateMap<Instructor, InstructorRDTO>().ReverseMap();
             CreateMap<Instructor, InstructorCDTO>().ReverseMap();
