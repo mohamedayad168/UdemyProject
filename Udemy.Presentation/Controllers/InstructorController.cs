@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
+using Udemy.Core.ReadOptions;
 using Udemy.Core.Utils;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -35,6 +37,19 @@ namespace Udemy.API.Controllers
             var instructors = await _serviceManager.InstructorService.GetAllAsync(false);
             return Ok(instructors);
         }
+
+
+        [HttpGet("page")]
+        public async Task<ActionResult<PaginatedRes<InstructorRDTO>>> GetPage([FromQuery]PaginatedSearchReq searchReq)
+        {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
+            var paginatedRes = await _serviceManager.InstructorService.GetPageAsync(searchReq, DeletionType.NotDeleted, false);
+            return Ok(paginatedRes);
+
+        }
+
 
 
         [HttpGet("{id:int}")]
@@ -80,6 +95,46 @@ namespace Udemy.API.Controllers
 
 
             return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, instructor);
+        }
+
+        [HttpPost("AddStudentAsInstructor")]
+        public async Task<ActionResult<Instructor>> AddStudentAsInstructor([FromBody] InstructorProfileAdd instructorDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var user = await _serviceManager.UserService.GetAllUserDataByEmailAsync(instructorDto.Email);
+            if (user == null)
+            {
+                return NotFound(new { Message = "Email not found" });
+            }
+
+
+            var passwordValid = await userManager.CheckPasswordAsync(user, instructorDto.Password);
+            if (!passwordValid)
+            {
+                return BadRequest(new { Message = "Invalid password" });
+            }
+
+            // Check if role exists
+            var roleExists = await userManager.IsInRoleAsync(user, UserRole.Instructor);
+            if (roleExists)
+            {
+                return BadRequest(new { Message = "User is Instructor" });
+            }
+
+
+
+            var createdInstructor = await _serviceManager.InstructorService.AddInstructorData(instructorDto, user.Id);
+            //var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
+            //await signInManager.UserManager.UpdateSecurityStampAsync(instructor);
+
+            //await userManager.AddToRoleAsync(instructor, UserRole.Instructor);
+
+
+
+            return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, createdInstructor);
         }
 
         [HttpPut("{id:int}")]

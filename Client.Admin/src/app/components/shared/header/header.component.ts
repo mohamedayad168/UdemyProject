@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 // import { LoginService } from '../../services/popups/login/login.service';
 import { ButtonModule } from 'primeng/button';
@@ -11,8 +11,8 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
+import { ScrollService } from '../../../services/scroll/scroll.service';
 // import { SearchService } from '../../services/search/search.service';
-
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -29,10 +29,18 @@ import { InputTextModule } from 'primeng/inputtext';
     InputGroupAddonModule,
     InputTextModule,
   ],
+  host: {
+    onscroll: 'onScroll()',
+  },
 })
 export class HeaderComponent implements OnInit {
   isDiscount: boolean = false;
   items: MenuItem[] | undefined;
+  
+  visible = signal(true);
+  
+  scrollService = inject(ScrollService);
+
   // searchInput: string = '';
 
   // loginService = inject(LoginService);
@@ -55,10 +63,11 @@ export class HeaderComponent implements OnInit {
             icon: 'pi pi-sign-out',
             command: () => {
               this.authService.logout();
-            }
+            },
           },
         ],
       },
     ];
   }
+
 }

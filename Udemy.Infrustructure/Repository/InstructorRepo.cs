@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.IRepository;
+using Udemy.Core.ReadOptions;
+using Udemy.Infrastructure.Extensions;
 
 namespace Udemy.Infrastructure.Repository.EntityRepos
 {
@@ -22,6 +25,45 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
                 .ToListAsync();
         }
 
+
+
+        public async Task<PaginatedRes<Instructor>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
+        {
+            IQueryable<Instructor> query;
+
+            if (searchReq.SearchTerm!.Length > 0)
+            {
+                query = FindAll(trackChanges, deletionType)
+                .Where(x =>
+                    x.FirstName.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
+                    x.LastName.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                    x.Title.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower())
+                 );
+            }
+            else
+            {
+                query = FindAll(trackChanges, deletionType);
+            }
+
+
+            var instructors = await query
+                .Sort(searchReq.OrderBy!)
+                .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
+                .Take(searchReq.PageSize)
+                .ToListAsync();
+
+            var response = new PaginatedRes<Instructor>
+            {
+                CurrentPage = searchReq.PageNumber,
+                PageSize = searchReq.PageSize,
+                TotalItems = await query.CountAsync(),
+                Data = instructors,
+            };
+            return response;
+        }
+
+
+
         public async Task<Instructor?> GetInstructorByIdAsync(int id, bool trackChanges)
         {
             return await FindByCondition(i => i.Id == id && (i.IsDeleted == false || i.IsDeleted == null), trackChanges)
@@ -37,7 +79,10 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
 
         public async Task CreateInstructorAsync(Instructor instructor)
         {
-            await dbContext.Set<Instructor>().AddAsync(instructor);
+
+
+
+            dbContext.Entry(instructor).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
         }
 

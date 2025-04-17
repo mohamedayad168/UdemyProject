@@ -6,6 +6,8 @@ import { authGuard } from './guards/auth/auth.guard';
 import { BiPageComponent } from './pages/bi-page/bi-page.component';
 import { childrenGuard } from './guards/auth/children/children.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { InstructorsPageComponent } from './pages/instructors-page/instructors-page.component';
+import { StudentsPageComponent } from './pages/students-page/students-page.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,20 @@ export const routes: Routes = [
     pathMatch: 'full',
     title: 'Courses',
     component: CoursesPageComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'students',
+    pathMatch: 'full',
+    title: 'Students',
+    component: StudentsPageComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'instructors',
+    pathMatch: 'full',
+    title: 'Instructors',
+    component: InstructorsPageComponent,
     canActivate: [authGuard],
   },
   

@@ -7,6 +7,7 @@ import { LoginComponent } from "./components/shared/login/login.component";
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { LoadingService } from './services/loading/loading.service';
 import { AuthService } from './services/auth/auth.service';
+import { ScrollService } from './services/scroll/scroll.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, SideNavComponent, HeaderComponent, LoginComponent,ProgressSpinner],
@@ -17,4 +18,6 @@ export class AppComponent {
   title = 'Client.Admin';
   authService = inject(AuthService);
   loadingService = inject(LoadingService);
+  scrollService = inject(ScrollService);
+
 }

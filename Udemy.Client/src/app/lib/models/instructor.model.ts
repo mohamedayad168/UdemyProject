@@ -51,3 +51,12 @@ export const dummyInstructor: Instructor = {
   Age: 0,
   Gender: '',
 };
+export interface AddInstructorData {
+  Title: string;
+  bio: string;
+  Email: string;
+  Password: string;
+  totalCourses?: number | null;
+  totalReviews?: number | null;
+  totalStudents?: number | null;
+}

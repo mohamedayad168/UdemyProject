@@ -5,12 +5,13 @@ using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 
 namespace Udemy.Service.AutoMapperConfigration;
-public class StudentMappingProfile: Profile
+public class StudentMappingProfile : Profile
 {
     public StudentMappingProfile()
     {
         CreateMap<Student, StudentDto>().ReverseMap();
         CreateMap<Student, StudentForCreationDto>().ReverseMap();
         CreateMap<Student, StudentForUpdatingDto>().ReverseMap();
+        CreateMap<Student, UserForCreationDto>().ReverseMap(); ;
     }
 }

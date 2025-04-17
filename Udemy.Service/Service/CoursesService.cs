@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
@@ -21,10 +22,10 @@ namespace Udemy.Service.Service
         }
 
 
-        public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
+        public async Task<PaginatedRes<CourseRDTO>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
 
         {
-            var paginatedCourseRes = await repository.Courses.GetPageAsync(searchReq, isDeleted, trackChanges);
+            var paginatedCourseRes = await repository.Courses.GetPageAsync(searchReq, deletionType, trackChanges);
 
             var paginatedDtoRes = new PaginatedRes<CourseRDTO>
             {

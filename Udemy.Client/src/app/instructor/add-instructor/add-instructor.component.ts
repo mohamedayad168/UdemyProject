@@ -12,7 +12,7 @@ import {
   AsyncValidatorFn,
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { delay, map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({

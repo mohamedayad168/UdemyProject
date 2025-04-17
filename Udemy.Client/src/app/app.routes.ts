@@ -26,10 +26,11 @@ import { InstructorGetstartedComponent } from './instructor/instructor-getstarte
 
 import { CourseSearchComponent } from './pages/course-search/course-search.component';
 import { InstructordetailsComponent } from './instructor/instructordetails/instructordetails.component';
-import { EditCourseComponent } from './instructor/edit-course/edit-course.component'; 
+import { EditCourseComponent } from './instructor/edit-course/edit-course.component';
 import { EditinstructorPageComponent } from './instructor/editinstructor-page/editinstructor-page.component';
 import { UpdatecoursedetailsComponent } from './instructor/updatecoursedetails/updatecoursedetails.component';
-import { SectionLessonupdateComponent } from './instructor/section-lessonupdate/section-lessonupdate.component';
+import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
+import { AddStudentAsInstructorComponent } from './instructor/add-student-as-instructor/add-student-as-instructor.component';
 export const routes: Routes = [
   {
     path: '',
@@ -88,7 +89,7 @@ export const routes: Routes = [
     path: 'instructor/instructor-audiance',
     component: InstructorAudianceComponent,
   },
-  
+
   {
     path: 'teach',
     component: CometeachwithusComponent,
@@ -99,7 +100,11 @@ export const routes: Routes = [
   },
   {
     path: 'get-started',
-    component: GetStartedComponent,
+    component: AddInstructorComponent,
+  },
+  {
+    path: 'add-instructor-role',
+    component: AddStudentAsInstructorComponent,
   },
   {
     path: 'loginasinstrctor',
@@ -141,8 +146,6 @@ export const routes: Routes = [
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
 
-  
-
   {
     path: 'course/view/:id',
     component: CourseViewComponent,
@@ -154,9 +157,9 @@ export const routes: Routes = [
   },
   {
     path: 'instructors/:id/courses',
-   component:EditCourseComponent
+    component: EditCourseComponent,
   },
-  {path:'edit-instructor-Page', component:EditinstructorPageComponent},
+  { path: 'edit-instructor-Page', component: EditinstructorPageComponent },
   {
     title: '404',
     path: '**',

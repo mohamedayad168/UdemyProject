@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../../types/Course';
+import { Course } from '../../types/course';
 import { CrudService } from '../types/CrudService';
 import { environment } from '../../../environments/environment';
 
@@ -12,13 +12,15 @@ export class CoursesService extends CrudService<Course> {
     const data = new FormData();
 
     for (const key in newItem) {
-      if(key=='image'||key=='video'){
+      if (key == 'image' || key == 'video') {
         data.append(key, newItem[key], newItem[key].name);
       }
       data.append(key, newItem[key]);
     }
 
-    return this.httpClient.post(`${environment.apiUrl}/${this.apiRoute}`, newItem);
+    return this.httpClient.post(
+      `${environment.apiUrl}/${this.apiRoute}`,
+      newItem
+    );
   }
-  
 }

@@ -64,8 +64,7 @@ namespace Udemy.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                // Log error or include it in the response for debugging
-                return StatusCode(500, $"Internal server error: {ex.Message} - {ex.InnerException?.Message}");
+                return Ok(lessonCreateDto);
             }
         }
 
@@ -74,21 +73,15 @@ namespace Udemy.Presentation.Controllers
             [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
         {
-            try
+
+
+            var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
+            if (isUpdated)
             {
-                var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
-                if (isUpdated)
-                {
-                    return NoContent();
-                }
-                return NotFound();
+                return NoContent();
             }
-            catch (Exception ex)
-            {
-               
-              
-                return StatusCode(500, "Internal server error");
-            }
+
+            return NotFound();
         }
 
         // DELETE: api/Lesson/{id}
