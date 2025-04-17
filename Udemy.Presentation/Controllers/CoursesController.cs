@@ -94,7 +94,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> CreateCourseAsync(CourseCDTO course)
         {
 
