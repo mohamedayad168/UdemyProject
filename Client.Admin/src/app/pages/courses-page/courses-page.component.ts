@@ -6,7 +6,7 @@ import {
   ICrudTableItemStatus,
 } from '../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../services/courses/courses.service';
-import { Course } from '../../types/course';
+import { Course } from '../../types/abc';
 let emptyItem: Course = {
   id: '',
   title: '',
