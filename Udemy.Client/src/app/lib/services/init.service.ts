@@ -12,10 +12,10 @@ export class InitService {
 
   init() {
     const user = this.accountService.getUserInfo();
-    const cart = this.cartService.getCart();
+    // const cart = this.cartService.getCart();
 
     return forkJoin({
-      cart: cart,
+      // cart: cart,
       user: user,
     });
   }

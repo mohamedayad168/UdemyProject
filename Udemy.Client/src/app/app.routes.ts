@@ -31,6 +31,7 @@ import { EditinstructorPageComponent } from './instructor/editinstructor-page/ed
 import { UpdatecoursedetailsComponent } from './instructor/updatecoursedetails/updatecoursedetails.component';
 import { AddInstructorComponent } from './instructor/add-instructor/add-instructor.component';
 import { AddStudentAsInstructorComponent } from './instructor/add-student-as-instructor/add-student-as-instructor.component';
+import { SectionLessonupdateComponent } from './instructor/section-lessonupdate/section-lessonupdate.component';
 export const routes: Routes = [
   {
     path: '',
@@ -51,6 +52,9 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+  },
+  {
+     path: 'updatesectionlessondetails/:id', component: SectionLessonupdateComponent ,
   },
   {
     path: 'signup',

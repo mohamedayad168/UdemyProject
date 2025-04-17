@@ -92,6 +92,14 @@ namespace Udemy.Presentation.Controllers
 
         }
 
+        [HttpGet("{id:int}/asks/{askId:int}/answers")]
+        public async Task<ActionResult<IEnumerable<AnswerDto>>> GetAnswersByAskIdAsync([FromRoute] int id, [FromRoute] int askId)
+        {
+            var answers = await serviceManager.AnswerService.GetAllQuestionAnswersByIdAsync(askId);
+            return Ok(answers);
+        }
+
+
 
         [HttpPost]
         [Authorize(Roles = "Admin,Instructor")]

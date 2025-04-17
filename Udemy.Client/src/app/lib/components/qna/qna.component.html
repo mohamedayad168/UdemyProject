@@ -1,14 +1,13 @@
 <p-toast />
-<ng-template Class="max-w-4xl mx-auto bg-white rounded-lg p-6 mb-10" #content let-modal>
-  <div class="max-w-4xl mx-auto bg-white h-50 rounded-lg p-6 mb-10">
-
+<ng-template #content let-modal>
+  <div class="w-full mx-auto bg-white h-50 rounded-lg p-6 mb-10">
     <h2 class="text-2xl text-center font-bold mb-4">Ask a question</h2>
     <form (ngSubmit)="submitReview()" #askForm="ngForm">
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-1" for="review">
           Title*
         </label>
-        <input required [(ngModel)]="askModel.title" id="title" name="title" rows="4" type="text"
+        <input required [(ngModel)]="createAskModel.title" id="title" name="title" rows="4" type="text"
           class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6c28d249]"
           placeholder="Ask a question about the course..."
           >
@@ -18,7 +17,7 @@
       <label class="block text-sm font-medium text-gray-700 mb-1" for="review">
         Leave a Comment
       </label>
-      <textarea [(ngModel)]="askModel.content" id="review" name="review" rows="4"
+      <textarea [(ngModel)]="createAskModel.content" id="review" name="review" rows="4"
         class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6c28d249]"
         placeholder="Ask a question about the course..."
         ></textarea>
@@ -26,13 +25,48 @@
 
     <button
       [disabled]="askForm.invalid"
-
       class="bg-[#6d28d2] hover:bg-[#6c28d2d3] text-white font-semibold px-6 py-2 rounded-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
       Submit
     </button>
   </form>
   </div>
 
+</ng-template>
+<ng-template #edit let-modal>
+  <div class="w-full mx-auto bg-white h-50 rounded-lg p-6 mb-10">
+    <h2 class="text-2xl text-center font-bold mb-4">Edit Your question</h2>
+    <form (ngSubmit)="submitEditReview()" #askForm="ngForm">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1" for="review">
+          Title*
+        </label>
+        <input required [(ngModel)]="updateAskModel.title" id="title" name="title" rows="4" type="text"
+          class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6c28d249]"
+          placeholder="Ask a question about the course..."
+          >
+      </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1" for="review">
+        Leave a Comment
+      </label>
+      <textarea [(ngModel)]="updateAskModel.content" id="review" name="review" rows="4"
+        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6c28d249]"
+        placeholder="Ask a question about the course..."
+        ></textarea>
+    </div>
+
+    <button
+      [disabled]="askForm.invalid"
+      class="bg-[#6d28d2] hover:bg-[#6c28d2d3] text-white font-semibold px-6 py-2 rounded-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+      Submit
+    </button>
+  </form>
+  </div>
+
+</ng-template>
+<ng-template #questionDetails let-modal>
+<app-question-answers [courseId]="this.courseId()" [question]="pickedQuestion"></app-question-answers>
 </ng-template>
 <div class="flex items-center justify-center">
   <button
@@ -41,16 +75,21 @@
     Ask a question
   </button>
 </div>
-<section class="max-w-4xl mx-auto bg-white rounded-lg p-6 mb-10">
-
+<section #questionSection class="max-w-4xl mx-auto bg-white rounded-lg p-6 mb-10">
   @if(courseQuestions.length>0){
     <h2 class="text-2xl font-semibold mb-4">
-      All questions in this course <span class="text-gray-500 text-sm">(18)</span>
+      {{filterUserQuestions?'My Questions':'All Questions'}}
     </h2>
+    <mat-slide-toggle (toggleChange)="toggleFilterQuestions()" [(ngModel)]="filterUserQuestions">Show My Questions </mat-slide-toggle>
+
+
+
+
   @for (question of courseQuestions; track question) {
       <!-- Question 1 -->
-  <div class="hover:bg-gray-100 p-4 rounded-lg mb-2">
-    <div class="flex gap-4 items-start">
+
+  <div class="hover:bg-gray-100 hover:cursor-pointer p-4 rounded-lg mb-2">
+    <div (click)="openQuestionModal(questionDetails,question)"  class="flex gap-4 items-start">
       <div class="w-10 h-10 bg-black text-white flex items-center justify-center rounded-full font-bold">{{ question.userName.split(' ')[0][0] }}</div>
       <div class="flex-1">
         <p class="font-bold text-xl">{{ question.title }}</p>
@@ -63,7 +102,21 @@
         </div>
       </div>
     </div>
+    @if(isUserQuestion(question)) {
+      <div class="mt-2 text-sm text-purple-600 flex gap-2">
+        <svg (click)="openVerticallyCentered(edit,question)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-pen hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+          <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+        </svg>
+        <svg    (click)="deleteQuestion(question)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-trash hover:text-red-600 cursor-pointer" viewBox="0 0 16 16">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+        </svg>
+      </div>
+    }
   </div>
+
   }
   @if(!isLastPage){
     <button

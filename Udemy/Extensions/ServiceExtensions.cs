@@ -63,7 +63,7 @@ public static class ServiceExtensions
         services.ConfigureApplicationCookie(options =>
         {
             options.ExpireTimeSpan = TimeSpan.FromDays(30);
-            options.Cookie.SameSite = SameSiteMode.None;
+            //options.Cookie.SameSite = SameSiteMode.None;
             // Disable redirects
             options.Events = new CookieAuthenticationEvents
             {

@@ -145,11 +145,13 @@
           <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="tw-flex tw-items-center tw-space-x-4 tw-text-sm tw-font-medium">
 
             <li [ngbNavItem]="1">
-              <button ngbNavLink
-                      [class]="tabClass(1)"
-                      >
+              <a ngbNavLink
+                  [routerLink]="[]"
+                  [class]="tabClass(1)"
+                  fragment="content"
+                    >
                 Course content
-              </button>
+            </a>
               <ng-template ngbNavContent>
                 @if(courseDetails){
                   <app-content-accordion class="self-center" [courseContent]="courseContent" [(activeLesson)]="currentLessonId"></app-content-accordion>
@@ -167,21 +169,25 @@
             </li>
 
             <li [ngbNavItem]="2" [destroyOnHide]="false">
-               <button ngbNavLink
+               <a ngbNavLink
+               [routerLink]="[]"
                [class]="tabClass(2)"
+               fragment="overview"
                       >
                 Overview
-              </button>
+            </a>
               <ng-template ngbNavContent>
                 <app-course-over-view  [courseDetails]="courseDetails"></app-course-over-view>
               </ng-template>
             </li>
 
             <li [ngbNavItem]="3" [destroyOnHide]="false">
-               <button ngbNavLink
-               [class]="tabClass(3)"                 >
+               <a ngbNavLink
+               [routerLink]="[]"
+               fragment="reviews"
+               [class]="tabClass(3)">
                 Reviews
-              </button>
+            </a>
               <ng-template ngbNavContent>
 
                 @if(courseDetails){
@@ -192,20 +198,25 @@
             </li>
 
             <li [ngbNavItem]="4" [destroyOnHide]="false">
-               <button ngbNavLink
+               <a ngbNavLink
+               [routerLink]="[]"
+               fragment="questions"
                [class]="tabClass(4)"
                      >
                 Q&A
-              </button>
+            </a>
               <ng-template ngbNavContent>
                 <app-qna [courseId]="courseDetails.id"></app-qna>
               </ng-template>
             </li>
 
             <li [ngbNavItem]="5" [destroyOnHide]="false">
-              <button ngbNavLink [class]="tabClass(5)">
+              <a ngbNavLink
+              [routerLink]="[]"
+              fragment="quiz"
+              [class]="tabClass(5)">
                 Quiz
-              </button>
+              </a>
               <ng-template ngbNavContent>
                 <h2 class="text-center">Report Unavailable</h2>
               </ng-template>

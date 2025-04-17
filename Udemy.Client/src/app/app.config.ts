@@ -15,14 +15,27 @@ import { loadingInterceptor } from './lib/interceptors/loading.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { errorInterceptor } from './lib/interceptors/error.interceptor';
-function initializeApp(initService: InitService) {
+import { AccountService } from './lib/services/account.service';
+import { CartService } from './lib/services/cart/cart.service';
+
+function initializeApp(
+  initService: InitService,
+  accountService: AccountService,
+  cartService: CartService
+) {
   return () =>
-    lastValueFrom(initService.init()).finally(() => {
-      const splash = document.getElementById('initial-splash');
-      if (splash) {
-        splash.remove();
-      }
-    });
+    lastValueFrom(initService.init())
+      .then(() => {
+        if (accountService.currentUser()?.roles?.includes('Student')) {
+          cartService.getCart().subscribe();
+        }
+      })
+      .finally(() => {
+        const splash = document.getElementById('initial-splash');
+        if (splash) {
+          splash.remove();
+        }
+      });
 }
 
 export const appConfig: ApplicationConfig = {
@@ -40,7 +53,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       multi: true,
-      deps: [InitService],
+      deps: [InitService, AccountService, CartService],
     },
   ],
 };

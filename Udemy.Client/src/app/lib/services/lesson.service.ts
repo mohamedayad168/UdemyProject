@@ -9,7 +9,7 @@ import { Lesson } from '../models/CourseDetail.model';
 })
 export class LessonService {
 
-  private apiUrl = `${environment.baseurl}/lessons`; 
+  private apiUrl = `${environment.baseurl}/Lesson`; 
 
   constructor(private http: HttpClient) {}
 
@@ -29,5 +29,11 @@ export class LessonService {
   deleteLesson(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
-  
+  uploadVideo(lessonId: number, formData: FormData): Observable<any> {
+    return this.http.post<any>(`https://your-api-url/api/Lessons/${lessonId}/upload-video`, formData);
+  }
+  getLessonsBySectionId(sectionId: number, trackChanges: boolean = false): Observable<Lesson[]> {
+    return this.http.get<Lesson[]>(`${this.apiUrl}/section/${sectionId}?trackChanges=${trackChanges}`);
+  }
+
 }
