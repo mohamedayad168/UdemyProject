@@ -1,6 +1,7 @@
 using AutoMapper;
 using System.Text;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
@@ -24,29 +25,28 @@ public class StudentService(
    
 
 
-    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , PaginatedSearchReq requestParamter)
     {
-        throw new NotImplementedException();
-        //var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
+        var students = await repository.Student.GetAllStudentsAsync(trackChanges, requestParamter);
 
-        //var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
+        var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
 
-        //return studentsDto;
+        return studentsDto;
     }
 
-    public async Task<PaginatedRes<StudentDto>> GetStudentPageAsync(bool trackChanges, PaginatedSearchReq paginatedReq)
+    public async Task<PaginatedRes<StudentDto>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
     {
-        var students = await repository.Student.GetAllStudentsAsync(false, paginatedReq);
+        var paginatedRes = await repository.Student.GetPageAsync(searchReq, deletionType, trackChanges);
 
-        var paginatedRes = new PaginatedRes<StudentDto>
+        var paginatedDtoRes = new PaginatedRes<StudentDto>
         {
-            Data = mapper.Map<IEnumerable<StudentDto>>(students),
-            PageSize = paginatedReq.PageSize,
-            CurrentPage = paginatedReq.PageNumber,
-            TotalItems = repository.Courses.Count()
+            Data = mapper.Map<IEnumerable<StudentDto>>(paginatedRes.Data),
+            PageSize = paginatedRes.PageSize,
+            CurrentPage = paginatedRes.CurrentPage,
+            TotalItems = paginatedRes.TotalPages
         };
 
-        return paginatedRes;
+        return paginatedDtoRes;
     }
 
     public async Task<StudentDto> GetStudentByIdAsync(int id , bool trackChanges)

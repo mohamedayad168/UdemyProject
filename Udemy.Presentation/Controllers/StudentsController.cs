@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
+using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
 
@@ -15,19 +17,24 @@ namespace Udemy.Presentations.Controllers;
 public class StudentsController(IServiceManager serviceManager, UserManager<ApplicationUser> _userManager) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAllStudents([FromQuery] RequestParamter? requestParamter)
+    public async Task<ActionResult<IEnumerable<StudentDto>>> GetAllStudents([FromQuery] PaginatedSearchReq? searchReq)
     {
-        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false, requestParamter);
+
+
+        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false, searchReq);
         return Ok(studentsDto);
     }
-    
-    
-    
-    
+
+
+
+
     [HttpGet("page")]
-    public async Task<IActionResult> GetStudentsPage([FromQuery] PaginatedSearchReq? paginatedReq)
+    public async Task<IActionResult> GetStudentsPage([FromQuery] PaginatedSearchReq searchReq)
     {
-        var studentsDto = await serviceManager.StudentService.GetAllStudentAsync(false, paginatedReq);
+        searchReq.SearchTerm ??= "";
+        searchReq.OrderBy ??= "title";
+
+        var studentsDto = await serviceManager.StudentService.GetPageAsync(searchReq, DeletionType.All, false);
         return Ok(studentsDto);
     }
 

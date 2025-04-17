@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { IPage } from '../../types/IPage';
+import { IPage } from '../../types/fetch';
 import { IPaginatedSearchRequest } from './Requests';
 import { finalize, Observable } from 'rxjs';
 

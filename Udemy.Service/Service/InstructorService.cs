@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
+using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -18,6 +20,26 @@ namespace Udemy.Service.Service
             var instructors = await repository.Instructors.FindAll(trackChanges).ToArrayAsync();
             return mapper.Map<IEnumerable<InstructorRDTO>>(instructors);
         }
+
+
+
+        public async Task<PaginatedRes<InstructorRDTO>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
+
+        {
+            var paginatedCourseRes = await repository.Instructors.GetPageAsync(searchReq, deletionType, trackChanges);
+
+            var paginatedDtoRes = new PaginatedRes<InstructorRDTO>
+            {
+                Data = mapper.Map<IEnumerable<InstructorRDTO>>(paginatedCourseRes.Data),
+                PageSize = searchReq.PageSize,
+                CurrentPage = searchReq.PageNumber,
+                TotalItems = paginatedCourseRes.TotalItems
+            };
+
+            return paginatedDtoRes;
+        }
+
+
 
         public async Task<InstructorRDTO> GetByIdAsync(int id, bool trackChanges)
         {

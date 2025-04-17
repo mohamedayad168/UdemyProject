@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../../types/course';
-import { CrudService } from '../types/CrudService';
+import { IStudent } from '../../types/student';
+import { CrudService } from '../../services/types/CrudService';
 import { environment } from '../../../environments/environment';
-
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class CoursesService extends CrudService<Course> {
-  override apiRoute = 'api/courses';
+export class StudentsService extends CrudService<IStudent> {
+override apiRoute = 'api/students';
+
   override create(newItem: any) {
     const data = new FormData();
 
