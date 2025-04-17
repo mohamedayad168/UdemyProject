@@ -37,7 +37,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularProduction",
         policy =>
         {
-            policy.WithOrigins("https://production:bomba")
+            policy.WithOrigins("https://studify-admin-yn.vercel.app")
                   .AllowCredentials()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
