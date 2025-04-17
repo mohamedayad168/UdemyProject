@@ -1,0 +1,45 @@
+@if(authService.authState().isAuthenticated){
+<nav
+  class="flex bg-header shadow-yn-top p-4 justify-between items-center [&>a]:text-xs relative"
+>
+  <a [routerLink]="['/courses']" routerLinkActive="router-link-active">
+    <i class="pi pi-home"></i><span>Courses</span>
+  </a>
+  <a [routerLink]="['/instructors']" routerLinkActive="router-link-active"
+    ><i class="pi pi-user"></i><span>Instructors</span></a
+  >
+  <a [routerLink]="['/students']" routerLinkActive="router-link-active"
+    ><i class="pi pi-users"></i><span>Students</span></a
+  >
+
+  <button
+    (click)="menu.toggle($event)"
+    aria-label="User"
+    class="cursor-pointer flex items-center"
+  >
+    <p-menu
+      class=""
+      #menu
+      [model]="items"
+      [popup]="true"
+      styleClass="mb-2 top-auto! bottom-full h-fit left-auto! right-5"
+    />
+    <img
+      src="/placeholders/user.jpg"
+      class="w-6 h-6 rounded-full"
+      alt="user image"
+    />
+    <p class="text-xs mt-1">{{ authService.authState().user?.firstName }}</p>
+    <!-- <img
+      src="{{ authService.authState().user?.image ?? '/placeholders/user.jpg' }}"
+      alt="user image"
+      class="w-8 h-8 rounded-full"
+      srcset="" -->
+  </button>
+</nav>
+}
+<!-- @else{
+    <button class="cursor-pointer px-2" aria-label="User">
+      <i class="pi pi-user !text-xl"></i>
+    </button>
+    } -->

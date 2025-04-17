@@ -7,6 +7,8 @@ namespace Udemy.Service.IService;
 public interface IAnswerService
 {
     Task<AnswerDto> CreateUserAskAnswerAsync(AnswerForCreationDto answerDto , int courseId , int userId , int askId);
+    Task<IEnumerable<AnswerDto>> GetAllQuestionAnswersByIdAsync(int askId);
+    
     Task DeleteUserAskAnswerAsync(int courseId , int userId , int askId , int answerId);
     Task<IEnumerable<AnswerDto>> GetAllUserAskAnswersAsync(int userId , int askId , int courseId , bool trackChanges , RequestParamter requestParamter);
     Task<AnswerDto> GetUserAskAnswerByIdAsync(int userId , int askId , int courseId , int answerId);

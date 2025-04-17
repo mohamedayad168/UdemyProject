@@ -17,6 +17,16 @@ public class AnswerService(
     private readonly IRepositoryManager repository = repository;
     private readonly IMapper mapper = mapper;
 
+    
+    
+    public async Task<IEnumerable<AnswerDto>> GetAllQuestionAnswersByIdAsync(int askId)
+    {
+        var answers=await repository.Answer.FindByCondition(Answer => Answer.AskId == askId && Answer.IsDeleted == false, false)
+            .Include(x => x.User).ToListAsync();
+
+        return mapper.Map<IEnumerable<AnswerDto>>(answers);
+    }
+
     public async Task<IEnumerable<AnswerDto>> GetAllUserAskAnswersAsync(
         int userId ,int askId ,int courseId ,bool trackChanges ,RequestParamter requestParamter
     )
@@ -51,8 +61,8 @@ public class AnswerService(
     {
         await CheckIfUserExistAsync(userId);
         await CheckIfCourseExistsAsync(courseId);
-        await CheckIfAskExistsAsync(courseId, askId, userId);
-        
+       if(!await repository.Ask.CheckIfAskExistsAsync( askId))
+            throw new NotFoundException($"Ask with Id: {askId} Doesn't Exist");  
         var answer = mapper.Map<Answer>(answerDto);
         answer.UserId = userId;
         answer.AskId = askId;
