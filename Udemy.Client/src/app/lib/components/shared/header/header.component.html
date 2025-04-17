@@ -62,12 +62,14 @@
       >
         <mat-icon>shopping_cart</mat-icon>
       </a>
+
       <button mat-button [matMenuTriggerFor]="menu">
         <mat-icon>arrow_drop_down</mat-icon>
         <div class="user-initials">
           {{ accountService.currentUser()?.firstName?.charAt(0) }}
         </div>
       </button>
+
       } @else if (accountService.currentUser()?.roles?.includes('Instructor')) {
       <button mat-menu-item class="px-3" (click)="logout()">
         <mat-icon>logout</mat-icon>

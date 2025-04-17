@@ -60,7 +60,7 @@ namespace Udemy.Presentation.Controllers
             var isCreated = await _serviceManager.LessonService.CreatelessonAsync(lessonCreateDto);
             if (isCreated)
             {
-                return CreatedAtAction(nameof(GetLessonById), new { id = lessonCreateDto.id }, lessonCreateDto);
+                return Ok(lessonCreateDto);
             }
             return BadRequest("Failed to create lesson.");
         }
@@ -69,7 +69,7 @@ namespace Udemy.Presentation.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
         {
-            
+
 
             var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
             if (isUpdated)

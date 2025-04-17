@@ -4,6 +4,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
@@ -96,22 +97,20 @@ namespace Udemy.Presentation.Controllers
         public async Task<IActionResult> CreateCourseAsync(CourseCDTO course)
         {
 
-            //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //if (userIdClaim == null)
-            //    return Unauthorized();
+            if (userIdClaim == null)
+                return Unauthorized();
 
-            //var Id = int.Parse(userIdClaim);
+            var Id = int.Parse(userIdClaim);
 
-            //if (User.IsInRole("Instructor"))
-            //{
-            //    if (course.InstructorId != Id)
-            //        return Forbid("Instructors can only create courses for themselves.");
-            //}
+            if (User.IsInRole("Instructor"))
+            {
+                if (course.InstructorId != Id)
+                    return Forbid("Instructors can only create courses for themselves.");
+            }
 
-            // Upload image if provided
 
-            // Create course entity
 
 
 
@@ -120,13 +119,13 @@ namespace Udemy.Presentation.Controllers
             return CreatedAtAction("GetCourseByTitle", new { title = courseRDTO.Title }, courseRDTO);
         }
 
-       [HttpPut("{id}")]
-public async Task<IActionResult> UpdateCourseAsync([FromRoute] int id, [FromBody] CourseUDTO courseUDTO)
-{
-    courseUDTO.Id = id; // ensure ID is set correctly
-    var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
-    return Ok(courseRDTO);
-}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourseAsync([FromRoute] int id, [FromBody] CourseUDTO courseUDTO)
+        {
+            courseUDTO.Id = id; // ensure ID is set correctly
+            var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
+            return Ok(courseRDTO);
+        }
 
 
 

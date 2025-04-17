@@ -9,6 +9,7 @@ import {
 import { CourseService } from '../../lib/services/course.service';
 import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
+import { AccountService } from '../../lib/services/account.service';
 
 @Component({
   selector: 'app-createcoursebage',
@@ -22,7 +23,7 @@ export class CreatecoursebageComponent implements OnInit {
   titleRemaining = 60;
   wordCount = 0;
   isSaving = false;
-
+  currentUserId: Number | undefined = 0;
   categories: Category[] = [];
   subcategories: SubCategory[] = [];
   languages = [
@@ -85,8 +86,10 @@ export class CreatecoursebageComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private courseService: CourseService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private accountService: AccountService
   ) {
+    this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(60)]],
       description: ['', [Validators.required, Validators.minLength(300)]],
@@ -195,6 +198,7 @@ export class CreatecoursebageComponent implements OnInit {
     this.isSaving = true;
 
     const formValue = this.courseForm.value;
+    const userId = this.currentUserId;
 
     // Create a FormData object to send the form data and files
     const formData = new FormData();
@@ -208,7 +212,7 @@ export class CreatecoursebageComponent implements OnInit {
     formData.append('CategoryId', formValue.category.toString());
     formData.append('SubcategoryId', formValue.subcategory.toString());
     formData.append('Price', formValue.price.toString());
-    formData.append('InstructorId', '61222'); // Hardcoded as per your code
+    formData.append('InstructorId', userId!.toString()); // Hardcoded as per your code
 
     // Append files if they exist
     if (this.imageFile) {
@@ -227,6 +231,7 @@ export class CreatecoursebageComponent implements OnInit {
         this.videoFile = null;
       },
       error: (err) => {
+        console.log(formData.values);
         console.error('Error creating course:', err);
         this.isSaving = false;
       },
