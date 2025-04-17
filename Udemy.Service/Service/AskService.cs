@@ -17,7 +17,7 @@ public class AskService(
     private readonly IRepositoryManager repository = repository;
     private readonly IMapper mapper = mapper;
 
-    public async Task<IEnumerable<AskDto>> GetAllUserCourseAsksAsync(
+    public async Task<IEnumerable<AskRDTO>> GetAllUserCourseAsksAsync(
         int userId ,int courseId ,bool trackChanges ,RequestParamter requestParamter
     )
     {
@@ -25,7 +25,8 @@ public class AskService(
         await CheckIfCourseExistsAsync(courseId );
 
         var asks = await repository.Ask.GetAllUserCourseAsksAsync(userId,courseId,trackChanges,requestParamter);
-        var askDtos = mapper.Map<IEnumerable<AskDto>>(asks);
+       
+        var askDtos=asks.Select(x=>new AskRDTO(x));
 
         return askDtos;
     }

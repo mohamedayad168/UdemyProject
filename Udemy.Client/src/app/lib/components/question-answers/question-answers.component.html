@@ -1,0 +1,43 @@
+<div class="bg-gray-50 p-6 font-sans max-h-[80vh] overflow-y-auto">
+  <!-- Question Section -->
+  <div class="bg-white p-6 rounded-lg shadow-sm mb-4 ">
+    <div class="flex items-center mb-2">
+      <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold mr-3">{{ question()?.userName?.charAt(0) }}</div>
+      <div>
+        <p class="font-semibold">{{ question()?.title }}</p>
+        <p class="text-sm text-gray-500"><a href="#" class="text-purple-700 hover:underline">{{ question()?.userName }}</a> </p>
+      </div>
+    </div>
+    <p class="text-gray-800">{{ question()?.content }}</p>
+  </div>
+
+  <!-- Replies Section -->
+  <h2 class="font-semibold text-lg mb-2">{{question()?.answers?.length}} replies</h2>
+
+  <!-- Reply 2 -->
+   @if(questionWithAnswers?.answers){
+     @for (answer of questionWithAnswers?.answers; track answer) {
+      <div class="bg-white border border-gray-200 p-4 rounded-lg mb-2">
+        <div class="flex items-center mb-2">
+          <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold mr-3">{{ answer?.userName?.charAt(0) }}</div>
+          <div>
+            <a href="#" class="text-purple-700 font-medium hover:underline">{{ answer?.userName }}</a>
+            <p class="text-sm text-gray-500">{{ answer?.createdDate | date: 'medium' }}</p>
+          </div>
+        </div>
+        <p class="text-gray-800">{{ answer?.content }}</p>
+      </div>
+     }
+   }
+  <!-- Reply Box -->
+  <!-- Reply Box -->
+  <form #replyForm="ngForm" (ngSubmit)="submitReply()">
+<div class="flex items-start mt-4">
+  <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold mr-3"></div>
+  <div class="flex flex-1 gap-2">
+      <input required [(ngModel)]="replyContent" name="reply" type="text" placeholder="Add reply" class="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300" />
+      <button [disabled]="replyForm.invalid" class="bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-800 transition disabled:opacity-50 disabled:cursor-not-allowed ">Send</button>
+  </div>
+</div>
+</form>
+</div>

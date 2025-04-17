@@ -6,13 +6,14 @@ using Udemy.Service.DataTransferObjects.Update;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Udemy.Service.AutoMapperConfigration;
-public class AnswerMappingProfile: Profile
+public class AnswerMappingProfile : Profile
 {
     public AnswerMappingProfile()
     {
-        CreateMap<Answer, AnswerDto>().ReverseMap();
+        CreateMap<Answer, AnswerDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.User.FirstName} {src.User.LastName}"))
+            .ReverseMap();
         CreateMap<Answer, AnswerForCreationDto>().ReverseMap();
         CreateMap<Answer, AnswerForUpdatingDto>().ReverseMap();
     }
-    
 }

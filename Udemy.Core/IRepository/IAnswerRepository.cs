@@ -2,7 +2,7 @@
 using Udemy.Core.ReadOptions;
 
 namespace Udemy.Core.IRepository;
-public interface IAnswerRepository
+public interface IAnswerRepository:IRepositoryBase<Answer>          
 {
     void CreateAnswer(Answer answer);
     void DeleteAnswer(Answer answer);

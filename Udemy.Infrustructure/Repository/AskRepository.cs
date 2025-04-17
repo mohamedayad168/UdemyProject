@@ -18,6 +18,7 @@ public class AskRepository(ApplicationDbContext dbContext)
                 x.CourseId == courseId &&
                 x.IsDeleted != true ,
                 trackChanges)
+            .Include(c => c.User)
             .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
             .Take(requestParamter.PageSize)
             .ToListAsync();
@@ -35,6 +36,8 @@ public class AskRepository(ApplicationDbContext dbContext)
                 trackChanges)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> CheckIfAskExistsAsync(int id) => await dbContext.Asks.AnyAsync(c => c.Id == id&& c.IsDeleted != true);
 
 
     public async Task<Ask?> GetAskByIdAsync(int id, bool trackChanges)

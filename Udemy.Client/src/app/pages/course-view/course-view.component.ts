@@ -116,6 +116,12 @@ export class CourseViewComponent {
           }
         });
 
+        this.activatedRoute.fragment.subscribe(fragment => {
+          console.log('fragment', fragment);
+          if (fragment) {
+            this.changeActiveTab(fragment);
+          }
+        });
 
       }
       ngOnUpdate(){
@@ -185,18 +191,34 @@ get videoClass(){
 
   //navbar
   active: number = 1;
+  readonly tabs=new Map<string,number>(
+    [
+      ['content',1],
+      ['overview',2],
+      ['reviews',3],
+      ['questions',4],
+      ['quiz',5]
+    ]
+  );
 
    tabClass(tabeNumber: number): string {
     let baseClass="text-slate-700! tw-pb-[14px]! tw-border-b-2! hover:tw-text-slate-900! hover:tw-border-slate-300!";
     if (this.active === tabeNumber) {
-
-
       return "text-slate-900! font-semibold! pb-[14px]! border-b-2! border-slate-800!";
     } else {
       return "text-slate-700! hover:text-slate-900! pb-[14px]! border-b-2! border-transparent! hover:border-slate-300!";
     }
   }
 
+  changeActiveTab(tabName:string){
+
+    if(this.tabs.has(tabName)){
+      this.active=this.tabs.get(tabName)!;
+  }
+  else{
+    this.active=1;
+  }
+  }
 
 
 }
