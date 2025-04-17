@@ -1,5 +1,7 @@
 <header
-  class="grid grid-cols-2 [&>*]:flex justify-between p-2 shadow-yn bg-header "
+  class="grid grid-cols-2 [&>*]:flex justify-between p-2 shadow-yn bg-header max-h-52 transition-all duration-300 overflow-hidden"
+  [class.small-screen-scroll-effect]="scrollService.isDown()"
+  
 >
   <h1 class="items-center ms-1 gap-2">
     <a
