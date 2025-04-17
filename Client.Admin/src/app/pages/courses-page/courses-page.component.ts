@@ -7,7 +7,6 @@ import {
 } from '../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../services/courses/courses.service';
 import { Course } from '../../types/course';
-
 let emptyItem: Course = {
   id: '',
   title: '',
