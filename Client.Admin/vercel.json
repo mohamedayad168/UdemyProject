@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/browser"
+    },
+    { "source": "/:name", "destination": "/browser/:name" },
+    { "source": "/:name/:path*", "destination": "/browser/:name/:path*" }
+  ]
+}
