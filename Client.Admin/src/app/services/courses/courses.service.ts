@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../../types/abc';
+import { Course } from '../../types/course';
 import { CrudService } from '../types/CrudService';
 import { environment } from '../../../environments/environment';
 
