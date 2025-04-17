@@ -64,7 +64,7 @@ namespace Udemy.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(lessonCreateDto);
+                return Ok(lessonCDto);
             }
         }
 
