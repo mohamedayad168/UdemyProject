@@ -29,6 +29,7 @@ import { InstructordetailsComponent } from './instructor/instructordetails/instr
 import { EditCourseComponent } from './instructor/edit-course/edit-course.component'; 
 import { EditinstructorPageComponent } from './instructor/editinstructor-page/editinstructor-page.component';
 import { UpdatecoursedetailsComponent } from './instructor/updatecoursedetails/updatecoursedetails.component';
+import { SectionLessonupdateComponent } from './instructor/section-lessonupdate/section-lessonupdate.component';
 export const routes: Routes = [
   {
     path: '',
@@ -49,6 +50,9 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+  },
+  {
+    path:'updatesectionlessondetails/:courseId',component:SectionLessonupdateComponent
   },
   {
     path: 'signup',

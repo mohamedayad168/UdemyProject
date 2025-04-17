@@ -56,13 +56,13 @@ export interface Section {
 }
 
 export interface Lesson {
-  id: number;
-  title: string;
-  duration: number;
-  type: string;
-  videoUrl: string | null;
-  articleContent: string | null;
-}
+    id: number;
+    title: string;
+    duration?: number;
+    type: string;
+    videoUrl: string | null;
+    articleContent?: string | null;
+  }
 
 export interface CourseContent{
   courseId: number;

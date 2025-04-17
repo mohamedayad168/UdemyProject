@@ -1,0 +1,49 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-700">Update Course Sections and Lessons</h2>
+
+    <!-- Iterate over Sections -->
+    <div *ngFor="let section of sections" class="mb-6">
+        <div class="border-b pb-4 mb-4 flex justify-between items-center">
+            <div>
+                <input [(ngModel)]="section.title" class="text-xl font-semibold text-gray-800 w-64" />
+                <button (click)="editSectionTitle(section, section.title)" class="ml-2 py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    Update Title
+                </button>
+            </div>
+            <button (click)="removeSection(section.id)" class="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-600">
+                Remove Section
+            </button>
+        </div>
+
+        <!-- Iterate over Lessons in the Section -->
+        <div *ngFor="let lesson of section.lessons" class="border-l-4 border-gray-300 pl-4 mb-4">
+            <h4 class="text-lg font-semibold text-gray-700">{{ lesson.title }}</h4>
+            <p class="text-gray-500">Type: {{ lesson.type }}</p>
+
+            <!-- Display Video if Available -->
+            <div *ngIf="lesson.videoUrl" class="mt-2">
+                <video controls class="w-full rounded-md">
+                    <source [src]="lesson.videoUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <!-- Video Upload -->
+            <div class="mt-4">
+                <label class="block text-gray-700 font-medium mb-2">Upload New Video</label>
+                <input type="file" (change)="onVideoSelected($event, lesson)" class="file:bg-gray-200 file:border file:border-gray-300 file:rounded-md file:px-4 file:py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <button (click)="removeLesson(lesson.id, section.id)" class="mt-2 py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-600">
+                Remove Lesson
+            </button>
+        </div>
+        <button (click)="addLesson(section.id)" class="mt-2 py-1 px-3 bg-green-500 text-white rounded-md hover:bg-green-600">
+            Add New Lesson
+        </button>
+    </div>
+
+    <button (click)="addSection()" class="mt-4 py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        Add New Section
+    </button>
+</div>

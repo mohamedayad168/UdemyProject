@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amazon.Runtime.Internal.Util;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,14 +37,14 @@ namespace Udemy.Infrastructure.Repository
                 .ToListAsync();
         }
 
-     async Task IlessonRepo.CreatelessonAsync(Lesson lesson)
-        {
-
-            await dbContext.Set<Lesson>().AddAsync(lesson);
-            await dbContext.SaveChangesAsync();
-
-
-        } 
+     public async Task CreatelessonAsync(Lesson lesson)
+{
+  
+        await dbContext.Set<Lesson>().AddAsync(lesson);
+        await dbContext.SaveChangesAsync();
+    
+ 
+}
 
     async Task IlessonRepo.DeletelesssonAsync(Lesson lesson)
         {

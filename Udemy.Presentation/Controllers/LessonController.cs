@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -47,37 +48,47 @@ namespace Udemy.Presentation.Controllers
             var lessons = await _serviceManager.LessonService.GetLessonsBySectionIdAsync(sectionId, trackChanges);
             return Ok(lessons);
         }
-
-        // POST: api/Lesson
         [HttpPost]
-        public async Task<ActionResult> CreateLesson([FromBody] LessonCDto lessonCreateDto)
+        public async Task<IActionResult> CreateLesson([FromBody] LessonCDto lessonCDto)
         {
-            if (lessonCreateDto == null)
-            {
-                return BadRequest("Lesson data is null.");
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var isCreated = await _serviceManager.LessonService.CreatelessonAsync(lessonCreateDto);
-            if (isCreated)
+            try
             {
-                return CreatedAtAction(nameof(GetLessonById), new { id = lessonCreateDto.id }, lessonCreateDto);
+                var result = await _serviceManager.LessonService.CreatelessonAsync(lessonCDto);
+                if (!result)
+                    return StatusCode(500, "Failed to create lesson");
+
+                return Ok("lesson created successfully");
             }
-            return BadRequest("Failed to create lesson.");
+            catch (Exception ex)
+            {
+                // Log error or include it in the response for debugging
+                return StatusCode(500, $"Internal server error: {ex.Message} - {ex.InnerException?.Message}");
+            }
         }
 
-        // PUT: api/Lesson/{id}
-        [HttpPut("{id}")]
+
+            // PUT: api/Lesson/{id}
+            [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
         {
-            
-
-            var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
-            if (isUpdated)
+            try
             {
-                return NoContent();
+                var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
+                if (isUpdated)
+                {
+                    return NoContent();
+                }
+                return NotFound();
             }
-
-            return NotFound();
+            catch (Exception ex)
+            {
+               
+              
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         // DELETE: api/Lesson/{id}
