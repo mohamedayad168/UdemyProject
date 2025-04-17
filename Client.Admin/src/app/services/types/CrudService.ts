@@ -1,10 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { IPage } from '../../types/IPage';
+import { IPage } from '../../types/fetch';
+import { IPaginatedSearchRequest } from './Requests';
+import { finalize, Observable } from 'rxjs';
 
 export class CrudService<T> {
   apiRoute!: string;
+  isLoading = signal(false);
+  loadingMessage = 'A different request is in progress';
+
   private _items = signal<T[] | null>(null);
   private _page = signal<IPage<T>>({
     totalItems: 0,
@@ -31,6 +36,8 @@ export class CrudService<T> {
   }
 
   getAll() {
+    this.checkLoading();
+
     this.httpClient
       .get('https://jsonplaceholder.typicode.com/posts')
       .subscribe({
@@ -41,15 +48,28 @@ export class CrudService<T> {
           console.error(error);
         },
         complete: () => {
-          // this.cd.markForCheck();
+          this.isLoading.set(false);
         },
       });
   }
 
-  getPage(page: number, size: number) {
+  getPage(searchRequest: IPaginatedSearchRequest<T>) {
+    console.log({
+      pageNumber: searchRequest?.pageNumber ?? 1,
+      pageSize: searchRequest?.pageSize ?? 10,
+      searchTerm: searchRequest?.searchTerm ?? '',
+      orderBy: searchRequest?.orderBy ?? 'id',
+    });
+
+    this.checkLoading();
+
     return this.httpClient
       .get(
-        `${environment.apiUrl}/${this.apiRoute}/page?pageNumber=${page}&pageSize=${size}`
+        `${environment.apiUrl}/${this.apiRoute}/page?` +
+          `pageNumber=${searchRequest?.pageNumber ?? 1}&` +
+          `pageSize=${searchRequest?.pageSize ?? 10}&` +
+          `searchTerm=${searchRequest?.searchTerm ?? ''}&` +
+          `orderBy=${searchRequest?.orderBy ?? 'id'}`
       )
       .subscribe({
         next: (data) => {
@@ -60,32 +80,53 @@ export class CrudService<T> {
           console.error(error);
         },
         complete: () => {
-          // this.cd.markForCheck();
+          this.isLoading.set(false);
         },
       });
   }
 
   getById(id: number) {
-    return this.httpClient.get(`http://localhost:5191/courses/${id}`);
+    this.checkLoading();
+
+    return this.httpClient.get(`http://localhost:5191/courses/${id}`).pipe(
+      finalize(() => {
+        this.isLoading.set(false);
+      })
+    );
   }
 
   create(newItem: any) {
-    return this.httpClient.post(
-      `${environment.apiUrl}/${this.apiRoute}`,
-      newItem
-    );
+    this.checkLoading();
+
+    return this.httpClient
+      .post(`${environment.apiUrl}/${this.apiRoute}`, newItem)
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        })
+      );
   }
 
   delete(idOrArgs: string | string[]) {
+    this.checkLoading();
+
     if (Array.isArray(idOrArgs)) {
-      return this.httpClient.delete(
-        `${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`
-      );
+      return this.httpClient
+        .delete(`${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`)
+        .pipe(
+          finalize(() => {
+            this.isLoading.set(false);
+          })
+        );
     }
 
-    return this.httpClient.delete(
-      `${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`
-    );
+    return this.httpClient
+      .delete(`${environment.apiUrl}/${this.apiRoute}/${idOrArgs}`)
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        })
+      );
   }
 
   filter(callback: (filterItem: T) => boolean): void {
@@ -94,10 +135,12 @@ export class CrudService<T> {
     });
   }
 
-  search(searchTerm: string) {
+  search(searchTerm: string, orderBy: string) {
+    this.checkLoading();
+
     this.httpClient
       .get(
-        `${environment.apiUrl}/${this.apiRoute}/search?searchTerm=${searchTerm}&orderBy=title`
+        `${environment.apiUrl}/${this.apiRoute}/page?searchTerm=${searchTerm}&orderBy=ititle`
       )
       .subscribe({
         next: (data) => {
@@ -107,8 +150,13 @@ export class CrudService<T> {
           console.error(error);
         },
         complete: () => {
-          // this.cd.markForCheck();
+          this.isLoading.set(false);
         },
       });
+  }
+
+  private checkLoading() {
+    if (this.isLoading()) throw new Error(this.loadingMessage);
+    this.isLoading.set(true);
   }
 }

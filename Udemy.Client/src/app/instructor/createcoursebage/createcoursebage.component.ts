@@ -3,33 +3,27 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { CourseService } from '../../lib/services/course.service';
 import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
-import { CourseCDTO } from '../../lib/models/course-cdto';
+import { AccountService } from '../../lib/services/account.service';
+
 @Component({
   selector: 'app-createcoursebage',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './createcoursebage.component.html',
-  styleUrl: './createcoursebage.component.css',
+  styleUrls: ['./createcoursebage.component.css'],
 })
 export class CreatecoursebageComponent implements OnInit {
-  // Course information
-  courseTitle = '';
-  courseDescription = '';
+  courseForm: FormGroup;
   titleRemaining = 60;
-  subtitleRemaining = 120;
   wordCount = 0;
   isSaving = false;
-
-  selectedLanguage: string = 'English (US)';
-  selectedLevel: string = 'Select Level --';
-  selectedCategory: number = 0;
-  selectedSubcategory: number = 0;
+  currentUserId: Number | undefined = 0;
   categories: Category[] = [];
   subcategories: SubCategory[] = [];
   languages = [
@@ -85,15 +79,17 @@ export class CreatecoursebageComponent implements OnInit {
     'Pashto',
   ];
 
-  courseVideoUrl: string = '';
-  imageUrl: string = '';
-  courseForm: FormGroup;
+  // Store the raw File objects instead of URLs
+  imageFile: File | null = null;
+  videoFile: File | null = null;
 
   constructor(
     private categoryService: CategoryService,
     private courseService: CourseService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private accountService: AccountService
   ) {
+    this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(60)]],
       description: ['', [Validators.required, Validators.minLength(300)]],
@@ -101,14 +97,27 @@ export class CreatecoursebageComponent implements OnInit {
       level: ['Select Level --', Validators.required],
       category: [0, Validators.required],
       subcategory: [0, Validators.required],
-      imageUrl: [''],
-      videoUrl: [''],
-      price: [0, Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      image: [null], // File input for image
+      video: [null], // File input for video
     });
   }
 
   ngOnInit() {
     this.loadCategories();
+
+    // Update title remaining count
+    this.courseForm.get('title')?.valueChanges.subscribe((value) => {
+      this.titleRemaining = 60 - (value?.length || 0);
+    });
+
+    // Update word count for description
+    this.courseForm.get('description')?.valueChanges.subscribe((value) => {
+      const words = value?.trim() ? value.trim().split(/\s+/) : [];
+      this.wordCount = words.length;
+    });
+
+    // Load subcategories when category changes
     this.courseForm.get('category')?.valueChanges.subscribe((categoryId) => {
       if (categoryId) {
         this.loadSubcategories(categoryId);
@@ -121,76 +130,62 @@ export class CreatecoursebageComponent implements OnInit {
       (data) => {
         this.categories = data;
         if (this.categories.length > 0) {
-          this.selectedCategory = this.categories[0].id;
-          this.loadSubcategories(this.selectedCategory);
+          this.courseForm.patchValue({ category: this.categories[0].id });
         }
       },
       (error) => console.error('Error fetching categories:', error)
     );
   }
 
-  // loadSubcategories(categoryId: number) {
-  //   this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
-  //     (data) => {
-  //       this.subcategories = data;
-  //       if (this.subcategories.length > 0) {
-  //         this.selectedSubcategory = this.subcategories[0].id;
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching subcategories:', error);
-  //     }
-  //   );
-  // }
   loadSubcategories(categoryId: number) {
     this.categoryService.getSubcategoriesByCategory(categoryId).subscribe(
       (data) => {
         this.subcategories = data;
         if (this.subcategories.length > 0) {
-          this.courseForm.patchValue({
-            subcategory: this.subcategories[0].id,
-          });
+          this.courseForm.patchValue({ subcategory: this.subcategories[0].id });
         } else {
-          this.courseForm.patchValue({
-            subcategory: 0,
-          });
+          this.courseForm.patchValue({ subcategory: 0 });
         }
       },
-      (error) => {
-        console.error('Error fetching subcategories:', error);
-      }
+      (error) => console.error('Error fetching subcategories:', error)
     );
-  }
-  updateTitleCount() {
-    this.titleRemaining = 60 - this.courseTitle.length;
-  }
-
-  updateDescriptionCount() {
-    const words = this.courseDescription.trim()
-      ? this.courseDescription.trim().split(/\s+/)
-      : [];
-    this.wordCount = words.length;
   }
 
   onImageUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.imageUrl = URL.createObjectURL(file); // Creates a temporary URL for the uploaded image
+      const allowedImageTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+      ];
+      if (allowedImageTypes.includes(file.type)) {
+        this.imageFile = file;
+        this.courseForm.patchValue({ image: file });
+      } else {
+        alert(
+          'Invalid file type. Please upload JPG, JPEG, PNG, or GIF images.'
+        );
+      }
     }
   }
 
   onVideoUpload(event: any) {
     const file = event.target.files[0];
-    const allowedTypes = ['video/mp4', 'video/avi', 'video/mov'];
-
-    if (file && allowedTypes.includes(file.type)) {
-      if (file.size <= 50 * 1024 * 1024) {
-        this.courseVideoUrl = URL.createObjectURL(file);
+    if (file) {
+      const allowedVideoTypes = ['video/mp4', 'video/avi', 'video/mov'];
+      if (allowedVideoTypes.includes(file.type)) {
+        if (file.size <= 50 * 1024 * 1024) {
+          // 50 MB limit
+          this.videoFile = file;
+          this.courseForm.patchValue({ video: file });
+        } else {
+          alert('Video size should not exceed 50 MB');
+        }
       } else {
-        alert('Video size should not exceed 50 MB');
+        alert('Invalid file type. Please upload MP4, AVI, or MOV videos.');
       }
-    } else {
-      alert('Invalid file type. Please upload MP4, AVI, or MOV videos.');
     }
   }
 
@@ -203,39 +198,43 @@ export class CreatecoursebageComponent implements OnInit {
     this.isSaving = true;
 
     const formValue = this.courseForm.value;
-    const courseData: CourseCDTO = {
-      Title: formValue.title,
-      Description: formValue.description,
-      Language: formValue.language,
-      CourseLevel: formValue.level,
-      CategoryId: formValue.category,
-      SubcategoryId: formValue.subcategory,
-      ImageUrl: 'formValue.imageUrl',
-      VideoUrl: 'formValue.videoUrl',
-      Price: formValue.price,
-      InstructorId: 61222,
-    };
+    const userId = this.currentUserId;
 
-    this.courseService.createCourse(courseData).subscribe({
+    // Create a FormData object to send the form data and files
+    const formData = new FormData();
+    formData.append('Title', formValue.title);
+    formData.append('Description', formValue.description);
+    formData.append('Language', formValue.language);
+    formData.append(
+      'CourseLevel',
+      formValue.level === 'Select Level --' ? '' : formValue.level
+    );
+    formData.append('CategoryId', formValue.category.toString());
+    formData.append('SubcategoryId', formValue.subcategory.toString());
+    formData.append('Price', formValue.price.toString());
+    formData.append('InstructorId', userId!.toString()); // Hardcoded as per your code
+
+    // Append files if they exist
+    if (this.imageFile) {
+      formData.append('ImageUrl', this.imageFile, this.imageFile.name);
+    }
+    if (this.videoFile) {
+      formData.append('VideoUrl', this.videoFile, this.videoFile.name);
+    }
+
+    this.courseService.createCourse(formData).subscribe({
       next: (response) => {
         console.log('Course created successfully:', response);
         this.isSaving = false;
-
         this.courseForm.reset();
+        this.imageFile = null;
+        this.videoFile = null;
       },
       error: (err) => {
-        console.log(err);
+        console.log(formData.values);
+        console.error('Error creating course:', err);
+        this.isSaving = false;
       },
     });
   }
 }
-// (response) => {
-//   console.log('Course created successfully:', response);
-//   this.isSaving = false;
-
-//   this.courseForm.reset();
-// },
-// (error) => {
-//   console.error('Error creating course:', error);
-//   this.isSaving = false;
-// }

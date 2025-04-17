@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Infrastructure.Repository;
-using Udemy.Infrastructure.Repository.EntityRepos;
 using Udemy.Service.AutoMapperConfigration;
+using Udemy.Service.Helper;
 using Udemy.Service.IService;
 using Udemy.Service.Service;
 namespace Udemy.Extensions;
@@ -15,7 +14,7 @@ public static class ServiceExtensions
 {
     public static void ConfigureIdentity(this IServiceCollection services)
     {
-        var builder = services.AddIdentity<ApplicationUser , IdentityRole<int>>(o =>
+        var builder = services.AddIdentity<ApplicationUser, IdentityRole<int>>(o =>
         {
             o.Password.RequiredLength = 8;
             o.Password.RequireDigit = true;
@@ -28,7 +27,7 @@ public static class ServiceExtensions
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
     }
-    public static void ConfigureSqlContext(this IServiceCollection services , IConfiguration configuration)
+    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
@@ -37,12 +36,12 @@ public static class ServiceExtensions
     }
     public static void ConfigureRepositoryManager(this IServiceCollection services)
     {
-        services.AddScoped<IRepositoryManager , RepositoryManager>();
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
 
     }
     public static void ConfigureServiceManager(this IServiceCollection services)
     {
-        services.AddScoped<IServiceManager , ServiceManager>();
+        services.AddScoped<IServiceManager, ServiceManager>();
 
 
     }
@@ -50,13 +49,21 @@ public static class ServiceExtensions
     {
         service.AddAutoMapper(typeof(AutoMapperProfile));
     }
+    public static void ConfigureCloudinaryService(this IServiceCollection service)
+    {
+        service.AddScoped<ICloudService, CloudService>();
+    }
+    public static void ConfigureCloudinarySettings(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.Configure<CloudSetting>(configuration.GetSection("CloudinarySettings"));
+    }
     public static void ConfigureApplicationCookie(this IServiceCollection services)
     {
         // Configure Identity's default cookie directly
         services.ConfigureApplicationCookie(options =>
         {
             options.ExpireTimeSpan = TimeSpan.FromDays(30);
-
+            options.Cookie.SameSite = SameSiteMode.None;
             // Disable redirects
             options.Events = new CookieAuthenticationEvents
             {
@@ -64,7 +71,7 @@ public static class ServiceExtensions
                 {
                     ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return Task.CompletedTask;
-                } ,
+                },
                 OnRedirectToAccessDenied = ctx =>
                 {
                     ctx.Response.StatusCode = StatusCodes.Status403Forbidden;

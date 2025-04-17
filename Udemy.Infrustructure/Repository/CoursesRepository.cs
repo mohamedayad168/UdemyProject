@@ -1,59 +1,118 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects.Read;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Infrastructure.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace Udemy.Infrastructure.Repository
 {
-    public class CoursesRepository(ApplicationDbContext context ) : RepositoryBase<Course>(context), ICoursesRepository
+    public class CoursesRepository(ApplicationDbContext context) : RepositoryBase<Course>(context), ICoursesRepository
     {
         public async Task DeleteAsync(int id)
         {
-            var course = await GetByIdAsync(id , true) ??
+            var course = await GetByIdAsync(id, true) ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
-            Console.WriteLine($"--------------------deleted course {course.IsDeleted}");
 
             course.IsDeleted = true;
-            Console.WriteLine($"-------------------deleted course {course.IsDeleted}");
             await SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges)
         {
-            return await FindByCondition(c => !c.IsDeleted , trackChanges).ToListAsync();
+            return await FindByCondition(c => !c.IsDeleted, trackChanges).ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id , bool trackChanges)
+
+        public async Task<Course> UpdateAsync(Course course)
         {
-            return await FindByCondition(c => c.Id == id && !c.IsDeleted , trackChanges)
+
+            var existingCourse = await context.Courses
+                .FirstOrDefaultAsync(c => c.Id == course.Id && !c.IsDeleted);
+
+            if (existingCourse == null)
+            {
+                throw new NotFoundException($"Course with ID {course.Id} not found.");
+            }
+
+
+            existingCourse.Title = course.Title;
+            existingCourse.Description = course.Description;
+            existingCourse.Duration = course.Duration;
+            existingCourse.Price = course.Price;
+            existingCourse.InstructorId = course.InstructorId;
+            existingCourse.SubCategoryId = course.SubCategoryId;
+            existingCourse.IsApproved = course.IsApproved;
+            existingCourse.IsDeleted = course.IsDeleted;
+
+            await context.SaveChangesAsync();
+
+            return existingCourse;
+        }
+
+
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
+        }
+
+
+        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
+        {
+
+            IQueryable<Course> query;
+
+            if (searchReq.SearchTerm!.Length > 0)
+            {
+                query = FindAll(trackChanges, deletionType)
+                .Where(x =>
+                    x.Title.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
+                    x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                    x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower())
+                 );
+            }
+            else
+            {
+                query = FindAll(trackChanges, deletionType);
+            }
+
+
+            var courses = await query
+                .Sort(searchReq.OrderBy!)
+                .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
+                .Take(searchReq.PageSize)
+                .Include(c => c.Instructor)
+                .Include(c => c.SubCategory)
+                .ToListAsync();
+
+            var response = new PaginatedRes<Course>
+            {
+                CurrentPage = searchReq.PageNumber,
+                PageSize = searchReq.PageSize,
+                TotalItems = await query.CountAsync(),
+                Data = courses,
+            };
+            return response;
+        }
+
+
+        public async Task<Course> GetByIdAsync(int id, bool trackChanges)
+        {
+            return await FindByCondition(c => c.Id == id && !c.IsDeleted, trackChanges)
                 .FirstOrDefaultAsync() ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
         }
 
-        public async Task<Course?> GetByTitleAsync(string title , bool trackChanges)
+        public async Task<Course?> GetByTitleAsync(string title, bool trackChanges)
         {
-            return await FindByCondition(c => c.Title == title && !c.IsDeleted , trackChanges)
+            return await FindByCondition(c => c.Title == title && !c.IsDeleted, trackChanges)
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Course>> GetPageAsync(RequestParamter requestParamter , bool trackChanges)
-        {
-            return await FindByCondition(c => !c.IsDeleted , trackChanges)
-                .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                .Take(requestParamter.PageSize)
-                .Include(c => c.Instructor)
-                .Include(c => c.SubCategory)
-                .ToListAsync();
         }
 
         public async Task ToggleApprovedAsync(int id)
         {
-            var course = await GetByIdAsync(id , true) ??
+            var course = await GetByIdAsync(id, true) ??
                 throw new NotFoundException($"Course with id: {id} not found");
 
             course.IsApproved = !course.IsApproved;
@@ -65,10 +124,7 @@ namespace Udemy.Infrastructure.Repository
             return await context.Courses.AnyAsync(c => c.Id == id);
         }
 
-        public async Task SaveChangesAsync()
-        {
-            await context.SaveChangesAsync();
-        }
+
 
         public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
         {
@@ -115,5 +171,14 @@ namespace Udemy.Infrastructure.Repository
 
             return coursesCount;
         }
+
+        public async Task DeleteCourseAsync(Course course)
+        {
+            course.IsDeleted = true;
+            context.Courses.Update(course);
+            await context.SaveChangesAsync();
+        }
+
+
     }
 }

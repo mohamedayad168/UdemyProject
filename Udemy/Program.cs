@@ -14,6 +14,9 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
 builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAuthorization();
+builder.Services.ConfigureCloudinaryService();
+builder.Services.ConfigureCloudinarySettings(builder.Configuration);
+
 
 
 builder.Services.AddCors(options =>
@@ -34,7 +37,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularProduction",
         policy =>
         {
-            policy.WithOrigins("https://production:bomba")
+            policy.WithOrigins("https://studify-admin-yn.vercel.app")
                   .AllowCredentials()
                   .AllowAnyHeader()
                   .AllowAnyMethod();

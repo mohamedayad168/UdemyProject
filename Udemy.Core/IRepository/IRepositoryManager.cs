@@ -18,7 +18,7 @@ public interface IRepositoryManager
     IAskRepository Ask { get; }
     IAnswerRepository Answer { get; }
     ICartRepository Cart { get; }
-    
+    Isectionrepo Section { get; }
     ISubCategoriesRepository SubCategories { get; }
     ICartCourseRepository CartCourse { get; }
 

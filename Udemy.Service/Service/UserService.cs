@@ -45,6 +45,17 @@ public class UserService(
         return userDto;
     }
 
+    public async Task<ApplicationUser> GetAllUserDataByEmailAsync(string email)
+    {
+        var user = await repository.User.GetUserByEmailAsync(email);
+
+        if (user is null)
+            throw new UserNotFoundException($"User With Email: {email} Deosn't Exist");
+
+
+        return user;
+    }
+
     public async Task<UserDto> GetUserByUsernameAsync(string username)
     {
         var user = await repository.User.GetUserByUsernameAsync(username);
@@ -58,7 +69,7 @@ public class UserService(
 
     public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
     {
-        var userEntity = mapper.Map<ApplicationUser>(userDto);
+        var userEntity = mapper.Map<Student>(userDto);
 
         // handle password validation (must contain at least chararcter, ... etc)
 

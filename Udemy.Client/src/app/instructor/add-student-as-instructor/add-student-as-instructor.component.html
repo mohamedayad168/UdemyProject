@@ -1,0 +1,383 @@
+<div class="max-w-5xl mx-auto p-10">
+  <!-- Heading and Tabs -->
+  <h1 class="text-3xl font-semibold mb-6">Profile & Settings</h1>
+
+  <div class="border-b border-gray-200 mb-8">
+    <nav class="-mb-px flex space-x-8">
+      <a
+        href="#"
+        class="text-purple-700 border-b-2 border-purple-700 pb-2 text-sm font-medium"
+      >
+        Instructor Profile
+      </a>
+    </nav>
+  </div>
+
+  <!-- Form -->
+  <form
+    [formGroup]="profileForm"
+    (ngSubmit)="onSubmit()"
+    class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm"
+  >
+    <!-- Email -->
+    <div>
+      <label for="email" class="block font-medium mb-1">Email</label>
+      <div class="relative">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('email')?.invalid &&
+              (profileForm.get('email')?.dirty ||
+                profileForm.get('email')?.touched)
+          }"
+        />
+        <div
+          *ngIf="isCheckingEmail"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2"
+        >
+          <svg
+            class="animate-spin h-4 w-4 text-purple-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('email')?.invalid &&
+          (profileForm.get('email')?.dirty || profileForm.get('email')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('email')?.hasError('required')">
+          Email is required
+        </div>
+        <div *ngIf="profileForm.get('email')?.hasError('email')">
+          Please enter a valid email address
+        </div>
+        <div *ngIf="profileForm.get('email')?.hasError('emailTaken')">
+          Email is already taken
+        </div>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label for="password" class="block font-medium mb-1">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        [ngClass]="{
+          'border-red-500':
+            profileForm.get('password')?.invalid &&
+            (profileForm.get('password')?.dirty ||
+              profileForm.get('password')?.touched)
+        }"
+      />
+      <div
+        *ngIf="
+          profileForm.get('password')?.invalid &&
+          (profileForm.get('password')?.dirty ||
+            profileForm.get('password')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('password')?.hasError('required')">
+          Password is required
+        </div>
+        <div *ngIf="profileForm.get('password')?.hasError('minlength')">
+          Password must be at least 8 characters
+        </div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div>
+      <label for="title" class="block font-medium mb-1"
+        >Professional Title</label
+      >
+      <div class="flex items-center">
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('title')?.invalid &&
+              (profileForm.get('title')?.dirty ||
+                profileForm.get('title')?.touched)
+          }"
+          maxlength="60"
+        />
+        <span
+          class="ml-2 text-gray-500"
+          [ngClass]="{
+            'text-red-500': profileForm.get('title')?.value?.length > 60
+          }"
+        >
+          {{ 60 - (profileForm.get("title")?.value?.length || 0) }}
+        </span>
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('title')?.invalid &&
+          (profileForm.get('title')?.dirty || profileForm.get('title')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('title')?.hasError('required')">
+          Title is required
+        </div>
+        <div *ngIf="profileForm.get('title')?.hasError('maxlength')">
+          Title must be 60 characters or less
+        </div>
+      </div>
+    </div>
+
+    <!-- Biography -->
+    <div class="md:col-span-2">
+      <label for="biography" class="block font-medium mb-1">Biography</label>
+      <textarea
+        id="biography"
+        rows="4"
+        formControlName="biography"
+        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        [ngClass]="{
+          'border-red-500':
+            profileForm.get('biography')?.invalid &&
+            (profileForm.get('biography')?.dirty ||
+              profileForm.get('biography')?.touched)
+        }"
+      ></textarea>
+      <p class="text-xs text-gray-500 mt-1">
+        To help learners learn more about you, your bio should reflect your
+        Credibility, Empathy, Passion, and Personality. Your biography should
+        have at least 50 characters. Links and coupon codes are not permitted.
+      </p>
+      <div
+        *ngIf="
+          profileForm.get('biography')?.invalid &&
+          (profileForm.get('biography')?.dirty ||
+            profileForm.get('biography')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('biography')?.hasError('required')">
+          Biography is required
+        </div>
+        <div *ngIf="profileForm.get('biography')?.hasError('minlength')">
+          Biography must be at least 50 characters
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media Links Section -->
+    <div class="md:col-span-2">
+      <h2 class="text-lg font-semibold mb-4">Social Media Links</h2>
+    </div>
+
+    <!-- Facebook -->
+    <div>
+      <label for="facebook" class="block font-medium mb-1">Facebook</label>
+      <div class="flex">
+        <span
+          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
+        >
+          facebook.com/
+        </span>
+        <input
+          type="text"
+          id="facebook"
+          formControlName="facebook"
+          placeholder="Username"
+          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('facebook')?.invalid &&
+              (profileForm.get('facebook')?.dirty ||
+                profileForm.get('facebook')?.touched)
+          }"
+        />
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('facebook')?.invalid &&
+          (profileForm.get('facebook')?.dirty ||
+            profileForm.get('facebook')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('facebook')?.hasError('required')">
+          Facebook username is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram -->
+    <div>
+      <label for="instagram" class="block font-medium mb-1">Instagram</label>
+      <div class="flex">
+        <span
+          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
+        >
+          instagram.com/
+        </span>
+        <input
+          type="text"
+          id="instagram"
+          formControlName="instagram"
+          placeholder="Username"
+          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('instagram')?.invalid &&
+              (profileForm.get('instagram')?.dirty ||
+                profileForm.get('instagram')?.touched)
+          }"
+        />
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('instagram')?.invalid &&
+          (profileForm.get('instagram')?.dirty ||
+            profileForm.get('instagram')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('instagram')?.hasError('required')">
+          Instagram username is required
+        </div>
+      </div>
+    </div>
+
+    <!-- LinkedIn -->
+    <div>
+      <label for="linkedin" class="block font-medium mb-1">LinkedIn</label>
+      <div class="flex">
+        <span
+          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
+        >
+          linkedin.com/
+        </span>
+        <input
+          type="text"
+          id="linkedin"
+          formControlName="linkedin"
+          placeholder="Username"
+          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('linkedin')?.invalid &&
+              (profileForm.get('linkedin')?.dirty ||
+                profileForm.get('linkedin')?.touched)
+          }"
+        />
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('linkedin')?.invalid &&
+          (profileForm.get('linkedin')?.dirty ||
+            profileForm.get('linkedin')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('linkedin')?.hasError('required')">
+          LinkedIn username is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Twitter -->
+    <div>
+      <label for="twitter" class="block font-medium mb-1">Twitter/X</label>
+      <div class="flex">
+        <span
+          class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500"
+        >
+          x.com/
+        </span>
+        <input
+          type="text"
+          id="twitter"
+          formControlName="twitter"
+          placeholder="Username"
+          class="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              profileForm.get('twitter')?.invalid &&
+              (profileForm.get('twitter')?.dirty ||
+                profileForm.get('twitter')?.touched)
+          }"
+        />
+      </div>
+      <div
+        *ngIf="
+          profileForm.get('twitter')?.invalid &&
+          (profileForm.get('twitter')?.dirty ||
+            profileForm.get('twitter')?.touched)
+        "
+        class="text-red-500 text-xs mt-1"
+      >
+        <div *ngIf="profileForm.get('twitter')?.hasError('required')">
+          Twitter username is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="mt-8 md:col-span-2">
+      <button
+        type="submit"
+        [disabled]="profileForm.invalid || profileForm.pending"
+        class="px-6 py-2 bg-purple-200 text-purple-900 rounded-md hover:bg-purple-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+      >
+        <span *ngIf="!profileForm.pending">Save</span>
+        <span *ngIf="profileForm.pending" class="flex items-center">
+          <svg
+            class="animate-spin -ml-1 mr-2 h-4 w-4 text-purple-900"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

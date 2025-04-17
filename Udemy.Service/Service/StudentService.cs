@@ -1,10 +1,12 @@
 using AutoMapper;
 using System.Text;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 using Udemy.Core.Utils;
+using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -23,13 +25,28 @@ public class StudentService(
    
 
 
-    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , RequestParamter requestParamter)
+    public async Task<IEnumerable<StudentDto>> GetAllStudentAsync(bool trackChanges , PaginatedSearchReq requestParamter)
     {
-        var students = await repository.Student.GetAllStudentsAsync(trackChanges , requestParamter);
+        var students = await repository.Student.GetAllStudentsAsync(trackChanges, requestParamter);
 
         var studentsDto = mapper.Map<IEnumerable<StudentDto>>(students);
 
         return studentsDto;
+    }
+
+    public async Task<PaginatedRes<StudentDto>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
+    {
+        var paginatedRes = await repository.Student.GetPageAsync(searchReq, deletionType, trackChanges);
+
+        var paginatedDtoRes = new PaginatedRes<StudentDto>
+        {
+            Data = mapper.Map<IEnumerable<StudentDto>>(paginatedRes.Data),
+            PageSize = paginatedRes.PageSize,
+            CurrentPage = paginatedRes.CurrentPage,
+            TotalItems = paginatedRes.TotalPages
+        };
+
+        return paginatedDtoRes;
     }
 
     public async Task<StudentDto> GetStudentByIdAsync(int id , bool trackChanges)

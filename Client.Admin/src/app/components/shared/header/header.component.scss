@@ -1,0 +1,11 @@
+:host{
+    width:100%;
+    display: block;
+}
+.small-screen-scroll-effect{
+    @media screen and (max-width: 767px) {
+        max-height: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }   
+}

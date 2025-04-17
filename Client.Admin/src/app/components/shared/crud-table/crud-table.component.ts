@@ -8,8 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Course } from '../../../types/Course';
-import { CoursesService } from '../../../services/courses/courses.service';
+ import { CoursesService } from '../../../services/courses/courses.service';
 import { TableLazyLoadEvent, TableModule, TablePageEvent } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { Ripple } from 'primeng/ripple';
@@ -34,7 +33,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
-import { IPage } from '../../../types/IPage';
+import { IPage } from '../../../types/fetch';
 
 type FieldType =
   | 'text'
@@ -94,7 +93,7 @@ type baseItem = {
   [key: string]: any;
   id: string;
   title: string;
-  status: string;
+  // status: string;
 };
 
 @Component({
@@ -143,8 +142,9 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   selectedProducts!: T[] | null;
   submitted: boolean = false;
   searchTerm = new Subject<string>();
+  searchTermValue = '';
+  orderBy: { field: string; order: number } = { field: 'id', order: 1 };
 
-  items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
   columnConfigs = input.required<IColumnConfig[]>();
@@ -166,15 +166,31 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   ngOnInit() {
     this.newItem = { ...this.emptyItem() };
     this.loadDemoData();
+    this.crudService().getPage({
+      pageNumber: 1,
+      pageSize: 10,
+      orderBy: 'id',
+      searchTerm: '',
+    });
     this.searchTerm
       .pipe(
-        debounceTime(500), // 1 second delay
-        distinctUntilChanged()
+        debounceTime(500),
+        distinctUntilChanged((prev, curr) => {
+          // Always allow change if curr is empty (to trigger search)
+          console.log('prev: ' + prev, 'cur: ' + curr);
+          if (curr.trim() === '' && prev.trim() == '') return true;
+          if (curr.trim() === '' && prev.trim() != '') return false;
+          return prev === curr;
+        })
       )
       .subscribe((term) => {
         console.log('searchTerm', term);
-        this.crudService().search(term);
+        this.searchTermValue = term;
+        this.crudService().getPage({ searchTerm: term });
       });
+  }
+  ngOnViewInit() {
+    this.dt.sortField = 'id';
   }
 
   exportCSV() {
@@ -269,7 +285,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
                   ...val,
                   data: val.data.filter((item) => item.id !== newItem.id),
                 };
-              })
+              });
             },
             error: (error) => {
               console.error(error);
@@ -291,8 +307,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   findIndexById(id: string): number {
     let index = -1;
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items().data[i].id === id) {
+    for (let i = 0; i < this.crudService().page().data.length; i++) {
+      if (this.crudService().page().data[i].id === id) {
         index = i;
         break;
       }
@@ -384,7 +400,14 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   onPageChange(event: TablePageEvent) {}
 
   loadData(event: TableLazyLoadEvent) {
-    this.crudService().getPage(event.first! / event.rows! + 1, event.rows!);
+    console.log('crud table -loadData');
+    console.log(event);
+    this.crudService().getPage({
+      pageNumber: event.first! / event.rows! + 1,
+      pageSize: event.rows!,
+      orderBy: this.getOrderDirection(this.orderBy),
+      searchTerm: this.searchTermValue,
+    });
   }
 
   onImageChange(event: any) {
@@ -405,5 +428,27 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   search(event: any) {
     const input = event.target as HTMLInputElement;
     this.searchTerm.next(input.value);
+  }
+  onSort(order: { field: string; order: number }) {
+    this.orderBy = order;
+    this.crudService().getPage({
+      pageNumber: 1,
+      pageSize: 10,
+      orderBy: this.getOrderDirection(order),
+      searchTerm: this.searchTermValue,
+    });
+  }
+
+  getOrderDirection(order: { field: string; order: number }) {
+    return order.order >= 0 ? `${order.field} asc` : `${order.field} desc`;
+  }
+
+  getDirectionFromOrder(order: number) {
+    console.log(order);
+    return order > 0 ? 'ascending' : 'descending';
+  }
+
+  showHideClassOnLoading() {
+    return this.crudService().isLoading() ? 'pointer-events-none' : '';
   }
 }

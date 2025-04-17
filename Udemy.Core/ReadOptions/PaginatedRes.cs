@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Udemy.Service.DataTransferObjects
+namespace Udemy.Core.ReadOptions
 {
     public class PaginatedRes<T>
     {

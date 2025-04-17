@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Course } from '../models/course.model';
+import { Course, CourseUpdateDTO } from '../models/course.model';
 import { Category } from '../models/category.model';
 import { CourseDetail } from '../models/CourseDetail.model';
 import { CourseCDTO } from '../models/course-cdto';
@@ -59,7 +59,7 @@ export class CourseService {
     );
   }
 
-  createCourse(course: CourseCDTO): Observable<any> {
+  createCourse(course: any): Observable<any> {
     console.log(course);
     return this.http.post<any>(`${environment.baseurl}/courses`, course);
   }
@@ -75,4 +75,11 @@ export class CourseService {
       `${environment.baseurl}/Courses/${id}?detailed=${detailed}`
     );
   }
+  
+  deleteCourse(courseId: number) {
+    return this.http.delete(`${this.baseUrl}/${courseId}`);
+  }
+updateCourse(id: number, courseData: CourseUpdateDTO): Observable<any> {
+  return this.http.put(`${environment.baseurl}/courses/${id}`, courseData);
+}
 }

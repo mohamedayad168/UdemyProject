@@ -18,7 +18,7 @@ import { AvatarModule } from 'primeng/avatar';
   selector: 'app-side-nav',
   standalone: true,
   templateUrl: './side-nav.component.html',
-  styleUrl: './side-nav.component.css',
+  styleUrl: './side-nav.component.scss',
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -75,13 +75,13 @@ export class SideNavComponent {
           {
             label: 'Students',
             icon: 'pi pi-users',
-            routerLink: ['/courses'],
+            routerLink: ['/students'],
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Instructors',
             icon: 'pi pi-user',
-            routerLink: ['/courses'],
+            routerLink: ['/instructors'],
             routerLinkActiveOptions: { exact: true },
           },
           {

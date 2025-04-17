@@ -14,5 +14,7 @@ namespace Udemy.Service.DataTransferObjects.Update
 
         [StringLength(50)]
         public string? Bio { get; set; }
+
+        public int? TotalCourses { get; set; }
     }
 }

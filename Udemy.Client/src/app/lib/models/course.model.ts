@@ -8,8 +8,8 @@ export interface Course {
   price: number;
   duration: number;
   language: string;
-  imageUrl?: string;
-  videoUrl?: string;
+  imageUrl?: string | null;
+  videoUrl?: string | null;
   noSubscribers: number;
   isFree: boolean;
   isApproved: boolean;
@@ -19,8 +19,30 @@ export interface Course {
   subCategoryId: number;
   categoryId: number;
   instructorName: string;
+
   instructor: {
     id: number;
     name: string;
   };
+
+  courseGoals: string[];
+  courseRequirements: string[];
+
+}
+export interface CourseUpdateDTO {
+  id: number;
+  isDeleted: boolean;
+  title: string;
+  description: string;
+  courseLevel: string;
+  discount: number;
+  price: number;
+  language: string;
+  imageUrl: string;
+  videoUrl: string;
+  subCategoryId: number;
+  instructorId: number;
+  goals: string;
+  requirements: string;
+  categoryId?: number;
 }

@@ -6,8 +6,7 @@ import {
   ICrudTableItemStatus,
 } from '../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../services/courses/courses.service';
-import { Course } from '../../types/Course';
-
+import { Course } from '../../types/course';
 let emptyItem: Course = {
   id: '',
   title: '',
@@ -84,6 +83,7 @@ export class CoursesPageComponent implements OnInit {
       width: '4rem',
       type: 'text',
       header: 'Id',
+      sortable: true,
     },
     {
       key: 'title',
@@ -223,7 +223,8 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadData() {
-    this.coursesService.getPage(1, 10);
+    console.log('courses - page -loadData');
+    // this.coursesService.getPage({ pageNumber: 1, pageSize: 10,orderBy:'id desc' });
     // .subscribe({
     //   next: (data) => {
     //     this.items.set(data as IItem1[]);

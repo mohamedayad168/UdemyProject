@@ -1,42 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Udemy.Core.Entities;
-//using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Service.DataTransferObjects.Update
 {
     public class CourseUDTO
     {
         public int Id { get; set; }
-    public bool IsDeleted { get; set; } = false;
-    [StringLength(20)]
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public string Status { get; set; }
-    public string CourseLevel { get; set; }
-    public decimal? Discount { get; set; }
-    public decimal Price { get; set; }
-    public int Duration { get; set; }
-    [StringLength(20)]
-    public string Language { get; set; }
-    public string? ImageUrl { get; set; }
-    public string? VideoUrl { get; set; }
-    public int NoSubscribers { get; set; }
-    public bool IsFree { get; set; }
-    public bool IsApproved { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
-    
-    public decimal CurrentPrice { get; private set; }
+        [StringLength(20)]
+        [Required]
+        public string Title { get; set; }
 
-    [Range(0.0, 5.0)]
-    public decimal? Rating { get; set; }
+        [StringLength(50)]
+        [Required]
+        public string Description { get; set; }
 
+        public string CourseLevel { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal Price { get; set; }
 
-    public int SubCategoryId { get; set; }
-    public int InstructorId { get; set; }
+        [StringLength(20)]
+        public string Language { get; set; }
+
+        public string? ImageUrl { get; set; }
+        public string? VideoUrl { get; set; }
+
+        public int SubCategoryId { get; set; }
+
+        public int InstructorId { get; set; }
+
+        // ✅ New fields
+        public string Goals { get; set; } 
+        public string Requirements { get; set; } 
+
+        public int? CategoryId { get; set; } // optional if needed
     }
 }

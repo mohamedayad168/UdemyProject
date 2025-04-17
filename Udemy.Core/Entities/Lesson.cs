@@ -1,19 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Udemy.Core.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Udemy.Core.Entities
 {
     public class Lesson : BaseEntity
     {
-        [StringLength(100)]
-        public required string Title { get; set; }
-        public decimal Duration { get; set; }
-        public string Type { get; set; }
-        public string? VideoUrl { get; set; }
-
+        public int Id { get; set; }
         public string? ArticleContent { get; set; }
-        //public int Order { get; set; }
+
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public decimal Duration { get; set; }
+        public bool? IsDeleted { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+
+        public string Title { get; set; }
+        public string Type { get; set; }
+        public string VideoUrl { get; set; }
 
 
         // Navigation Properties

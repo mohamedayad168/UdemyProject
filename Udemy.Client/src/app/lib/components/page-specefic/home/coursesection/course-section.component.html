@@ -1,39 +1,87 @@
-<!-- CATEGORY BUTTONS -->
-<div class="flex flex-wrap gap-3 my-4">
+<!-- CATEGORY SECTION WITH SCROLL -->
+<div class="relative my-4">
+  <!-- Left Arrow -->
   <button
-    *ngFor="let cat of categories"
-    (click)="onCategoryClick(cat.id)"
-    [ngClass]="{
-      'bg-indigo-600 text-white': selectedCategoryId === cat.id,
-      'bg-gray-200 text-black': selectedCategoryId !== cat.id
-    }"
-    class="px-4 py-2 rounded-full font-medium"
+    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+    (click)="scrollCategories('left')"
   >
-    {{ cat.name }}
+    <i class="bi bi-chevron-left text-xl"></i>
+  </button>
+
+  <!-- Scrollable Category Buttons -->
+  <div
+    #categoryScroll
+    class="overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar px-10"
+  >
+    <div class="inline-flex gap-3">
+      <button
+        *ngFor="let cat of categories"
+        (click)="onCategoryClick(cat.id)"
+        [ngClass]="{
+          'bg-indigo-600 text-white': selectedCategoryId === cat.id,
+          'bg-gray-200 text-black': selectedCategoryId !== cat.id
+        }"
+        class="px-4 py-2 rounded-full font-medium whitespace-nowrap"
+      >
+        {{ cat.name }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Arrow -->
+  <button
+    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+    (click)="scrollCategories('right')"
+  >
+    <i class="bi bi-chevron-right text-xl"></i>
   </button>
 </div>
 
-<!-- SUBCATEGORY BUTTONS -->
-<div *ngIf="subcategories.length > 0" class="flex flex-wrap gap-2 mb-6">
+<!-- SUBCATEGORY SECTION WITH SCROLL -->
+<div *ngIf="subcategories.length > 0" class="relative mb-6">
+  <!-- Left Arrow -->
   <button
-    *ngFor="let sub of subcategories"
-    (click)="onSubcategoryClick(sub.id)"
-    [ngClass]="{
-      'bg-purple-600 text-white': selectedSubcategoryId === sub.id,
-      'bg-gray-100 text-gray-700': selectedSubcategoryId !== sub.id
-    }"
-    class="px-3 py-1 rounded-lg text-sm"
+    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+    (click)="scrollSubcategories('left')"
   >
-    {{ sub.name }}
+    <i class="bi bi-chevron-left text-xl"></i>
+  </button>
+
+  <!-- Scrollable Subcategory Buttons -->
+  <div
+    #subcategoryScroll
+    class="overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar px-10"
+  >
+    <div class="inline-flex gap-2">
+      <button
+        *ngFor="let sub of subcategories"
+        (click)="onSubcategoryClick(sub.id)"
+        [ngClass]="{
+          'bg-purple-600 text-white': selectedSubcategoryId === sub.id,
+          'bg-gray-100 text-gray-700': selectedSubcategoryId !== sub.id
+        }"
+        class="px-3 py-1 rounded-lg text-sm whitespace-nowrap"
+      >
+        {{ sub.name }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Arrow -->
+  <button
+    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+    (click)="scrollSubcategories('right')"
+  >
+    <i class="bi bi-chevron-right text-xl"></i>
   </button>
 </div>
 
-<!-- COURSE SCROLLABLE SECTION -->
+<!-- COURSE CARDS -->
 <div class="relative my-6">
   <!-- Left Arrow -->
   <button
     class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
-    (click)="scroll('left')"
+    (click)="scrollCourses('left')"
   >
     <i class="bi bi-chevron-left text-2xl"></i>
   </button>
@@ -45,27 +93,27 @@
   >
     <div class="inline-flex gap-5">
       <div
-  *ngFor="let course of courses"
-  class="w-[320px] bg-white p-4 shadow rounded hover:shadow-lg transition-all cursor-pointer flex-shrink-0 hover:transform hover:scale-105"
-  [routerLink]="['/courses', course.id]"
->
-  <img
-    [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
-    alt="{{ course.title }}"
-    class="rounded h-40 w-full object-cover"
-  />
-  <p class="font-semibold mt-2 text-lg break-words line-clamp-2">{{course.title}}</p>
-  <p class="text-sm text-gray-600">{{ course.instructor }}</p>
-  <p class="text-yellow-500">★ {{ course.rating || 'N/A' }}</p>
-  <p class="text-black font-bold mt-1">£{{ course.price }}</p>
-</div>
-
+        *ngFor="let course of courses"
+        class="w-[320px] bg-white p-4 shadow rounded hover:shadow-lg transition-all cursor-pointer flex-shrink-0 hover:transform hover:scale-105"
+        [routerLink]="['/courses', course.id]"
+      >
+        <img
+          [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
+          alt="{{ course.title }}"
+          class="rounded h-40 w-full object-cover"
+        />
+        <p class="font-semibold mt-2 text-lg break-words line-clamp-2">{{ course.title }}</p>
+        <p class="text-sm text-gray-600">{{ course.instructor }}</p>
+        <p class="text-yellow-500">★ {{ course.rating || 'N/A' }}</p>
+        <p class="text-black font-bold mt-1">£{{ course.price }}</p>
+      </div>
+    </div>
   </div>
 
   <!-- Right Arrow -->
   <button
     class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
-    (click)="scroll('right')"
+    (click)="scrollCourses('right')"
   >
     <i class="bi bi-chevron-right text-2xl"></i>
   </button>

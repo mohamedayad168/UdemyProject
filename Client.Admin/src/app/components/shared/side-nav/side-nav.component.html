@@ -1,17 +1,26 @@
-<aside class="flex flex-col gap-4 bg-sidenav shadow h-full " *ngIf="authService.authState().isAuthenticated">
+<aside
+  class="fixed md:static w-full md:w-fit z-50 md:flex flex-col gap-4 border-e border-gray-950/30 md:border-e-0 md:shadow h-full bg-header md:bg-sidenav"
+  *ngIf="authService.authState().isAuthenticated"
+  [class]="{
+    'hidden': !authService.authState().dialogVisible
+  }"
+>
   <nav>
     <p-menu
       [model]="userNavItems"
       class="flex justify-center [&_.p-menu-separator]:border-none"
-      styleClass="w-full md:w-60 bg-transparent border-none"
+      styleClass="w-full md:w-60  bg-transparent border-none"
     >
-      <ng-template #submenuheader let-item >
+      <ng-template #submenuheader let-item>
         <span class="text-primary font-bold">{{ item.label }}</span>
       </ng-template>
 
-
       <ng-template #item let-item>
-        <a [routerLink]="item.routerLink" pRipple class="flex items-center p-menu-item-link">
+        <a
+          [routerLink]="item.routerLink"
+          pRipple
+          class="flex items-center p-menu-item-link"
+        >
           <span [class]="item.icon"></span>
           <span class="ml-2">{{ item.label }}</span>
           <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
@@ -23,15 +32,8 @@
           </span>
         </a>
       </ng-template>
-
-
     </p-menu>
 
-
-    
-
-
-    
     <!-- admin nav -->
     <!-- <p-panelmenu
       *ngIf="authService.authState().user?.roles!.includes('Admin')"

@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Udemy.Core.Enums;
 using System.Security.Claims;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
@@ -7,12 +13,22 @@ using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
 
+
 namespace Udemy.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CoursesController(IServiceManager serviceManager) : ControllerBase
+    public class CoursesController : ControllerBase
     {
+        private readonly IServiceManager serviceManager;
+        private readonly Cloudinary _cloudinary;
+
+        public CoursesController(IServiceManager serviceManager)
+        {
+            this.serviceManager = serviceManager;
+
+
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesAsync()
         {
@@ -23,11 +39,25 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpGet("page")]
-        public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetPageCoursesAsync([FromQuery] RequestParamter requestParamter)
+        public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetPageAsync([FromQuery] PaginatedSearchReq searchReq)
         {
-            var courses = await serviceManager.CoursesService.GetPageAsync(requestParamter, false);
-            return Ok(courses);
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
+            return Ok(paginatedResponse);
         }
+
+
+        [HttpGet("deleted/page")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetDeletedPage([FromQuery] PaginatedSearchReq searchReq)
+        {
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
+            return Ok(paginatedResponse);
+        }
+
+
 
 
         [HttpGet("search")]
@@ -62,13 +92,6 @@ namespace Udemy.Presentation.Controllers
 
         }
 
-        [HttpGet("{id:int}/asks")]
-        public async Task<ActionResult<IEnumerable<AskRDTO>>> GetAsksByCourseIdAsync([FromRoute] int id, [FromQuery] RequestParamter requestParameter)
-        {
-            var asks = await serviceManager.AskService.GetAsksByCourseIdAsync(id, requestParameter, false);
-            return Ok(asks);
-        }
-
         [HttpGet("{id:int}/asks/{askId:int}/answers")]
         public async Task<ActionResult<IEnumerable<AnswerDto>>> GetAnswersByAskIdAsync([FromRoute] int id, [FromRoute] int askId)
         {
@@ -79,22 +102,25 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        // [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> CreateCourseAsync([FromBody] CourseCDTO course)
+        //[Authorize(Roles = "Admin,Instructor")]
+        public async Task<IActionResult> CreateCourseAsync(CourseCDTO course)
         {
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //if (userIdClaim == null)
-            //    return Unauthorized();
+            if (userIdClaim == null)
+                return Unauthorized();
 
-            //var Id = int.Parse(userIdClaim);
+            var Id = int.Parse(userIdClaim);
 
-            //if (User.IsInRole("Instructor"))
-            //{
-            //    if (course.InstructorId != Id)
-            //        return Forbid("Instructors can only create courses for themselves.");
-            //}
+            if (User.IsInRole("Instructor"))
+            {
+                if (course.InstructorId != Id)
+                    return Forbid("Instructors can only create courses for themselves.");
+            }
+
+
+
 
 
             var courseRDTO = await serviceManager.CoursesService.CreateAsync(course);
@@ -102,13 +128,14 @@ namespace Udemy.Presentation.Controllers
             return CreatedAtAction("GetCourseByTitle", new { title = courseRDTO.Title }, courseRDTO);
         }
 
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateCourseAsync([FromBody] CourseUDTO courseUDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourseAsync([FromRoute] int id, [FromBody] CourseUDTO courseUDTO)
         {
+            courseUDTO.Id = id; // ensure ID is set correctly
             var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
-            return CreatedAtAction(nameof(GetCourseByTitleAsync), new { courseRDTO.Title }, courseRDTO);
+            return Ok(courseRDTO);
         }
+
 
 
         [HttpPut("ToggleApproved/{id}")]
@@ -124,10 +151,27 @@ namespace Udemy.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
+            var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
+            if (course == null)
+                return NotFound(new { message = "Course not found." });
+
+            var instructor = await serviceManager.InstructorService.GetByIdAsync(course.InstructorId, true);
+            if (instructor == null)
+                return NotFound(new { message = "Instructor not found." });
+
             await serviceManager.CoursesService.DeleteAsync(id);
+
+            instructor.TotalCourses -= 1;
+            var instructorUpdated = await serviceManager.InstructorService.UpdateAsync(instructor.Id.Value, new InstructorUTO
+            {
+                TotalCourses = instructor.TotalCourses
+            });
+
+            if (!instructorUpdated)
+                return BadRequest(new { message = "Failed to update instructor." });
+
             return NoContent();
         }
-
 
 
 
@@ -141,11 +185,25 @@ namespace Udemy.Presentation.Controllers
             }
             return Ok(courses);
         }
+        private async Task<ImageUploadResult> UploadFile(IFormFile file)
+        {
+            var uploadResult = new ImageUploadResult();
 
+            if (file.Length > 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Transformation = new Transformation().Quality("auto").FetchFormat("auto")
+                    };
 
-
-
-
+                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                }
+            }
+            return uploadResult;
+        }
     }
 }
 

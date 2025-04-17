@@ -9,6 +9,9 @@ import { SocialMediaLink } from '../lib/models/SocialMedia.model';
   providedIn: 'root',
 })
 export class InstructorService {
+  login(value: Partial<{ email: string | null; password: string | null }>) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = `${environment.baseurl}/instructors`;
 
   constructor(private http: HttpClient) {}
@@ -42,10 +45,7 @@ export class InstructorService {
   }
 
   saveSocialMediaLinks(links: SocialMediaLink[]): Observable<any> {
-    return this.http.post(
-      `${environment.baseurl}/api/SocialMedia/create`,
-      links
-    );
+    return this.http.post(`${environment.baseurl}/SocialMedia/create`, links);
   }
 
   getInstructorDetails(instructorId: number): Observable<Instructor> {
@@ -56,5 +56,15 @@ export class InstructorService {
 
   getInstructorCourses(instructorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${instructorId}/courses`);
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);
+  }
+
+  checkUsernameExists(username: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.apiUrl}/check-username?username=${username}`
+    );
   }
 }

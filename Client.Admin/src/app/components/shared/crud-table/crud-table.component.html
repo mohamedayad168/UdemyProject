@@ -41,30 +41,25 @@
 
   <p-table
     #dt
-    [value]="items().data"
+    [value]="crudService().page().data"
     [rows]="10"
     [lazy]="true"
     [columns]="cols"
-    [totalRecords]="items().totalItems"
+    [totalRecords]="crudService().page().totalItems"
     [pageLinks]="5"
     [paginator]="true"
-    (onLazyLoad)="loadData($event)"
-    (onPage)="onPageChange($event)"
-    [globalFilterFields]="[
-      'title',
-      'description',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
+    (onPage)="loadData($event)"
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="selectedProducts"
     [rowHover]="true"
     [loading]="dt.loading"
     dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    paginator
     [showCurrentPageReport]="true"
-    
+    [paginatorStyleClass]="showHideClassOnLoading()"
+    (onSort)="onSort($event)"
+    sortField="id"
   >
     <ng-template #caption>
       <div class="flex items-center justify-between">
@@ -75,6 +70,7 @@
             pInputText
             type="text"
             (input)="search($event)"
+            [class.pointer-events-none]="crudService().isLoading()"
             placeholder="Search..."
           />
         </p-iconfield>
@@ -88,8 +84,10 @@
         </th>
         @for (item of columnConfigs(); track $index) {
         <th
+          [class.pointer-events-none]="crudService().isLoading()"
           pSortableColumn="{{ item['key'] }}"
-          style.min-width="{{ item.width ?? 'unset' }}"
+          [pSortableColumnDisabled]="!item.sortable"
+           style.min-width="{{ item.width ?? 'unset' }}"
         >
           {{ item.header }}
           <p-sortIcon *ngIf="item.sortable" field="{{ item['key'] }}" />
@@ -102,7 +100,7 @@
     </ng-template>
 
     <!-- product record -->
-    @if (items().data.length > 0) {
+    @if (crudService().page().data.length > 0) {
     <ng-template #body let-product>
       <tr>
         <td style="width: 3rem">
@@ -175,7 +173,7 @@
 
     <ng-template #summary>
       <div class="flex items-center justify-between">
-        In total there are {{ items().totalItems }} products.
+        In total there are {{ crudService().page().totalItems }} products.
       </div>
     </ng-template>
   </p-table>

@@ -29,7 +29,9 @@ public class UserRepository(
 
     public async Task<ApplicationUser?> GetUserByEmailAsync(string email)
     {
-        var user = await userManager.FindByEmailAsync(email);
+        var user = await dbContext.Users.AsNoTracking().SingleOrDefaultAsync(x => x.Email == email);
+
+
 
         return user?.IsDeleted == true ? null : user;
     }
@@ -51,7 +53,7 @@ public class UserRepository(
         return await userManager.AddToRoleAsync(user, role);
     }
 
-    public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
+    public async Task<IdentityResult> CreateUserAsync(Student user, string password)
     {
         var result = await userManager.CreateAsync(user, password);
         await dbContext.SaveChangesAsync();
