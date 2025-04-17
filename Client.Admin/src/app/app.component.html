@@ -325,7 +325,9 @@
 <div class="flex flex-1 overflow-hidden">
   <app-side-nav />
   <main
+    #main
     class="flex-1 flex justify-center [&>*:not(router-outlet)]:w-full p-4 h-full overflow-auto"
+    (scroll)="scrollService.onScroll(main.scrollTop)"
   >
     <router-outlet />
   </main>

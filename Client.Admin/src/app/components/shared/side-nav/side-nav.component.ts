@@ -75,13 +75,13 @@ export class SideNavComponent {
           {
             label: 'Students',
             icon: 'pi pi-users',
-            routerLink: ['/courses'],
+            routerLink: ['/students'],
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Instructors',
             icon: 'pi pi-user',
-            routerLink: ['/courses'],
+            routerLink: ['/instructors'],
             routerLinkActiveOptions: { exact: true },
           },
           {

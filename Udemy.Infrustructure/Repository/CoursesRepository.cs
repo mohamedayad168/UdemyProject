@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
@@ -57,23 +58,33 @@ namespace Udemy.Infrastructure.Repository
         }
 
 
-        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, bool isDeleted, bool trackChanges)
+        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
         {
 
-            var query = FindAll(false).Where(x =>
-                                            (x.IsDeleted == isDeleted) && (
-                                                x.Title.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
-                                                x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
-                                                x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower())
-                                                )
-                                             );
+            IQueryable<Course> query;
 
-            var courses = await query.Sort(searchReq.OrderBy!)
-                                    .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
-                                    .Take(searchReq.PageSize)
-                                    .Include(c => c.Instructor)
-                                    .Include(c => c.SubCategory)
-                                    .ToListAsync();
+            if (searchReq.SearchTerm!.Length > 0)
+            {
+                query = FindAll(trackChanges, deletionType)
+                .Where(x =>
+                    x.Title.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
+                    x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
+                    x.SubCategory.Category.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower())
+                 );
+            }
+            else
+            {
+                query = FindAll(trackChanges, deletionType);
+            }
+
+
+            var courses = await query
+                .Sort(searchReq.OrderBy!)
+                .Skip((searchReq.PageNumber - 1) * searchReq.PageSize)
+                .Take(searchReq.PageSize)
+                .Include(c => c.Instructor)
+                .Include(c => c.SubCategory)
+                .ToListAsync();
 
             var response = new PaginatedRes<Course>
             {

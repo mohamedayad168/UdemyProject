@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Udemy.Core.Enums;
 
 namespace Udemy.Core.IRepository;
 
@@ -44,7 +45,7 @@ namespace Udemy.Core.IRepository;
 
 public interface IRepositoryBase<T>
 {
-    IQueryable<T> FindAll(bool trackChanges);
+    IQueryable<T> FindAll(bool trackChanges = false, DeletionType? deletionType = null);
     IQueryable<T> FindByCondition(Expression<Func<T , bool>> expression , bool trackChanges);
     void Create(T entity);
     void Update(T entity);

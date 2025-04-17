@@ -41,11 +41,11 @@
 
   <p-table
     #dt
-    [value]="items().data"
+    [value]="crudService().page().data"
     [rows]="10"
     [lazy]="true"
     [columns]="cols"
-    [totalRecords]="items().totalItems"
+    [totalRecords]="crudService().page().totalItems"
     [pageLinks]="5"
     [paginator]="true"
     (onPage)="loadData($event)"
@@ -100,7 +100,7 @@
     </ng-template>
 
     <!-- product record -->
-    @if (items().data.length > 0) {
+    @if (crudService().page().data.length > 0) {
     <ng-template #body let-product>
       <tr>
         <td style="width: 3rem">
@@ -173,7 +173,7 @@
 
     <ng-template #summary>
       <div class="flex items-center justify-between">
-        In total there are {{ items().totalItems }} products.
+        In total there are {{ crudService().page().totalItems }} products.
       </div>
     </ng-template>
   </p-table>

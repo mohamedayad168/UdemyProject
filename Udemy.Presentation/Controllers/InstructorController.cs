@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
+using Udemy.Core.ReadOptions;
 using Udemy.Core.Utils;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -35,6 +37,19 @@ namespace Udemy.API.Controllers
             var instructors = await _serviceManager.InstructorService.GetAllAsync(false);
             return Ok(instructors);
         }
+
+
+        [HttpGet("page")]
+        public async Task<ActionResult<PaginatedRes<InstructorRDTO>>> GetPage([FromQuery]PaginatedSearchReq searchReq)
+        {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
+            var paginatedRes = await _serviceManager.InstructorService.GetPageAsync(searchReq, DeletionType.NotDeleted, false);
+            return Ok(paginatedRes);
+
+        }
+
 
 
         [HttpGet("{id:int}")]

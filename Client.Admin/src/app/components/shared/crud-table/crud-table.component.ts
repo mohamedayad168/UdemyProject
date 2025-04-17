@@ -8,8 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Course } from '../../../types/Course';
-import { CoursesService } from '../../../services/courses/courses.service';
+ import { CoursesService } from '../../../services/courses/courses.service';
 import { TableLazyLoadEvent, TableModule, TablePageEvent } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { Ripple } from 'primeng/ripple';
@@ -34,7 +33,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
-import { IPage } from '../../../types/IPage';
+import { IPage } from '../../../types/fetch';
 
 type FieldType =
   | 'text'
@@ -94,7 +93,7 @@ type baseItem = {
   [key: string]: any;
   id: string;
   title: string;
-  status: string;
+  // status: string;
 };
 
 @Component({
@@ -144,9 +143,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   submitted: boolean = false;
   searchTerm = new Subject<string>();
   searchTermValue = '';
-  orderBy:{field: string, order: number} ={field: 'id', order: 1};
+  orderBy: { field: string; order: number } = { field: 'id', order: 1 };
 
-  items = input.required<IPage<T>>();
   statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
   columnConfigs = input.required<IColumnConfig[]>();
@@ -193,7 +191,6 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   }
   ngOnViewInit() {
     this.dt.sortField = 'id';
-
   }
 
   exportCSV() {
@@ -310,8 +307,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   findIndexById(id: string): number {
     let index = -1;
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items().data[i].id === id) {
+    for (let i = 0; i < this.crudService().page().data.length; i++) {
+      if (this.crudService().page().data[i].id === id) {
         index = i;
         break;
       }
@@ -408,7 +405,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     this.crudService().getPage({
       pageNumber: event.first! / event.rows! + 1,
       pageSize: event.rows!,
-      orderBy:  this.getOrderDirection(this.orderBy),
+      orderBy: this.getOrderDirection(this.orderBy),
       searchTerm: this.searchTermValue,
     });
   }
@@ -432,21 +429,26 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     const input = event.target as HTMLInputElement;
     this.searchTerm.next(input.value);
   }
-  onSort(order: {field: string, order: number}) {
+  onSort(order: { field: string; order: number }) {
     this.orderBy = order;
-    this.crudService().getPage({pageNumber: 1, pageSize: 10, orderBy: this.getOrderDirection(order), searchTerm: this.searchTermValue});
+    this.crudService().getPage({
+      pageNumber: 1,
+      pageSize: 10,
+      orderBy: this.getOrderDirection(order),
+      searchTerm: this.searchTermValue,
+    });
   }
 
-  getOrderDirection(order:{field: string, order: number}){
+  getOrderDirection(order: { field: string; order: number }) {
     return order.order >= 0 ? `${order.field} asc` : `${order.field} desc`;
   }
 
-  getDirectionFromOrder(order: number){
+  getDirectionFromOrder(order: number) {
     console.log(order);
     return order > 0 ? 'ascending' : 'descending';
   }
 
-  showHideClassOnLoading(){
+  showHideClassOnLoading() {
     return this.crudService().isLoading() ? 'pointer-events-none' : '';
   }
 }
