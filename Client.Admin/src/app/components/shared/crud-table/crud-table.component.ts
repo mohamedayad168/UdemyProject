@@ -37,6 +37,7 @@ import { IPage } from '../../../types/fetch';
 
 type FieldType =
   | 'text'
+  | 'password'
   | 'textarea'
   | 'number'
   | 'checkbox'
@@ -92,8 +93,7 @@ export interface ICrudTableItemStatus {
 type baseItem = {
   [key: string]: any;
   id: string;
-  title: string;
-  // status: string;
+   // status: string;
 };
 
 @Component({
@@ -264,7 +264,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   deleteProduct(newItem: T) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + newItem.title + '?',
+      message: 'Are you sure you want to delete ?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

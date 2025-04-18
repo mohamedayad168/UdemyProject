@@ -93,6 +93,8 @@ export class SideNavComponent {
           {
             label: 'Admins',
             icon: 'pi pi-cog',
+            routerLink: ['/admins'],
+            routerLinkActiveOptions: { exact: true },
           },
         ],
       },
