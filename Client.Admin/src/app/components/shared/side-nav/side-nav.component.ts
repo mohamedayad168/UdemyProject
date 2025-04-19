@@ -13,6 +13,7 @@ import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
+import { UiStateService } from '../../../services/UiState/ui-state.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -33,6 +34,8 @@ import { AvatarModule } from 'primeng/avatar';
 })
 export class SideNavComponent {
   authService = inject(AuthService);
+  UiStateService = inject(UiStateService);
+
   router = inject(Router);
 
   userNavItems!: MenuItem[];

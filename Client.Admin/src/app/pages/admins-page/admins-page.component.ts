@@ -4,8 +4,7 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
-  ICrudTableItemStatus,
-} from '../../components/shared/crud-table/crud-table.component';
+ } from '../../components/shared/crud-table/crud-table.component';
 import { IAdmin } from '../../types/admin';
 
 @Component({
@@ -129,10 +128,10 @@ export class AdminsPageComponent {
     },
   ];
 
-  statuses: ICrudTableItemStatus[] = [
-    { label: 'Archieved', value: 'secondary' },
-    { label: 'Published', value: 'success' },
-    { label: 'Draft', value: 'info' },
-    { label: 'bestseller', value: 'contrast' },
-  ];
+  // statuses: ICrudTableItemStatus[] = [
+  //   { label: 'Archieved', value: 'secondary' },
+  //   { label: 'Published', value: 'success' },
+  //   { label: 'Draft', value: 'info' },
+  //   { label: 'bestseller', value: 'contrast' },
+  // ];
 }

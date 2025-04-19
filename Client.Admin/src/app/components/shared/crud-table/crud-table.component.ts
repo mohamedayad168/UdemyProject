@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
- import { CoursesService } from '../../../services/courses/courses.service';
+import { CoursesService } from '../../../services/courses/courses.service';
 import { TableLazyLoadEvent, TableModule, TablePageEvent } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { Ripple } from 'primeng/ripple';
@@ -62,7 +62,9 @@ export interface FormFieldConfig {
 export interface IColumnConfig {
   [key: string]: any;
   width?: string;
-  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating';
+  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating' |'status'; //sepcify for tags
+  tags?: { label: string; value: any; color: string; bgColor: string }[];
+  statuses?: { label: string; value: any; color: string; bgColor: string }[];
   header: string;
   sortable?: boolean;
 }
@@ -78,22 +80,22 @@ interface ExportColumn {
   dataKey: string;
 }
 
-export interface ICrudTableItemStatus {
-  label: string;
-  value:
-    | 'success'
-    | 'info'
-    | 'warn'
-    | 'danger'
-    | 'secondary'
-    | 'contrast'
-    | undefined;
-}
+// export interface ICrudTableItemStatus {
+//   label: string;
+//   value:
+//     | 'success'
+//     | 'info'
+//     | 'warn'
+//     | 'danger'
+//     | 'secondary'
+//     | 'contrast'
+//     | undefined;
+// }
 
 type baseItem = {
   [key: string]: any;
   id: string;
-   // status: string;
+  // status: string;
 };
 
 @Component({
@@ -145,7 +147,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   searchTermValue = '';
   orderBy: { field: string; order: number } = { field: 'id', order: 1 };
 
-  statuses = input.required<ICrudTableItemStatus[]>();
+  // statuses = input.required<ICrudTableItemStatus[]>();
   crudService = input.required<CrudService<T>>();
   columnConfigs = input.required<IColumnConfig[]>();
   createFormConfigs = input.required<FormFieldConfig[]>();
@@ -327,8 +329,8 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     return id;
   }
 
-  getStatusSeverity(status: T['status']): ICrudTableItemStatus['value'] {
-    return this.statuses().find((s) => s.label == status)?.value ?? 'danger';
+  getStatus(statuses: IColumnConfig['statuses'], value: any) {
+    return statuses!.find((status) => status.value == value);
   }
 
   saveProduct() {

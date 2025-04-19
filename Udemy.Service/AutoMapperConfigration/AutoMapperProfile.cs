@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Udemy.Core.Entities;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
-using Udemy.Service.IService;
 
 namespace Udemy.Service.AutoMapperConfigration
 {
@@ -12,13 +10,13 @@ namespace Udemy.Service.AutoMapperConfigration
     {
         public AutoMapperProfile()
         {
-            CreateMap<Course,CourseRDTO>().ReverseMap();
-            CreateMap<Course,CourseCDTO>().ReverseMap();
-            CreateMap<Course,CourseUDTO>().ReverseMap();
-            
-            CreateMap<Category,CategoryRDTO>().ReverseMap();
-            CreateMap<Category,CategoryCDTO>().ReverseMap();
-            CreateMap<Category,CategoryUDTO>().ReverseMap();
+            CreateMap<Course, CourseRDTO>().ReverseMap();
+            CreateMap<Course, CourseCDTO>().ReverseMap();
+            CreateMap<Course, CourseUDTO>().ReverseMap();
+
+            CreateMap<Category, CategoryRDTO>().ReverseMap();
+            CreateMap<Category, CategoryCDTO>().ReverseMap();
+            CreateMap<Category, CategoryUDTO>().ReverseMap();
 
 
             CreateMap<CourseRequirement, CourseRequirementRDTO>().ReverseMap(); ;
@@ -26,8 +24,11 @@ namespace Udemy.Service.AutoMapperConfigration
             CreateMap<CourseRequirementUTO, CourseRequirement>();
 
 
-            CreateMap<Lesson, LessonRDto>().ReverseMap(); 
-            CreateMap<Lesson, LessonCDto>().ReverseMap(); 
+            CreateMap<Lesson, LessonRDto>().ReverseMap();
+            CreateMap<LessonCDto, Lesson>()
+
+           .ForMember(dest => dest.VideoUrl, opt => opt.Ignore());
+            CreateMap<Lesson, LessonCDto>();
             CreateMap<Lesson, LessonUDto>().ReverseMap();
 
             CreateMap<Section, SectionRDTO>().ReverseMap();

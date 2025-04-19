@@ -1,15 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
+  AsyncValidatorFn,
 } from '@angular/forms';
 import { CourseService } from '../../lib/services/course.service';
 import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
 import { AccountService } from '../../lib/services/account.service';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-createcoursebage',
@@ -82,6 +86,7 @@ export class CreatecoursebageComponent implements OnInit {
   // Store the raw File objects instead of URLs
   imageFile: File | null = null;
   videoFile: File | null = null;
+  isCheckingTitle = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -91,7 +96,11 @@ export class CreatecoursebageComponent implements OnInit {
   ) {
     this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(60)]],
+      title: [
+        '',
+        [Validators.required, Validators.maxLength(60)],
+        [this.titleAvailabilityValidator()],
+      ],
       description: ['', [Validators.required, Validators.minLength(300)]],
       language: ['English (US)', Validators.required],
       level: ['Select Level --', Validators.required],
@@ -187,6 +196,24 @@ export class CreatecoursebageComponent implements OnInit {
         alert('Invalid file type. Please upload MP4, AVI, or MOV videos.');
       }
     }
+  }
+
+  titleAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      this.isCheckingTitle = true;
+
+      return this.courseService.checkTitleExists(control.value).pipe(
+        map((exist) => {
+          console.log(exist);
+          this.isCheckingTitle = false;
+          return exist ? { titleTaken: true } : null;
+        })
+      );
+    };
   }
 
   saveLandingPage() {

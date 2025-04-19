@@ -53,9 +53,9 @@ public class ServiceManager : IServiceManager
         paymentService = new Lazy<IPaymentService>(() => new PaymentService(Configuration, repositoryManager, mapper));
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
-        lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper));
+        lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper, cloudService));
 
-        sectionService = new Lazy<ISectionService>(() => new SectionService(repositoryManager, mapper)); 
+        sectionService = new Lazy<ISectionService>(() => new SectionService(repositoryManager, mapper));
 
     }
 
@@ -78,5 +78,5 @@ public class ServiceManager : IServiceManager
     public ILessonService LessonService => lessonService.Value;
 
 
-    public ISectionService SectionService => sectionService.Value; 
+    public ISectionService SectionService => sectionService.Value;
 }

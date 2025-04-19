@@ -30,15 +30,23 @@
                 [ngClass]="{
                   'border-red-500':
                     loginForm.get('email')?.invalid &&
-                    (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+                    (loginForm.get('email')?.dirty ||
+                      loginForm.get('email')?.touched)
                 }"
               />
               <div
-                *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+                *ngIf="
+                  loginForm.get('email')?.touched &&
+                  loginForm.get('email')?.invalid
+                "
                 class="text-red-500 text-xs mt-1"
               >
-                <div *ngIf="loginForm.get('email')?.hasError('required')">Email is required</div>
-                <div *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email</div>
+                <div *ngIf="loginForm.get('email')?.hasError('required')">
+                  Email is required
+                </div>
+                <div *ngIf="loginForm.get('email')?.hasError('email')">
+                  Please enter a valid email
+                </div>
               </div>
             </div>
 
@@ -53,20 +61,26 @@
                 [ngClass]="{
                   'border-red-500':
                     loginForm.get('password')?.invalid &&
-                    (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
+                    (loginForm.get('password')?.dirty ||
+                      loginForm.get('password')?.touched)
                 }"
               />
               <div
-                *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                *ngIf="
+                  loginForm.get('password')?.touched &&
+                  loginForm.get('password')?.invalid
+                "
                 class="text-red-500 text-xs mt-1"
               >
-                <div *ngIf="loginForm.get('password')?.hasError('required')">Password is required</div>
+                <div *ngIf="loginForm.get('password')?.hasError('required')">
+                  Password is required
+                </div>
               </div>
             </div>
 
             <!-- Error Message -->
-            <div *ngIf="errorMessage() === 'Invalid credentials'" class="text-red-500 text-sm mb-4">
-              Wrong email or password
+            <div *ngIf="errorMessage != ''" class="text-red-500 text-sm mb-4">
+              Email or password is incorrect, please try again
             </div>
 
             <!-- Submit Button -->
@@ -83,10 +97,7 @@
           <div class="mt-6 text-center text-sm">
             <p>
               You don't have an account?
-              <a
-                routerLink="/get-started"
-                class="!text-purple-600 font-bold"
-              >
+              <a routerLink="/get-started" class="!text-purple-600 font-bold">
                 Sign Up
               </a>
             </p>

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.model';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { SignUp } from '../models/SignUp.model';
 
@@ -47,6 +47,17 @@ export class AccountService {
     return this.http.post<SignUp>(
       environment.baseurl + '/Account/SignUp',
       values
+    );
+  }
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${environment.baseurl}/account/check-email?email=${email}`
+    );
+  }
+
+  checkUsernameExists(username: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${environment.baseurl}/account/check-username?username=${username}`
     );
   }
 }

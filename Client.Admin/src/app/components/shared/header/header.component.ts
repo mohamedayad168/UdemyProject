@@ -12,6 +12,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollService } from '../../../services/scroll/scroll.service';
+import { UiStateService } from '../../../services/UiState/ui-state.service';
 // import { SearchService } from '../../services/search/search.service';
 @Component({
   selector: 'app-header',
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit {
   visible = signal(true);
   
   scrollService = inject(ScrollService);
+UiStateService = inject(UiStateService);
 
   // searchInput: string = '';
 
