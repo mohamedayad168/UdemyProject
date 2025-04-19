@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Instructor } from '../lib/models/instructor.model';
+import { environment } from '../../../environments/environment';
+import { Instructor } from '../models/instructor.model';
 import { Observable } from 'rxjs';
-import { SocialMediaLink } from '../lib/models/SocialMedia.model';
+import { SocialMediaLink } from '../models/SocialMedia.model';
 
 @Injectable({
   providedIn: 'root',

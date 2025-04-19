@@ -1,6 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Instructor } from '../../lib/models/instructor.model';
-import { InstructorService } from '../../services/instructor.service';
+import { InstructorService } from '../../lib/services/instructor.service';
 import { Component, inject } from '@angular/core';
 import {
   AbstractControl,

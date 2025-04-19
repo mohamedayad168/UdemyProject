@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { InstructorService } from '../../services/instructor.service';
+import { InstructorService } from '../../lib/services/instructor.service';
 import { Instructor } from '../../lib/models/instructor.model';
 import { Course } from '../../lib/models/course.model';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../lib/services/course.service';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../lib/services/account.service';
 @Component({
   selector: 'app-edit-course',
   imports: [CommonModule, RouterModule, FormsModule],
@@ -14,7 +15,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './edit-course.component.css',
 })
 export class EditCourseComponent implements OnInit {
-  instructorId!: number;
+  instructorId: number | undefined;
   courses: Course[] = [];
   filteredCourses: Course[] = [];
   searchQuery: string = '';
@@ -23,13 +24,14 @@ export class EditCourseComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
-    this.instructorId = +this.route.snapshot.paramMap.get('id')!;
+    this.instructorId = this.accountService.currentUser()?.id;
     // Fetch instructor and their courses
-    this.instructorService.getInstructorById(this.instructorId).subscribe({
+    this.instructorService.getInstructorById(this.instructorId!).subscribe({
       next: (instructorData) => {
         this.instructor = instructorData;
         this.getInstructorCourses();
@@ -41,7 +43,7 @@ export class EditCourseComponent implements OnInit {
   }
 
   getInstructorCourses(): void {
-    this.instructorService.getInstructorCourses(this.instructorId).subscribe({
+    this.instructorService.getInstructorCourses(this.instructorId!).subscribe({
       next: (data) => {
         this.courses = data;
         this.filteredCourses = this.courses; // Initially show all courses
