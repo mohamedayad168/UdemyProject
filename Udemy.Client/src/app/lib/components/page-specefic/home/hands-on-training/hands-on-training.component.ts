@@ -68,7 +68,7 @@ export class HandsOnTrainingComponent {
   ];
 
   ngOnInit() {
-    // Initialize the component and set the active tab to 1
+
     this.selectedFeature = {
       id: 1,
       icon: '⭐',
@@ -78,8 +78,8 @@ export class HandsOnTrainingComponent {
       details:
         'AI-powered exercises and hands-on practice to sharpen your skills in real-world scenarios.',
       linkText: 'Explore courses',
-      imageUrl:"",
-    }; // Set to null initially
+      imageUrl:"assets/image/desktop-hands-on-learning-2x.webp",
+    }; 
   }
 
   selectFeature(feature: Feature) {

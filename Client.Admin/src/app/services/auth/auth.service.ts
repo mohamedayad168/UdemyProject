@@ -28,7 +28,8 @@ export class AuthService {
   logout() {
     //clear set cookies from browser
     const observable = this.httpClient.post<IUser>(
-      `${environment.apiUrl}/api/account/logout`,null
+      `${environment.apiUrl}/api/account/logout`,
+      null
     );
 
     observable.subscribe({
@@ -42,7 +43,7 @@ export class AuthService {
         // this.loadingService.stop();
       },
     });
-    
+
     this.router.navigate(['/login']);
     this._authState.set({
       user: null,
@@ -65,6 +66,9 @@ export class AuthService {
       .subscribe({
         next: (user) => {
           console.log(user);
+          if (!user.roles.includes('Admin') && !user.roles.includes('Owner')) {
+            throw new Error('Access Denied');
+          }
 
           this._authState.update((pre) => {
             pre.user = user;
@@ -78,7 +82,7 @@ export class AuthService {
           console.error(error);
 
           this._authState.update((pre) => {
-            pre.error = error.error;
+            pre.error = error?.error?? error.message;
             return pre;
           });
         },
@@ -97,6 +101,10 @@ export class AuthService {
 
     observable.subscribe({
       next: (user) => {
+        if (!user.roles.includes('Admin') && !user.roles.includes('Owner')) {
+          throw new Error('Access Denied');
+        }
+
         if (!user) {
           this.router.navigate(['/login']);
           return;
@@ -104,18 +112,17 @@ export class AuthService {
         console.log('load user', user);
 
         this._authState.update((pre) => {
- 
-            pre.user = user;
-            pre.isAuthenticated = true;
-          
+          pre.user = user;
+          pre.isAuthenticated = true;
+
           return pre;
         });
       },
       error: (error) => {
         this.router.navigate(['/login']);
-        console.error("rrr");
+        console.error('rrr');
         this._authState.update((pre) => {
-          pre.error = error.message;
+          pre.error = error?.error?? error.message;
           return pre;
         });
       },

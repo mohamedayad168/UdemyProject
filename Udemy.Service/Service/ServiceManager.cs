@@ -53,7 +53,7 @@ public class ServiceManager : IServiceManager
         paymentService = new Lazy<IPaymentService>(() => new PaymentService(Configuration, repositoryManager, mapper));
 
         subCategoriesService = new Lazy<ISubCategoriesService>(() => new SubCategoriesService(repositoryManager, mapper));
-        lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper));
+        lessonService = new Lazy<ILessonService>(() => new LessonService(repositoryManager, mapper, cloudService));
 
         sectionService = new Lazy<ISectionService>(() => new SectionService(repositoryManager, mapper)); 
         quizService = new Lazy<IQuizService>(() => new QuizService(repositoryManager, mapper));

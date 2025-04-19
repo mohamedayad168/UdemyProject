@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
@@ -41,29 +42,33 @@ namespace Udemy.Presentation.Controllers
         }
 
         // GET: api/Lesson/section/{sectionId}
+        [Authorize(Roles = "Instructor")]
         [HttpGet("section/{sectionId}")]
         public async Task<ActionResult<IEnumerable<LessonRDto>>> GetLessonsBySectionId(int sectionId, [FromQuery] bool trackChanges)
         {
             var lessons = await _serviceManager.LessonService.GetLessonsBySectionIdAsync(sectionId, trackChanges);
             return Ok(lessons);
         }
-
-        // POST: api/Lesson
         [HttpPost]
-        public async Task<ActionResult> CreateLesson([FromBody] LessonCDto lessonCreateDto)
+        public async Task<IActionResult> CreateLesson(LessonCDto lessonCDto)
         {
-            if (lessonCreateDto == null)
-            {
-                return BadRequest("Lesson data is null.");
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var isCreated = await _serviceManager.LessonService.CreatelessonAsync(lessonCreateDto);
-            if (isCreated)
+            try
             {
-                return Ok(lessonCreateDto);
+                var result = await _serviceManager.LessonService.CreatelessonAsync(lessonCDto);
+                if (!result)
+                    return StatusCode(500, "Failed to create lesson");
+
+                return Ok("lesson created successfully");
             }
-            return BadRequest("Failed to create lesson.");
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
+
 
         // PUT: api/Lesson/{id}
         [HttpPut("{id}")]

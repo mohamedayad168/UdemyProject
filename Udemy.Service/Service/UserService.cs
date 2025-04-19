@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using CloudinaryDotNet.Actions;
 using System.Text;
 using Udemy.Core.Entities;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
@@ -25,6 +27,23 @@ public class UserService(
 
         return usersDto;
     }
+
+
+    public async Task<PaginatedRes<UserDto>> GetRoleUsersPageAsync(PaginatedSearchReq searchReq, string role, DeletionType deletionType, bool trackChanges)
+    {
+        var paginatedUsers = await repository.User.GetRoleUsersPageAsync(searchReq, role, deletionType, trackChanges);
+
+        var paginatedDtos = new PaginatedRes<UserDto>
+        {
+            Data = mapper.Map<IEnumerable<UserDto>>(paginatedUsers.Data),
+            CurrentPage = paginatedUsers.CurrentPage,
+            PageSize = paginatedUsers.PageSize,
+            TotalItems = paginatedUsers.TotalItems,
+        };
+
+        return paginatedDtos;
+    }
+
 
     public async Task<UserDto> GetUserByIdAsync(int id)
     {
@@ -67,9 +86,9 @@ public class UserService(
         return userDto;
     }
 
-    public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
+    public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto,string role="Student")
     {
-        var userEntity = mapper.Map<Student>(userDto);
+        var userEntity = mapper.Map<ApplicationUser>(userDto);
 
         // handle password validation (must contain at least chararcter, ... etc)
 
@@ -84,6 +103,8 @@ public class UserService(
             throw new UserCreatingBadRequest(sb.ToString());
         }
 
+        await repository.User.AddRoleToUser(userEntity, role);
+
 
 
         var userToReturn = mapper.Map<UserDto>(userEntity);
@@ -91,14 +112,7 @@ public class UserService(
         return userToReturn;
     }
 
-    public async Task DeleteUserAsync(int id)
-    {
-        var user = await GetUserAndCheckIfItExistsAsync(id);
-
-        repository.User.DeleteUser(user);
-
-        await repository.SaveAsync();
-    }
+    
 
     public async Task UpdateUserAsync(int id, UserForUpdatingDto userDto)
     {
@@ -117,6 +131,9 @@ public class UserService(
     }
 
 
+
+
+
     private async Task<ApplicationUser> GetUserAndCheckIfItExistsAsync(int id)
     {
         var user = await repository.User.GetUserByIdAsync(id);
@@ -125,6 +142,20 @@ public class UserService(
             throw new UserNotFoundException($"User With Id: {id} Deosn't Exist");
 
         return user;
+    }
+
+
+
+
+
+
+    public async Task DeleteUserAsync(int id)
+    {
+        var user = await GetUserAndCheckIfItExistsAsync(id);
+
+        repository.User.DeleteUser(user);
+
+        await repository.SaveAsync();
     }
 
 }

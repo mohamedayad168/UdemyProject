@@ -55,14 +55,20 @@ export interface Section {
     lessons: Lesson[];
 }
 
+export interface CreateSectionDTO {
+    title: string;
+    duration: number;
+    noLessons: number;
+    courseId: number;
+  }
 export interface Lesson {
-  id: number;
-  title: string;
-  duration: number;
-  type: string;
-  videoUrl: string | null;
-  articleContent: string | null;
-}
+    id: number;
+    title: string;
+    duration?: number;
+    type: string;
+    videoUrl: string | null;
+    articleContent?: string | null;
+  }
 
 export interface CourseContent{
   courseId: number;

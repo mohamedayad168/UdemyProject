@@ -6,6 +6,8 @@ using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class SectionController : ControllerBase
     {
         private readonly IServiceManager _service;
@@ -13,6 +15,18 @@ namespace Udemy.Presentation.Controllers
         public SectionController(IServiceManager service)
         {
             _service = service;
+        }
+
+        [HttpGet("course/{courseId}")]
+        public async Task<IActionResult> GetSectionsByCourseId(int courseId, [FromQuery] bool trackChanges)
+        {
+            var sections = await _service.SectionService.GetSectionsByCourseIdAsync(courseId, trackChanges);
+            if (sections == null || !sections.Any())
+            {
+                return NotFound("No sections found for the specified course.");
+            }
+
+            return Ok(sections);
         }
 
 
@@ -36,16 +50,16 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateSection([FromBody] SectionCDTO sectionDto)
+        public async Task<IActionResult> CreateSection([FromBody] SectionCDTO sectioncDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _service.SectionService.CreateSectionAsync(sectionDto);
+            var result = await _service.SectionService.CreateSectionAsync(sectioncDto);
             if (!result)
                 return StatusCode(500, "Failed to create section");
 
-            return Ok("Section created successfully");
+            return Ok(sectioncDto);
         }
 
 
@@ -59,8 +73,9 @@ namespace Udemy.Presentation.Controllers
             if (!result)
                 return NotFound();
 
-            return Ok("Section updated successfully");
+            return Ok(sectionDto);
         }
+
 
 
         [HttpDelete("{id}")]

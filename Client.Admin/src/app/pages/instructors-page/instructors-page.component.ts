@@ -3,8 +3,7 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
-  ICrudTableItemStatus,
-} from '../../components/shared/crud-table/crud-table.component';
+ } from '../../components/shared/crud-table/crud-table.component';
 import { InstructorsService } from '../../services/instructors/instructors.service';
 import { IInstructor } from '../../types/instructor';
 
@@ -117,10 +116,10 @@ export class InstructorsPageComponent {
     },
   ];
 
-  statuses: ICrudTableItemStatus[] = [
-    { label: 'Archieved', value: 'secondary' },
-    { label: 'Published', value: 'success' },
-    { label: 'Draft', value: 'info' },
-    { label: 'bestseller', value: 'contrast' },
-  ];
+  // statuses: ICrudTableItemStatus[] = [
+  //   { label: 'Archieved', value: 'secondary' },
+  //   { label: 'Published', value: 'success' },
+  //   { label: 'Draft', value: 'info' },
+  //   { label: 'bestseller', value: 'contrast' },
+  // ];
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +23,8 @@ export class UpdatecoursedetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -92,6 +93,7 @@ export class UpdatecoursedetailsComponent implements OnInit {
       this.courseService.updateCourse(+this.courseId, updatedCourse).subscribe(
         () => {
           alert('Course updated successfully');
+          this.router.navigate(['/updatesectionlessondetails', this.courseId]);
           
         },
         (error) => {

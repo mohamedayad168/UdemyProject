@@ -78,6 +78,16 @@ namespace Udemy.Service.Service
 
             return mapper.Map<CourseRDTO>(course);
         }
+        public async Task<bool> GetByTitleForValidation(string title, bool trackChanges)
+        {
+            var course = await repository.Courses.GetByTitleAsync(title, true);
+            if (course?.Title == title)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public async Task<CourseRDTO> CreateAsync(CourseCDTO courseDto)
         {
@@ -116,20 +126,20 @@ namespace Udemy.Service.Service
 
         public async Task<CourseRDTO> UpdateAsync(CourseUDTO courseDto)
         {
-      
+
             var course = await repository.Courses.GetByIdAsync(courseDto.Id, true);
             if (course == null)
             {
                 throw new NotFoundException($"Course with ID {courseDto.Id} not found");
             }
 
-            mapper.Map(courseDto, course); 
+            mapper.Map(courseDto, course);
 
-         
+
             await repository.Courses.UpdateAsync(course);
-            await repository.Courses.SaveChangesAsync(); 
+            await repository.Courses.SaveChangesAsync();
 
-           
+
             return mapper.Map<CourseRDTO>(course);
         }
 

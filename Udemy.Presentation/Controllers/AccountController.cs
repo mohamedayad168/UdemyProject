@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using System.Security.Claims;
 using Udemy.Core.Entities;
 using Udemy.Core.Utils;
@@ -43,10 +44,10 @@ public class AccountController(
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.UserName)
+            new Claim(ClaimTypes.Name, user.UserName),
+            
         };
-
-        foreach (var role in roles)
+        foreach (var role in roles ?? [])
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
@@ -82,17 +83,13 @@ public class AccountController(
         if (roles.Contains("Instructor"))
         {
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.UserName),
-
-        };
-
-            foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role , UserRole.Instructor)
+            };
+
 
             var identity = new ClaimsIdentity(claims, "Identity.Application");
 
@@ -170,4 +167,17 @@ public class AccountController(
             return BadRequest("Email is Already Exist");
         }
     }
+    [HttpGet("check-email")]
+    public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+    {
+        return await userManager.FindByEmailAsync(email) != null;
+    }
+
+    [HttpGet("check-username")]
+    public async Task<ActionResult<bool>> CheckUsernameExists([FromQuery] string username)
+    {
+        return await userManager.FindByNameAsync(username) != null;
+    }
+
+    
 }
