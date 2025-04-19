@@ -53,6 +53,10 @@ export const routes: Routes = [
     component: CourseSearchComponent,
   },
   {
+    path: 'updatecoursedetails/:id',
+    component: UpdatecoursedetailsComponent,
+  },
+  {
     path: 'login',
     component: LoginPageComponent,
   },

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CreateSectionDTO, Section } from '../models/CourseDetail.model';
-import { SectionCDTO } from '../models/course.model';
+import { SectionCDTO, SectionUDTO } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class SectionService {
     return this.http.post(`${this.apiUrl}`, section);
   }
  
-  updateSection(id: number, section: Section): Observable<string> {
+  updateSection(id: number, section: SectionUDTO): Observable<string> {
     return this.http.put<string>(`${this.apiUrl}/${id}`, section, { responseType: 'text' as 'json' });
   }
   
