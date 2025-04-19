@@ -3,40 +3,9 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
-  ICrudTableItemStatus,
 } from '../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../services/courses/courses.service';
-import { Course } from '../../types/course';
-let emptyItem: Course = {
-  id: '',
-  title: '',
-  description: '',
-  price: 0,
-  previewImageLink: '',
-  status: 'Archived',
-  imageUrl: '',
-  categories: [],
-  category: '',
-  imageLinks: [],
-  location: '',
-  createdDate: new Date(),
-  modifiedDate: null,
-  isDeleted: false,
-  courseLevel: '',
-  discount: 0,
-  duration: 0,
-  language: '',
-  videoUrl: '',
-  noSubscribers: 0,
-  isFree: false,
-  isApproved: false,
-  currentPrice: 0,
-  rating: 0,
-  subCategoryId: 0,
-  categoryId: 0,
-  instructorId: 0,
-  instructorName: null,
-};
+import { ICourse } from '../../types/course';
 
 @Component({
   selector: 'app-courses-page',
@@ -47,7 +16,7 @@ let emptyItem: Course = {
 })
 export class CoursesPageComponent implements OnInit {
   coursesService = inject(CoursesService);
-  emptyItem: Course = {
+  emptyItem: ICourse = {
     id: '',
     title: '',
     description: '',
@@ -103,9 +72,13 @@ export class CoursesPageComponent implements OnInit {
       sortable: true,
     },
     {
-      key: 'category',
-      type: 'text',
-      header: 'Category',
+      key: 'isApproved',
+      type: 'status',
+      header: 'Approved',
+      statuses: [
+        { color: 'white', value: true, bgColor: 'green', label: 'yes' },
+        { color: 'white', value: false, bgColor: 'red', label: 'no' },
+      ],
     },
     {
       key: 'rating',
@@ -117,6 +90,27 @@ export class CoursesPageComponent implements OnInit {
       key: 'status',
       type: 'tag',
       header: 'Status',
+      tags: [
+        {
+          label: 'Archieved',
+          value: 'Archieved',
+          bgColor: 'red',
+          color: 'white',
+        },
+        {
+          label: 'Published',
+          value: 'Published',
+          bgColor: 'green',
+          color: 'white',
+        },
+        { label: 'Draft', value: 'Draft', bgColor: 'blue', color: 'white' },
+        {
+          label: 'bestseller',
+          value: 'bestseller',
+          bgColor: 'yellow',
+          color: 'black',
+        },
+      ],
     },
   ];
 
@@ -212,12 +206,9 @@ export class CoursesPageComponent implements OnInit {
     },
   ];
 
-  statuses: ICrudTableItemStatus[] = [
-    { label: 'Archieved', value: 'secondary' },
-    { label: 'Published', value: 'success' },
-    { label: 'Draft', value: 'info' },
-    { label: 'bestseller', value: 'contrast' },
-  ];
+  // statuses: ICrudTableItemStatus[] = [
+  //
+  // ];
   ngOnInit(): void {
     this.loadData();
   }

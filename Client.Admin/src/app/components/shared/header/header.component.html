@@ -1,19 +1,26 @@
 <header
-  class="grid grid-cols-2 [&>*]:flex justify-between p-2 shadow-yn bg-header max-h-52 transition-all duration-300 overflow-hidden"
+  class="grid grid-cols-2 [&>*]:flex justify-between p-2 px-4 shadow-yn bg-header max-h-52 transition-all duration-300 overflow-hidden"
   [class.small-screen-scroll-effect]="scrollService.isDown()"
-  
 >
-  <h1 class="items-center ms-1 gap-2">
-    <a
-      href="/"
-      aria-label="Home"
-      routerLink="/"
-      routerLinkActive="router-link-active"
-      [routerLinkActiveOptions]="{ exact: true }"
+  <div class="flex items-center">
+    <button
+      class="md:hidden me-3 max-h-min flex items-center"
+      (click)="UiStateService.toggleSideNav()"
     >
-      <img src="/studify00dark.png" class="w-20" alt="Yostate" />
-    </a>
-  </h1>
+      <i class="pi pi-bars text-2xl my-auto h-full"></i>
+    </button>
+    <h1 class="items-center ms-1 gap-2">
+      <a
+        href="/"
+        aria-label="Home"
+        routerLink="/"
+        routerLinkActive="router-link-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <img src="/studify00dark.png" class="w-20" alt="Yostate" />
+      </a>
+    </h1>
+  </div>
 
   <!-- <p-floatlabel variant="on" >
     <input
@@ -42,12 +49,9 @@
     </p-floatlabel>
   </p-inputgroup> -->
 
-  <div class="justify-end gap-3 items-center hidden! md:flex!">
+  <div class="justify-end gap-3 items-center">
     <!-- login -->
-    @if(authService.authState().isAuthenticated){
-
-
-     }@else{
+    @if(authService.authState().isAuthenticated){ }@else{
     <p-button
       class="justify-end"
       styleClass=" !rounded-sm btn-primary font-bold"
@@ -68,7 +72,11 @@
     @if(authService.authState().isAuthenticated){
     <p-menu #menu [model]="items" [popup]="true" styleClass="mt-2" />
 
-    <button (click)="menu.toggle($event)"  aria-label="User" class="cursor-pointer flex items-center gap-2">
+    <button
+      (click)="menu.toggle($event)"
+      aria-label="User"
+      class="cursor-pointer flex items-center gap-2"
+    >
       <p>{{ authService.authState().user?.firstName }}</p>
       <!-- <img
       src="{{ authService.authState().user?.image ?? '/placeholders/user.jpg' }}"
@@ -76,13 +84,15 @@
       class="w-8 h-8 rounded-full"
       srcset="" -->
 
-      <img src='/placeholders/user.jpg' class="w-8 h-8 rounded-full" alt="user image">
-      
-    />
+      <img
+        src="/placeholders/user.jpg"
+        class="w-8 h-8 rounded-full"
+        alt="user image"
+      />
     </button>
     }@else{
     <button class="cursor-pointer px-2" aria-label="User">
-      <i   class="pi pi-user !text-xl"></i>
+      <i class="pi pi-user !text-xl"></i>
     </button>
     }
   </div>

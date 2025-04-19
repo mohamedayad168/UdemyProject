@@ -42,7 +42,7 @@ namespace Udemy.Presentation.Controllers
 
  
 
-            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.NotDeleted, false);
             return Ok(paginatedResponse);
         }
 
