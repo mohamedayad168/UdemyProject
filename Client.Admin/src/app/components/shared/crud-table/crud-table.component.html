@@ -87,7 +87,7 @@
           [class.pointer-events-none]="crudService().isLoading()"
           pSortableColumn="{{ item['key'] }}"
           [pSortableColumnDisabled]="!item.sortable"
-           style.min-width="{{ item.width ?? 'unset' }}"
+          style.min-width="{{ item.width ?? 'unset' }}"
         >
           {{ item.header }}
           <p-sortIcon *ngIf="item.sortable" field="{{ item['key'] }}" />
@@ -108,26 +108,55 @@
         </td>
         @for (column of columnConfigs(); track $index) {
         <td [style.min-width]="column.width ?? 'unset'">
-          @switch (column.type) { @case ('image') {
+          @switch (column.type) {
+          <!--  -->
+          @case ('image') {
           <img
             [src]="product[column['key']]"
             [alt]="product[column['label']]"
             style="width: 64px"
             class="rounded"
           />
-          } @case ('tag') {
+          }
+          <!--  -->
+          @case ('tag') { 
+          @for (item of column.tags; track $index) {
           <p-tag
+            *ngIf="product[column['key']] == item.value"
             [value]="product[column['key']]"
-            [severity]="getStatusSeverity(product[column['key']])"
+            [style.color]="item.color"
+            [style.backgroundColor]="item.bgColor"
+          />
+          }@empty {
+          <p-tag [value]="product[column['key']]" severity="contrast" />
+          } }
+          <!--  -->
+          @case ('status') {
+          <p-tag
+            *ngIf="
+              product[column['key']] ==
+              getStatus(column.statuses, product[column['key']])!.value
+            "
+            [value]="product[column['key']]"
+            [style.color]="
+              getStatus(column.statuses, product[column['key']])!.color
+            "
+            [style.backgroundColor]="
+              getStatus(column.statuses, product[column['key']])!.bgColor
+            "
           />
           } @case ('rating') {
           <p-rating
             [(ngModel)]="product[column['key']]"
             [readonly]="true"
           /><!--[cancel]="false"-->
-          } @case ('money') {
+          }
+          <!--  -->
+          @case ('money') {
           {{ product[column["key"]] | currency : "USD" }}
-          } @default {
+          }
+          <!--  -->
+          @default {
           {{ product[column["key"]] }}
           } }
         </td>
@@ -210,18 +239,22 @@
         }@case ('file') {
         <div>
           <label for="">{{ item.label }}</label>
-          <p-fileupload #fu mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload"    maxFileSize="1000000" />
-
+          <p-fileupload
+            #fu
+            mode="basic"
+            chooseLabel="Choose"
+            chooseIcon="pi pi-upload"
+            maxFileSize="1000000"
+          />
         </div>
-        } 
-        @case ('select') {
+        } @case ('select') {
         <div>
-          <label [for]="item['key']+$index" class="block font-bold mb-3"
-            >{{ item.label }}</label
-          >
+          <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
+            item.label
+          }}</label>
           <p-select
             [(ngModel)]="newItem[item['key']]"
-            [inputId]="item['key']+$index"
+            [inputId]="item['key'] + $index"
             [options]="item.options"
             optionLabel="label"
             optionValue="value"

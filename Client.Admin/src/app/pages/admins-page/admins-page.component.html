@@ -1,1 +1,6 @@
-<p>admins-page works!</p>
+<app-crud-table
+  [crudService]="adminsService"
+   [columnConfigs]="columnConfigs"
+  [createFormConfigs]="createFormConfigs"
+  [emptyItem]="emptyItem"
+/>

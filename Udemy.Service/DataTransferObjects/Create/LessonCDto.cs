@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Udemy.Service.DataTransferObjects.Create
 {
     public class LessonCDto
@@ -15,3 +17,4 @@ namespace Udemy.Service.DataTransferObjects.Create
         public int SectionId { get; set; }
     }
 }
+

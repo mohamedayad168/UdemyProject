@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Udemy.Extensions;
 using Udemy.Presentation;
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
 builder.Services.ConfigureApplicationCookie();
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.ConfigureCloudinaryService();
 builder.Services.ConfigureCloudinarySettings(builder.Configuration);

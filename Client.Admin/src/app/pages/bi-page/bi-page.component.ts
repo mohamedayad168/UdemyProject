@@ -6,16 +6,16 @@ import { AfterViewInit } from '@angular/core';
   templateUrl: './bi-page.component.html',
   styleUrl: './bi-page.component.scss'
 })
-export class BiPageComponent implements AfterViewInit {
+export class BiPageComponent  {
   iframe = viewChild<ElementRef<HTMLIFrameElement>>('iframe')
-  reStyle(iframe: HTMLIFrameElement) {
-    let myScript = 'iframe.body.style.background = "blue"';
-    console.log(eval(myScript));
-  }
+  // reStyle(iframe: HTMLIFrameElement) {
+  //   let myScript = 'iframe.body.style.background = "blue"';
+  //   console.log(eval(myScript));
+  // }
   
 
-  ngAfterViewInit(){
-    this.iframe()!.nativeElement.onload = () => this.reStyle(this.iframe()!.nativeElement);
+  // ngAfterViewInit(){
+  //   this.iframe()!.nativeElement.onload = () => this.reStyle(this.iframe()!.nativeElement);
 
-  }
+  // }
 }

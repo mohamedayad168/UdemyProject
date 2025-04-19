@@ -40,7 +40,10 @@ namespace Udemy.Presentation.Controllers
             searchReq.SearchTerm ??= "";
             searchReq.OrderBy ??= "title";
 
-            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
+
+
+
+            var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.NotDeleted, false);
             return Ok(paginatedResponse);
         }
 
@@ -98,7 +101,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,Instructor")]
+        [Authorize(Roles = "Admin,Instructor,Owner")]
         public async Task<IActionResult> CreateCourseAsync(CourseCDTO course)
         {
 

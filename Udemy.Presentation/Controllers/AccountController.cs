@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using System.Security.Claims;
 using Udemy.Core.Entities;
 using Udemy.Core.Utils;
@@ -44,8 +45,12 @@ public class AccountController(
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role , UserRole.Student)
+            
         };
+        foreach (var role in roles ?? [])
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var identity = new ClaimsIdentity(claims, "Identity.Application");
 
@@ -173,4 +178,6 @@ public class AccountController(
     {
         return await userManager.FindByNameAsync(username) != null;
     }
+
+    
 }

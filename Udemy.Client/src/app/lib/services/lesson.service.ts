@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Lesson } from '../models/CourseDetail.model';
+import { LessonCDto } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,15 @@ export class LessonService {
 
   
   getLessons(sectionId: number): Observable<Lesson[]> {
-    return this.http.get<Lesson[]>(`${this.apiUrl}?sectionId=${sectionId}`);
+    return this.http.get<Lesson[]>(`${this.apiUrl}`);
   }
   getLessonById(id: number): Observable<Lesson> {
     return this.http.get<Lesson>(`${this.apiUrl}/${id}`);
   }
-  createLesson(lesson: Lesson): Observable<any> {
+  createLesson(lesson: LessonCDto): Observable<any> {
+    console.log('Lesson to be created:', lesson);  
     return this.http.post(`${this.apiUrl}`, lesson);
-  }
+}
   updateLesson(id: number, lesson: Lesson): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, lesson);
   }

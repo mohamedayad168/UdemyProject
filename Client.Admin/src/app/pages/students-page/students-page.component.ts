@@ -4,8 +4,7 @@ import { IStudent } from '../../types/student';
 import {
   FormFieldConfig,
   IColumnConfig,
-  ICrudTableItemStatus,
-  CrudTableComponent,
+   CrudTableComponent,
 } from '../../components/shared/crud-table/crud-table.component';
 
 @Component({
@@ -155,10 +154,10 @@ export class StudentsPageComponent {
     },
   ];
 
-  statuses: ICrudTableItemStatus[] = [
-    { label: 'Archieved', value: 'secondary' },
-    { label: 'Published', value: 'success' },
-    { label: 'Draft', value: 'info' },
-    { label: 'bestseller', value: 'contrast' },
-  ];
+  // statuses: ICrudTableItemStatus[] = [
+  //   { label: 'Archieved', value: 'secondary' },
+  //   { label: 'Published', value: 'success' },
+  //   { label: 'Draft', value: 'info' },
+  //   { label: 'bestseller', value: 'contrast' },
+  // ];
 }

@@ -23,6 +23,7 @@ import { CategorysectionComponent } from '../../lib/components/page-specefic/hom
     CarouselSectionComponent,
     CourseSectionComponent,
     PartnerSectionComponent,
+   
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css',
