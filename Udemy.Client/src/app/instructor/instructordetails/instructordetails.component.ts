@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { CourseService } from '../../lib/services/course.service';
 import { environment } from '../../../environments/environment';
 import { Course } from '../../lib/models/course.model';
+import { AccountService } from '../../lib/services/account.service';
+import { User } from '../../lib/models/user.model';
 
 @Component({
   selector: 'app-instructordetails',
@@ -18,19 +20,26 @@ export class InstructordetailsComponent implements OnInit {
   instructorId!: number;
   instructor!: Instructor;
   courses: Course[] = [];
+  currentUser: User | null;
+  currentInstructorId: number = 0;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private courseservive: CourseService,
-    private instructorService: InstructorService
-  ) {}
+    private instructorService: InstructorService,
+    private accountService: AccountService
+  ) {
+    this.currentUser = this.accountService.currentUser();
+  }
 
   ngOnInit(): void {
+    this.currentInstructorId = Number(localStorage.getItem('instructorId'));
     this.route.params.subscribe((params) => {
       this.instructorId = +params['id'];
       this.fetchInstructorDetails();
       this.fetchInstructorCourses();
+      console.log(this.currentInstructorId);
     });
   }
 
@@ -45,6 +54,9 @@ export class InstructordetailsComponent implements OnInit {
         console.error('Error fetching instructor details:', error);
       },
     });
+  }
+  isOwner(): boolean {
+    return this.currentInstructorId === this.instructorId;
   }
   deleteCourse(courseId: number): void {
     if (confirm('Are you sure you want to delete this course?')) {

@@ -50,6 +50,7 @@ export const routes: Routes = [
   {
     path: 'instructor/createsection&lesson/:id',
     component: CreatesectionlessonComponent,
+    canActivate: [instructorGurdGuard],
   },
 
   {
@@ -64,6 +65,7 @@ export const routes: Routes = [
   {
     path: 'updatesectionlessondetails/:id',
     component: SectionLessonupdateComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'signup',
@@ -96,10 +98,12 @@ export const routes: Routes = [
   {
     path: 'instructor/get-started',
     component: InstructorGetstartedComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'instructor/instructor-audiance',
     component: InstructorAudianceComponent,
+    canActivate: [instructorGurdGuard],
   },
 
   {
@@ -115,10 +119,7 @@ export const routes: Routes = [
     component: AddInstructorComponent,
     canActivate: [UserAuthGuard],
   },
-  {
-    path: 'add-instructor-role',
-    component: AddStudentAsInstructorComponent,
-  },
+
   {
     path: 'loginasinstrctor',
     component: LoginasinstractorComponent,
@@ -168,10 +169,11 @@ export const routes: Routes = [
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
-  {path: 'course/view/:id/lesson',
+  {
+    path: 'course/view/:id/lesson',
     redirectTo: '/course/view/:id',
-    data: { hideHeader: true },}
-    ,
+    data: { hideHeader: true },
+  },
   {
     path: 'createcourse/createcoursebage',
     component: CreatecoursebageComponent,
