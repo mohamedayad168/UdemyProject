@@ -23,5 +23,8 @@ public interface IRepositoryManager
     ICartCourseRepository CartCourse { get; }
 
     IlessonRepo Lessons { get; }
+    IQuizRepository Quizzes { get; }
+
+    IStudentGradeRepository StudentGrades { get; }
     Task SaveAsync();
 }

@@ -18,6 +18,7 @@ public interface IServiceManager
     ILessonService LessonService { get; }
     ISectionService SectionService { get; }
 
+    IQuizService QuizService { get; }
 
 
 

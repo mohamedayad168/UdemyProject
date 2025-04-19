@@ -142,12 +142,15 @@ export const routes: Routes = [
     data: { hideHeader: true },
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
-
   {
     path: 'course/view/:id',
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
+  {path: 'course/view/:id/lesson',
+    redirectTo: '/course/view/:id',
+    data: { hideHeader: true },}
+    ,
   {
     path: 'createcourse/createcoursebage',
     component: CreatecoursebageComponent,

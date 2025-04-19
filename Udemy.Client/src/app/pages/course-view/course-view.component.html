@@ -210,17 +210,20 @@
               </ng-template>
             </li>
 
-            <li [ngbNavItem]="5" [destroyOnHide]="false">
-              <a ngbNavLink
-              [routerLink]="[]"
-              fragment="quiz"
-              [class]="tabClass(5)">
-                Quiz
-              </a>
-              <ng-template ngbNavContent>
-                <h2 class="text-center">Report Unavailable</h2>
-              </ng-template>
-            </li>
+            @if(quizExists){
+              <li [ngbNavItem]="5" [destroyOnHide]="false">
+                <a ngbNavLink
+                [routerLink]="[]"
+                fragment="quiz"
+                [class]="tabClass(5)">
+                  Quiz
+                </a>
+                <ng-template ngbNavContent>
+                  <app-quiz [courseId]="courseDetails.id"></app-quiz>
+                </ng-template>
+              </li>
+            }
+
           </ul>
 
     </div>

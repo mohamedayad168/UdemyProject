@@ -100,6 +100,12 @@ namespace Udemy.Presentation.Controllers
         }
 
 
+        [HttpGet("{id:int}/asks")]
+        public async Task<ActionResult<IEnumerable<AskRDTO>>> GetAsksByCourseIdAsync([FromRoute] int id, [FromQuery] RequestParamter requestParameter)
+        {
+            var asks = await serviceManager.AskService.GetAsksByCourseIdAsync(id, requestParameter, false);
+            return Ok(asks);
+        }
 
         [HttpPost]
         //[Authorize(Roles = "Admin,Instructor")]
