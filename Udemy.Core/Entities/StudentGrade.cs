@@ -6,7 +6,7 @@ public class StudentGrade: BaseEntityWithoutId
 {
 
     public int StudentId { get; set; } 
-
+    
     public int QuizId { get; set; } 
 
     [Required] 

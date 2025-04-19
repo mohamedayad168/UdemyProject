@@ -12,7 +12,7 @@ import {
 import { Instructor } from '../../lib/models/instructor.model';
 import { map, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { InstructorService } from '../../services/instructor.service';
+import { InstructorService } from '../../lib/services/instructor.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

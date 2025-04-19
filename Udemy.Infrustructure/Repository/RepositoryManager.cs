@@ -5,6 +5,7 @@ using Udemy.Infrastructure.Repository.EntityRepos;
 using System;
 using Microsoft.Extensions.Logging;
 using Udemy.Service.DataTransferObjects.Read;
+using Stripe;
 
 namespace Udemy.Infrastructure.Repository;
 public class RepositoryManager : IRepositoryManager
@@ -25,6 +26,8 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ICartCourseRepository> cartCourseRepository;
     private readonly Lazy<IlessonRepo> LessonRepo;
     private readonly Lazy<Isectionrepo> SectionRepo;
+    private readonly Lazy<IQuizRepository> quizRepository;
+    private readonly Lazy<IStudentGradeRepository> studentGradeRepository;
 
 
     public RepositoryManager(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
@@ -45,6 +48,8 @@ public class RepositoryManager : IRepositoryManager
         cartCourseRepository = new Lazy<ICartCourseRepository>(() => new CartCourseRepository(applicationDbContext));
         LessonRepo = new Lazy<IlessonRepo>(() => new LessonRepo(applicationDbContext));
      SectionRepo = new Lazy<Isectionrepo>(() => new SectionRepo (applicationDbContext));
+        quizRepository = new Lazy<IQuizRepository>(() => new QuizRepository(applicationDbContext));
+        studentGradeRepository=new Lazy<IStudentGradeRepository>(()=> new StudentGradeRepository(applicationDbContext));
 
 
     }
@@ -69,7 +74,11 @@ public class RepositoryManager : IRepositoryManager
 
     public Isectionrepo Section => SectionRepo.Value;
 
-    
+    public IQuizRepository Quizzes => quizRepository.Value;
+
+    public IStudentGradeRepository StudentGrades => studentGradeRepository.Value;
+
+
 
     public async Task SaveAsync()
     {

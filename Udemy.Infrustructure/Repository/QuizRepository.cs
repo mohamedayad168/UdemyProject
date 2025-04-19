@@ -12,22 +12,17 @@ namespace Udemy.Infrastructure.Repository
         {
             this._context = dbContext;
         }
-        public async Task<IEnumerable<Quiz>> GetQuizzesByCourseIdAsync(int courseId, RequestParamter requestParamter, bool trackChanges)
-        {
-            return await FindAll(trackChanges)
-                .Where(q => q.CourseId == courseId && q.IsDeleted == false)
-                .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                .Take(requestParamter.PageSize)
-                .ToListAsync();
-        }
 
-        public async Task<IEnumerable<QuizQuestion>> GetQuestionsByQuizIdAsync(int quizId, RequestParamter requestParamter, bool trackChanges)
+        public async Task<Quiz> GetQuizWithQuestionsByCourseIdAsync(int courseId, bool trackChanges)
         {
-            return await _context.Set<QuizQuestion>()
-                .Where(q => q.QuizId == quizId)
-                .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                .Take(requestParamter.PageSize)
-                .ToListAsync();
+            var quizes = await _context.Set<Quiz>().AnyAsync(q => q.CourseId == courseId && !q.IsDeleted);
+            var quiz = await _context.Quizzes.Include(q => q.QuizQuestion).FirstOrDefaultAsync(q => q.CourseId == courseId && !q.IsDeleted);
+                
+            return quiz;
         }
     }
+
+
+
+
 }

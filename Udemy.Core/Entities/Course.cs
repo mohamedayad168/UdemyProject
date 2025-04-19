@@ -45,4 +45,5 @@ public class Course : BaseEntity
     public List<Ask> Asks { get; set; }
     public List<CourseRequirement> CourseRequirements { get; set; }
     public List<CourseGoals> CourseGoals { get; set; }
+    public Quiz? Quiz { get; set; }
 }
