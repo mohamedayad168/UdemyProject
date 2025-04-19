@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
+  AsyncValidatorFn,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -21,6 +22,8 @@ import { MatButton } from '@angular/material/button';
 
 import { NgIf } from '@angular/common';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { map, Observable, of } from 'rxjs';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-signup-page',
@@ -36,6 +39,7 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
     MatHint,
     MatRadioModule,
     MatRadioButton,
+
     NgIf,
   ],
   templateUrl: './signup-page.component.html',
@@ -45,14 +49,23 @@ export class SignupPageComponent {
   private accountService = inject(AccountService);
   private router = inject(Router);
   signUpForm: FormGroup;
-
+  isCheckingUsername = false;
+  isCheckingEmail = false;
   constructor(private fb: FormBuilder) {
     this.signUpForm = this.fb.group(
       {
-        UserName: ['', Validators.required],
+        UserName: [
+          '',
+          [Validators.required],
+          [this.usernameAvailabilityValidator()],
+        ],
         FirstName: ['', Validators.required],
         LastName: ['', Validators.required],
-        Email: ['', [Validators.required, Validators.email]],
+        Email: [
+          '',
+          [Validators.required, Validators.email],
+          [this.emailAvailabilityValidator()],
+        ],
         Password: [
           '',
           [
@@ -88,6 +101,42 @@ export class SignupPageComponent {
       formGroup.get('ConfirmPassword')?.setErrors(null);
       return null;
     }
+  }
+
+  emailAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      this.isCheckingEmail = true;
+
+      return this.accountService.checkEmailExists(control.value).pipe(
+        map((exist) => {
+          console.log(exist);
+          this.isCheckingEmail = false;
+          return exist ? { emailTaken: true } : null;
+        })
+      );
+    };
+  }
+
+  usernameAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      this.isCheckingUsername = true;
+
+      return this.accountService.checkUsernameExists(control.value).pipe(
+        map((exist) => {
+          console.log(exist);
+          this.isCheckingUsername = false;
+          return exist ? { usernameTaken: true } : null;
+        })
+      );
+    };
   }
 
   onSubmit() {

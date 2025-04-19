@@ -18,10 +18,10 @@ namespace Udemy.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController(
-    SignInManager<ApplicationUser> signInManager ,
-    IMapper mapper ,
-    IServiceManager serviceManager ,
-    ILogger<AccountController> logger ,
+    SignInManager<ApplicationUser> signInManager,
+    IMapper mapper,
+    IServiceManager serviceManager,
+    ILogger<AccountController> logger,
     UserManager<ApplicationUser> userManager
 
 ) : ControllerBase
@@ -33,7 +33,7 @@ public class AccountController(
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
-        var result = await signInManager.UserManager.CheckPasswordAsync(user , loginDto.Password);
+        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
@@ -47,13 +47,13 @@ public class AccountController(
             new Claim(ClaimTypes.Role , UserRole.Student)
         };
 
-        var identity = new ClaimsIdentity(claims , "Identity.Application");
+        var identity = new ClaimsIdentity(claims, "Identity.Application");
 
         var principal = new ClaimsPrincipal(identity);
 
         await signInManager.SignOutAsync();
 
-        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme , principal , new AuthenticationProperties
+        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
         {
             IsPersistent = true
         });
@@ -70,7 +70,7 @@ public class AccountController(
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 
-        var result = await signInManager.UserManager.CheckPasswordAsync(user , loginDto.Password);
+        var result = await signInManager.UserManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result)
             return BadRequest($"Password: {loginDto.Password} is Wrong");
 
@@ -86,13 +86,13 @@ public class AccountController(
             };
 
 
-            var identity = new ClaimsIdentity(claims , "Identity.Application");
+            var identity = new ClaimsIdentity(claims, "Identity.Application");
 
             var principal = new ClaimsPrincipal(identity);
 
             await signInManager.SignOutAsync();
 
-            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme , principal , new AuthenticationProperties
+            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, new AuthenticationProperties
             {
                 IsPersistent = true
             });
@@ -153,7 +153,7 @@ public class AccountController(
             var createdStudent = await serviceManager.StudentService.CreateStudentAsync(studentForCreation);
             var studentEntity = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
 
-            await signInManager.UserManager.AddToRoleAsync(studentEntity , UserRole.Student);
+            await signInManager.UserManager.AddToRoleAsync(studentEntity, UserRole.Student);
 
             return Ok(createdStudent);
         }
@@ -161,5 +161,16 @@ public class AccountController(
         {
             return BadRequest("Email is Already Exist");
         }
+    }
+    [HttpGet("check-email")]
+    public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+    {
+        return await userManager.FindByEmailAsync(email) != null;
+    }
+
+    [HttpGet("check-username")]
+    public async Task<ActionResult<bool>> CheckUsernameExists([FromQuery] string username)
+    {
+        return await userManager.FindByNameAsync(username) != null;
     }
 }

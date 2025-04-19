@@ -6,18 +6,18 @@ import { AccountService } from '../../lib/services/account.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-loginasinstractor',
-  imports: [RouterModule,MatCardModule,ReactiveFormsModule,CommonModule ],
+  imports: [RouterModule, MatCardModule, ReactiveFormsModule, CommonModule],
   templateUrl: './loginasinstractor.component.html',
-  styleUrl: './loginasinstractor.component.css'
+  styleUrl: './loginasinstractor.component.css',
 })
-export class LoginasinstractorComponent {  private fb = inject(FormBuilder);
+export class LoginasinstractorComponent {
+  private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
   private router = inject(Router);
 
-  errorMessage = signal<string>('');
+  errorMessage = '';
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,9 +30,9 @@ export class LoginasinstractorComponent {  private fb = inject(FormBuilder);
     this.accountService.loginIns(this.loginForm.value).subscribe({
       next: () => {
         this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl('/instructor/home'); 
+        this.router.navigateByUrl('/instructor/home');
       },
-      error: (error) => this.errorMessage.set('Login failed: ' + error.error.message || 'Unknown error'),
+      error: (error) => (this.errorMessage = 'invalid email or password'),
     });
   }
 }

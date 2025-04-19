@@ -221,6 +221,11 @@
               profileForm.get('password')?.touched)
         }"
       />
+      <p class="text-xs text-gray-500 mt-1">
+        Password must be at least 8 characters and include at least one
+        uppercase letter, one lowercase letter, one number, and one special
+        character.
+      </p>
       <div
         *ngIf="
           profileForm.get('password')?.invalid &&
@@ -234,6 +239,10 @@
         </div>
         <div *ngIf="profileForm.get('password')?.hasError('minlength')">
           Password must be at least 8 characters
+        </div>
+        <div *ngIf="profileForm.get('password')?.hasError('pattern')">
+          Password must include at least one uppercase letter, one lowercase
+          letter, one number, and one special character
         </div>
       </div>
     </div>

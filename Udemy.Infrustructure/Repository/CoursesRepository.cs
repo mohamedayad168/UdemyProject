@@ -106,7 +106,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<Course?> GetByTitleAsync(string title, bool trackChanges)
         {
-            return await FindByCondition(c => c.Title == title && !c.IsDeleted, trackChanges)
+            return await FindByCondition(c => c.Title == title, trackChanges)
                 .FirstOrDefaultAsync();
         }
 

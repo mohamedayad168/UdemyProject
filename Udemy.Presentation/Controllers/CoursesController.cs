@@ -1,11 +1,7 @@
-﻿
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Udemy.Core.Enums;
 using System.Security.Claims;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
@@ -21,7 +17,7 @@ namespace Udemy.Presentation.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly IServiceManager serviceManager;
-        private readonly Cloudinary _cloudinary;
+
 
         public CoursesController(IServiceManager serviceManager)
         {
@@ -185,24 +181,31 @@ namespace Udemy.Presentation.Controllers
             }
             return Ok(courses);
         }
-        private async Task<ImageUploadResult> UploadFile(IFormFile file)
+        //private async Task<ImageUploadResult> UploadFile(IFormFile file)
+        //{
+        //    var uploadResult = new ImageUploadResult();
+
+        //    if (file.Length > 0)
+        //    {
+        //        using (var stream = file.OpenReadStream())
+        //        {
+        //            var uploadParams = new ImageUploadParams()
+        //            {
+        //                File = new FileDescription(file.FileName, stream),
+        //                Transformation = new Transformation().Quality("auto").FetchFormat("auto")
+        //            };
+
+        //            uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        //        }
+        //    }
+        //    return uploadResult;
+        //}
+        [HttpGet("check-title")]
+        public async Task<bool> TitleExist([FromQuery] string title)
         {
-            var uploadResult = new ImageUploadResult();
+            var exist = await serviceManager.CoursesService.GetByTitleForValidation(title, false);
+            return exist;
 
-            if (file.Length > 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.FileName, stream),
-                        Transformation = new Transformation().Quality("auto").FetchFormat("auto")
-                    };
-
-                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                }
-            }
-            return uploadResult;
         }
     }
 }

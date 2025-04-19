@@ -1,7 +1,6 @@
 ﻿using Udemy.Core.Entities;
 using Udemy.Core.Enums;
 using Udemy.Core.ReadOptions;
-using Udemy.Service.DataTransferObjects;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -15,6 +14,7 @@ namespace Udemy.Service.IService
         Task<IEnumerable<CourseRDTO>> GetAllByCategoryId(int categoryId);
         public Task<PaginatedRes<CourseRDTO>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges);
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
+        Task<bool> GetByTitleForValidation(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
 
         public Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges);

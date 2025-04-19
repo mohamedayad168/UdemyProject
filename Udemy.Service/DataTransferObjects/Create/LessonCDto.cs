@@ -1,4 +1,6 @@
-﻿namespace Udemy.Service.DataTransferObjects.Create
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Udemy.Service.DataTransferObjects.Create
 {
     public class LessonCDto
     {
@@ -9,7 +11,7 @@
 
         public string Title { get; set; }
         public string Type { get; set; }
-        public string VideoUrl { get; set; }
+        public IFormFile VideoUrl { get; set; }
         public int SectionId { get; set; }
     }
 }
