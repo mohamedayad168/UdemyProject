@@ -23,7 +23,7 @@ export class LearnersViewingComponent implements OnInit {
         this.courseService.getCourses().subscribe({
             next: (data) => {
                 this.courses = data;
-                console.log('Loaded Courses:', this.courses); // Log loaded courses
+                console.log('Loaded Courses:', this.courses); 
             },
             error: (err) => console.error('Error loading courses:', err),
         })

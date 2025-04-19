@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Section } from '../models/CourseDetail.model';
+import { CreateSectionDTO, Section } from '../models/CourseDetail.model';
+import { SectionCDTO } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class SectionService {
   
   
 
-  createSection(section: Section): Observable<any> {
+  createSection(section: SectionCDTO): Observable<any> {
     return this.http.post(`${this.apiUrl}`, section);
   }
  

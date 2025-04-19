@@ -59,7 +59,7 @@ namespace Udemy.Presentation.Controllers
             if (!result)
                 return StatusCode(500, "Failed to create section");
 
-            return Ok("Section created successfully");
+            return Ok(sectioncDto);
         }
 
 
@@ -73,7 +73,7 @@ namespace Udemy.Presentation.Controllers
             if (!result)
                 return NotFound();
 
-            return Ok("Section updated successfully");
+            return Ok(sectionDto);
         }
 
 

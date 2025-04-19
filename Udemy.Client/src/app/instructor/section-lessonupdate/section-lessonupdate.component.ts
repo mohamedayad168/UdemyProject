@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseContent, Lesson, Section } from '../../lib/models/CourseDetail.model';
+import { CourseContent, CreateSectionDTO, Lesson, Section } from '../../lib/models/CourseDetail.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
 import { SectionService } from '../../lib/services/section.service';
@@ -7,7 +7,7 @@ import { LessonService } from '../../lib/services/lesson.service';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
-import { Course } from '../../lib/models/course.model';
+import { Course, LessonCDto, SectionCDTO } from '../../lib/models/course.model';
 import { ViewChild,ElementRef,AfterViewInit} from '@angular/core';
 @Component({
   selector: 'app-section-lessonupdate',
@@ -118,11 +118,15 @@ export class SectionLessonupdateComponent implements OnInit {
       const section = this.sections.find(s => s.id === sectionId);
       if (!section) return;
 
-      const newLesson: Lesson = {
-        id: 0,
+      const newLesson: LessonCDto = {
+        
         title: `Lesson ${section.lessons.length + 1}`,
-        type: 'video',
+      articleContent:'',
         videoUrl: '',
+        sectionId:section.id,
+        duration:5,
+        isDeleted:false,
+        type: '',
       };
 
       this.lessonService.createLesson(newLesson).subscribe(createdLesson => {
@@ -149,28 +153,33 @@ export class SectionLessonupdateComponent implements OnInit {
   }
 
   addSection() {
-    const newSection: Section = {
-      id: 0,
-      title: 'New Section',
-      duration: 0,
+    const newSection: SectionCDTO = {
+      title: 'Intro to TypeScript',
+      lessons: [] ,
       noLessons: 0,
-      lessons: [],
+      courseId: this.courseId
     };
-
-    this.sectionService.createSection(newSection).subscribe(() => {
-      console.log('New section created');
-      this.loadCourseData();
+    
+    this.sectionService.createSection(newSection).subscribe((createdSection) => {
+      console.log('New section created:', createdSection);
+      createdSection.lessons = []; 
+      this.sections.push(createdSection);
     });
   }
 
   addLesson(sectionId: number) {
     const section = this.sections.find(s => s.id === sectionId);
     if (section) {
-      const newLesson: Lesson = {
-        id: 0,
+      const newLesson: LessonCDto = {
+       
         title: `Lesson ${section.lessons.length + 1}`,
-        type: 'video',
+        articleContent:'',
         videoUrl: '',
+        sectionId:section.id,
+        duration:5,
+        isDeleted:false,
+        type: '',
+        
       };
 
       this.lessonService.createLesson(newLesson).subscribe(() => {

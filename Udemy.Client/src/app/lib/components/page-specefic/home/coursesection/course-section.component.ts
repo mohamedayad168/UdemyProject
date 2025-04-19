@@ -8,9 +8,11 @@ import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { Rating } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../../services/category.service';
-
+import { CourseDetail } from '../../../../models/CourseDetail.model';
+import { AccountService } from '../../../../services/account.service';
+import { CartService } from '../../../../services/cart/cart.service';
 @Component({
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
@@ -29,17 +31,20 @@ export class CourseSectionComponent implements OnInit {
   categories: Category[] = [];
   subcategories: SubCategory[] = [];
   courses: Course[] = [];
-
+  isCourseAdded: boolean = false;
   selectedCategoryId: number | null = null;
   selectedSubcategoryId: number | null = null;
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   @ViewChild('categoryScroll') categoryScroll!: ElementRef;
   @ViewChild('subcategoryScroll') subcategoryScroll!: ElementRef;
-
+ 
   constructor(
     private categoryService: CategoryService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private accountService: AccountService,
+    private cartService: CartService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +59,28 @@ export class CourseSectionComponent implements OnInit {
         this.onCategoryClick(this.selectedCategoryId);
       }
     });
+  }
+
+  // Scroll left or right for categories
+  scrollCategory(direction: string): void {
+    const container = this.categoryScroll.nativeElement;
+    const scrollAmount = 300; // Customize this value for scroll amount
+    if (direction === 'left') {
+      container.scrollLeft -= scrollAmount;
+    } else {
+      container.scrollLeft += scrollAmount;
+    }
+  }
+
+  // Scroll left or right for subcategories
+  scrollSubcategory(direction: 'left' | 'right'): void {
+    const container = this.subcategoryScroll.nativeElement;
+    const scrollAmount = 300; // Customize this value for scroll amount
+    if (direction === 'left') {
+      container.scrollLeft -= scrollAmount;
+    } else {
+      container.scrollLeft += scrollAmount;
+    }
   }
 
   onCategoryClick(categoryId: number) {
@@ -87,23 +114,18 @@ export class CourseSectionComponent implements OnInit {
       );
     }
   }
-
-  scrollCategories(direction: 'left' | 'right') {
-    const scrollAmount = 200;
-    this.categoryScroll.nativeElement.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    });
+  addCourseToStudentCart(courseId: number) {
+    if (!this.accountService.currentUser()) {
+      this.router.navigateByUrl('/login');
+     
+    } else {
+      this.cartService.addCourseToStudentCart(courseId);
+    }
+    this.isCourseAdded = true;
+    setTimeout(() => {
+      this.isCourseAdded = false; // Hide message after 3 seconds
+    }, 3000);
   }
-
-  scrollSubcategories(direction: 'left' | 'right') {
-    const scrollAmount = 200;
-    this.subcategoryScroll.nativeElement.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    });
-  }
-
   scrollCourses(direction: 'left' | 'right') {
     const scrollAmount = 300;
     this.scrollContainer.nativeElement.scrollBy({
@@ -111,4 +133,8 @@ export class CourseSectionComponent implements OnInit {
       behavior: 'smooth',
     });
   }
+  goToCourseDetail(courseId: number) {
+    this.router.navigate(['/courses', courseId]);
+  }
+  
 }
