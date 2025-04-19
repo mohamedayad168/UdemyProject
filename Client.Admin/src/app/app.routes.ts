@@ -8,6 +8,7 @@ import { childrenGuard } from './guards/auth/children/children.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { InstructorsPageComponent } from './pages/instructors-page/instructors-page.component';
 import { StudentsPageComponent } from './pages/students-page/students-page.component';
+import { AdminsPageComponent } from './pages/admins-page/admins-page.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,13 @@ export const routes: Routes = [
     pathMatch: 'full',
     title: 'Instructors',
     component: InstructorsPageComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admins',
+    pathMatch: 'full',
+    title: 'Admins',
+    component: AdminsPageComponent,
     canActivate: [authGuard],
   },
   

@@ -12,23 +12,18 @@ using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
+using Microsoft.AspNetCore.Identity;
+using Udemy.Core.Entities;
 
 
 namespace Udemy.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CoursesController : ControllerBase
+    public class CoursesController(IServiceManager serviceManager ) : ControllerBase
     {
-        private readonly IServiceManager serviceManager;
         private readonly Cloudinary _cloudinary;
 
-        public CoursesController(IServiceManager serviceManager)
-        {
-            this.serviceManager = serviceManager;
-
-
-        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesAsync()
         {
@@ -43,6 +38,9 @@ namespace Udemy.Presentation.Controllers
         {
             searchReq.SearchTerm ??= "";
             searchReq.OrderBy ??= "title";
+
+
+ 
 
             var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
             return Ok(paginatedResponse);
@@ -102,7 +100,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,Instructor")]
+        [Authorize(Roles = "Admin,Instructor,Owner")]
         public async Task<IActionResult> CreateCourseAsync(CourseCDTO course)
         {
 
