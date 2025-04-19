@@ -47,7 +47,7 @@ namespace Udemy.Service.Service
             var lesson = _mapper.Map<Lesson>(lessoncDto);
             await _repository.Lessons.CreatelessonAsync(lesson);
             await _repository.SaveAsync();
-            return true;
+            return (true);
         }
 
         public async Task<bool> UpdateAsync(int id, LessonUDto lessonDto)
@@ -57,7 +57,7 @@ namespace Udemy.Service.Service
 
             _mapper.Map(lessonDto, lesson);
             await _repository.SaveAsync();
-            return true;
+            return (true);
         }
 
         public async Task<bool> DeletelesssonAsync(int id)

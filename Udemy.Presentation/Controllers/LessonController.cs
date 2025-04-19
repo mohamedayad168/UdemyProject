@@ -64,7 +64,8 @@ namespace Udemy.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(lessonCDto);
+                return StatusCode(500, "An unexpected error occurred while creating the lesson.");
+
             }
         }
 

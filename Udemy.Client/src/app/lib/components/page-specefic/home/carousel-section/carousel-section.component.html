@@ -1,44 +1,67 @@
-<!-- Carousel Section -->
-<div id="courseCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="d-flex align-items-center justify-content-center bg-light w-100" style="height: 400px;">
-          <div class="carousel-caption text-start bg-white p-3 shadow rounded-4" style="width: fit-content;left: 7%;">
-            <h2 class="fw-bold">Learning that gets you</h2>
-            <p>Skills for your present (and your future). Get started with us.</p>
-            <button class="btn btn-purple">Get Started</button> 
+<!-- Carousel Wrapper -->
+<div class="relative mt-3">
+  <div class="overflow-hidden h-[400px] relative">
+    <div
+      class="flex transition-transform duration-700 ease-in-out"
+      [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+    >
+      <!-- Slide 1 -->
+      <div class="w-full flex-shrink-0 relative h-[400px]">
+        <img
+          src="assets/image/billboard-desktop-2x-v4.webp"
+          class="absolute inset-0 w-full h-full object-cover"
+          alt="Learning Image"
+        />
+        <div class="relative h-full flex items-center">
+          <div class="bg-white p-4 shadow-lg rounded-2xl ml-10 w-fit text-left z-10 max-w-md">
+            <h2 class="font-bold text-2xl">Learning that gets you</h2>
+            <p class="text-sm text-gray-600">Skills for your present (and your future). Get started with us.</p>
+           
           </div>
-          <img src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/731e82f4-8113-4e4e-a35a-a69d1ff477f0.jpg" class="d-block w-100 h-100" alt="Learning Image">
         </div>
       </div>
-      <div class="carousel-item">
-        <div class="d-flex align-items-center justify-content-center bg-light w-100" style="height: 400px;">
-          <div class="carousel-caption text-start bg-white p-3 shadow rounded-4" style="width: fit-content;left: 7%;">
-            <h2 class="fw-bold">Master Your Skills</h2>
-            <p>Upgrade your skills with our expert-led courses.</p>
-            <button class="btn btn-purple">Browse Courses</button> 
+
+      <!-- Slide 2 -->
+      <div class="w-full flex-shrink-0 relative h-[400px]">
+        <img src="assets/image/jpeg4.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Skills Image" />
+        <div class="relative h-full flex items-center">
+          <div class="bg-white p-4 shadow-lg rounded-2xl ml-10 w-fit text-left z-10 max-w-md">
+            <h2 class="font-bold text-2xl">Master Your Skills</h2>
+            <p class="text-sm text-gray-600">Upgrade your skills with our expert-led courses.</p>
+           
           </div>
-          <img src="assets/image/jpeg4.jpg" class="d-block w-100 h-100" alt="Skills Image">
         </div>
       </div>
-      <div class="carousel-item">
-        <div class="d-flex align-items-center justify-content-center bg-light w-100" style="height: 400px;">
-          <div class="carousel-caption text-start bg-white p-3 shadow rounded-4" style="width: fit-content;left: 7%;">
-            <h2 class="fw-bold">Upskill Your Team</h2>
-            <p>Give your team access to top-quality courses and training.</p>
-            <button class="btn btn-purple">Learn More</button> 
+
+      <!-- Slide 3 -->
+      <div class="w-full flex-shrink-0 relative h-[400px]">
+        <img src="assets/image/thir.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Team Image" />
+        <div class="relative h-full flex items-center">
+          <div class="bg-white p-4 shadow-lg rounded-2xl ml-10 w-fit text-left z-10 max-w-md">
+            <h2 class="font-bold text-2xl">Upskill Your Team</h2>
+            <p class="text-sm text-gray-600">Give your team access to top-quality courses and training.</p>
+         
           </div>
-          <img src="assets/image/thir.jpg" class="d-block w-100 h-100" alt="Team Image">
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev ms-3" style="width: fit-content;" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+
+    <!-- Controls -->
+    <button
+      class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-20"
+      (click)="prevSlide()"
+    >
+      <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
     </button>
-    <button class="carousel-control-next me-3" style="width: fit-content;" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+    <button
+      class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-20"
+      (click)="nextSlide()"
+    >
+      <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
     </button>
   </div>
-  
+</div>

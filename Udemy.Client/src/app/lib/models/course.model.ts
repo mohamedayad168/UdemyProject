@@ -46,3 +46,20 @@ export interface CourseUpdateDTO {
   requirements: string;
   categoryId?: number;
 }
+
+export interface LessonCDto {
+  articleContent: string;
+  title: string;
+  videoUrl: string;
+  duration: number;
+  isDeleted: boolean | null;
+  type: string;
+  sectionId: number;
+}
+
+export interface SectionCDTO {
+  title: string;
+  courseId: number;
+  noLessons: number;
+  lessons: LessonCDto[];
+}

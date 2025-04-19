@@ -51,6 +51,7 @@
     "@angular/localize": "^19.0.0",
     "@types/core-js": "^2.5.8",
     "@types/jasmine": "~5.1.0",
+    "eslint": "^9.25.0",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

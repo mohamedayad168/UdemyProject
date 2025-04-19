@@ -55,6 +55,12 @@ export interface Section {
     lessons: Lesson[];
 }
 
+export interface CreateSectionDTO {
+    title: string;
+    duration: number;
+    noLessons: number;
+    courseId: number;
+  }
 export interface Lesson {
     id: number;
     title: string;
