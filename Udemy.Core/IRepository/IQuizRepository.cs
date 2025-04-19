@@ -3,9 +3,10 @@ using Udemy.Core.ReadOptions;
 
 namespace Udemy.Core.IRepository
 {
-    public interface IQuizRepository
+    public interface IQuizRepository:IRepositoryBase<Quiz>
     {
-        Task<IEnumerable<Quiz>> GetQuizzesByCourseIdAsync(int courseId, RequestParamter requestParamter, bool trackChanges);
-        Task<IEnumerable<QuizQuestion>> GetQuestionsByQuizIdAsync(int quizId, RequestParamter requestParamter, bool trackChanges);
+        Task<Quiz> GetQuizWithQuestionsByCourseIdAsync(int courseId, bool trackChanges);
     }
+
+
 }

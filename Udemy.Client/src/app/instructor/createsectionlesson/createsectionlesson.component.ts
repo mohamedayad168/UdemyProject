@@ -65,10 +65,11 @@ export class CreatesectionlessonComponent implements OnInit {
     const lessonGroup = this.fb.group({
       title: ['', Validators.required],
       videoUrl: ['', Validators.required],
+      videoFile: [null], 
       articleContent: [''],
       duration: [0, [Validators.required, Validators.min(1)]],
       isDeleted: [false],
-      type: ['', Validators.required], // type selection
+      type: ['', Validators.required],
     });
     lessons.push(lessonGroup);
   }
@@ -77,11 +78,22 @@ export class CreatesectionlessonComponent implements OnInit {
     this.getLessons(sectionIndex).removeAt(lessonIndex);
   }
 
+  onFileSelected(event: any, sectionIndex: number, lessonIndex: number): void {
+    const file = event.target.files[0];
+    if (file) {
+      const videoUrl = URL.createObjectURL(file);
+      const lesson = this.getLessons(sectionIndex).at(lessonIndex);
+      lesson.patchValue({
+        videoUrl: videoUrl,
+        videoFile: file
+      });
+    }
+  }
+
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
       console.log('Submitting form:', this.form.value);
 
-      // Prepare section data
       const sectionsData: SectionCDTO[] = this.form.value.sections.map((section: any) => ({
         title: section.title,
         courseId: this.courseId,
@@ -91,20 +103,19 @@ export class CreatesectionlessonComponent implements OnInit {
           videoUrl: lesson.videoUrl,
           articleContent: lesson.articleContent,
           type: lesson.type,
-          duration:lesson.duration,
-          sectionId: 0, // Will update this after section creation
-          isDeleted:lesson.isDeleted|| false
+          duration: lesson.duration,
+          sectionId: 0,
+          isDeleted: lesson.isDeleted || false
         })),
       }));
 
       console.log('Form data to submit:', sectionsData);
 
-      // Step 1: Create sections and lessons sequentially
       for (const section of sectionsData) {
         try {
           const createdSection = await this.createSectionAsync(section);
           for (const lesson of section.lessons) {
-            lesson.sectionId = createdSection.id; // Now use the created section ID
+            lesson.sectionId = createdSection.id;
             await this.createLessonAsync(lesson);
           }
         } catch (err) {
@@ -115,12 +126,10 @@ export class CreatesectionlessonComponent implements OnInit {
     }
   }
 
-  // Helper function to create a section
   createSectionAsync(section: SectionCDTO): Promise<any> {
     return this.sectionService.createSection(section).toPromise();
   }
 
-  // Helper function to create a lesson
   createLessonAsync(lesson: any): Promise<any> {
     return this.lessonservice.createLesson(lesson).toPromise();
   }
