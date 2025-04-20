@@ -12,7 +12,14 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { Question, QuestionType, Quiz } from '../../lib/models/quiz';
+import {
+  Question,
+  QuestionType,
+  Quiz,
+  QuizCDTO,
+  QuizQuestionCDTO,
+} from '../../lib/models/quiz';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-quiz-management',
@@ -23,89 +30,99 @@ import { Question, QuestionType, Quiz } from '../../lib/models/quiz';
 })
 export class InstructorAddExamComponent implements OnInit {
   courseId: number = 0;
-  quizzes: Quiz[] = [];
-  newQuiz: Quiz = {
-    id: 0,
-    courseId: this.courseId,
-    questions: [],
+  quizzes: Quiz[][] = [];
+  newQuiz: QuizCDTO = {
+    CourseId: this.courseId,
+    QuizQuestions: [],
   };
-  nextQuizId: number = 1;
-  nextQuestionId: number = 1;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private quizService: QuizService
+  ) {}
 
   ngOnInit(): void {
     // Extract courseId from route parameters
     this.route.paramMap.subscribe((params) => {
       const courseId = params.get('courseId');
       this.courseId = courseId ? +courseId : 0;
-      this.newQuiz.courseId = this.courseId;
-      // In a real app, fetch existing quizzes for the course
-      // this.quizzes = this.quizService.getQuizzesByCourseId(this.courseId);
+      this.newQuiz.CourseId = this.courseId;
+      this.fetchQuizzes();
+    });
+  }
+
+  fetchQuizzes(): void {
+    // Fetch quizzes for the courseId
+    this.quizService.getQuizzesByCourse(this.courseId).subscribe({
+      next: (response) => {
+        this.quizzes = response ? [response] : [];
+      },
+      error: (error) => {
+        console.error('Error fetching quizzes:', error);
+        ('Failed to load quiz. Please try again.');
+        this.quizzes = [];
+      },
     });
   }
 
   addQuestion(): void {
-    const newQuestion: Question = {
-      id: this.nextQuestionId++,
-      quizId: this.newQuiz.id || this.nextQuizId, // Use nextQuizId if newQuiz.id is not set
-      type: 'Multiple Choice',
-      questionTxt: '',
-      choiceA: '',
-      choiceB: '',
-      choiceC: '',
-      answer: '', // Initialize answer as empty
+    const newQuestion: QuizQuestionCDTO = {
+      Type: 'Multiple Choice',
+      QuestionTxt: '',
+      ChoiceA: '',
+      ChoiceB: '',
+      ChoiceC: '',
+      AnswerTxt: '',
     };
-    this.newQuiz.questions.push(newQuestion);
+    this.newQuiz.QuizQuestions.push(newQuestion);
   }
 
   removeQuestion(index: number): void {
-    this.newQuiz.questions.splice(index, 1);
+    this.newQuiz.QuizQuestions.splice(index, 1);
   }
 
-  onQuestionTypeChange(question: Question): void {
-    // Reset answer when question type changes to prevent invalid answers
-    question.answer = '';
-    // Reset choices for True or False questions
-    if (question.type === 'True or False') {
-      question.choiceA = null;
-      question.choiceB = null;
-      question.choiceC = null;
+  onQuestionTypeChange(question: QuizQuestionCDTO): void {
+    // Reset answer and choices when question type changes
+    question.AnswerTxt = '';
+    if (question.Type === 'True or False') {
+      question.ChoiceA = null;
+      question.ChoiceB = null;
+      question.ChoiceC = null;
     } else {
-      question.choiceA = question.choiceA || '';
-      question.choiceB = question.choiceB || '';
-      question.choiceC = question.choiceC || '';
+      question.ChoiceA = question.ChoiceA || '';
+      question.ChoiceB = question.ChoiceB || '';
+      question.ChoiceC = question.ChoiceC || '';
     }
   }
 
   addQuiz(): void {
-    if (this.newQuiz.questions.length > 0) {
-      const quizToAdd: Quiz = {
-        ...this.newQuiz,
-        id: this.nextQuizId++, // Auto-generate quizId
-        courseId: this.courseId,
-        questions: this.newQuiz.questions.map((q) => ({
-          ...q,
-          quizId: this.nextQuizId - 1, // Ensure question quizId matches the new quiz
-        })),
-      };
-      this.quizzes.push(quizToAdd);
-      // In a real app, save to backend
-      // this.quizService.addQuiz(quizToAdd);
-
-      // Reset form
-      this.newQuiz = {
-        id: 0,
-        courseId: this.courseId,
-        questions: [],
-      };
-      this.nextQuestionId = 1;
+    if (this.newQuiz.QuizQuestions.length > 0) {
+      // Send QuizCDTO to backend
+      this.quizService.createQuizByCourseId(this.newQuiz).subscribe({
+        next: (createdQuiz) => {
+          this.quizzes.push(createdQuiz);
+          // Reset form
+          this.newQuiz = {
+            CourseId: this.courseId,
+            QuizQuestions: [],
+          };
+        },
+        error: (error) => {
+          console.error('Error creating quiz:', error);
+        },
+      });
     }
   }
 
-  removeQuiz(quizId: number): void {
-    this.quizzes = this.quizzes.filter((quiz) => quiz.id !== quizId);
-    // In a real app, delete from backend
-    // this.quizService.deleteQuiz(quizId);
-  }
+  // removeQuiz(quizId: number): void {
+  //   this.http.delete(`/api/quizzes/${quizId}`).subscribe({
+  //     next: () => {
+  //       this.quizzes = this.quizzes.filter((quiz) => quiz.id !== quizId);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error deleting quiz:', error);
+  //     },
+  //   });
+  // }
 }

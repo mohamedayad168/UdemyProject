@@ -29,23 +29,26 @@ export interface QuestionAnswer {
 
 export type QuestionType = 'Multiple Choice' | 'True or False';
 
-export enum QuestionTypeDTO {
-  MultipleChoice = 'Multiple Choice',
-  TrueFalse = 'True or False',
+export interface QuizCDTO {
+  CourseId: number;
+  QuizQuestions: QuizQuestionCDTO[];
 }
 
-export interface QuestionDTO {
+export interface QuizQuestionCDTO {
+  Type: string;
+  QuestionTxt: string;
+  ChoiceA?: string | null;
+  ChoiceB?: string | null;
+  ChoiceC?: string | null;
+  AnswerTxt: string;
+}
+
+export interface QuizQuestion {
   id: number;
-  quizId: number;
-  type: QuestionType;
+  type: string;
   questionTxt: string;
   choiceA?: string | null;
   choiceB?: string | null;
   choiceC?: string | null;
-}
-
-export interface QuizDTO {
-  id?: number;
-  courseId: number;
-  questions: QuestionDTO[];
+  answerTxt: string;
 }

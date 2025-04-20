@@ -6,7 +6,7 @@ import {
   QuestionAnswer,
   Quiz,
   QuizAnswersForSubmit,
-  QuizDTO,
+  QuizCDTO,
 } from '../models/quiz';
 import { AccountService } from './account.service';
 
@@ -60,7 +60,7 @@ export class QuizService {
     console.log(`Getting Answers from ${getAnswersUrl}`);
     return this._httpClient.get<any>(getAnswersUrl);
   }
-  private quizzes: QuizDTO[] = [
+  private quizzes: Quiz[] = [
     {
       id: 1,
       courseId: 1,
@@ -78,22 +78,8 @@ export class QuizService {
   getQuizzesByCourse(courseId: number): Observable<Quiz[]> {
     return this._httpClient.get<Quiz[]>(`${this._baseUrl}/${courseId}`);
   }
-
-  getAllQuizzes(): Observable<QuizDTO[]> {
-    return of(this.quizzes);
-  }
-
-  createQuiz(quiz: QuizDTO): Observable<QuizDTO> {
-    const newQuiz = { ...quiz, id: this.quizzes.length + 1 };
-    this.quizzes.push(newQuiz);
-    return of(newQuiz);
-  }
-
-  updateQuiz(quiz: QuizDTO): Observable<QuizDTO> {
-    const index = this.quizzes.findIndex((q) => q.id === quiz.id);
-    if (index !== -1) {
-      this.quizzes[index] = quiz;
-    }
-    return of(quiz);
+  createQuizByCourseId(newQuiz: QuizCDTO): Observable<any> {
+    // Send QuizCDTO to backend
+    return this._httpClient.post<Quiz>(`${this._baseUrl}`, newQuiz);
   }
 }
