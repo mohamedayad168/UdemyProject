@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InstructorService } from '../../lib/services/instructor.service';
 import { Instructor } from '../../lib/models/instructor.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+
 import { CourseService } from '../../lib/services/course.service';
 import { environment } from '../../../environments/environment';
 import { Course } from '../../lib/models/course.model';
