@@ -1,29 +1,30 @@
-﻿
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Udemy.Core.Enums;
 using System.Security.Claims;
+using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
-using Microsoft.AspNetCore.Identity;
-using Udemy.Core.Entities;
 
 
 namespace Udemy.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CoursesController(IServiceManager serviceManager ) : ControllerBase
+    public class CoursesController : ControllerBase
     {
-        private readonly Cloudinary _cloudinary;
+        private readonly IServiceManager serviceManager;
 
+
+        public CoursesController(IServiceManager serviceManager)
+        {
+            this.serviceManager = serviceManager;
+
+
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseRDTO>>> GetAllCoursesAsync()
         {
@@ -40,7 +41,7 @@ namespace Udemy.Presentation.Controllers
             searchReq.OrderBy ??= "title";
 
 
- 
+
 
             var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.NotDeleted, false);
             return Ok(paginatedResponse);
@@ -98,6 +99,12 @@ namespace Udemy.Presentation.Controllers
         }
 
 
+        [HttpGet("{id:int}/asks")]
+        public async Task<ActionResult<IEnumerable<AskRDTO>>> GetAsksByCourseIdAsync([FromRoute] int id, [FromQuery] RequestParamter requestParameter)
+        {
+            var asks = await serviceManager.AskService.GetAsksByCourseIdAsync(id, requestParameter, false);
+            return Ok(asks);
+        }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Instructor,Owner")]
@@ -183,24 +190,31 @@ namespace Udemy.Presentation.Controllers
             }
             return Ok(courses);
         }
-        private async Task<ImageUploadResult> UploadFile(IFormFile file)
+        //private async Task<ImageUploadResult> UploadFile(IFormFile file)
+        //{
+        //    var uploadResult = new ImageUploadResult();
+
+        //    if (file.Length > 0)
+        //    {
+        //        using (var stream = file.OpenReadStream())
+        //        {
+        //            var uploadParams = new ImageUploadParams()
+        //            {
+        //                File = new FileDescription(file.FileName, stream),
+        //                Transformation = new Transformation().Quality("auto").FetchFormat("auto")
+        //            };
+
+        //            uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        //        }
+        //    }
+        //    return uploadResult;
+        //}
+        [HttpGet("check-title")]
+        public async Task<bool> TitleExist([FromQuery] string title)
         {
-            var uploadResult = new ImageUploadResult();
+            var exist = await serviceManager.CoursesService.GetByTitleForValidation(title, false);
+            return exist;
 
-            if (file.Length > 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.FileName, stream),
-                        Transformation = new Transformation().Quality("auto").FetchFormat("auto")
-                    };
-
-                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                }
-            }
-            return uploadResult;
         }
     }
 }

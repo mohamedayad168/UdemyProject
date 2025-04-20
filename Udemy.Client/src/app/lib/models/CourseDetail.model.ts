@@ -53,6 +53,7 @@ export interface Section {
     duration: number;
     noLessons: number;
     lessons: Lesson[];
+    isDeleted?: boolean;
 }
 
 export interface CreateSectionDTO {
@@ -68,6 +69,7 @@ export interface Lesson {
     type: string;
     videoUrl: string | null;
     articleContent?: string | null;
+    isDeleted?: boolean;
   }
 
 export interface CourseContent{

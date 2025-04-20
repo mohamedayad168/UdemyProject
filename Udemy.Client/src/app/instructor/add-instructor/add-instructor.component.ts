@@ -1,7 +1,7 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Instructor } from '../../lib/models/instructor.model';
-import { InstructorService } from '../../services/instructor.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { InstructorService } from '../../lib/services/instructor.service';
+import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -43,7 +43,16 @@ export class AddInstructorComponent {
           [Validators.required, Validators.email],
           [this.emailAvailabilityValidator()],
         ],
-        password: ['', [Validators.required, Validators.minLength(8)]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/
+            ),
+          ],
+        ],
         confirmPassword: ['', Validators.required],
         phoneNumber: [
           '',
@@ -103,6 +112,7 @@ export class AddInstructorComponent {
       );
     };
   }
+
   onSubmit(): void {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();

@@ -6,228 +6,213 @@ import { SectionService } from '../../lib/services/section.service';
 import { LessonService } from '../../lib/services/lesson.service';
 import { CommonModule } from '@angular/common';
 
-import { FormsModule } from '@angular/forms';
-import { Course, LessonCDto, SectionCDTO } from '../../lib/models/course.model';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Course, LessonCDto, SectionCDTO, SectionUDTO } from '../../lib/models/course.model';
 import { ViewChild,ElementRef,AfterViewInit} from '@angular/core';
 @Component({
   selector: 'app-section-lessonupdate',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule],
   templateUrl: './section-lessonupdate.component.html',
   styleUrl: './section-lessonupdate.component.css'
 })
 export class SectionLessonupdateComponent implements OnInit {
-  sections: Section[] = [];
+  form!: FormGroup;
   courseId!: number;
-  selectedSectionId!: number;
-
-  videoPreviewUrl: { [lessonId: number]: string } = {};
-  selectedFile: { [lessonId: number]: File } = {};
-
-  @ViewChild('videoInput') videoInputRef!: ElementRef<HTMLInputElement>;
 
   constructor(
+    private fb: FormBuilder,
     private sectionService: SectionService,
-    private lessonService: LessonService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private lessonService: LessonService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.courseId = +params['id'];
-      console.log('Course ID:', this.courseId);
-
-      if (isNaN(this.courseId)) {
-        console.error('Invalid Course ID');
-        return;
-      }
-
-      this.loadCourseData(); // <- Call your service here
+    this.form = this.fb.group({
+      sections: this.fb.array([]),
     });
-  }
 
-  loadCourseData() {
-    this.sectionService.getSectionsByCourseId(this.courseId).subscribe({
-      next: (sections) => {
-        this.sections = sections;
-        this.sections.forEach(section => this.loadLessons(section.id));
-      },
-      error: (err) => {
-        console.error('Error loading sections', err);
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.courseId = +id;
+        this.loadSections();
       }
     });
   }
 
-  loadLessons(sectionId: number) {
-    this.lessonService.getLessonsBySectionId(sectionId).subscribe(lessons => {
-      const section = this.sections.find(s => s.id === sectionId);
-      if (section) {
-        section.lessons = lessons;
-      }
-    });
+  get sections(): FormArray {
+    return this.form.get('sections') as FormArray;
   }
 
-  updateSection(section: Section) {
-    this.sectionService.updateSection(section.id, section).subscribe({
-      next: (response: string) => console.log(response),
-      error: (err) => console.error('Error updating section', err)
+  addSection(): void {
+    const sectionGroup = this.fb.group({
+      id: [0], // Default value for new sections
+      title: ['', Validators.required],
+      lessons: this.fb.array([]),
+      isDeleted: [false], 
     });
+    this.sections.push(sectionGroup);
   }
 
-  updateLesson(lesson: Lesson) {
-    this.lessonService.updateLesson(lesson.id, lesson).subscribe(response => {
-      console.log('Lesson updated successfully', response);
+  removeSection(index: number): void {
+    // Mark section as deleted in the form data
+    const section = this.sections.at(index);
+    section.patchValue({
+      isDeleted: true  // Set isDeleted flag to true
     });
+
+    // Optionally, you could remove this section from the form array
+    this.sections.removeAt(index);
   }
 
-  onVideoSelected(event: Event, lesson: Lesson): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file && file.type.startsWith('video')) {
-      this.selectedFile[lesson.id] = file;
+  getLessons(sectionIndex: number): FormArray {
+    return this.sections.at(sectionIndex).get('lessons') as FormArray;
+  }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.videoPreviewUrl[lesson.id] = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+  addLesson(sectionIndex: number): void {
+    const lessons = this.getLessons(sectionIndex);
+    const lessonGroup = this.fb.group({
+      id: [0], // Default value for new lessons
+      title: ['', Validators.required],
+      videoUrl: ['', Validators.required],
+      videoFile: [null],
+      articleContent: [''],
+      duration: [0, [Validators.required, Validators.min(1)]],
+      isDeleted: [false], // Add an isDeleted field for lessons
+      type: ['video', Validators.required],
+    });
+    lessons.push(lessonGroup);
+  }
 
-      const formData = new FormData();
-      formData.append('video', file, file.name);
+  removeLesson(sectionIndex: number, lessonIndex: number): void {
+    // Mark lesson as deleted in the form data
+    const lesson = this.getLessons(sectionIndex).at(lessonIndex);
+    lesson.patchValue({
+      isDeleted: true  // Set isDeleted flag to true
+    });
 
-      this.lessonService.uploadVideo(lesson.id, formData).subscribe(
-        (response) => {
-          lesson.videoUrl = response.videoUrl;
-          this.lessonService.updateLesson(lesson.id, lesson).subscribe(() => {
-            console.log('Lesson updated with new video URL.');
+    // Optionally, you could remove this lesson from the form array
+    this.getLessons(sectionIndex).removeAt(lessonIndex);
+  }
+  onFileSelected(event: Event, sectionIndex: number, lessonIndex: number): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement?.files?.length) {
+      const file = inputElement.files[0];
+      const lessons = this.getLessons(sectionIndex);
+      const lessonGroup = lessons.at(lessonIndex);
+  
+      // Update the lesson form with the selected file
+      lessonGroup.patchValue({
+        videoFile: file,
+      });
+    }
+  }
+  
+  loadSections(): void {
+    this.sectionService.getSectionsByCourseId(this.courseId).subscribe((sections) => {
+      sections.forEach((section) => {
+        if (!section.isDeleted) {  // Exclude deleted sections
+          const sectionGroup = this.fb.group({
+            id: [section.id],
+            title: [section.title, Validators.required],
+            lessons: this.fb.array([]),
+            isDeleted: [false], // Add an isDeleted field for sections
           });
-        },
-        (error) => {
-          console.error('Video upload failed', error);
+
+          this.sections.push(sectionGroup);
+
+          this.lessonService.getLessonsBySectionId(section.id).subscribe((lessons) => {
+            const lessonsArray = sectionGroup.get('lessons') as FormArray;
+            lessons.forEach((lesson) => {
+              if (!lesson.isDeleted) {  // Exclude deleted lessons
+                lessonsArray.push(this.fb.group({
+                  id: [lesson.id],
+                  title: [lesson.title, Validators.required],
+                  articleContent: [lesson.articleContent || ''],
+                  videoUrl: [lesson.videoUrl],
+                  videoFile: [null],
+                  duration: [lesson.duration || 0],
+                  type: [lesson.type || 'video'],
+                  isDeleted: [lesson.isDeleted || false], // Add an isDeleted field for lessons
+                }));
+              }
+            });
+          });
         }
-      );
-    }
-  }
-
-  triggerAddLesson(sectionId: number, videoInput: HTMLInputElement) {
-    this.selectedSectionId = sectionId;
-    videoInput.click();
-  }
-
-  onNewLessonVideoSelected(event: Event, sectionId: number): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file && file.type.startsWith('video')) {
-      const section = this.sections.find(s => s.id === sectionId);
-      if (!section) return;
-
-      const newLesson: LessonCDto = {
-        
-        title: `Lesson ${section.lessons.length + 1}`,
-      articleContent:'',
-        videoUrl: '',
-        sectionId:section.id,
-        duration:5,
-        isDeleted:false,
-        type: '',
-      };
-
-      this.lessonService.createLesson(newLesson).subscribe(createdLesson => {
-        const lessonId = createdLesson.id;
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.videoPreviewUrl[lessonId] = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-
-        const formData = new FormData();
-        formData.append('video', file, file.name);
-
-        this.lessonService.uploadVideo(lessonId, formData).subscribe(response => {
-          createdLesson.videoUrl = response.videoUrl;
-          this.lessonService.updateLesson(lessonId, createdLesson).subscribe(() => {
-            console.log('New lesson added with video.');
-            this.loadLessons(sectionId);
-          });
-        });
-      });
-    }
-  }
-
-  addSection() {
-    const newSection: SectionCDTO = {
-      title: 'Intro to TypeScript',
-      lessons: [] ,
-      noLessons: 0,
-      courseId: this.courseId
-    };
-    
-    this.sectionService.createSection(newSection).subscribe((createdSection) => {
-      console.log('New section created:', createdSection);
-      createdSection.lessons = []; 
-      this.sections.push(createdSection);
-    });
-  }
-
-  addLesson(sectionId: number) {
-    const section = this.sections.find(s => s.id === sectionId);
-    if (section) {
-      const newLesson: LessonCDto = {
-       
-        title: `Lesson ${section.lessons.length + 1}`,
-        articleContent:'',
-        videoUrl: '',
-        sectionId:section.id,
-        duration:5,
-        isDeleted:false,
-        type: '',
-        
-      };
-
-      this.lessonService.createLesson(newLesson).subscribe(() => {
-        console.log('New lesson created');
-        this.loadLessons(sectionId);
-      });
-    }
-  }
-
-  removeSectionWithLessons(sectionId: number) {
-    this.lessonService.getLessonsBySectionId(sectionId).subscribe(lessons => {
-      const deletionTasks = lessons.map(lesson =>
-        this.lessonService.deleteLesson(lesson.id).toPromise()
-      );
-
-      Promise.all(deletionTasks).then(() => {
-        this.sectionService.deleteSection(sectionId).subscribe(() => {
-          console.log('Section and lessons deleted');
-
-          // Remove the section from the UI immediately
-          this.sections = this.sections.filter(section => section.id !== sectionId);
-        });
       });
     });
   }
 
-  removeLesson(lessonId: number, sectionId: number) {
-    this.lessonService.deleteLesson(lessonId).subscribe(() => {
-      console.log('Lesson deleted');
+  async onSubmit(): Promise<void> {
+    if (this.form.valid) {
+      for (const sectionGroup of this.sections.controls) {
+        const sectionValue = sectionGroup.value;
 
-      // Remove the lesson from the UI immediately
-      const section = this.sections.find(s => s.id === sectionId);
-      if (section) {
-        section.lessons = section.lessons.filter(lesson => lesson.id !== lessonId);
+        const lessons = sectionValue.lessons.map((lesson: any) => ({
+          id: lesson.id || 0,
+          title: lesson.title,
+          videoUrl: lesson.videoUrl,
+          articleContent: lesson.articleContent,
+          type: lesson.type,
+          duration: lesson.duration,
+          sectionId: sectionValue.id || 0,
+          isDeleted: lesson.isDeleted || false,
+        }));
+
+        const totalDuration = lessons.reduce((sum: number, lesson: any) => sum + (lesson.duration || 0), 0);
+
+        try {
+          let savedSection: any;
+
+          if (sectionValue.id && sectionValue.id > 0) {
+            // ✅ Update
+            const updateSection: SectionUDTO = {
+              id: sectionValue.id,
+              title: sectionValue.title,
+              courseId: this.courseId,
+              noLessons: lessons.length,
+              duration: totalDuration
+            };
+            await this.sectionService.updateSection(updateSection.id, updateSection).toPromise();
+            savedSection = { id: updateSection.id };
+          } else {
+            // ✅ Create
+            const createSection: SectionCDTO = {
+              title: sectionValue.title,
+              courseId: this.courseId,
+              noLessons: lessons.length,
+              lessons: lessons
+            };
+            savedSection = await this.createSectionAsync(createSection);
+          }
+
+          for (const lesson of lessons) {
+            lesson.sectionId = savedSection.id;
+
+            if (lesson.id && lesson.id > 0) {
+              await this.lessonService.updateLesson(lesson.id, lesson).toPromise();
+            } else {
+              await this.createLessonAsync(lesson);
+            }
+          }
+
+        } catch (err) {
+          console.error('Error creating/updating section or lesson:', err);
+          alert(`An error occurred: ${JSON.stringify(err)}`);
+        }
       }
-    });
+
+      alert("Sections and lessons saved successfully.");
+    } else {
+      alert("Please fill all required fields.");
+    }
   }
 
-  editSectionTitle(section: Section, newTitle: string) {
-    section.title = newTitle;
-    this.updateSection(section);
+  createSectionAsync(section: SectionCDTO): Promise<any> {
+    return this.sectionService.createSection(section).toPromise();
   }
 
-  saveChanges() {
-    this.sections.forEach(section => {
-      this.updateSection(section);
-      section.lessons.forEach(lesson => this.updateLesson(lesson));
-    });
-    console.log('All changes saved to database.');
+  createLessonAsync(lesson: LessonCDto): Promise<any> {
+    return this.lessonService.createLesson(lesson).toPromise();
   }
 }

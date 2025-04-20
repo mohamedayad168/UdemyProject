@@ -33,6 +33,10 @@ import { AddInstructorComponent } from './instructor/add-instructor/add-instruct
 import { AddStudentAsInstructorComponent } from './instructor/add-student-as-instructor/add-student-as-instructor.component';
 import { SectionLessonupdateComponent } from './instructor/section-lessonupdate/section-lessonupdate.component';
 import { CreatesectionlessonComponent } from './instructor/createsectionlesson/createsectionlesson.component';
+
+import { instructorGurdGuard } from './gurds/instructor-gurd.guard';
+import { UserAuthGuard } from './gurds/user-gurd.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -42,10 +46,11 @@ export const routes: Routes = [
     path: 'courses/:id',
     component: CourseDetailsPageComponent,
   },
-  
+
   {
     path: 'instructor/createsection&lesson/:id',
     component: CreatesectionlessonComponent,
+    canActivate: [instructorGurdGuard],
   },
 
   {
@@ -53,15 +58,23 @@ export const routes: Routes = [
     component: CourseSearchComponent,
   },
   {
-    path: 'login',
-    component: LoginPageComponent,
+    path: 'updatecoursedetails/:id',
+    component: UpdatecoursedetailsComponent,
   },
   {
-     path: 'updatesectionlessondetails/:id', component: SectionLessonupdateComponent ,
+    path: 'login',
+    component: LoginPageComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
+    path: 'updatesectionlessondetails/:id',
+    component: SectionLessonupdateComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'signup',
     component: SignupPageComponent,
+    canActivate: [UserAuthGuard],
   },
   {
     title: 'Cart',
@@ -84,14 +97,17 @@ export const routes: Routes = [
   {
     path: 'instructor/home',
     component: InstructorHomeComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'instructor/get-started',
     component: InstructorGetstartedComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'instructor/instructor-audiance',
     component: InstructorAudianceComponent,
+    canActivate: [instructorGurdGuard],
   },
 
   {
@@ -105,14 +121,13 @@ export const routes: Routes = [
   {
     path: 'get-started',
     component: AddInstructorComponent,
+    canActivate: [UserAuthGuard],
   },
-  {
-    path: 'add-instructor-role',
-    component: AddStudentAsInstructorComponent,
-  },
+
   {
     path: 'loginasinstrctor',
     component: LoginasinstractorComponent,
+    canActivate: [UserAuthGuard],
   },
   {
     path: 'terms-of-use',
@@ -121,6 +136,7 @@ export const routes: Routes = [
   {
     path: 'instructor/record-vedio',
     component: GetstartwvedioComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'course/view/:id',
@@ -130,10 +146,12 @@ export const routes: Routes = [
   {
     path: 'instructor/congratulation',
     component: CongratulationComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'instructor/challenge',
     component: InstructorChallengeComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'createcourse/entercoursetitel',
@@ -142,6 +160,7 @@ export const routes: Routes = [
   {
     path: 'createcourse/FGCOURSE',
     component: FirstpageaftercreateComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'course/view/:id/lesson/:lessonId',
@@ -149,21 +168,29 @@ export const routes: Routes = [
     data: { hideHeader: true },
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
-
   {
     path: 'course/view/:id',
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
   {
+    path: 'course/view/:id/lesson',
+    redirectTo: '/course/view/:id',
+    data: { hideHeader: true },
+  },
+  {
     path: 'createcourse/createcoursebage',
     component: CreatecoursebageComponent,
+    canActivate: [instructorGurdGuard],
   },
   {
     path: 'instructors/:id/courses',
     component: EditCourseComponent,
+    canActivate: [instructorGurdGuard],
   },
-  { path: 'edit-instructor-Page', component: EditinstructorPageComponent },
+  { path: 'edit-instructor-Page', component: EditinstructorPageComponent, 
+    canActivate: [instructorGurdGuard],
+  },
   {
     title: '404',
     path: '**',

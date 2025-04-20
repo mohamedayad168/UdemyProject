@@ -40,7 +40,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpGet("page")]
-        public async Task<ActionResult<PaginatedRes<InstructorRDTO>>> GetPage([FromQuery]PaginatedSearchReq searchReq)
+        public async Task<ActionResult<PaginatedRes<InstructorRDTO>>> GetPage([FromQuery] PaginatedSearchReq searchReq)
         {
             searchReq.SearchTerm ??= "";
             searchReq.OrderBy ??= "title";
@@ -127,10 +127,10 @@ namespace Udemy.API.Controllers
 
 
             var createdInstructor = await _serviceManager.InstructorService.AddInstructorData(instructorDto, user.Id);
-            //var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
-            //await signInManager.UserManager.UpdateSecurityStampAsync(instructor);
+            var instructor = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == createdInstructor.Email);
+            await signInManager.UserManager.UpdateSecurityStampAsync(instructor);
 
-            //await userManager.AddToRoleAsync(instructor, UserRole.Instructor);
+            await userManager.AddToRoleAsync(instructor, UserRole.Instructor);
 
 
 

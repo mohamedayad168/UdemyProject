@@ -7,7 +7,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { CourseContent, CourseDetail } from '../../lib/models/CourseDetail.model';
 import { CourseService } from '../../lib/services/course.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { catchError, Subject, throwError } from 'rxjs';
+import { catchError, of, Subject, throwError } from 'rxjs';
 import { ContentAccordionComponent } from '../../lib/components/content-accordion/content-accordion.component';
 import { CommonModule } from '@angular/common';
 import { CourseOverViewComponent } from "../../lib/components/course-over-view/course-over-view.component";
@@ -18,6 +18,8 @@ import { AccountService } from '../../lib/services/account.service';
 import { PostReview } from '../../lib/models/review';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QNAComponent } from "../../lib/components/qna/qna.component";
+import { QuizComponent } from "../../lib/components/quiz/quiz.component";
+import { QuizService } from '../../lib/services/quiz.service';
 
 @Component({
   selector: 'app-course-view',
@@ -29,7 +31,7 @@ import { QNAComponent } from "../../lib/components/qna/qna.component";
     ContentAccordionComponent,
     CommonModule,
     RouterModule, CourseOverViewComponent, CourseReviewsComponent, CreateReviewComponent,
-    MatProgressSpinnerModule, QNAComponent],
+    MatProgressSpinnerModule, QNAComponent, QuizComponent],
   templateUrl: './course-view.component.html',
   styleUrl: './course-view.component.css'
 })
@@ -39,6 +41,7 @@ export class CourseViewComponent {
     courseService = inject(CourseService);
     userService = inject(UserService);
     accountService = inject(AccountService);
+    quizService = inject(QuizService);
     activatedRoute = inject(ActivatedRoute);
     router = inject(Router);
     currentLessonId!: number;
@@ -48,6 +51,8 @@ export class CourseViewComponent {
     enrollment!:any;
     studentId!:number;
     reviewUpdated$ = new Subject<void>();
+    //Flags
+    quizExists = false;
 
     ngOnInit() {
         // Simulate fetching course details from a service
@@ -115,6 +120,7 @@ export class CourseViewComponent {
             // route to a 404 page or show an error message
           }
         });
+        this.checkQuizExists(courseId);
 
         this.activatedRoute.fragment.subscribe(fragment => {
           console.log('fragment', fragment);
@@ -122,6 +128,8 @@ export class CourseViewComponent {
             this.changeActiveTab(fragment);
           }
         });
+
+
 
       }
       ngOnUpdate(){
@@ -147,7 +155,28 @@ export class CourseViewComponent {
     }
   }
 
+  checkQuizExists(courseId: number) {
+    console.log('checking if quiz exists..................');
 
+    this.quizService.getCourseQuiz(courseId)
+    .pipe(
+      catchError(err => {
+        if (err.status === 404) {
+          console.log('Not Found (404)');
+          this.quizExists = false;
+          // Do something, like show a message or fallback
+        }
+        return of(null); // Return a fallback value or empty observable
+      })
+    )
+    .subscribe((data: any) => {
+      if (data) {
+        console.log('quiz data data received', data);
+        this.quizExists = true;
+      }
+    })
+
+  }
 
     get courseContent() {
 
@@ -166,6 +195,8 @@ export class CourseViewComponent {
 
   get videoUrl() {
     const lessonIndex = this.courseDetails.sections.flatMap(section => section.lessons).findIndex(lesson => lesson.id == this.currentLessonId);
+    const videoUrl=this.courseDetails.sections.flatMap(section => section.lessons)[lessonIndex].videoUrl;
+    //console.log('video url', videoUrl);
     return mediaJSON['videos'][lessonIndex]['sources'][0];
   }
 

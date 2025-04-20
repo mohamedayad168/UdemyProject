@@ -167,6 +167,17 @@ public class AccountController(
             return BadRequest("Email is Already Exist");
         }
     }
+    [HttpGet("check-email")]
+    public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+    {
+        return await userManager.FindByEmailAsync(email) != null;
+    }
+
+    [HttpGet("check-username")]
+    public async Task<ActionResult<bool>> CheckUsernameExists([FromQuery] string username)
+    {
+        return await userManager.FindByNameAsync(username) != null;
+    }
 
 
 }

@@ -1,99 +1,80 @@
-<div class="container mx-auto my-8 p-4">
-  <h2 class="text-2xl font-bold mb-4">Manage Sections and Lessons</h2>
+<div class="container py-4">
+  <h2>Manage Course Sections & Lessons</h2>
 
-  <!-- Display Sections -->
-  <div *ngFor="let section of sections" class="mb-6 p-4 border border-gray-300 rounded-lg">
-    <div class="section">
-      <!-- Edit Section Title -->
-      <h3 class="text-xl font-semibold mb-2">
-        <input
-          [(ngModel)]="section.title"
-          (blur)="editSectionTitle(section, section.title)"
-          class="w-full p-2 border border-gray-300 rounded-md"
-        />
-      </h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formArrayName="sections">
+      <div *ngFor="let section of sections.controls; let sectionIndex = index" [formGroupName]="sectionIndex" class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <strong>Section {{ sectionIndex + 1 }}</strong>
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeSection(sectionIndex)">Remove Section</button>
+        </div>
 
-      <!-- Remove Section with All Lessons -->
-      <button
-        class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none mb-4"
-        (click)="removeSectionWithLessons(section.id)"
-      >
-        Remove Section with All Lessons
-      </button>
-
-      <!-- Display Lessons in each Section -->
-      <div *ngFor="let lesson of section.lessons" class="mt-4">
-        <div class="lesson p-4 border border-gray-200 rounded-lg">
-          <!-- Edit Lesson Title -->
-          <h4 class="text-lg font-medium mb-2">
-            <input
-              [(ngModel)]="lesson.title"
-              (blur)="updateLesson(lesson)"
-              class="w-full p-2 border border-gray-300 rounded-md"
-            />
-          </h4>
-
-          <!-- Remove Lesson -->
-          <button
-            class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none"
-            (click)="removeLesson(lesson.id, section.id)"
-          >
-            Remove Lesson
-          </button>
-
-          <!-- Video Upload -->
-          <div class="mt-2">
-            <input
-              type="file"
-              (change)="onVideoSelected($event, lesson)"
-              class="border p-2 rounded-md"
-              accept="video/*"
-            />
-            <video
-              *ngIf="videoPreviewUrl[lesson.id]"
-              [src]="videoPreviewUrl[lesson.id]"
-              controls
-              class="mt-2 w-full h-auto"
-            ></video>
-            <div *ngIf="!videoPreviewUrl[lesson.id]" class="mt-2 text-gray-600">
-              <span>No video uploaded yet</span>
+        <div class="card-body">
+          <!-- Section Title -->
+          <div class="mb-3">
+            <label class="form-label">Section Title</label>
+            <input type="text" formControlName="title" class="form-control" [class.is-invalid]="section.get('title')?.invalid && section.get('title')?.touched" />
+            <div *ngIf="section.get('title')?.invalid && section.get('title')?.touched" class="text-danger">
+              Section title is required.
             </div>
+          </div>
+
+          <!-- Lessons -->
+          <div formArrayName="lessons">
+            <h5>Lessons</h5>
+            <div *ngFor="let lesson of getLessons(sectionIndex).controls; let lessonIndex = index" [formGroupName]="lessonIndex" class="border p-3 mb-3 rounded">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Lesson Title</label>
+                  <input type="text" formControlName="title" class="form-control" [class.is-invalid]="lesson.get('title')?.invalid && lesson.get('title')?.touched" />
+                  <div *ngIf="lesson.get('title')?.invalid && lesson.get('title')?.touched" class="text-danger">
+                    Lesson title is required.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Lesson Type</label>
+                  <select class="form-select" formControlName="type" [class.is-invalid]="lesson.get('type')?.invalid && lesson.get('type')?.touched">
+                    <option value="video">Video</option>
+                    <option value="article">Article</option>
+                  </select>
+                  <div *ngIf="lesson.get('type')?.invalid && lesson.get('type')?.touched" class="text-danger">
+                    Lesson type is required.
+                  </div>
+                </div>
+
+                <!-- Video Lesson Validation -->
+                <div class="col-md-12" *ngIf="lesson.get('type')?.value === 'video'">
+                  <label class="form-label">Video File</label>
+                  <input type="file" class="form-control" (change)="onFileSelected($event, sectionIndex, lessonIndex)" [class.is-invalid]="lesson.get('videoFile')?.invalid && lesson.get('videoFile')?.touched" />
+                  <div *ngIf="lesson.get('videoFile')?.invalid && lesson.get('videoFile')?.touched" class="text-danger">
+                    Video file is required for video lessons.
+                  </div>
+                  <small class="text-muted">Duration: {{ lesson.get('duration')?.value || 0 }} min</small>
+                </div>
+
+                <!-- Article Lesson Validation -->
+                <div class="col-md-12" *ngIf="lesson.get('type')?.value === 'article'">
+                  <label class="form-label">Article Content</label>
+                  <textarea formControlName="articleContent" class="form-control" rows="4" [class.is-invalid]="lesson.get('articleContent')?.invalid && lesson.get('articleContent')?.touched"></textarea>
+                  <div *ngIf="lesson.get('articleContent')?.invalid && lesson.get('articleContent')?.touched" class="text-danger">
+                    Article content is required for article lessons.
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-outline-danger mt-2" (click)="removeLesson(sectionIndex, lessonIndex)">Remove Lesson</button>
+            </div>
+
+            <button type="button" class="btn btn-outline-primary" (click)="addLesson(sectionIndex)">+ Add Lesson</button>
           </div>
         </div>
       </div>
-
-      <!-- Add New Lesson Button for this Section -->
-      <button
-        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
-        (click)="triggerAddLesson(section.id, videoInput)"
-      >
-        Add New Lesson
-      </button>
     </div>
-  </div>
 
-  <!-- Add New Section -->
-  <button
-    class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mt-6"
-    (click)="addSection()"
-  >
-    Add New Section
-  </button>
+    <div class="mb-4">
+      <button type="button" class="btn btn-success" (click)="addSection()">+ Add Section</button>
+    </div>
 
-  <!-- Hidden File Input for Adding New Lesson Video -->
-  <input
-    type="file"
-    #videoInput
-    accept="video/*"
-    style="display: none"
-    (change)="onNewLessonVideoSelected($event, selectedSectionId)"
-  />
-
-  <!-- Save All Changes -->
-  <button
-    class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 mt-4 ml-4"
-    (click)="saveChanges()"
-  >
-    Save Changes
-  </button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save All</button>
+  </form>
 </div>

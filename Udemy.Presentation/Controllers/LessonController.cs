@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Stripe;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -42,6 +42,7 @@ namespace Udemy.Presentation.Controllers
         }
 
         // GET: api/Lesson/section/{sectionId}
+        [Authorize(Roles = "Instructor")]
         [HttpGet("section/{sectionId}")]
         public async Task<ActionResult<IEnumerable<LessonRDto>>> GetLessonsBySectionId(int sectionId, [FromQuery] bool trackChanges)
         {
@@ -49,7 +50,7 @@ namespace Udemy.Presentation.Controllers
             return Ok(lessons);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateLesson([FromBody] LessonCDto lessonCDto)
+        public async Task<IActionResult> CreateLesson(LessonCDto lessonCDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -64,14 +65,13 @@ namespace Udemy.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An unexpected error occurred while creating the lesson.");
-
+                return BadRequest(ex);
             }
         }
 
 
-            // PUT: api/Lesson/{id}
-            [HttpPut("{id}")]
+        // PUT: api/Lesson/{id}
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
         {
 

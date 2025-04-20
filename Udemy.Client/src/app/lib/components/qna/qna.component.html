@@ -76,7 +76,7 @@
   </button>
 </div>
 <section #questionSection class="max-w-4xl mx-auto bg-white rounded-lg p-6 mb-10">
-  @if(courseQuestions.length>0){
+  @if(courseQuestions && courseQuestions.length>0){
     <h2 class="text-2xl font-semibold mb-4">
       {{filterUserQuestions?'My Questions':'All Questions'}}
     </h2>

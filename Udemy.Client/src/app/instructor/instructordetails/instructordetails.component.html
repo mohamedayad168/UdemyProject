@@ -2,125 +2,170 @@
 <div *ngIf="instructor">
   <div class="text-center mb-8">
     <h1 class="text-4xl font-bold text-black tracking-tight">
-      <h1 class="text-4xl font-bold text-black tracking-tight">
-        {{ instructor.name }}
-      </h1>
+      {{ instructor.name }}
     </h1>
-    <h2 class="text-2xl text-gray-600 mt-2 font-light">{{ instructor.Title }}</h2>
-
+    <h2 class="text-2xl text-gray-600 mt-2 font-light">
+      {{ instructor.Title }}
+    </h2>
 
     <div class="mt-4 flex justify-center items-center gap-4">
-      <span *ngIf="instructor.totalCourses" class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+      <span
+        *ngIf="instructor.totalCourses"
+        class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium"
+      >
         {{ instructor.totalCourses }} Courses
       </span>
-      <span *ngIf="instructor.totalStudents" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+      <span
+        *ngIf="instructor.totalStudents"
+        class="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium"
+      >
         {{ instructor.totalStudents }} Students
       </span>
     </div>
 
     <div class="mt-8">
-      <div class="text-4xl font-semibold text-gray-800">{{ instructor.totalStudents }}</div>
+      <div class="text-4xl font-semibold text-gray-800">
+        {{ instructor.totalStudents }}
+      </div>
       <div class="text-lg text-gray-500">Total learners</div>
     </div>
 
     <!-- About Section -->
     <div class="mt-8">
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">About Me</h2>
-      <p class="text-lg text-gray-700 leading-relaxed">{{ instructor.bio}}</p>
-
-
+      <p class="text-lg text-gray-700 leading-relaxed">{{ instructor.bio }}</p>
     </div>
   </div>
 
   <div class="border-t border-gray-300 my-8"></div>
-  <h2 class="text-2xl font-semibold text-gray-900 mb-4">MyCourses</h2>
+  <h2 class="text-2xl font-semibold text-gray-900 mb-4">My Courses</h2>
   <!-- Courses Section -->
   <div class="overflow-x-auto">
     <div class="flex gap-6 w-max pb-4">
-      <div *ngFor="let course of courses" class="w-80 flex-shrink-0 shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition duration-300 bg-white transform hover:scale-105 hover:cursor-pointer"
-           [routerLink]="['/courses', course.id]"> <!-- Corrected routerLink -->
-
+      <div
+        *ngFor="let course of courses"
+        class="w-80 flex-shrink-0 shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition duration-300 bg-white transform hover:scale-105 hover:cursor-pointer"
+        [routerLink]="['/courses', course.id]"
+      >
         <!-- Course Image -->
         <img
-        [src]="course. imageUrl || 'https://via.placeholder.com/300x150'"
-        alt="{{ course.title }}"
-        class="rounded h-40 w-full object-cover"
-      />
+          [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
+          alt="{{ course.title }}"
+          class="rounded h-40 w-full object-cover"
+        />
 
         <!-- Course Details -->
         <div class="p-4">
           <h6 class="text-sm font-bold text-gray-900">{{ course.title }}</h6>
-          <p class="text-sm text-gray-600 line-clamp-3">{{ course.description }}</p>
+          <p class="text-sm text-gray-600 line-clamp-3">
+            {{ course.description }}
+          </p>
 
           <!-- Free Badge -->
-          <div *ngIf="course.isFree" class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium inline-block mb-2">
+          <div
+            *ngIf="course.isFree"
+            class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium inline-block mb-2"
+          >
             FREE
           </div>
 
           <!-- Course Info -->
           <div class="text-xs text-gray-600 mb-2">
-            <span class="font-medium">{{ course.instructorName ||  instructor.name}}</span> • 
-            <span>{{ course.rating || 'N/A' }} ★</span> • 
+            <span class="font-medium">{{
+              course.instructorName || instructor.name
+            }}</span>
+            • <span>{{ course.rating || "N/A" }} ★</span> •
             <span>{{ course.noSubscribers | number }} students</span>
           </div>
 
           <div class="text-xs text-gray-500 mb-2">
-         
-            <span>{{ course.courseLevel }}</span> 
+            <span>{{ course.courseLevel }}</span>
             <span>{{ course.language }}</span>
           </div>
 
           <!-- Price Info -->
           <div class="flex items-center gap-2 mb-2">
-            <span *ngIf="course.isFree; else paid" class="text-sm font-bold text-gray-800">Free</span>
+            <span
+              *ngIf="course.isFree; else paid"
+              class="text-sm font-bold text-gray-800"
+              >Free</span
+            >
             <ng-template #paid>
-              <span class="text-sm font-bold text-gray-800">{{ course.currentPrice | currency }}</span>
-          <span *ngIf="course.discount" class="text-xs line-through text-gray-400">{{ course.price | currency }}</span>
+              <span class="text-sm font-bold text-gray-800">{{
+                course.currentPrice | currency
+              }}</span>
+              <span
+                *ngIf="course.discount"
+                class="text-xs line-through text-gray-400"
+                >{{ course.price | currency }}</span
+              >
             </ng-template>
           </div>
 
           <!-- Course Status -->
-          <span *ngIf="course.status" class="inline-block px-2 py-1 text-xs font-medium rounded-full"
+          <span
+            *ngIf="course.status"
+            class="inline-block px-2 py-1 text-xs font-medium rounded-full"
             [ngClass]="{
               'bg-blue-100 text-blue-800': course.status === 'Published',
               'bg-yellow-100 text-yellow-800': course.status === 'Draft',
               'bg-green-100 text-green-800': course.status === 'Approved'
-            }">
+            }"
+          >
             {{ course.status }}
           </span>
-          <br>
+          <br />
 
-          <!-- Edit Button -->
-           
-      <!-- Edit + Delete Buttons Side by Side -->
-<div class="flex gap-2 mt-2">
-  <!-- Edit Button -->
-  <button 
-    (click)="editCourse(course.id); $event.stopPropagation()"
-    class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition"
-    title="Edit Course"
-  >
-    <span class="text-xs font-medium">Edit</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-    </svg>
-  </button>
+          <!-- Edit + Delete Buttons -->
+          <div *ngIf="isOwner()">
+            <div class="flex gap-2 mt-2">
+              <!-- Edit Button -->
+              <button
+                (click)="editCourse(course.id); $event.stopPropagation()"
+                class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition"
+                title="Edit Course"
+              >
+                <span class="text-xs font-medium">Edit</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </button>
 
-  <!-- Delete Button -->
-  <button 
-    (click)="deleteCourse(course.id); $event.stopPropagation()"
-    class="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition"
-    title="Delete Course"
-  >
-    <span class="text-xs font-medium">Delete</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  </button>
-</div>
-
+              <!-- Delete Button -->
+              <button
+                (click)="deleteCourse(course.id); $event.stopPropagation()"
+                class="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition"
+                title="Delete Course"
+              >
+                <span class="text-xs font-medium">Delete</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
