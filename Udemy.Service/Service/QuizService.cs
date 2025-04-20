@@ -10,6 +10,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.IService;
 
@@ -88,5 +89,25 @@ namespace Udemy.Service.Service
 
             return quizDto;
         }
+
+        public Task<QuizCDTO> CreateQuizAsync(QuizCDTO quizCDTO)
+        {
+            //check course exists
+            var course = _repositoryManager.Courses.FindByCondition(c => c.Id == quizCDTO.CourseId, false).FirstOrDefaultAsync()
+                ?? throw new NotFoundException($"Course with id: {quizCDTO.CourseId} doesn't exist.");
+            //check if course has a quiz
+            var q = _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == quizCDTO.CourseId, false).FirstOrDefaultAsync();
+            if (q is not null)
+            {
+                throw new BadRequestException($"Course with id: {quizCDTO.CourseId} already has a quiz.");
+            }
+            //create new quiz
+            var newQuiz = quizCDTO.MapToEntity();
+
+
+
+        }
+
+
     }
 }
