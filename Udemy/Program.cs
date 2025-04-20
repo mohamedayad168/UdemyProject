@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Udemy.Extensions;
 using Udemy.Presentation;
 var builder = WebApplication.CreateBuilder(args);
