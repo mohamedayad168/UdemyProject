@@ -36,6 +36,9 @@ import { CreatesectionlessonComponent } from './instructor/createsectionlesson/c
 
 import { instructorGurdGuard } from './gurds/instructor-gurd.guard';
 import { UserAuthGuard } from './gurds/user-gurd.guard';
+import { InstructorAddExamComponent } from './instructor/instructor-add-exam/instructor-add-exam.component';
+import { InstructorBioComponent } from './lib/components/page-specefic/course-details/instructor-bio/instructor-bio.component';
+import { InstructorReportComponent } from './instructor/instructor-report/instructor-report.component';
 
 export const routes: Routes = [
   {
@@ -103,6 +106,10 @@ export const routes: Routes = [
     path: 'instructor/get-started',
     component: InstructorGetstartedComponent,
     canActivate: [instructorGurdGuard],
+  },
+  {
+    path: 'instructor/report',
+    component: InstructorReportComponent,
   },
   {
     path: 'instructor/instructor-audiance',
@@ -174,6 +181,10 @@ export const routes: Routes = [
     data: { hideHeader: true },
   },
   {
+    path: 'instructor/courses/:courseId/add-exam',
+    component: InstructorAddExamComponent,
+  },
+  {
     path: 'course/view/:id/lesson',
     redirectTo: '/course/view/:id',
     data: { hideHeader: true },
@@ -188,7 +199,9 @@ export const routes: Routes = [
     component: EditCourseComponent,
     canActivate: [instructorGurdGuard],
   },
-  { path: 'edit-instructor-Page', component: EditinstructorPageComponent, 
+  {
+    path: 'edit-instructor-Page',
+    component: EditinstructorPageComponent,
     canActivate: [instructorGurdGuard],
   },
   {

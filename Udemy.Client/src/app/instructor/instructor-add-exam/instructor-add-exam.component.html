@@ -1,0 +1,221 @@
+<div class="container mx-auto p-6 max-w-3xl">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">
+    Quiz Manager for Course ID: {{ courseId }}
+  </h1>
+
+  <!-- Add Quiz Form -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Create New Quiz</h2>
+    <form (ngSubmit)="addQuiz()" #quizForm="ngForm" class="space-y-4">
+      <!-- Questions -->
+      <div
+        *ngFor="let question of newQuiz.QuizQuestions; let i = index"
+        class="border-t pt-4"
+      >
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-medium text-gray-700">
+            Question {{ i + 1 }}
+          </h3>
+          <button
+            type="button"
+            (click)="removeQuestion(i)"
+            class="text-red-600 hover:text-red-800 text-sm"
+          >
+            Remove Question
+          </button>
+        </div>
+        <div class="space-y-2">
+          <div>
+            <label
+              for="questionTxt_{{ i }}"
+              class="block text-sm font-medium text-gray-700"
+              >Question Text</label
+            >
+            <input
+              type="text"
+              id="questionTxt_{{ i }}"
+              [(ngModel)]="question.QuestionTxt"
+              name="questionTxt_{{ i }}"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label
+              for="type_{{ i }}"
+              class="block text-sm font-medium text-gray-700"
+              >Question Type</label
+            >
+            <select
+              id="type_{{ i }}"
+              [(ngModel)]="question.Type"
+              name="type_{{ i }}"
+              required
+              (ngModelChange)="onQuestionTypeChange(question)"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="Multiple Choice">Multiple Choice</option>
+              <option value="True or False">True or False</option>
+            </select>
+          </div>
+          <div *ngIf="question.Type === 'Multiple Choice'" class="space-y-2">
+            <div>
+              <label
+                for="choiceA_{{ i }}"
+                class="block text-sm font-medium text-gray-700"
+                >Choice A</label
+              >
+              <input
+                type="text"
+                id="choiceA_{{ i }}"
+                [(ngModel)]="question.ChoiceA"
+                name="choiceA_{{ i }}"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="choiceB_{{ i }}"
+                class="block text-sm font-medium text-gray-700"
+                >Choice B</label
+              >
+              <input
+                type="text"
+                id="choiceB_{{ i }}"
+                [(ngModel)]="question.ChoiceB"
+                name="choiceB_{{ i }}"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="choiceC_{{ i }}"
+                class="block text-sm font-medium text-gray-700"
+                >Choice C</label
+              >
+              <input
+                type="text"
+                id="choiceC_{{ i }}"
+                [(ngModel)]="question.ChoiceC"
+                name="choiceC_{{ i }}"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="answerTxt_{{ i }}"
+                class="block text-sm font-medium text-gray-700"
+                >Correct Answer</label
+              >
+              <select
+                id="answerTxt_{{ i }}"
+                [(ngModel)]="question.AnswerTxt"
+                name="answerTxt_{{ i }}"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              >
+                <option value="" disabled>Select Correct Answer</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="question.Type === 'True or False'">
+            <label
+              for="answerTxt_{{ i }}"
+              class="block text-sm font-medium text-gray-700"
+              >Correct Answer</label
+            >
+            <select
+              id="answerTxt_{{ i }}"
+              [(ngModel)]="question.AnswerTxt"
+              name="answerTxt_{{ i }}"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="" disabled>Select Correct Answer</option>
+              <option value="True">True</option>
+              <option value="False">False</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Question Button -->
+      <div>
+        <button
+          type="button"
+          (click)="addQuestion()"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Add Question
+        </button>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          [disabled]="quizForm.invalid || newQuiz.QuizQuestions.length === 0"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Create Quiz
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Existing Quiz -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Existing Quiz</h2>
+    <div *ngIf="quizzes.length === 0" class="text-gray-500">
+      No quiz available for this course.
+    </div>
+    <div *ngIf="quizzes.length > 0">
+      <div
+        class="flex justify-between items-center p-4 bg-gray-50 rounded-md mb-4"
+      >
+        <span class="text-gray-800 font-medium"
+          >Quiz ID: {{ quizzes[0][0].questions }}</span
+        >
+        <button
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Delete Quiz
+        </button>
+      </div>
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium text-gray-700">Questions</h3>
+        <div
+          *ngFor="let question of quizzes[0][0].questions; let i = index"
+          class="p-4 bg-gray-100 rounded-md"
+        >
+          <p class="text-gray-800">
+            <strong>Question {{ i + 1 }}:</strong> {{ question.questionTxt }}
+          </p>
+          <p class="text-gray-600">
+            <strong>Type:</strong> {{ question.type }}
+          </p>
+          <div *ngIf="question.type === 'Multiple Choice'" class="mt-2">
+            <p *ngIf="question.choiceA" class="text-gray-600">
+              <strong>A:</strong> {{ question.choiceA }}
+            </p>
+            <p *ngIf="question.choiceB" class="text-gray-600">
+              <strong>B:</strong> {{ question.choiceB }}
+            </p>
+            <p *ngIf="question.choiceC" class="text-gray-600">
+              <strong>C:</strong> {{ question.choiceC }}
+            </p>
+          </div>
+          <p class="text-gray-600">
+            <strong>Correct Answer:</strong> {{ question.questionTxt }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
