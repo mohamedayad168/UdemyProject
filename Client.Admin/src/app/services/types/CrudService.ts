@@ -155,7 +155,7 @@ export class CrudService<T> {
       });
   }
 
-  private checkLoading() {
+  checkLoading() {
     if (this.isLoading()) throw new Error(this.loadingMessage);
     this.isLoading.set(true);
   }

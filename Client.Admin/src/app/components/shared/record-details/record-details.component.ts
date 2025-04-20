@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+// IDetails
+
 @Component({
   selector: 'app-record-details',
   imports: [],

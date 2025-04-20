@@ -45,9 +45,9 @@ public class AccountController(
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.UserName),
-            
+
         };
-        foreach (var role in roles ?? [])
+        foreach (var role in (roles ?? []))
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
@@ -168,5 +168,5 @@ public class AccountController(
         }
     }
 
-    
+
 }
