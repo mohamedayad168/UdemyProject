@@ -119,8 +119,7 @@
           />
           }
           <!--  -->
-          @case ('tag') { 
-          @for (item of column.tags; track $index) {
+          @case ('tag') { @for (item of column.tags; track $index) {
           <p-tag
             *ngIf="product[column['key']] == item.value"
             [value]="product[column['key']]"
@@ -215,130 +214,236 @@
     [modal]="true"
   >
     <ng-template #content>
-      <div class="flex flex-col gap-6">
-        @for (item of createFormConfigs(); track $index) { @switch (item.type) {
-        @case ('image') {
-        <div>
-          <label for="">{{ item.label }}</label>
-          <div
-            class="relative hover:cursor-pointer hover:opacity-80 transition-all"
-          >
-            <img
-              [src]="item['imageUrl'] ?? '/placeholders/course.png'"
-              alt="course image"
-              class="block m-auto pb-4"
-            />
-            <input
-              type="file"
-              (change)="onImageChange($event)"
-              accept="image/*"
-              class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer"
-            />
-          </div>
-        </div>
-        }@case ('file') {
-        <div>
-          <label for="">{{ item.label }}</label>
-          <p-fileupload
-            #fu
-            mode="basic"
-            chooseLabel="Choose"
-            chooseIcon="pi pi-upload"
-            maxFileSize="1000000"
-          />
-        </div>
-        } @case ('select') {
-        <div>
-          <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
-            item.label
-          }}</label>
-          <p-select
-            [(ngModel)]="newItem[item['key']]"
-            [inputId]="item['key'] + $index"
-            [options]="item.options"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select a Status"
-            fluid
-          />
-        </div>
-        } @case ('radio') {
-        <div>
-          <span class="block font-bold mb-4">{{ item.label }}</span>
-          <div class="grid grid-cols-12 gap-4">
-            @for (radio of item.options; track $index) {
-            <div class="flex items-center gap-2 col-span-6">
-              <p-radiobutton
-                id="category{{ $index }}"
-                name="category"
-                value="{{ radio.value }}"
-                [(ngModel)]="newItem['category']"
-              />
-              <label for="category{{ $index }}">{{ radio.label }}</label>
+      <div>
+        <form
+          id="form"
+          class="flex flex-col gap-6"
+          #NgForm="ngForm"
+          (ngSubmit)="saveProduct(NgForm)"
+        >
+          @for (item of createFormConfigs(); track $index) {
+          <div>
+            @switch (item.type) {
+            <!--  -->
+            @case ('image') {
+            <div>
+              <label for="">{{ item.label }}</label>
+              <div
+                class="relative hover:cursor-pointer hover:opacity-80 transition-all"
+              >
+                <img
+                  [src]="item['imageUrl'] ?? '/placeholders/course.png'"
+                  alt="course image"
+                  class="block m-auto pb-4"
+                />
+                <input
+                  type="file"
+                  (change)="onImageChange($event)"
+                  [required]="item.required ?? false"
+                  accept="image/*"
+                  class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer"
+                />
+              </div>
             </div>
             }
-          </div>
-        </div>
-        } @case ('money') {
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-6">
-            <label for="price" class="block font-bold mb-3">Price</label>
-            <p-inputnumber
-              id="price"
-              [(ngModel)]="newItem['price']"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
+            <!--  -->
+            @case ('file') {
+            <div>
+              <label for="">{{ item.label }}</label>
+              <p-fileupload
+                #fu
+                mode="basic"
+                chooseLabel="Choose"
+                chooseIcon="pi pi-upload"
+                maxFileSize="1000000"
+              />
+            </div>
+            }
+            <!--  -->
+            @case ('select') {
+            <div>
+              <label
+                [for]="item['key'] + $index"
+                class="block font-bold mb-3"
+                >{{ item.label }}</label
+              >
+              <p-select
+                [(ngModel)]="newItem[item['key']]"
+                [inputId]="item['key'] + $index"
+                [name]="item['key']"
+                [options]="item.options"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select a Status"
+                fluid
+              />
+            </div>
+            }
+            <!--  -->
+            @case ('radio') {
+            <div>
+              <span class="block font-bold mb-4">{{ item.label }}</span>
+              <div class="grid grid-cols-12 gap-4">
+                @for (radio of item.options; track $index) {
+                <div class="flex items-center gap-2 col-span-6">
+                  <p-radiobutton
+                    id="radio{{ $index }}"
+                    [name]="item['key']"
+                    value="{{ radio.value }}"
+                    [(ngModel)]="newItem[item['key']]"
+                  />
+                  <label for="radio{{ $index }}">{{ radio.label }}</label>
+                </div>
+                }
+              </div>
+            </div>
+            }
+            <!--  -->
+            @case ('money') {
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-6">
+                <label for="price" class="block font-bold mb-3">Price</label>
+                <p-inputnumber
+                  id="price"
+                  [(ngModel)]="newItem['price']"
+                  mode="currency"
+                  [name]="item['key']"
+                  [required]="item.required ?? false"
+                  currency="USD"
+                  locale="en-US"
+                  fluid
+                />
+              </div>
+              <!-- <div class="col-span-6">
+                                  <label for="quantity" class="block font-bold mb-3">Quantity</label>
+                                  <p-inputnumber id="quantity" [(ngModel)]="item['quantity']" fluid />
+                              </div> -->
+            </div>
+            }
+            <!--  -->
+            @case ('textarea') {
+            <div>
+              <label for="description" class="block font-bold mb-3"
+                >Description</label
+              >
+              <textarea
+                id="description"
+                pTextarea
+                [name]="item['key']"
+                [(ngModel)]="newItem['description']"
+                [required]="item.required ?? false"
+                rows="3"
+                cols="20"
+                fluid
+              ></textarea>
+            </div>
+            }
+            <!--  -->
+            @case ('number') {
+            <div>
+              <label
+                [for]="item['key'] + $index"
+                class="block font-bold mb-3"
+                >{{ item.label }}</label
+              >
+              <input
+                type="number"
+                pInputText
+                [name]="item['key']"
+                [id]="item['key'] + $index"
+                [(ngModel)]="newItem[item['key']]"
+                [required]="item.required ?? false"
+                autofocus
+                min="{{ item.min ?? 0 }}"
+                max="{{ item.max ?? 0 }}"
+                fluid
+              />
+              <small class="text-red-500" *ngIf="submitted && !item['key']"
+                >{{ item.label }} is required.</small
+              >
+            </div>
+            }
+            <!--  -->
+            @case ('email') {
+              <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
+                item.label
+              }}</label>
+              <input
+                type="email"
+                pInputText
+                [name]="item['key']"
+                [id]="item['key'] + $index"
+                [(ngModel)]="newItem[item['key']]"
+                [required]="item.required ?? false"
+                email
+                autofocus
+                fluid
+              />
+              <small class="text-red-500" *ngIf="submitted && !item['key']"
+                >{{ item.label }} is required.</small
+              >
+            }
+            <!--  -->
+            @case ('password') {
+              <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
+                item.label
+              }}</label>
+              <input
+                type="password"
+                pInputText
+                [name]="item['key']"
+                [id]="item['key'] + $index"
+                [(ngModel)]="newItem[item['key']]"
+                [required]="item.required ?? false"
+                autofocus
+                fluid
+              />
+              <small class="text-red-500" *ngIf="submitted && !item['key']"
+                >{{ item.label }} is required.</small
+              >
+            }
+            <!--  -->
+            @default {
+            <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
+              item.label
+            }}</label>
+            <input
+              type="text"
+              pInputText
+              [name]="item['key']"
+              [id]="item['key'] + $index"
+              [(ngModel)]="newItem[item['key']]"
+              [required]="item.required ?? false"
+              autofocus
               fluid
             />
+            <small class="text-red-500" *ngIf="submitted && !item['key']"
+              >{{ item.label }} is required.</small
+            >
+            }
+            <!--  -->
+            }
+            <p
+              *ngIf="NgForm.submitted || NgForm.controls[item['key']]?.touched"
+              class="text-red-500 text-sm"
+            >
+              <ng-container *ngIf="NgForm.controls[item['key']]?.invalid">
+                invalid Input
+              </ng-container>
+            </p>
           </div>
-          <!-- <div class="col-span-6">
-                                <label for="quantity" class="block font-bold mb-3">Quantity</label>
-                                <p-inputnumber id="quantity" [(ngModel)]="item['quantity']" fluid />
-                            </div> -->
-        </div>
-        } @case ('textarea') {
-        <div>
-          <label for="description" class="block font-bold mb-3"
-            >Description</label
-          >
-          <textarea
-            id="description"
-            pTextarea
-            [(ngModel)]="newItem['description']"
-            required
-            rows="3"
-            cols="20"
-            fluid
-          ></textarea>
-        </div>
-        } @default {
-        <div>
-          <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
-            item.label
-          }}</label>
-          <input
-            type="text"
-            pInputText
-            [id]="item['key'] + $index"
-            [(ngModel)]="newItem[item['key']]"
-            required
-            autofocus
-            fluid
-          />
-          <small class="text-red-500" *ngIf="submitted && !item['key']"
-            >{{ item.label }} is required.</small
-          >
-        </div>
-        } } }
+
+          }
+        </form>
       </div>
     </ng-template>
 
-    <input type="file" #file />
-
     <ng-template #footer>
       <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-      <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
+      <button type="submit" form="form">
+        <p-button label="Save" icon="pi pi-check" />
+      </button>
+      <!-- <button type="submit">sub</button> -->
     </ng-template>
   </p-dialog>
 

@@ -58,6 +58,10 @@ export const routes: Routes = [
     component: CourseSearchComponent,
   },
   {
+    path: 'updatecoursedetails/:id',
+    component: UpdatecoursedetailsComponent,
+  },
+  {
     path: 'login',
     component: LoginPageComponent,
     canActivate: [UserAuthGuard],
@@ -184,7 +188,9 @@ export const routes: Routes = [
     component: EditCourseComponent,
     canActivate: [instructorGurdGuard],
   },
-  { path: 'edit-instructor-Page', component: EditinstructorPageComponent },
+  { path: 'edit-instructor-Page', component: EditinstructorPageComponent, 
+    canActivate: [instructorGurdGuard],
+  },
   {
     title: '404',
     path: '**',

@@ -21,5 +21,6 @@ namespace Udemy.Service.DataTransferObjects.Update
 
         [Required]
         public int CourseId { get; set; }
+       
     }
 }

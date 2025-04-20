@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 
 namespace Udemy.Service.IService
@@ -15,6 +16,14 @@ namespace Udemy.Service.IService
           Task<StudentGradeRDTO> EvaluateQuizAsync(int userId,QuizAnswersForEvaluationCDTO quizAnswersForEvaluationCDTO);
           Task<StudentGradeRDTO> GetStudentGradeByCourseIdAsync(int studentId, int courseId);
           Task<QuizWithAnswersRDTO> GetQuizWithQuestionsAndAnswersByCourseIdAsync(int courseId);
+          Task<QuizWithAnswersRDTO> CreateQuizAsync(QuizCDTO quizCDTO);
+         Task DeleteQuizAsync(int courseId);
+
+
+
+
+
+
     }
 
 }

@@ -26,7 +26,7 @@ export class InstructordetailsComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private courseservive: CourseService,
+    private courseService: CourseService,
     private instructorService: InstructorService,
     private accountService: AccountService
   ) {
@@ -34,37 +34,34 @@ export class InstructordetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentInstructorId = Number(localStorage.getItem('instructorId'));
+    this.currentInstructorId = Number(localStorage.getItem('instructorId')) || 0;
     this.route.params.subscribe((params) => {
       this.instructorId = +params['id'];
       this.fetchInstructorDetails();
       this.fetchInstructorCourses();
-      console.log(this.currentInstructorId);
     });
   }
 
   fetchInstructorDetails(): void {
-    console.log('Fetching instructor details for ID:', this.instructorId);
     this.instructorService.getInstructorDetails(this.instructorId).subscribe({
       next: (response) => {
         this.instructor = response;
-        console.log('Instructor details:', this.instructor);
       },
       error: (error) => {
         console.error('Error fetching instructor details:', error);
       },
     });
   }
+
   isOwner(): boolean {
     return this.currentInstructorId === this.instructorId;
   }
+
   deleteCourse(courseId: number): void {
     if (confirm('Are you sure you want to delete this course?')) {
-      this.courseservive.deleteCourse(courseId).subscribe({
+      this.courseService.deleteCourse(courseId).subscribe({
         next: () => {
-          // Remove the course from the list
-          this.courses = this.courses.filter((c) => c.id !== courseId);
-          // Update the instructor's totalCourses count
+          this.courses = this.courses.filter((course) => course.id !== courseId);
           this.instructor.totalCourses = this.courses.length;
           alert('Course deleted successfully.');
         },
@@ -75,12 +72,12 @@ export class InstructordetailsComponent implements OnInit {
       });
     }
   }
+
   editCourse(courseId: number): void {
     this.router.navigate([`/updatecoursedetails/${courseId}`]);
   }
 
   fetchInstructorCourses(): void {
-    console.log('Fetching courses for instructor ID:', this.instructorId);
     this.instructorService.getInstructorCourses(this.instructorId).subscribe({
       next: (response) => {
         this.courses = response.map((course) => {
@@ -89,7 +86,6 @@ export class InstructordetailsComponent implements OnInit {
           }
           return course;
         });
-        console.log('Courses:', this.courses);
       },
       error: (error) => {
         console.error('Error fetching instructor courses:', error);

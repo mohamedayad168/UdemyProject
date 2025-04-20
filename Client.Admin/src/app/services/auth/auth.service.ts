@@ -25,6 +25,10 @@ export class AuthService {
     return this._authState.asReadonly();
   }
 
+  get isOwner(): boolean {
+    return this._authState().user?.roles.includes('Owner') ?? false;
+  }
+
   logout() {
     //clear set cookies from browser
     const observable = this.httpClient.post<IUser>(
@@ -66,7 +70,7 @@ export class AuthService {
       .subscribe({
         next: (user) => {
           console.log(user);
-          if (!user.roles.includes('Admin') && !user.roles.includes('Owner')) {
+          if (!user?.roles.includes('Admin') && !user?.roles.includes('Owner')) {
             throw new Error('Access Denied');
           }
 
@@ -76,6 +80,7 @@ export class AuthService {
             pre.dialogVisible = false;
             return pre;
           });
+          console.log('login success', user);
           this.router.navigate(['/']);
         },
         error: (error) => {
@@ -101,7 +106,8 @@ export class AuthService {
 
     observable.subscribe({
       next: (user) => {
-        if (!user.roles.includes('Admin') && !user.roles.includes('Owner')) {
+        console.log('load user', user);
+        if (!user?.roles.includes('Admin') && !user?.roles.includes('Owner')) {
           throw new Error('Access Denied');
         }
 
@@ -109,7 +115,6 @@ export class AuthService {
           this.router.navigate(['/login']);
           return;
         }
-        console.log('load user', user);
 
         this._authState.update((pre) => {
           pre.user = user;
