@@ -16,7 +16,7 @@ namespace Udemy.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
    public class QuizController(IServiceManager service,UserManager<ApplicationUser> userManager): ControllerBase
     {
 
