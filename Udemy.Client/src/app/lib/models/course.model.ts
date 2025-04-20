@@ -54,12 +54,34 @@ export interface LessonCDto {
   duration: number;
   isDeleted: boolean | null;
   type: string;
+  id?: number; 
   sectionId: number;
+ 
 }
 
 export interface SectionCDTO {
+  id?:number;
   title: string;
   courseId: number;
   noLessons: number;
   lessons: LessonCDto[];
+  
 }
+export interface LessonUDto {
+  id: number; // لازم للتمييز عند التحديث
+  title: string;
+  videoUrl: string;
+  sectionId: number;
+  articleContent?: string;
+  type?: string;
+  duration?: number;
+  isDeleted?: boolean;
+}
+export interface SectionUDTO {
+  id:number; 
+  title: string;
+  duration: number;
+  noLessons: number;
+  courseId: number;
+}
+

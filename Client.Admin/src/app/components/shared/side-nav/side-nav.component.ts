@@ -96,6 +96,7 @@ export class SideNavComponent {
           {
             label: 'Admins',
             icon: 'pi pi-cog',
+            visible: this.authService.isOwner,
             routerLink: ['/admins'],
             routerLinkActiveOptions: { exact: true },
           },

@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AccountService } from '../../lib/services/account.service';
-import { InstructorService } from '../../services/instructor.service';
+import { InstructorService } from '../../lib/services/instructor.service';
 import { Instructor } from '../../lib/models/instructor.model';
 
 @Component({
@@ -19,11 +19,9 @@ import { Instructor } from '../../lib/models/instructor.model';
   templateUrl: './get-started.component.html',
   styleUrl: './get-started.component.css',
 })
-export class GetStartedComponent { profileForm: FormGroup;
+export class GetStartedComponent {
+  profileForm: FormGroup;
   private instructorService = inject(InstructorService);
-
-
- 
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.profileForm = this.fb.group(
@@ -46,12 +44,12 @@ export class GetStartedComponent { profileForm: FormGroup;
           [Validators.required, Validators.min(18), Validators.max(100)],
         ],
         gender: ['', Validators.required],
-        facebook: ['', ],
+        facebook: [''],
         title: ['', [Validators.required, Validators.maxLength(60)]],
-        instagram: ['', ],
+        instagram: [''],
         biography: ['', [Validators.required, Validators.minLength(50)]],
-        linkedin: ['', ],
-        twitter: ['',],
+        linkedin: [''],
+        twitter: [''],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -61,7 +59,6 @@ export class GetStartedComponent { profileForm: FormGroup;
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
-    
     }
 
     const formValue = this.profileForm.value;
@@ -91,19 +88,18 @@ export class GetStartedComponent { profileForm: FormGroup;
           userId
         );
 
-        this.instructorService.saveSocialMediaLinks(socialMediaLinks).subscribe(
-          {
+        this.instructorService
+          .saveSocialMediaLinks(socialMediaLinks)
+          .subscribe({
             next: () => {
               alert('Profile and social media links saved successfully!');
               this.router.navigate(['/loginasinstrctor']);
-
             },
             error: (err) => {
               console.error('Error saving social media links:', err);
               alert('Profile saved but social media links failed to update');
             },
-          }
-        );
+          });
       },
       error: (err) => {
         console.error('Error saving instructor profile:', err);

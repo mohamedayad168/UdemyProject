@@ -24,7 +24,7 @@ import { SelectModule } from 'primeng/select';
 import { Tag } from 'primeng/tag';
 import { RadioButton } from 'primeng/radiobutton';
 import { Rating, RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -37,6 +37,7 @@ import { IPage } from '../../../types/fetch';
 
 type FieldType =
   | 'text'
+  | 'email'
   | 'password'
   | 'textarea'
   | 'number'
@@ -57,12 +58,14 @@ export interface FormFieldConfig {
   required?: boolean;
   width?: string;
   options?: { label: string; value: any }[]; // for selects
+  min?: number;
+  max?: number;
 }
 
 export interface IColumnConfig {
   [key: string]: any;
   width?: string;
-  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating' |'status'; //sepcify for tags
+  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating' | 'status'; //sepcify for tags
   tags?: { label: string; value: any; color: string; bgColor: string }[];
   statuses?: { label: string; value: any; color: string; bgColor: string }[];
   header: string;
@@ -279,7 +282,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
-                detail: 'IItem1 Deleted',
+                detail: 'Deleted Successfully',
                 life: 3000,
               });
               this.crudService().page.update((val) => {
@@ -292,9 +295,9 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
             error: (error) => {
               console.error(error);
               this.messageService.add({
-                severity: 'danger',
+                severity: 'warn',
                 summary: 'Error',
-                detail: 'Error deleting' + error,
+                detail: 'Error deleting' + (error?.message ?? error),
                 life: 3000,
               });
             },
@@ -333,66 +336,68 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     return statuses!.find((status) => status.value == value);
   }
 
-  saveProduct() {
+  saveProduct(form: NgForm) {
+    console.log(form);
+    if (form.form.invalid) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Error',
+        detail: 'invalid form input',
+        life: 3000,
+      });
+      return;
+    }
     this.submitted = true;
     console.log('saveProduct');
     console.log(this.newItem);
-    if (this.newItem.title?.trim()) {
-      console.log('title +');
-      if (this.newItem.id) {
-        // this.items.update((pre) => {
-        //   const index = pre.findIndex((newItem) => newItem.id === this.newItem!.id);
-        //   if (index !== -1) {
-        //     pre[index] = this.newItem!;
-        //   }
-        //   return pre;
-        // });
-        console.log('edit');
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'IItem1 Updated',
-          life: 3000,
+    // if (this.newItem.trim()) {
+    console.log('title +');
+    if (this.newItem.id) {
+      // this.items.update((pre) => {
+      //   const index = pre.findIndex((newItem) => newItem.id === this.newItem!.id);
+      //   if (index !== -1) {
+      //     pre[index] = this.newItem!;
+      //   }
+      //   return pre;
+      // });
+      console.log('edit');
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'IItem1 Updated',
+        life: 3000,
+      });
+    } else {
+      console.log('create');
+      this.crudService()
+        .create(this.newItem)
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'IItem1 Created',
+              life: 3000,
+            });
+            this.productDialog = false;
+            this.newItem = {} as T;
+            this.crudService().getPage({ pageNumber: 1, pageSize: 10 });
+          },
+          error: (error) => {
+            console.error(error);
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Error',
+              detail: 'Error creating' + error,
+              life: 3000,
+            });
+          },
         });
-      } else {
-        const data = new FormData();
 
-        for (const key in this.newItem) {
-          console.log(this.newItem[key]);
-          if (key == 'image' || key == 'video') {
-            data.append(key, this.newItem[key][0], this.newItem[key].name);
-          }
-          data.append(key, this.newItem[key]);
-        }
-        console.log('create');
-        this.crudService()
-          .create(data)
-          .subscribe({
-            next: (data) => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Successful',
-                detail: 'IItem1 Created',
-                life: 3000,
-              });
-            },
-            error: (error) => {
-              console.error(error);
-              this.messageService.add({
-                severity: 'danger',
-                summary: 'Error',
-                detail: 'Error creating' + error,
-                life: 3000,
-              });
-            },
-          });
-
-        (this.newItem as any)['imageUrl'] = 'newItem-placeholder.svg';
-      }
-
-      this.productDialog = false;
-      this.newItem = {} as T;
+      (this.newItem as any)['imageUrl'] = 'newItem-placeholder.svg';
     }
+
+    // }
   }
 
   filterTable($event: any) {

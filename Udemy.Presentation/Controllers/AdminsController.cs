@@ -38,32 +38,32 @@ namespace Udemy.Presentation.Controllers
             searchReq.SearchTerm ??= "";
             searchReq.OrderBy ??= "title";
 
-            var paginatedResponse = await serviceManager.UserService.GetRoleUsersPageAsync(searchReq,"Admin", DeletionType.Deleted, false);
+            var paginatedResponse = await serviceManager.UserService.GetRoleUsersPageAsync(searchReq,"Admin", DeletionType.NotDeleted, false);
             return Ok(paginatedResponse);
         }
 
 
         [HttpPost("")]
-        public async Task<IActionResult> Register([FromForm]UserForCreationDto user)
+        public async Task<IActionResult> Register([FromForm] UserForCreationDto user)
         {
             var admin = await signInManager.UserManager.FindByEmailAsync(user.Email);
 
-            if (admin is not null) return BadRequest($"Email '{admin.Email}' Already Exist");
+            if (admin is not null) return BadRequest($"Email '{admin.Email}' Already Exists");
 
             await serviceManager.UserService.CreateUserAsync(user,"Admin");
 
-            return Ok("Successfully created admin");
+            return Ok( );
 
         }
 
 
-        [HttpDelete("")]
+        [HttpDelete("{id}")]
 
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
             await serviceManager.UserService.DeleteUserAsync(id);
 
-            return Ok("Successfully created admin");
+            return Ok( );
 
         }
     }
