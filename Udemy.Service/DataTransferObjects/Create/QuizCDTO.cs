@@ -13,9 +13,9 @@ namespace Udemy.Service.DataTransferObjects.Create
             return new Quiz
             {
                 CourseId = CourseId,
-                QuizQuestion = QuizQuestions.Select(q => new QuizQuestion
+                QuizQuestion = QuizQuestions.Select((q, index) => new QuizQuestion
                 {
-
+                    Id = index + 1,
                     Type = q.Type,
                     QuestionTxt = q.QuestionTxt,
                     ChoiceA = q.ChoiceA,

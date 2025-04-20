@@ -16,7 +16,7 @@ namespace Udemy.Service.IService
           Task<StudentGradeRDTO> EvaluateQuizAsync(int userId,QuizAnswersForEvaluationCDTO quizAnswersForEvaluationCDTO);
           Task<StudentGradeRDTO> GetStudentGradeByCourseIdAsync(int studentId, int courseId);
           Task<QuizWithAnswersRDTO> GetQuizWithQuestionsAndAnswersByCourseIdAsync(int courseId);
-          Task<QuizCDTO> CreateQuizAsync(QuizCDTO quizCDTO);
+          Task<QuizWithAnswersRDTO> CreateQuizAsync(QuizCDTO quizCDTO);
         
 
             

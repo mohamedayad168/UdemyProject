@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.IService;
 
@@ -64,6 +65,13 @@ namespace Udemy.Presentation.Controllers
             return Ok(quizzes);
         }
 
+        [HttpPost()]
+
+        public async Task<IActionResult> CreateQuiz([FromBody] QuizCDTO quizCDTO)
+        {
+            var result = await service.QuizService.CreateQuizAsync(quizCDTO);
+            return CreatedAtAction(nameof(GetCourseQuizzes), new { courseId = quizCDTO.CourseId }, result);
+        }
 
 
     }

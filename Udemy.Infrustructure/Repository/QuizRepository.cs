@@ -2,6 +2,7 @@
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Create;
 
 namespace Udemy.Infrastructure.Repository
 {
@@ -20,6 +21,46 @@ namespace Udemy.Infrastructure.Repository
                 
             return quiz;
         }
+
+        public async Task AddQuizWithQuestionsAsync(Quiz quiz, List<QuizQuestion> quizQuestions)
+        {
+             using var transaction =  _context.Database.BeginTransaction();
+
+            try
+            {
+                // Create and save the quiz first to generate its ID
+                await _context.Quizzes.AddAsync(quiz);
+                await _context.SaveChangesAsync();
+
+                int maxId = await _context.QuizQuestions
+                    .Where(q => q.QuizId == quiz.Id)
+                    .MaxAsync(q => (int?)q.Id) ?? 0;
+
+                     int nextId = maxId + 1;
+                foreach (var question in quizQuestions)
+                {
+                    
+                    question.QuizId = quiz.Id;
+                    question.Id =nextId++ ;
+                }
+                // Create and save the quiz question
+                quiz.QuizQuestion=quizQuestions;
+                await _context.SaveChangesAsync();
+               
+                // Commit transaction if everything succeeded
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                // Rollback if anything fails
+                await transaction.RollbackAsync();
+                throw; // Re-throw the exception
+            }
+
+
+        }
+
+
     }
 
 
