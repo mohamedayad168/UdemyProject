@@ -31,9 +31,9 @@ export class PowerBiReportsService {
     console.log('Current user:', currentUser());
     const reportUrl =
     powerBiApiUrl +
-      "&$filter=DimInstructor/Id eq '" +
-      currentUser()?.id +
-      "'";
+      "&$filter=DimInstructor/Id eq " +
+      currentUser()?.id ;
+
     return reportUrl;
   }
 
