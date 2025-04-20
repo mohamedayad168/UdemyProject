@@ -16,7 +16,7 @@ namespace Udemy.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
    public class QuizController(IServiceManager service,UserManager<ApplicationUser> userManager): ControllerBase
     {
 
@@ -71,6 +71,13 @@ namespace Udemy.Presentation.Controllers
         {
             var result = await service.QuizService.CreateQuizAsync(quizCDTO);
             return CreatedAtAction(nameof(GetCourseQuizzes), new { courseId = quizCDTO.CourseId }, result);
+        }
+        //delete quiz
+        [HttpDelete("{courseId:int}")]
+        public async Task<IActionResult> DeleteQuiz(int courseId)
+        {
+            await service.QuizService.DeleteQuizAsync(courseId);
+            return NoContent();
         }
 
 

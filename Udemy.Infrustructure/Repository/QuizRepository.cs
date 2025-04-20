@@ -60,6 +60,15 @@ namespace Udemy.Infrastructure.Repository
 
         }
 
+       public void DeleteQuizWithQuestionsAsync(Quiz quiz)
+        {
+            foreach(var question in quiz.QuizQuestion)
+            {
+               question.IsDeleted = true;
+            }
+            Delete(quiz);
+
+        }
 
     }
 

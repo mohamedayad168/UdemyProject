@@ -113,6 +113,25 @@ namespace Udemy.Service.Service
 
         }
 
+        public async Task DeleteQuizAsync(int courseId)
+        {
+            //check course exists
+            var course = await _repositoryManager.Courses.FindByCondition(c => c.Id == courseId, false).FirstOrDefaultAsync()
+                ?? throw new NotFoundException($"Course with id: {courseId} doesn't exist.");
+            //check if course has a quiz
+            var q = await _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == courseId, false).AnyAsync();
+            if (!q)
+            {
+                throw new BadRequestException($"Course with id: {courseId} doesn't have a quiz.");
+            }
+            //delete quiz
+            var quiz = await _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == courseId, true).Include(q => q.QuizQuestion).FirstOrDefaultAsync();
+               
+
+             _repositoryManager.Quizzes.DeleteQuizWithQuestionsAsync(quiz);
+            await _repositoryManager.SaveAsync();
+        }
+
 
     }
 }

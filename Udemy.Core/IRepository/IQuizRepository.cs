@@ -7,6 +7,7 @@ namespace Udemy.Core.IRepository
     {
         Task<Quiz> GetQuizWithQuestionsByCourseIdAsync(int courseId, bool trackChanges);
         Task AddQuizWithQuestionsAsync(Quiz quiz,List<QuizQuestion> quizQuestions);
+        void DeleteQuizWithQuestionsAsync(Quiz quiz);
     }
 
 
