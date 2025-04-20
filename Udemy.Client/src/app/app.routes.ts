@@ -36,6 +36,7 @@ import { CreatesectionlessonComponent } from './instructor/createsectionlesson/c
 
 import { instructorGurdGuard } from './gurds/instructor-gurd.guard';
 import { UserAuthGuard } from './gurds/user-gurd.guard';
+import { InstructorAddExamComponent } from './instructor/instructor-add-exam/instructor-add-exam.component';
 
 export const routes: Routes = [
   {
@@ -172,6 +173,10 @@ export const routes: Routes = [
     path: 'course/view/:id',
     component: CourseViewComponent,
     data: { hideHeader: true },
+  },
+  {
+    path: 'instructor/courses/:courseId/add-exam',
+    component: InstructorAddExamComponent,
   },
   {
     path: 'course/view/:id/lesson',

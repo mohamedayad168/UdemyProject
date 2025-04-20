@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +8,7 @@ namespace UsersSeeder
 {
     internal class Program
     {
-        
+
 
         static async Task Main(string[] args)
         {
@@ -126,7 +125,7 @@ namespace UsersSeeder
         }
 
 
-        private static async Task AssignRoles<TUser>(ApplicationDbContext dbContext, IEnumerable<TUser> users,int roleId) where TUser : ApplicationUser
+        private static async Task AssignRoles<TUser>(ApplicationDbContext dbContext, IEnumerable<TUser> users, int roleId) where TUser : ApplicationUser
         {
             var userRoles = users.Select(user => new IdentityUserRole<int>
             {
