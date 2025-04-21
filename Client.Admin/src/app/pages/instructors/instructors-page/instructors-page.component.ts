@@ -3,9 +3,9 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
- } from '../../components/shared/crud-table/crud-table.component';
-import { InstructorsService } from '../../services/instructors/instructors.service';
-import { IInstructor } from '../../types/instructor';
+} from '../../../components/shared/crud-table/crud-table.component';
+import { InstructorsService } from '../../../services/instructors/instructors.service';
+import { IInstructor } from '../../../types/instructor';
 
 @Component({
   selector: 'app-instructors-page',
@@ -78,7 +78,6 @@ export class InstructorsPageComponent {
       width: '4rem',
       type: 'text',
       label: 'Id',
-      sortable: true,
     },
     {
       key: 'name',
@@ -100,21 +99,23 @@ export class InstructorsPageComponent {
       key: 'totalCourses',
       type: 'text',
       label: 'Courses',
-      sortable: true,
     },
     {
       key: 'totalReviews',
       type: 'text',
       label: 'Reviews',
-      sortable: true,
     },
     {
       key: 'totalStudents',
       type: 'text',
       label: 'Students',
-      sortable: true,
     },
   ];
+
+  itemDetailsLinkConfig={
+    route: '/instructors',
+    key: 'id',
+  }
 
   // statuses: ICrudTableItemStatus[] = [
   //   { label: 'Archieved', value: 'secondary' },

@@ -137,6 +137,11 @@ namespace Udemy.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdInstructor.Id }, createdInstructor);
         }
 
+
+
+
+
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] InstructorUTO instructorDto)
         {

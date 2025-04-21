@@ -3,9 +3,9 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
-} from '../../components/shared/crud-table/crud-table.component';
-import { CoursesService } from '../../services/courses/courses.service';
-import { ICourse } from '../../types/course';
+} from '../../../components/shared/crud-table/crud-table.component';
+import { CoursesService } from '../../../services/courses/courses.service';
+import { ICourse } from '../../../types/course';
 
 @Component({
   selector: 'app-courses-page',
@@ -166,7 +166,7 @@ export class CoursesPageComponent implements OnInit {
       required: true,
     },
     {
-      key: 'image',
+      key: 'imageUrl',
       label: 'Poster',
       type: 'image',
       required: true,

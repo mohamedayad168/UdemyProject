@@ -1,21 +1,28 @@
 <div class="card">
   <p-toast />
-  <p-toolbar styleClass="mb-6">
+  <p-toolbar styleClass="[&>*]:flex [&>*]:gap-2 mb-6">
     <ng-template #start>
-      <p-button
-        label="New"
-        icon="pi pi-plus"
-        class="mr-2"
-        (onClick)="openNew()"
-      />
-      <p-button
+      <p-button label="New" icon="pi pi-plus" class="" (onClick)="openNew()" />
+      <!-- <p-button
         severity="danger"
         label="Delete"
         icon="pi pi-trash"
         outlined
         (onClick)="deleteSelectedProducts()"
-        [disabled]="!selectedProducts || !selectedProducts.length"
+        [disabled]="true"
+      /> -->
+      <!-- [disabled]="!selectedProducts || !selectedProducts.length" -->
+      @for (btn of buttons(); track $index) {
+      <p-button
+        label="{{ btn.label }}"
+        icon="pi pi-plus"
+        class=""
+        outlined
+        [icon]="btn.icon"
+        [severity]="btn.severity"
+        (onClick)="btn.action()"
       />
+      }
     </ng-template>
 
     <ng-template #end>
@@ -27,7 +34,7 @@
         chooseLabel="Import"
         auto
         customUpload
-        class="mr-2 inline-block"
+        class="inline-block"
         [chooseButtonProps]="{ severity: 'secondary' }"
       />
       <p-button
@@ -41,11 +48,12 @@
 
   <p-table
     #dt
-    [value]="crudService().page().data"
+    [value]="isPaginated()? crudService().page().data: crudService().items()!"
     [rows]="10"
-    [lazy]="true"
+    [lazy]="isPaginated()? true : false"
+    [globalFilterFields]="globalFilterFields()"
     [columns]="cols"
-    [totalRecords]="crudService().page().totalItems"
+    [totalRecords]="isPaginated()? crudService().page().totalItems: crudService().items()!.length"
     [pageLinks]="5"
     [paginator]="true"
     (onPage)="loadData($event)"
@@ -85,12 +93,12 @@
         @for (item of columnConfigs(); track $index) {
         <th
           [class.pointer-events-none]="crudService().isLoading()"
-          pSortableColumn="{{ item['key'] }}"
+          pSortableColumn="{{ item.key }}"
           [pSortableColumnDisabled]="!item.sortable"
           style.min-width="{{ item.width ?? 'unset' }}"
         >
           {{ item.header }}
-          <p-sortIcon *ngIf="item.sortable" field="{{ item['key'] }}" />
+          <p-sortIcon *ngIf="item.sortable" field="{{ item.key }}" />
         </th>
         }
 
@@ -100,9 +108,9 @@
     </ng-template>
 
     <!-- product record -->
-    @if (crudService().page().data.length > 0) {
+    <!-- @if (crudService().page().data.length > 0) { -->
     <ng-template #body let-product>
-      <tr>
+      <tr (click)="navigateToDetails(product)" class="cursor-pointer">
         <td style="width: 3rem">
           <p-tableCheckbox [value]="product" />
         </td>
@@ -112,8 +120,8 @@
           <!--  -->
           @case ('image') {
           <img
-            [src]="product[column['key']]"
-            [alt]="product[column['label']]"
+            [src]="product[column.key]"
+            [alt]="product[column.header]"
             style="width: 64px"
             class="rounded"
           />
@@ -121,50 +129,53 @@
           <!--  -->
           @case ('tag') { @for (item of column.tags; track $index) {
           <p-tag
-            *ngIf="product[column['key']] == item.value"
-            [value]="product[column['key']]"
+            *ngIf="product[column.key] == item.value"
+            [value]="product[column.key]"
             [style.color]="item.color"
             [style.backgroundColor]="item.bgColor"
           />
           }@empty {
-          <p-tag [value]="product[column['key']]" severity="contrast" />
+          <p-tag [value]="product[column.key]" severity="contrast" />
           } }
           <!--  -->
           @case ('status') {
           <p-tag
             *ngIf="
-              product[column['key']] ==
-              getStatus(column.statuses, product[column['key']])!.value
+              product[column.key] ==
+              getStatus(column.statuses, product[column.key])!.value
             "
-            [value]="product[column['key']]"
+            [value]="product[column.key]"
             [style.color]="
-              getStatus(column.statuses, product[column['key']])!.color
+              getStatus(column.statuses, product[column.key])!.color
             "
             [style.backgroundColor]="
-              getStatus(column.statuses, product[column['key']])!.bgColor
+              getStatus(column.statuses, product[column.key])!.bgColor
             "
           />
-          } @case ('rating') {
+          } 
+          <!--  -->
+          @case ('rating') {
           <p-rating
-            [(ngModel)]="product[column['key']]"
+            [(ngModel)]="product[column.key]"
             [readonly]="true"
           /><!--[cancel]="false"-->
           }
           <!--  -->
           @case ('money') {
-          {{ product[column["key"]] | currency : "USD" }}
+          {{ product[column.key] | currency : "USD" }}
           }
           <!--  -->
           @default {
-          {{ product[column["key"]] }}
+          {{ product[column.key] }}
           } }
         </td>
 
         }
 
         <!--  -->
-        <td>
+        <td (click)="$event.stopPropagation()" class="cursor-auto">
           <p-button
+            *ngIf="crudService().editable()"
             icon="pi pi-pencil"
             class="mr-2"
             [rounded]="true"
@@ -172,6 +183,7 @@
             (click)="editProduct(product)"
           />
           <p-button
+            *ngIf="crudService().deletable()"
             icon="pi pi-trash"
             severity="danger"
             [rounded]="true"
@@ -181,7 +193,7 @@
         </td>
       </tr>
     </ng-template>
-    }@else{
+    <!-- }@else{
     <ng-template #body let-product>
       <tr>
         <td><p-skeleton /></td>
@@ -197,7 +209,7 @@
         <td><p-skeleton /></td>
       </tr>
     </ng-template>
-    }
+    } -->
 
     <ng-template #summary>
       <div class="flex items-center justify-between">
@@ -232,7 +244,7 @@
                 class="relative hover:cursor-pointer hover:opacity-80 transition-all"
               >
                 <img
-                  [src]="item['imageUrl'] ?? '/placeholders/course.png'"
+                  [src]="newItem[item.key]?? '/placeholders/course.png'"
                   alt="course image"
                   class="block m-auto pb-4"
                 />
@@ -263,14 +275,14 @@
             @case ('select') {
             <div>
               <label
-                [for]="item['key'] + $index"
+                [for]="item.key + $index"
                 class="block font-bold mb-3"
                 >{{ item.label }}</label
               >
               <p-select
-                [(ngModel)]="newItem[item['key']]"
-                [inputId]="item['key'] + $index"
-                [name]="item['key']"
+                [(ngModel)]="newItem[item.key]"
+                [inputId]="item.key + $index"
+                [name]="item.key"
                 [options]="item.options"
                 optionLabel="label"
                 optionValue="value"
@@ -288,9 +300,9 @@
                 <div class="flex items-center gap-2 col-span-6">
                   <p-radiobutton
                     id="radio{{ $index }}"
-                    [name]="item['key']"
+                    [name]="item.key"
                     value="{{ radio.value }}"
-                    [(ngModel)]="newItem[item['key']]"
+                    [(ngModel)]="newItem[item.key]"
                   />
                   <label for="radio{{ $index }}">{{ radio.label }}</label>
                 </div>
@@ -307,7 +319,7 @@
                   id="price"
                   [(ngModel)]="newItem['price']"
                   mode="currency"
-                  [name]="item['key']"
+                  [name]="item.key"
                   [required]="item.required ?? false"
                   currency="USD"
                   locale="en-US"
@@ -329,7 +341,7 @@
               <textarea
                 id="description"
                 pTextarea
-                [name]="item['key']"
+                [name]="item.key"
                 [(ngModel)]="newItem['description']"
                 [required]="item.required ?? false"
                 rows="3"
@@ -342,92 +354,92 @@
             @case ('number') {
             <div>
               <label
-                [for]="item['key'] + $index"
+                [for]="item.key + $index"
                 class="block font-bold mb-3"
                 >{{ item.label }}</label
               >
               <input
                 type="number"
                 pInputText
-                [name]="item['key']"
-                [id]="item['key'] + $index"
-                [(ngModel)]="newItem[item['key']]"
+                [name]="item.key"
+                [id]="item.key + $index"
+                [(ngModel)]="newItem[item.key]"
                 [required]="item.required ?? false"
                 autofocus
                 min="{{ item.min ?? 0 }}"
                 max="{{ item.max ?? 0 }}"
                 fluid
               />
-              <small class="text-red-500" *ngIf="submitted && !item['key']"
+              <small class="text-red-500" *ngIf="submitted && !item.key"
                 >{{ item.label }} is required.</small
               >
             </div>
             }
             <!--  -->
             @case ('email') {
-              <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
-                item.label
-              }}</label>
-              <input
-                type="email"
-                pInputText
-                [name]="item['key']"
-                [id]="item['key'] + $index"
-                [(ngModel)]="newItem[item['key']]"
-                [required]="item.required ?? false"
-                email
-                autofocus
-                fluid
-              />
-              <small class="text-red-500" *ngIf="submitted && !item['key']"
-                >{{ item.label }} is required.</small
-              >
+            <label [for]="item.key + $index" class="block font-bold mb-3">{{
+              item.label
+            }}</label>
+            <input
+              type="email"
+              pInputText
+              [name]="item.key"
+              [id]="item.key + $index"
+              [(ngModel)]="newItem[item.key]"
+              [required]="item.required ?? false"
+              email
+              autofocus
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !item.key"
+              >{{ item.label }} is required.</small
+            >
             }
             <!--  -->
             @case ('password') {
-              <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
-                item.label
-              }}</label>
-              <input
-                type="password"
-                pInputText
-                [name]="item['key']"
-                [id]="item['key'] + $index"
-                [(ngModel)]="newItem[item['key']]"
-                [required]="item.required ?? false"
-                autofocus
-                fluid
-              />
-              <small class="text-red-500" *ngIf="submitted && !item['key']"
-                >{{ item.label }} is required.</small
-              >
+            <label [for]="item.key + $index" class="block font-bold mb-3">{{
+              item.label
+            }}</label>
+            <input
+              type="password"
+              pInputText
+              [name]="item.key"
+              [id]="item.key + $index"
+              [(ngModel)]="newItem[item.key]"
+              [required]="item.required ?? false"
+              autofocus
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !item.key"
+              >{{ item.label }} is required.</small
+            >
             }
             <!--  -->
             @default {
-            <label [for]="item['key'] + $index" class="block font-bold mb-3">{{
+            <label [for]="item.key + $index" class="block font-bold mb-3">{{
               item.label
             }}</label>
             <input
               type="text"
               pInputText
-              [name]="item['key']"
-              [id]="item['key'] + $index"
-              [(ngModel)]="newItem[item['key']]"
+              [name]="item.key"
+              [id]="item.key + $index"
+              [(ngModel)]="newItem[item.key]"
               [required]="item.required ?? false"
               autofocus
               fluid
             />
-            <small class="text-red-500" *ngIf="submitted && !item['key']"
+            <small class="text-red-500" *ngIf="submitted && !item.key"
               >{{ item.label }} is required.</small
             >
             }
             <!--  -->
             }
             <p
-              *ngIf="NgForm.submitted || NgForm.controls[item['key']]?.touched"
+              *ngIf="NgForm.submitted || NgForm.controls[item.key]?.touched"
               class="text-red-500 text-sm"
             >
-              <ng-container *ngIf="NgForm.controls[item['key']]?.invalid">
+              <ng-container *ngIf="NgForm.controls[item.key]?.invalid">
                 invalid Input
               </ng-container>
             </p>

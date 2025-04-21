@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, Signal, signal, WritableSignal } from '@angular/core';
 import {
   Router,
   RouterLink,
@@ -33,7 +33,7 @@ import { UiStateService } from '../../../services/UiState/ui-state.service';
   providers: [MessageService],
 })
 export class SideNavComponent {
-  authService = inject(AuthService);
+  // authService = inject(AuthService);
   UiStateService = inject(UiStateService);
 
   router = inject(Router);
@@ -42,7 +42,24 @@ export class SideNavComponent {
 
   adminNavItems!: MenuItem[];
 
-  ngOnInit() {
+ 
+  /**
+   *
+   */
+  constructor(public authService: AuthService) {
+    effect(() => {
+      // this.isOwner.set(this.authService.isOwner);
+      console.log('isOwner', this.authService.isOwner());
+      this.buildNavItems(this.authService.isOwner());
+    });
+    
+  }
+
+  // ngOnInit() {
+  //   this.buildNavItems(this.authService.isOwner());
+  // }
+
+  buildNavItems(isOwner: boolean = false) {
     this.userNavItems = [
       {
         separator: true,
@@ -61,10 +78,9 @@ export class SideNavComponent {
             icon: 'pi pi-book',
             routerLink: ['/custom'],
           },
-          
         ],
       },
-      
+
       {
         label: 'Table',
         items: [
@@ -74,7 +90,7 @@ export class SideNavComponent {
             routerLink: ['/courses'],
             routerLinkActiveOptions: { exact: true },
           },
-         
+
           {
             label: 'Students',
             icon: 'pi pi-users',
@@ -87,16 +103,16 @@ export class SideNavComponent {
             routerLink: ['/instructors'],
             routerLinkActiveOptions: { exact: true },
           },
-          {
-            label: 'Issues',
-            icon: 'pi pi-exclamation-triangle',
-            routerLink: ['/courses'],
-            routerLinkActiveOptions: { exact: true },
-          },
+          // {
+          //   label: 'Issues',
+          //   icon: 'pi pi-exclamation-triangle',
+          //   routerLink: ['/courses'],
+          //   routerLinkActiveOptions: { exact: true },
+          // },
           {
             label: 'Admins',
             icon: 'pi pi-cog',
-            visible: this.authService.isOwner,
+            visible: isOwner,
             routerLink: ['/admins'],
             routerLinkActiveOptions: { exact: true },
           },

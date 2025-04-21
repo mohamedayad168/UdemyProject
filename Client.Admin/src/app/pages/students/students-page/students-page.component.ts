@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { StudentsService } from '../../services/students/students.service';
-import { IStudent } from '../../types/student';
+import { StudentsService } from '../../../services/students/students.service';
+import { IStudent } from '../../../types/student';
 import {
   FormFieldConfig,
   IColumnConfig,
-   CrudTableComponent,
-} from '../../components/shared/crud-table/crud-table.component';
+  CrudTableComponent,
+} from '../../../components/shared/crud-table/crud-table.component';
 
 @Component({
   selector: 'app-students-page',
@@ -43,7 +43,7 @@ export class StudentsPageComponent {
     },
     {
       key: 'email',
-       type: 'text',
+      type: 'text',
       header: 'email',
     },
     {
@@ -60,17 +60,17 @@ export class StudentsPageComponent {
       key: 'lastName',
       type: 'text',
       header: 'lastName',
-     },
+    },
     {
       key: 'countryName',
       type: 'text',
       header: 'countryName',
-     },
+    },
     {
       key: 'city',
       type: 'text',
       header: 'city',
-     },
+    },
   ];
 
   createFormConfigs: FormFieldConfig[] = [
