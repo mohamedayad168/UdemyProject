@@ -43,6 +43,18 @@ namespace Udemy.Presentation.Controllers
         }
 
 
+
+        [HttpGet("deleted/page")]
+        public async Task<ActionResult<PaginatedRes<UserDto>>> GetDeletedPage([FromQuery]PaginatedSearchReq searchReq)
+        {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
+            var paginatedResponse = await serviceManager.UserService.GetRoleUsersPageAsync(searchReq,"Admin", DeletionType.Deleted, false);
+            return Ok(paginatedResponse);
+        }
+
+
         [HttpPost("")]
         public async Task<IActionResult> Register([FromForm] UserForCreationDto user)
         {

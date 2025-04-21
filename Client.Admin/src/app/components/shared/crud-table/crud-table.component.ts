@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   input,
   model,
@@ -34,8 +35,16 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CrudService } from '../../../services/types/CrudService';
 import { IPage } from '../../../types/fetch';
+import { Router } from '@angular/router';
 
-type FieldType =
+export interface IActionButton {
+  label: string;
+  severity: Severity;
+  icon: string;
+  action: () => void;
+}
+
+export type FieldType =
   | 'text'
   | 'email'
   | 'password'
@@ -51,8 +60,18 @@ type FieldType =
   | 'image'
   | 'money';
 
+type Severity =
+  | 'success'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'help'
+  | 'primary'
+  | 'secondary'
+  | 'contrast';
+
 export interface FormFieldConfig {
-  [key: string]: any;
+  key: string;
   label: string;
   type: FieldType;
   required?: boolean;
@@ -63,7 +82,7 @@ export interface FormFieldConfig {
 }
 
 export interface IColumnConfig {
-  [key: string]: any;
+  key: string;
   width?: string;
   type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating' | 'status'; //sepcify for tags
   tags?: { label: string; value: any; color: string; bgColor: string }[];
@@ -82,18 +101,6 @@ interface ExportColumn {
   title: string;
   dataKey: string;
 }
-
-// export interface ICrudTableItemStatus {
-//   label: string;
-//   value:
-//     | 'success'
-//     | 'info'
-//     | 'warn'
-//     | 'danger'
-//     | 'secondary'
-//     | 'contrast'
-//     | undefined;
-// }
 
 type baseItem = {
   [key: string]: any;
@@ -154,13 +161,19 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   crudService = input.required<CrudService<T>>();
   columnConfigs = input.required<IColumnConfig[]>();
   createFormConfigs = input.required<FormFieldConfig[]>();
+  buttons = input<IActionButton[]>([]);
   emptyItem = input.required<T>();
+  isPaginated = input<boolean>(true);
+
   newItem!: any;
+  itemDetailsLinkConfig = input<{ key: string; route: string } | null>(null);
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
 
   @ViewChild('dt') dt!: Table;
+
+  router = inject(Router);
 
   constructor(
     private messageService: MessageService,
@@ -171,28 +184,33 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   ngOnInit() {
     this.newItem = { ...this.emptyItem() };
     this.loadDemoData();
-    this.crudService().getPage({
-      pageNumber: 1,
-      pageSize: 10,
-      orderBy: 'id',
-      searchTerm: '',
-    });
-    this.searchTerm
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged((prev, curr) => {
-          // Always allow change if curr is empty (to trigger search)
-          console.log('prev: ' + prev, 'cur: ' + curr);
-          if (curr.trim() === '' && prev.trim() == '') return true;
-          if (curr.trim() === '' && prev.trim() != '') return false;
-          return prev === curr;
-        })
-      )
-      .subscribe((term) => {
-        console.log('searchTerm', term);
-        this.searchTermValue = term;
-        this.crudService().getPage({ searchTerm: term });
+    if (this.isPaginated()) {
+      this.crudService().getPage({
+        pageNumber: 1,
+        pageSize: 10,
+        orderBy: 'id',
+        searchTerm: '',
       });
+
+      this.searchTerm
+        .pipe(
+          debounceTime(500),
+          distinctUntilChanged((prev, curr) => {
+            // Always allow change if curr is empty (to trigger search)
+            console.log('prev: ' + prev, 'cur: ' + curr);
+            if (curr.trim() === '' && prev.trim() == '') return true;
+            if (curr.trim() === '' && prev.trim() != '') return false;
+            return prev === curr;
+          })
+        )
+        .subscribe((term) => {
+          console.log('searchTerm', term);
+          this.searchTermValue = term;
+          this.crudService().getPage({ searchTerm: term });
+        });
+    } else {
+      this.crudService().getAll();
+    }
   }
   ngOnViewInit() {
     this.dt.sortField = 'id';
@@ -322,16 +340,6 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
     return index;
   }
 
-  createId(): string {
-    let id = '';
-    var chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
   getStatus(statuses: IColumnConfig['statuses'], value: any) {
     return statuses!.find((status) => status.value == value);
   }
@@ -409,12 +417,14 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   loadData(event: TableLazyLoadEvent) {
     console.log('crud table -loadData');
     console.log(event);
-    this.crudService().getPage({
-      pageNumber: event.first! / event.rows! + 1,
-      pageSize: event.rows!,
-      orderBy: this.getOrderDirection(this.orderBy),
-      searchTerm: this.searchTermValue,
-    });
+    if (this.isPaginated()) {
+      this.crudService().getPage({
+        pageNumber: event.first! / event.rows! + 1,
+        pageSize: event.rows!,
+        orderBy: this.getOrderDirection(this.orderBy),
+        searchTerm: this.searchTermValue,
+      });
+    }
   }
 
   onImageChange(event: any) {
@@ -434,16 +444,22 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   search(event: any) {
     const input = event.target as HTMLInputElement;
-    this.searchTerm.next(input.value);
+    if (this.isPaginated()) {
+      this.searchTerm.next(input.value);
+    } else {
+      this.dt.filterGlobal(event.target.value, 'contains');
+    }
   }
   onSort(order: { field: string; order: number }) {
     this.orderBy = order;
-    this.crudService().getPage({
-      pageNumber: 1,
-      pageSize: 10,
-      orderBy: this.getOrderDirection(order),
-      searchTerm: this.searchTermValue,
-    });
+    if (this.isPaginated()) {
+      this.crudService().getPage({
+        pageNumber: 1,
+        pageSize: 10,
+        orderBy: this.getOrderDirection(order),
+        searchTerm: this.searchTermValue,
+      });
+    }
   }
 
   getOrderDirection(order: { field: string; order: number }) {
@@ -457,5 +473,24 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   showHideClassOnLoading() {
     return this.crudService().isLoading() ? 'pointer-events-none' : '';
+  }
+
+  navigateToDetails(product: T) {
+    if (!this.itemDetailsLinkConfig()) return;
+
+    this.router.navigate([
+      this.itemDetailsLinkConfig()?.route,
+      product[this.itemDetailsLinkConfig()!.key],
+    ]);
+  }
+
+  globalFilterFields() {
+    //['name', 'country.name', 'representative.name', 'status']
+    if (!this.isPaginated()) {
+      var arr = this.columnConfigs().map((col) => col.key);
+      console.log(arr);
+      return arr;
+    }
+    return undefined;
   }
 }
