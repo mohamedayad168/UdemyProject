@@ -1,72 +1,90 @@
 <div class="bg-white text-gray-800 font-sans p-10">
   <div class="max-w-5xl mx-auto space-y-8">
-
     <!-- Title -->
     <h1 class="text-3xl font-bold">
-     {{courseDetails()?.title}}
+      {{ courseDetails()?.title }}
     </h1>
 
-    <hr class="border-gray-300">
+    <hr class="border-gray-300" />
 
     <!-- Rating + Meta Info -->
     <div class="flex flex-wrap items-center gap-6 text-sm text-gray-700">
       <div class="flex items-center gap-1">
-        <span class="text-orange-600 font-semibold text-base">{{courseDetails()?.rating}} ★</span>
+        <span class="text-orange-600 font-semibold text-base"
+          >{{ courseDetails()?.rating }} ★</span
+        >
       </div>
-      <div>{{courseDetails()?.noSubscribers}} Students</div>
-      <div>{{courseDetails()?.duration}} hours</div>
+      <div>{{ courseDetails()?.noSubscribers }} Students</div>
+      <div>{{ courseDetails()?.duration }} hours</div>
     </div>
 
     <div class="flex items-center gap-4 text-sm">
-      <span>🌐 {{courseDetails()?.language}}</span>
+      <span>🌐 {{ courseDetails()?.language }}</span>
     </div>
 
-    <hr class="border-gray-300">
+    <hr class="border-gray-300" />
 
     <!-- Stats Section -->
-    <div class="flex flex-wrap  text-sm text-gray-800 gap-6">
+    <div class="flex flex-wrap text-sm text-gray-800 gap-6">
       <div class="space-y-1 min-w-[200px]">
         <div class="font-semibold">By the numbers</div>
       </div>
       <div class="space-y-1 min-w-[200px]">
-        <div><span class="font-semibold">Skill level:</span> {{courseDetails()?.courseLevel}}</div>
-        <div><span class="font-semibold">Students:</span> {{courseDetails()?.noSubscribers}}</div>
-        <div><span class="font-semibold">Languages:</span> {{courseDetails()?.language}}</div>
+        <div>
+          <span class="font-semibold">Skill level:</span>
+          {{ courseDetails()?.courseLevel }}
+        </div>
+        <div>
+          <span class="font-semibold">Students:</span>
+          {{ courseDetails()?.noSubscribers }}
+        </div>
+        <div>
+          <span class="font-semibold">Languages:</span>
+          {{ courseDetails()?.language }}
+        </div>
       </div>
       <div class="space-y-1 min-w-[200px]">
         <div><span class="font-semibold">Practice tests:</span></div>
-        <div><span class="font-semibold">Lectures:</span> {{numOfLectures}}</div>
-        <div><span class="font-semibold">Video:</span> {{courseDetails()?.duration}} total hours</div>
+        <div>
+          <span class="font-semibold">Lectures:</span> {{ numOfLectures }}
+        </div>
+        <div>
+          <span class="font-semibold">Video:</span>
+          {{ courseDetails()?.duration }} total hours
+        </div>
       </div>
     </div>
-    <hr class="border-gray-300">
+    <hr class="border-gray-300" />
 
-    <div class="flex flex-wrap  text-sm text-gray-800 gap-6">
+    <div class="flex flex-wrap text-sm text-gray-800 gap-6">
       <div class="space-y-1 min-w-[200px]">
         <div class="font-semibold">Description</div>
       </div>
       <div class="space-y-1 min-w-[200px]">
-        <div><span class="font-semibold">{{courseDetails()?.description}}</span></div>
-
+        <div>
+          <span class="font-semibold">{{ courseDetails()?.description }}</span>
+        </div>
       </div>
-
     </div>
-    <hr class="border-gray-300">
+    <hr class="border-gray-300" />
 
-    <div class="flex flex-wrap  text-sm text-gray-800 gap-6">
+    <div class="flex flex-wrap text-sm text-gray-800 gap-6">
       <div class="space-y-1 min-w-[200px]">
         <div class="font-semibold">Instructor</div>
       </div>
       <div class="space-y-1 min-w-[200px] max-w-[400px]">
-          <h2 class="text-lg font-bold">{{courseDetails()?.instructor?.name}}</h2>
-          <p class="text-sm text-gray-600 mb-4">{{courseDetails()?.instructor?.title}}</p>
-          <!-- Description -->
-          <div class="text-sm text-gray-800 space-y-2">
-            <p>
-              {{courseDetails()?.instructor?.bio}}
-            </p>
-
-          </div>
+        <h2 class="text-lg font-bold">
+          {{ courseDetails()?.instructor?.userName }}
+        </h2>
+        <p class="text-sm text-gray-600 mb-4">
+          {{ courseDetails()?.instructor?.title }}
+        </p>
+        <!-- Description -->
+        <div class="text-sm text-gray-800 space-y-2">
+          <p>
+            {{ courseDetails()?.instructor?.bio }}
+          </p>
+        </div>
       </div>
     </div>
   </div>

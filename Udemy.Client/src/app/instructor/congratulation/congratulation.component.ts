@@ -11,7 +11,7 @@ export class CongratulationComponent {
   constructor(private router: Router) {}
 
   gotocreationcourse() {
-    this.router.navigate(['instructor/home']);
+    this.router.navigate(['/createcourse/FGCOURSE']);
 
 }
 }

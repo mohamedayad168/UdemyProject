@@ -2,7 +2,6 @@
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
-using Udemy.Service.Service;
 
 namespace Udemy.Presentation.Controllers
 {
@@ -56,10 +55,9 @@ namespace Udemy.Presentation.Controllers
                 return BadRequest(ModelState);
 
             var result = await _service.SectionService.CreateSectionAsync(sectioncDto);
-            if (!result)
-                return StatusCode(500, "Failed to create section");
 
-            return Ok(sectioncDto);
+
+            return Ok(result);
         }
 
 

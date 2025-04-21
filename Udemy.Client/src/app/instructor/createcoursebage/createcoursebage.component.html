@@ -69,7 +69,7 @@
         for="courseDescription"
         class="block text-sm font-medium text-gray-700"
       >
-        Course Description (min. 300 characters):
+        Course Description (min. 50 characters):
       </label>
       <textarea
         id="courseDescription"
@@ -95,7 +95,7 @@
           Description is required
         </div>
         <div *ngIf="courseForm.get('description')?.errors?.['minlength']">
-          Description must be at least 300 characters long
+          Description must be at least 50 characters long
         </div>
       </div>
     </div>

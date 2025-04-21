@@ -79,8 +79,8 @@ export class CourseService {
   deleteCourse(courseId: number) {
     return this.http.delete(`${this.baseUrl}/${courseId}`);
   }
-  updateCourse(id: number, courseData: CourseUpdateDTO): Observable<any> {
-    return this.http.put(`${environment.baseurl}/courses/${id}`, courseData);
+  updateCourse(id: number, courseData: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, courseData);
   }
   checkTitleExists(title: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/check-title?title=${title}`);

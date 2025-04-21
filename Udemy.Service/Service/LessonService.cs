@@ -39,7 +39,7 @@ namespace Udemy.Service.Service
             return _mapper.Map<IEnumerable<LessonRDto>>(lessons);
         }
 
-        public async Task<bool> CreatelessonAsync(LessonCDto lessoncDto)
+        public async Task<Lesson> CreatelessonAsync(LessonCDto lessoncDto)
         {
 
             string? videoUrl = null;
@@ -51,15 +51,22 @@ namespace Udemy.Service.Service
             lesson.VideoUrl = videoUrl;
             await _repository.Lessons.CreatelessonAsync(lesson);
             await _repository.SaveAsync();
-            return (true);
+            return (lesson);
         }
 
         public async Task<bool> UpdateAsync(int id, LessonUDto lessonDto)
         {
-            var lesson = await _repository.Lessons.GetByIdAsync(id, trackchange: true);
+            var lesson = await _repository.Lessons.GetByIdAsync(id, false);
             if (lesson is null) return false;
+            string? videoUrl = null;
 
-            _mapper.Map(lessonDto, lesson);
+
+            if (lessonDto.VideoUrl != null)
+                videoUrl = await cloudService.UploadVideoAsync(lessonDto.VideoUrl);
+            var updatedLesson = _mapper.Map<Lesson>(lessonDto);
+            updatedLesson.VideoUrl = videoUrl;
+
+            _repository.Lessons.Update(updatedLesson);
             await _repository.SaveAsync();
             return (true);
         }

@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -14,6 +15,7 @@ import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
 import { AccountService } from '../../lib/services/account.service';
 import { map, Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-createcoursebage',
@@ -92,7 +94,8 @@ export class CreatecoursebageComponent implements OnInit {
     private categoryService: CategoryService,
     private courseService: CourseService,
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private router: Router
   ) {
     this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
@@ -101,7 +104,7 @@ export class CreatecoursebageComponent implements OnInit {
         [Validators.required, Validators.maxLength(60)],
         [this.titleAvailabilityValidator()],
       ],
-      description: ['', [Validators.required, Validators.minLength(300)]],
+      description: ['', [Validators.required, Validators.minLength(50)]],
       language: ['English (US)', Validators.required],
       level: ['Select Level --', Validators.required],
       category: [0, Validators.required],
@@ -256,6 +259,8 @@ export class CreatecoursebageComponent implements OnInit {
         this.courseForm.reset();
         this.imageFile = null;
         this.videoFile = null;
+        const CourseId = response.id;
+        this.router.navigate([`/instructor/createsection&lesson`, CourseId]);
       },
       error: (err) => {
         console.log(formData.values);
