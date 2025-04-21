@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Service.DataTransferObjects.Update
 {
-   public class SectionUDTO
+    public class SectionUDTO
     {
         [Required]
         [StringLength(20)]
@@ -21,6 +16,7 @@ namespace Udemy.Service.DataTransferObjects.Update
 
         [Required]
         public int CourseId { get; set; }
-       
+        public bool IsDeleted { get; set; }
+
     }
 }

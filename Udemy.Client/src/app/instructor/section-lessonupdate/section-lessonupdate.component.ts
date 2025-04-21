@@ -1,19 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseContent, CreateSectionDTO, Lesson, Section } from '../../lib/models/CourseDetail.model';
+import {
+  CourseContent,
+  CreateSectionDTO,
+  Lesson,
+  Section,
+} from '../../lib/models/CourseDetail.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../lib/services/course.service';
 import { SectionService } from '../../lib/services/section.service';
 import { LessonService } from '../../lib/services/lesson.service';
 import { CommonModule } from '@angular/common';
 
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Course, LessonCDto, SectionCDTO, SectionUDTO } from '../../lib/models/course.model';
-import { ViewChild,ElementRef,AfterViewInit} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  Course,
+  LessonCDto,
+  SectionCDTO,
+  SectionUDTO,
+} from '../../lib/models/course.model';
+import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 @Component({
   selector: 'app-section-lessonupdate',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './section-lessonupdate.component.html',
-  styleUrl: './section-lessonupdate.component.css'
+  styleUrl: './section-lessonupdate.component.css',
 })
 export class SectionLessonupdateComponent implements OnInit {
   form!: FormGroup;
@@ -49,7 +66,7 @@ export class SectionLessonupdateComponent implements OnInit {
       id: [0], // Default value for new sections
       title: ['', Validators.required],
       lessons: this.fb.array([]),
-      isDeleted: [false], 
+      isDeleted: [false],
     });
     this.sections.push(sectionGroup);
   }
@@ -58,7 +75,7 @@ export class SectionLessonupdateComponent implements OnInit {
     // Mark section as deleted in the form data
     const section = this.sections.at(index);
     section.patchValue({
-      isDeleted: true  // Set isDeleted flag to true
+      isDeleted: true, // Set isDeleted flag to true
     });
 
     // Optionally, you could remove this section from the form array
@@ -88,59 +105,71 @@ export class SectionLessonupdateComponent implements OnInit {
     // Mark lesson as deleted in the form data
     const lesson = this.getLessons(sectionIndex).at(lessonIndex);
     lesson.patchValue({
-      isDeleted: true  // Set isDeleted flag to true
+      isDeleted: true, // Set isDeleted flag to true
     });
 
     // Optionally, you could remove this lesson from the form array
     this.getLessons(sectionIndex).removeAt(lessonIndex);
   }
-  onFileSelected(event: Event, sectionIndex: number, lessonIndex: number): void {
+  onFileSelected(
+    event: Event,
+    sectionIndex: number,
+    lessonIndex: number
+  ): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement?.files?.length) {
       const file = inputElement.files[0];
       const lessons = this.getLessons(sectionIndex);
       const lessonGroup = lessons.at(lessonIndex);
-  
+
       // Update the lesson form with the selected file
       lessonGroup.patchValue({
         videoFile: file,
       });
     }
   }
-  
+
   loadSections(): void {
-    this.sectionService.getSectionsByCourseId(this.courseId).subscribe((sections) => {
-      sections.forEach((section) => {
-        if (!section.isDeleted) {  // Exclude deleted sections
-          const sectionGroup = this.fb.group({
-            id: [section.id],
-            title: [section.title, Validators.required],
-            lessons: this.fb.array([]),
-            isDeleted: [false], // Add an isDeleted field for sections
-          });
-
-          this.sections.push(sectionGroup);
-
-          this.lessonService.getLessonsBySectionId(section.id).subscribe((lessons) => {
-            const lessonsArray = sectionGroup.get('lessons') as FormArray;
-            lessons.forEach((lesson) => {
-              if (!lesson.isDeleted) {  // Exclude deleted lessons
-                lessonsArray.push(this.fb.group({
-                  id: [lesson.id],
-                  title: [lesson.title, Validators.required],
-                  articleContent: [lesson.articleContent || ''],
-                  videoUrl: [lesson.videoUrl],
-                  videoFile: [null],
-                  duration: [lesson.duration || 0],
-                  type: [lesson.type || 'video'],
-                  isDeleted: [lesson.isDeleted || false], // Add an isDeleted field for lessons
-                }));
-              }
+    this.sectionService
+      .getSectionsByCourseId(this.courseId)
+      .subscribe((sections) => {
+        sections.forEach((section) => {
+          if (!section.isDeleted) {
+            // Exclude deleted sections
+            const sectionGroup = this.fb.group({
+              id: [section.id],
+              title: [section.title, Validators.required],
+              lessons: this.fb.array([]),
+              isDeleted: [false], // Add an isDeleted field for sections
             });
-          });
-        }
+
+            this.sections.push(sectionGroup);
+
+            this.lessonService
+              .getLessonsBySectionId(section.id)
+              .subscribe((lessons) => {
+                const lessonsArray = sectionGroup.get('lessons') as FormArray;
+                lessons.forEach((lesson) => {
+                  if (!lesson.isDeleted) {
+                    // Exclude deleted lessons
+                    lessonsArray.push(
+                      this.fb.group({
+                        id: [lesson.id],
+                        title: [lesson.title, Validators.required],
+                        articleContent: [lesson.articleContent || ''],
+                        videoUrl: [lesson.videoUrl],
+                        videoFile: [null],
+                        duration: [lesson.duration || 0],
+                        type: [lesson.type || 'video'],
+                        isDeleted: [lesson.isDeleted || false], // Add an isDeleted field for lessons
+                      })
+                    );
+                  }
+                });
+              });
+          }
+        });
       });
-    });
   }
 
   async onSubmit(): Promise<void> {
@@ -159,7 +188,10 @@ export class SectionLessonupdateComponent implements OnInit {
           isDeleted: lesson.isDeleted || false,
         }));
 
-        const totalDuration = lessons.reduce((sum: number, lesson: any) => sum + (lesson.duration || 0), 0);
+        const totalDuration = lessons.reduce(
+          (sum: number, lesson: any) => sum + (lesson.duration || 0),
+          0
+        );
 
         try {
           let savedSection: any;
@@ -171,9 +203,11 @@ export class SectionLessonupdateComponent implements OnInit {
               title: sectionValue.title,
               courseId: this.courseId,
               noLessons: lessons.length,
-              duration: totalDuration
+              duration: totalDuration,
             };
-            await this.sectionService.updateSection(updateSection.id, updateSection).toPromise();
+            await this.sectionService
+              .updateSection(updateSection.id, updateSection)
+              .toPromise();
             savedSection = { id: updateSection.id };
           } else {
             // ✅ Create
@@ -181,7 +215,7 @@ export class SectionLessonupdateComponent implements OnInit {
               title: sectionValue.title,
               courseId: this.courseId,
               noLessons: lessons.length,
-              lessons: lessons
+              lessons: lessons,
             };
             savedSection = await this.createSectionAsync(createSection);
           }
@@ -190,21 +224,22 @@ export class SectionLessonupdateComponent implements OnInit {
             lesson.sectionId = savedSection.id;
 
             if (lesson.id && lesson.id > 0) {
-              await this.lessonService.updateLesson(lesson.id, lesson).toPromise();
+              await this.lessonService
+                .updateLesson(lesson.id, lesson)
+                .toPromise();
             } else {
               await this.createLessonAsync(lesson);
             }
           }
-
         } catch (err) {
           console.error('Error creating/updating section or lesson:', err);
           alert(`An error occurred: ${JSON.stringify(err)}`);
         }
       }
 
-      alert("Sections and lessons saved successfully.");
+      alert('Sections and lessons saved successfully.');
     } else {
-      alert("Please fill all required fields.");
+      alert('Please fill all required fields.');
     }
   }
 
