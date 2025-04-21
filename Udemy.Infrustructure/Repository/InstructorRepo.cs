@@ -82,7 +82,7 @@ namespace Udemy.Infrastructure.Repository.EntityRepos
 
 
 
-            dbContext.Entry(instructor).State = EntityState.Modified;
+            await dbContext.Instructors.AddAsync(instructor);
             await dbContext.SaveChangesAsync();
         }
 

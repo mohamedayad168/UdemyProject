@@ -24,28 +24,31 @@ export class UpdatecoursedetailsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private router: Router 
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.courseForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(20)]],
-      description: ['',Validators.required],
+      description: ['', Validators.required],
       courseLevel: ['', Validators.required],
-      discount: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      discount: [
+        0,
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
       price: [0, [Validators.required, Validators.min(0)]],
       language: ['', [Validators.required, Validators.maxLength(20)]],
       goals: [''],
       requirements: [''],
       imageUrl: [''],
       videoUrl: [''],
-      subCategoryId: [1, Validators.required],   
-      instructorId: [1, Validators.required]     
+      subCategoryId: [1, Validators.required],
+      instructorId: [1, Validators.required],
     });
 
     this.courseId = this.route.snapshot.paramMap.get('id') || '';
     if (this.courseId) {
-      this.courseService.getCourseById(+this.courseId).subscribe(course => {
+      this.courseService.getCourseById(+this.courseId).subscribe((course) => {
         this.courseForm.patchValue(course);
         this.imagePreviewUrl = course.imageUrl;
         this.videoPreviewUrl = course.videoUrl;
@@ -87,26 +90,22 @@ export class UpdatecoursedetailsComponent implements OnInit {
       const updatedCourse: CourseUpdateDTO = {
         id: +this.courseId,
         isDeleted: false,
-        ...this.courseForm.value
+        ...this.courseForm.value,
       };
 
       this.courseService.updateCourse(+this.courseId, updatedCourse).subscribe(
         () => {
           alert('Course updated successfully');
           this.router.navigate(['/updatesectionlessondetails', this.courseId]);
-          
         },
         (error) => {
           console.error('Error updating course:', error);
           alert('An error occurred while updating the course.');
           console.error('Error body:', error.error); // This often includes validation messages
           console.log('Payload:', updatedCourse);
-         
-          
-            console.error('Validation errors:', error.error?.errors);
-          }
-        
-        
+
+          console.error('Validation errors:', error.error?.errors);
+        }
       );
     } else {
       console.log('Form is invalid or missing courseId!');

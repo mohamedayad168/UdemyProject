@@ -71,12 +71,12 @@ namespace Udemy.Presentation.Controllers
 
 
         // PUT: api/Lesson/{id}
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateLesson(int id, [FromBody] LessonUDto lessonUDto)
+        [HttpPut]
+        public async Task<ActionResult> UpdateLesson(LessonUDto lessonUDto)
         {
 
 
-            var isUpdated = await _serviceManager.LessonService.UpdateAsync(id, lessonUDto);
+            var isUpdated = await _serviceManager.LessonService.UpdateAsync(lessonUDto.Id, lessonUDto);
             if (isUpdated)
             {
                 return NoContent();

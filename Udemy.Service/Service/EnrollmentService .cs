@@ -72,8 +72,11 @@ namespace Udemy.Service.Service
         {
             //check if course exists
             var course = await _repository.Courses.GetByIdAsync(courseId, false);
+            
             if(course is null)
                 throw new KeyNotFoundException("Enrollment not found.");
+
+            course.Rating=await _repository.Enrollments.FindByCondition(en=>en.CourseId==course.Id,false).AverageAsync(e=>e.Rating);
 
             var rating = await _repository.Enrollments
                                                     .FindByCondition(e => (e.CourseId == courseId)&&(e.IsDeleted==false)&&e.comment!=null&&e.Rating!=null, false)

@@ -189,9 +189,10 @@ export class CourseSectionComponent implements OnInit {
     }
     this.isCourseAdded = true;
     setTimeout(() => {
-      this.isCourseAdded = false; // Hide message after 3 seconds
+      this.isCourseAdded = false;
     }, 3000);
   }
+  
   scrollCourses(direction: 'left' | 'right') {
     const scrollAmount = 300;
     this.scrollContainer.nativeElement.scrollBy({

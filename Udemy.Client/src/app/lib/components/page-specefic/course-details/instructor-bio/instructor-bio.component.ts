@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { dummyInstructor,Instructor } from '../../../../models/instructor.model';
 import { InstructorServiceService } from '../../../../services/instructor-service.service';
 

@@ -47,13 +47,15 @@ namespace Udemy.Service.Service
                         .Include(c => c.SubCategory)
                         .ThenInclude(sc => sc.Category)
                         .Include(c => c.CourseGoals)
-                           .Include(c => c.Instructor)
+                        .Include(c => c.Instructor)
                         .Include(c => c.CourseRequirements)
-                        .Include(c => c.Sections)
-
-                        .ThenInclude(s => s.Lessons)
-
+                        .Include(c => c.Sections.Where(s => s.IsDeleted == false))
+                        .ThenInclude(s => s.Lessons.Where(l => l.IsDeleted == false))
                         .FirstOrDefaultAsync();
+            var courseRating= await repository.Enrollments.FindByCondition(e => e.CourseId == id, trackChanges).AverageAsync(e => e.Rating);
+
+            if(course is not null) 
+                course.Rating = courseRating;
 
             return course is null ?
                 throw new NotFoundException($"course with id: {id} doesn't exist")

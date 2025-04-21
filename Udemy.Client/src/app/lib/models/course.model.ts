@@ -65,7 +65,7 @@ export interface SectionCDTO {
   lessons: LessonCDto[];
 }
 export interface LessonUDto {
-  id: number; // لازم للتمييز عند التحديث
+  id: number; 
   title: string;
   videoUrl: string;
   sectionId: number;
@@ -80,4 +80,5 @@ export interface SectionUDTO {
   duration: number;
   noLessons: number;
   courseId: number;
+  isDeleted?: boolean;
 }

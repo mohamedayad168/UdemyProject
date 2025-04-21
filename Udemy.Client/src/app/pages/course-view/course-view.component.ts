@@ -197,7 +197,8 @@ export class CourseViewComponent {
     const lessonIndex = this.courseDetails.sections.flatMap(section => section.lessons).findIndex(lesson => lesson.id == this.currentLessonId);
     const videoUrl=this.courseDetails.sections.flatMap(section => section.lessons)[lessonIndex].videoUrl;
     //console.log('video url', videoUrl);
-    return mediaJSON['videos'][lessonIndex]['sources'][0];
+    return videoUrl;
+    //return mediaJSON['videos'][lessonIndex]['sources'][0];
   }
 
   preloadText = 'auto';
