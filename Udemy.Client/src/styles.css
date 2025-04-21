@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
-
 button.match-input-height {
   height: var(--mat-form-field-container-height) !important;
 }
@@ -61,8 +60,7 @@ button.match-input-height {
   text-overflow: ellipsis;
 }
 
-
-.p-carousel-content{
+.p-carousel-content {
   position: relative;
 }
 .p-carousel-prev-button,
@@ -77,7 +75,7 @@ button.match-input-height {
   width: 40px;
   line-height: 40px;
   border-radius: 50%;
-  &.p-disabled{
+  &.p-disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
@@ -85,14 +83,17 @@ button.match-input-height {
 
 .p-carousel-next-button {
   right: 0;
-
 }
 .p-carousel-prev-button {
   left: 2px;
- 
+
   /* left: ; */
 }
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
+
+/* .mat-mdc-tab-body-content .mat-tab-body-content-can-animate {
+  overflow: hidden !important;
+} */
