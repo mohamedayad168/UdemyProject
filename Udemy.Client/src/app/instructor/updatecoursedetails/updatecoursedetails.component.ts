@@ -83,6 +83,46 @@ export class UpdatecoursedetailsComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+  //updating image&video Refactor
+  imageFile:any;
+  onImageUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const allowedImageTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+      ];
+      if (allowedImageTypes.includes(file.type)) {
+        this.imageFile = file;
+        this.courseForm.patchValue({ image: file });
+        this.imagePreviewUrl = URL.createObjectURL(file);
+      } else {
+        alert(
+          'Invalid file type. Please upload JPG, JPEG, PNG, or GIF images.'
+        );
+      }
+    }
+  }
+  videoFile:any;
+  onVideoUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const allowedVideoTypes = ['video/mp4', 'video/avi', 'video/mov'];
+      if (allowedVideoTypes.includes(file.type)) {
+        if (file.size <= 50 * 1024 * 1024) {
+          // 50 MB limit
+          this.videoFile = file;
+          this.courseForm.patchValue({ video: file });
+        } else {
+          alert('Video size should not exceed 50 MB');
+        }
+      } else {
+        alert('Invalid file type. Please upload MP4, AVI, or MOV videos.');
+      }
+    }
+  }
 
   onSubmit(): void {
     console.log('Form submit triggered');
@@ -93,7 +133,50 @@ export class UpdatecoursedetailsComponent implements OnInit {
         ...this.courseForm.value,
       };
 
-      this.courseService.updateCourse(+this.courseId, updatedCourse).subscribe(
+      const formData = new FormData();
+
+  console.log(`form data is ${JSON.stringify(formData)}`);
+
+
+
+  // Append non-file fields
+  formData.append('Id', updatedCourse.id.toString());
+  formData.append('IsDeleted', updatedCourse.isDeleted.toString());
+  formData.append('Title', updatedCourse.title);
+  formData.append('Description', updatedCourse.description);
+  formData.append('CourseLevel', updatedCourse.courseLevel);
+  formData.append('Discount', updatedCourse.discount.toString());
+  formData.append('Price', updatedCourse.price.toString());
+  formData.append('Language', updatedCourse.language);
+  formData.append('SubCategoryId', updatedCourse.subCategoryId.toString());
+  formData.append('InstructorId', updatedCourse.instructorId.toString());
+  formData.append('Goals', updatedCourse.goals);
+  formData.append('Requirements', updatedCourse.requirements);
+
+    formData.append('CategoryId', updatedCourse.categoryId?.toString() ?? '10');
+
+
+  // Append file fields (if provided)
+  if (updatedCourse.imageUrl) {
+    formData.append('ImageUrl', this.imageFile);
+  }
+  if (updatedCourse.videoUrl) {
+    formData.append('VideoUrl', this.videoFile);
+  }
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+}
+
+
+
+      console.log('Updated course:', updatedCourse);
+      console.log(`
+        is image a file ${this.imageFile instanceof File}
+        is video a file ${this.videoFile instanceof File}
+        `);
+
+
+      this.courseService.updateCourse(+this.courseId, formData).subscribe(
         () => {
           alert('Course updated successfully');
           this.router.navigate(['/updatesectionlessondetails', this.courseId]);
@@ -107,9 +190,11 @@ export class UpdatecoursedetailsComponent implements OnInit {
           console.error('Validation errors:', error.error?.errors);
         }
       );
+
     } else {
       console.log('Form is invalid or missing courseId!');
       alert('Please ensure the form is correctly filled.');
     }
+
   }
 }

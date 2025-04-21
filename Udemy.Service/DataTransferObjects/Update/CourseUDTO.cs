@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Udemy.Service.DataTransferObjects.Update
 {
@@ -22,8 +23,8 @@ namespace Udemy.Service.DataTransferObjects.Update
         [StringLength(20)]
         public string Language { get; set; }
 
-        public string? ImageUrl { get; set; }
-        public string? VideoUrl { get; set; }
+        public IFormFile ImageUrl { get; set; }
+        public IFormFile VideoUrl { get; set; }
 
         public int SubCategoryId { get; set; }
 

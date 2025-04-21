@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Udemy.Core.Entities;
 using Udemy.Core.Enums;
 using Udemy.Core.Exceptions;
 using Udemy.Core.ReadOptions;
@@ -134,8 +135,21 @@ namespace Udemy.Presentation.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourseAsync([FromRoute] int id, [FromBody] CourseUDTO courseUDTO)
+        [Authorize(Roles = "Admin,Instructor,Owner")]
+        public async Task<IActionResult> UpdateCourseAsync([FromRoute] int id, [FromForm] CourseUDTO courseUDTO)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var Id = int.Parse(userIdClaim);
+
+            if (User.IsInRole("Instructor"))
+            {
+                if (courseUDTO.InstructorId != Id)
+                    return NotFound("Instructors can only create courses for themselves.");
+            }
             courseUDTO.Id = id; // ensure ID is set correctly
             var courseRDTO = await serviceManager.CoursesService.UpdateAsync(courseUDTO);
             return Ok(courseRDTO);
