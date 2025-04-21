@@ -41,6 +41,7 @@ import { InstructorBioComponent } from './lib/components/page-specefic/course-de
 import { InstructorReportComponent } from './instructor/instructor-report/instructor-report.component';
 import { authGuard } from './lib/gaurds/auth.guard';
 import { studentGurdGuard } from './gurds/student-gurd.guard';
+import { CourseViewEngagmentComponent } from './instructor/course-view-engagment/course-view-engagment.component';
 
 export const routes: Routes = [
   {
@@ -153,7 +154,7 @@ export const routes: Routes = [
   },
   {
     path: 'course/view/:id',
-    canActivate:[authGuard,studentGurdGuard],
+    canActivate:[authGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
@@ -178,14 +179,14 @@ export const routes: Routes = [
   },
   {
     path: 'course/view/:id/lesson/:lessonId',
-    canActivate:[authGuard,studentGurdGuard],
+    canActivate:[authGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
   {
     path: 'course/view/:id',
-    canActivate:[authGuard,studentGurdGuard],
+    canActivate:[authGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
@@ -207,6 +208,11 @@ export const routes: Routes = [
     path: 'instructors/:id/courses',
     component: EditCourseComponent,
     canActivate: [instructorGurdGuard],
+  },
+  {
+    path:'instructors/courses/qna/:id',
+    component:CourseViewEngagmentComponent,
+    canActivate:[authGuard,instructorGurdGuard]
   },
   {
     path: 'edit-instructor-Page',

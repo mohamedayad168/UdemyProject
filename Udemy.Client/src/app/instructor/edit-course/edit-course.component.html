@@ -56,6 +56,13 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-shrink-0 space-x-2 mt-2 sm:mt-0">
+               <!-- View Course Button (Icon) -->
+               <a
+               [routerLink]="['/instructors/courses/qna', course.id]"
+               class="!text-green-600 px-2 hover:text-green-700 transition duration-300 whitespace-nowrap"
+             >
+               <i class="fas fa-eye">See Q&A </i>
+             </a>
               <!-- View Course Button (Icon) -->
               <a
                 [routerLink]="['/courses', course.id]"

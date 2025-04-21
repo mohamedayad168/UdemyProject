@@ -1,0 +1,13 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+    <h1 class="text-3xl font-bold text-indigo-700 mb-6 border-b pb-2">
+      🎓 Your Course Reviews
+    </h1>
+
+    @if (courseId) {
+      <app-qna [courseId]="courseId"></app-qna>
+    } @else {
+      <p class="text-gray-500 italic">No course selected yet.</p>
+    }
+  </div>
+</div>

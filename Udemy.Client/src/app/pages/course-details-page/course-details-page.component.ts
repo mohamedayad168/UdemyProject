@@ -117,12 +117,12 @@ export class CourseDetailsPageComponent {
       //intialze fullscreen api
     });
   }
-  
+
 
   toggleFullscreen() {
     this.api.fsAPI.toggleFullscreen();
   }
 
 
-  
+
 }
