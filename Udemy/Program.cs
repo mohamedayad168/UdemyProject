@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using Udemy.Extensions;
 using Udemy.Presentation;
 var builder = WebApplication.CreateBuilder(args);
@@ -12,53 +13,27 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureAutoMapperService();
-builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.ConfigureCloudinaryService();
 builder.Services.ConfigureCloudinarySettings(builder.Configuration);
+builder.Services.ConfigureCORS();
 
-
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularDevelopment",
-        policy =>
-        {
-            policy.WithOrigins(
-                "http://localhost:4200",//student & instructor frontend
-                "http://localhost:54377"// admin frontend
-            )
-            .AllowCredentials()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-
-
-    options.AddPolicy("AllowAngularProduction",
-        policy =>
-        {
-            policy.WithOrigins("https://studify-admin-yn.vercel.app")
-                  .AllowCredentials()
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
-
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.ConfigureApplicationDevelopmentCookie();
+}
+else
+{
+    builder.Services.ConfigureApplicationProductionCookie();
+}
+
 
 var app = builder.Build();
-app.Use(async (contex, next) =>
-{
-    Console.WriteLine(
-        contex);
-    await next();
-});
+
 
 app.ConfigureExceptionHandler();
 
@@ -74,9 +49,6 @@ else
     app.UseCors("AllowAngularProduction");
     app.UseHsts();
 }
-
-
-
 
 app.UseHttpsRedirection();
 
