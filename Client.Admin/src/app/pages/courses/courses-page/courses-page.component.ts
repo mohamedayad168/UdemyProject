@@ -6,6 +6,7 @@ import {
 } from '../../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { ICourse } from '../../../types/course';
+import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
   selector: 'app-courses-page',
@@ -16,6 +17,8 @@ import { ICourse } from '../../../types/course';
 })
 export class CoursesPageComponent implements OnInit {
   coursesService = inject(CoursesService);
+  loadingService = inject(LoadingService);
+
   emptyItem: ICourse = {
     id: '',
     title: '',
@@ -87,6 +90,12 @@ export class CoursesPageComponent implements OnInit {
       sortable: true,
     },
     {
+      key: 'createdDate',
+      type: 'date',
+      header: 'Date',
+      sortable: true,
+    },
+    {
       key: 'status',
       type: 'tag',
       header: 'Status',
@@ -111,6 +120,32 @@ export class CoursesPageComponent implements OnInit {
           color: 'black',
         },
       ],
+    },
+    {
+      key: '',
+      type: 'button',
+      header: 'Change Approval',
+      button: {
+        label: 'change',
+        severity: 'info',
+        icon: 'check',
+        action: (item) => {
+          this.coursesService.toggleApproval(item.id).subscribe({
+            next: (data) => {
+              this.coursesService.isLoading.set(false);
+              this.loadingService.loading.set(false);
+              this.coursesService.getPage({
+                pageNumber: 1,
+                pageSize: 10,
+                orderBy: 'id',
+              })
+            },
+            error: (error) => {
+              console.error(error);
+            },
+          });
+        },
+      },
     },
   ];
 

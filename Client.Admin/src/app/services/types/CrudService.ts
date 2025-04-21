@@ -9,7 +9,7 @@ export class CrudService<T> {
   apiRoute: string = '';
   isLoading = signal(false);
   loadingMessage = 'A different request is in progress';
-  editable = signal(true);
+  editable = signal(false);
   deletable = signal(true);
 
   get baseUrl(): string {
