@@ -1,14 +1,7 @@
 <!-- CATEGORY SECTION -->
 <div class="border-b border-gray-200 px-6 ">
-  <!-- Left Arrow for Categories -->
-  <button
-    class="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2"
-    (click)="scrollCategory('left')"
-  >
-    <i class="bi bi-chevron-left text-2xl text-gray-700"></i>
-  </button>
 
-  <div class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar text-sm font-medium text-gray-700 px-6">
+  <div class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar text-sm font-medium text-gray-700 px-4">
     <div
       *ngFor="let cat of categories"
       (click)="onCategoryClick(cat.id)"
@@ -22,16 +15,7 @@
     </div>
   </div>
 
-  <!-- Right Arrow for Categories -->
-  <button
-    class="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2"
-    (click)="scrollCategory('right')"
-  >
-    <i class="bi bi-chevron-right text-2xl text-gray-700"></i>
-  </button>
-</div>
 
-<!-- SUBCATEGORY SECTION -->
 <div *ngIf="subcategories.length > 0" class="relative mb-6 py-6">
   <!-- Left Arrow for Subcategories -->
   <button
