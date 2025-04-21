@@ -55,16 +55,24 @@ export class SectionLessonupdateComponent implements OnInit {
   }
 
   removeSection(index: number): void {
-    // Mark section as deleted in the form data
     const section = this.sections.at(index);
-    section.patchValue({
-      isDeleted: true  // Set isDeleted flag to true
-    });
-
-    // Optionally, you could remove this section from the form array
-    this.sections.removeAt(index);
+    const sectionId = section.value.id;
+  
+    if (sectionId && sectionId > 0) {
+      this.sectionService.deleteSection(sectionId).subscribe({
+        next: () => {
+          this.sections.removeAt(index);
+        },
+        error: (err) => {
+          console.error('Failed to delete section:', err);
+          alert('Failed to delete section from database.');
+        }
+      });
+    } else {
+      this.sections.removeAt(index);
+    }
   }
-
+  
   getLessons(sectionIndex: number): FormArray {
     return this.sections.at(sectionIndex).get('lessons') as FormArray;
   }
@@ -85,14 +93,23 @@ export class SectionLessonupdateComponent implements OnInit {
   }
 
   removeLesson(sectionIndex: number, lessonIndex: number): void {
-    // Mark lesson as deleted in the form data
-    const lesson = this.getLessons(sectionIndex).at(lessonIndex);
-    lesson.patchValue({
-      isDeleted: true  // Set isDeleted flag to true
-    });
-
-    // Optionally, you could remove this lesson from the form array
-    this.getLessons(sectionIndex).removeAt(lessonIndex);
+    const lessons = this.getLessons(sectionIndex);
+    const lesson = lessons.at(lessonIndex);
+    const lessonId = lesson.value.id;
+  
+    if (lessonId && lessonId > 0) {
+      this.lessonService.deleteLesson(lessonId).subscribe({
+        next: () => {
+          lessons.removeAt(lessonIndex);
+        },
+        error: (err) => {
+          console.error('Failed to delete lesson:', err);
+          alert('Failed to delete lesson from database.');
+        }
+      });
+    } else {
+      lessons.removeAt(lessonIndex);
+    }
   }
   onFileSelected(event: Event, sectionIndex: number, lessonIndex: number): void {
     const inputElement = event.target as HTMLInputElement;

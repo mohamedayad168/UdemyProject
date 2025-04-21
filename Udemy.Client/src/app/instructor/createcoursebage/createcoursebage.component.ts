@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -104,7 +104,7 @@ export class CreatecoursebageComponent implements OnInit {
         [Validators.required, Validators.maxLength(60)],
         [this.titleAvailabilityValidator()],
       ],
-      description: ['', [Validators.required, Validators.minLength(300)]],
+      description: ['', [Validators.required, Validators.minLength(50)]],
       language: ['English (US)', Validators.required],
       level: ['Select Level --', Validators.required],
       category: [0, Validators.required],
