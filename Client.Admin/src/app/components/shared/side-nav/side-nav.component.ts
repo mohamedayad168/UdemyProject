@@ -1,4 +1,11 @@
-import { Component, effect, inject, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   Router,
   RouterLink,
@@ -42,7 +49,6 @@ export class SideNavComponent {
 
   adminNavItems!: MenuItem[];
 
- 
   /**
    *
    */
@@ -52,7 +58,6 @@ export class SideNavComponent {
       console.log('isOwner', this.authService.isOwner());
       this.buildNavItems(this.authService.isOwner());
     });
-    
   }
 
   // ngOnInit() {
@@ -71,12 +76,19 @@ export class SideNavComponent {
           {
             label: 'BI',
             icon: 'pi pi-book',
-            routerLink: ['/'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/']);
+              console.log(this.UiStateService.sideNavOpen());
+            },
           },
           {
             label: 'Custom',
             icon: 'pi pi-book',
-            routerLink: ['/custom'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/custom']);
+            },
           },
         ],
       },
@@ -87,20 +99,29 @@ export class SideNavComponent {
           {
             label: 'Courses',
             icon: 'pi pi-video',
-            routerLink: ['/courses'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/courses']);
+            },
             routerLinkActiveOptions: { exact: true },
           },
 
           {
             label: 'Students',
             icon: 'pi pi-users',
-            routerLink: ['/students'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/students']);
+            },
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Instructors',
             icon: 'pi pi-user',
-            routerLink: ['/instructors'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/instructors']);
+            },
             routerLinkActiveOptions: { exact: true },
           },
           // {
@@ -113,7 +134,10 @@ export class SideNavComponent {
             label: 'Admins',
             icon: 'pi pi-cog',
             visible: isOwner,
-            routerLink: ['/admins'],
+             command: () => {
+              this.UiStateService.closeSideNav();
+              this.router.navigate(['/admins']);
+            },
             routerLinkActiveOptions: { exact: true },
           },
         ],
