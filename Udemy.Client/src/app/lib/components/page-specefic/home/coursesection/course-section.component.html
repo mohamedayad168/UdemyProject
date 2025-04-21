@@ -1,147 +1,67 @@
-<!-- CATEGORY SECTION -->
-<div class="border-b border-gray-200 px-6 ">
-
-  <div class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar text-sm font-medium text-gray-700 px-4">
+<mat-tab-group
+  animationDuration="0ms"
+  (selectedTabChange)="onCategoryChange($event)"
+>
+  @for (category of categories; track category.id) {
+  <mat-tab class="relative" [label]="category.name">
+    @if(isLoadingSubCategories){
     <div
-      *ngFor="let cat of categories"
-      (click)="onCategoryClick(cat.id)"
-      [ngClass]="{
-        'text-black border-b-2 border-black': selectedCategoryId === cat.id,
-        'hover:text-black hover:border-black': selectedCategoryId !== cat.id
-      }"
-      class="cursor-pointer pb-2 border-b-2 border-transparent whitespace-nowrap transition-all"
+      class="fixed inset-0 z-40 flex items-center justify-center bg-gray-100"
+      style="opacity: 70%"
     >
-      {{ cat.name }}
+      <mat-progress-spinner
+        diameter="50"
+        mode="indeterminate"
+        color="primary"
+      ></mat-progress-spinner>
     </div>
-  </div>
 
-
-<div *ngIf="subcategories.length > 0" class="relative mb-6 py-6">
-  <!-- Left Arrow for Subcategories -->
-  <button
-    class="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg !rounded-full p-2"
-    (click)="scrollSubcategory('left')"
-  >
-    <i class="bi bi-chevron-left text-2xl text-gray-700"></i>
-  </button>
-
-  <div
-    #subcategoryScroll
-    class="overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar px-6"
-  >
-    <div class="inline-flex gap-3">
-      <button
-        *ngFor="let sub of subcategories"
-        (click)="onSubcategoryClick(sub.id)"
-        [ngClass]="{
-          'bg-purple-800 text-white !rounded-full': selectedSubcategoryId === sub.id,
-          'bg-gray-100 text-gray-700 !rounded-full': selectedSubcategoryId !== sub.id
-        }"
-        class="px-6 py-2 !rounded-full font-medium whitespace-nowrap transition-all hover:bg-purple-100 hover:text-purple-800 !rounded-full text-sm"
-      >
-        {{ sub.name }}
-      </button>
-    </div>
-  </div>
-
-  <!-- Right Arrow for Subcategories -->
-  <button
-    class="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2"
-    (click)="scrollSubcategory('right')"
-  >
-    <i class="bi bi-chevron-right text-2xl text-gray-700"></i>
-  </button>
-</div>
-
-
-<!-- COURSE CARDS -->
-<div class="relative my-8">
-  <!-- Left Arrow for Courses -->
-  <button
-    class="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2"
-    (click)="scrollCourses('left')"
-  >
-    <i class="bi bi-chevron-left text-2xl text-gray-700"></i>
-  </button>
-
-  <!-- Scrollable Course Cards -->
-  <div #scrollContainer class="overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar px-16">
-    <div class="inline-flex gap-6">
-      <div
-      *ngFor="let course of courses"
-      class="w-[320px] ... cursor-pointer flex-shrink-0 hover:bg-purple-100 "
-      (click)="goToCourseDetail(course.id)"
+    }@else {
+    <mat-tab-group
+      animationDuration="0ms"
+      (selectedTabChange)="onSubcategoryChange($event)"
     >
-    
-        <img
-          [src]="course.imageUrl || 'https://via.placeholder.com/300x150'"
-          alt="{{ course.title }}"
-          class="rounded-xl h-40 w-full object-cover"
-        />
-        <div class="mt-3 space-y-1">
-          <!-- Title -->
-          <p class="font-semibold text-lg line-clamp-2">{{ course.title }}</p>
-  
-          <!-- Instructor -->
-          <p class="text-sm text-gray-600">{{ course.instructor?.name }}</p>
-  
-          <!-- Rating -->
-          <p class="text-yellow-500 font-medium">★ {{ course.rating || 'N/A' }}</p>
-  
-          <!-- Price Section -->
-          <div class="flex items-center gap-2">
-            <p *ngIf="!course.isFree" class="text-gray-500 line-through text-base">£{{ course.price }}</p>
-            <p class="text-black font-bold text-base">
-              {{ course.isFree ? 'Free' : '£' + course.currentPrice }}
-            </p>
-            <p class="text-green-800 text-base">({{course.noSubscribers}}subscriber)</p>
-          </div>
-  
-          <!-- Description (Wrapped) -->
-          <p class="text-sm text-gray-700 mt-2 line-clamp-2">
-            {{ course.description }}
-          </p>
-  
-          <!-- Badges -->
-          <div class="mt-2 flex gap-2 flex-wrap">
-            <span
-              *ngIf="course.isFree"
-              class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-            >
-              Free
-            </span>
-            <span
-              *ngIf="course.bestSeller"
-              class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-            >
-              Bestseller
-            </span>
-            <div class="mt-4 flex justify-center">
-              <button
-              (click)="addCourseToStudentCart(course.id); $event.stopPropagation()"
-              type="button"
-              class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-xl shadow-md transition duration-200"
-            >
-              Add to Cart
-            </button>
-          
-            </div>
-           
-          </div>
+      @for (subCategory of subcategories; track subCategory.id) {
+      <mat-tab [label]="subCategory.name">
+        @if(isLoadingSubCategoryCourses){
+        <div
+          class="fixed inset-0 z-40 flex items-center justify-center bg-gray-100"
+          style="opacity: 70%"
+        >
+          <mat-progress-spinner
+            diameter="50"
+            mode="indeterminate"
+            color="primary"
+          ></mat-progress-spinner>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- Right Arrow for Courses -->
-  <button
-    class="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2"
-    (click)="scrollCourses('right')"
-  >
-    <i class="bi bi-chevron-right text-2xl text-gray-700"></i>
-  </button>
-</div>
 
-<!-- NO COURSES FOUND -->
-<div *ngIf="courses.length === 0 && selectedSubcategoryId" class="text-center text-gray-500 italic mt-4">
-  No courses found for this subcategory.
-</div>
+        }@else {
+        <div
+          class="relative overflow-visible grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-4"
+        >
+          @for (course of subCategoryFixedCourses ; track course.id) {
+          <app-subcategory-course [course]="course"></app-subcategory-course>
+          }
+
+          <i
+            (click)="onMoveCoursesPrevious()"
+            [class.cursor-pointer]="isPrev"
+            [class.hover:text-purple-500]="isPrev"
+            class="absolute top-20 left-2 text-gray-300 transform -translate-y-1/2 bi text-4xl bi-arrow-left-circle-fill"
+          ></i>
+          <i
+            (click)="onMoveCoursesNext()"
+            [class.hover:text-purple-500]="isNext"
+            [class.cursor-pointer]="isNext"
+            class="absolute top-20 right-2 text-4xl text-gray-300 transform -translate-y-1/2 bi bi-arrow-right-circle-fill"
+          ></i>
+        </div>
+
+        }
+      </mat-tab>
+      }
+    </mat-tab-group>
+    }
+  </mat-tab>
+  }
+</mat-tab-group>
