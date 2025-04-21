@@ -168,6 +168,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpDelete("{id}")]
+
         public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
             var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
@@ -204,25 +205,7 @@ namespace Udemy.Presentation.Controllers
             }
             return Ok(courses);
         }
-        //private async Task<ImageUploadResult> UploadFile(IFormFile file)
-        //{
-        //    var uploadResult = new ImageUploadResult();
 
-        //    if (file.Length > 0)
-        //    {
-        //        using (var stream = file.OpenReadStream())
-        //        {
-        //            var uploadParams = new ImageUploadParams()
-        //            {
-        //                File = new FileDescription(file.FileName, stream),
-        //                Transformation = new Transformation().Quality("auto").FetchFormat("auto")
-        //            };
-
-        //            uploadResult = await _cloudinary.UploadAsync(uploadParams);
-        //        }
-        //    }
-        //    return uploadResult;
-        //}
         [HttpGet("check-title")]
         public async Task<bool> TitleExist([FromQuery] string title)
         {

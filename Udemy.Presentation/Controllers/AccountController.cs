@@ -30,7 +30,7 @@ public class AccountController(
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-        var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+        var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsDeleted == false);
         if (user is null)
             return NotFound($"User With Email: {loginDto.Email} Doesn't Exist");
 

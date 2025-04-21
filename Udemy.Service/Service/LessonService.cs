@@ -84,5 +84,10 @@ namespace Udemy.Service.Service
             return true;
         }
 
+        public async Task<int> GetLessonInstructorId(int lessonId)
+        {
+            return await _repository.Lessons.GetLessonInstructorId(lessonId);
+        }
+
     }
 }

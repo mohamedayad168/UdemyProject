@@ -48,12 +48,16 @@
 
   <p-table
     #dt
-    [value]="isPaginated()? crudService().page().data: crudService().items()!"
+    [value]="isPaginated() ? crudService().page().data : crudService().items()!"
     [rows]="10"
-    [lazy]="isPaginated()? true : false"
+    [lazy]="isPaginated() ? true : false"
     [globalFilterFields]="globalFilterFields()"
     [columns]="cols"
-    [totalRecords]="isPaginated()? crudService().page().totalItems: crudService().items()!.length"
+    [totalRecords]="
+      isPaginated()
+        ? crudService().page().totalItems
+        : crudService().items()!.length
+    "
     [pageLinks]="5"
     [paginator]="true"
     (onPage)="loadData($event)"
@@ -152,7 +156,7 @@
               getStatus(column.statuses, product[column.key])!.bgColor
             "
           />
-          } 
+          }
           <!--  -->
           @case ('rating') {
           <p-rating
@@ -163,6 +167,22 @@
           <!--  -->
           @case ('money') {
           {{ product[column.key] | currency : "USD" }}
+          } 
+          <!--  -->
+          @case ('date') {
+          {{ product[column.key] | date : 'MMM d, y' }}
+          } 
+          <!--  -->
+          @case ('button') {
+          <p-button
+            label="{{ column.button!.label }}"
+            icon="pi pi-plus"
+            class=""
+            outlined
+            [icon]="column.button!.icon"
+            [severity]="column.button!.severity"
+            (onClick)="column.button!.action(product)"
+          />
           }
           <!--  -->
           @default {
@@ -244,7 +264,7 @@
                 class="relative hover:cursor-pointer hover:opacity-80 transition-all"
               >
                 <img
-                  [src]="newItem[item.key]?? '/placeholders/course.png'"
+                  [src]="newItem[item.key] ?? '/placeholders/course.png'"
                   alt="course image"
                   class="block m-auto pb-4"
                 />
@@ -274,11 +294,9 @@
             <!--  -->
             @case ('select') {
             <div>
-              <label
-                [for]="item.key + $index"
-                class="block font-bold mb-3"
-                >{{ item.label }}</label
-              >
+              <label [for]="item.key + $index" class="block font-bold mb-3">{{
+                item.label
+              }}</label>
               <p-select
                 [(ngModel)]="newItem[item.key]"
                 [inputId]="item.key + $index"
@@ -353,11 +371,9 @@
             <!--  -->
             @case ('number') {
             <div>
-              <label
-                [for]="item.key + $index"
-                class="block font-bold mb-3"
-                >{{ item.label }}</label
-              >
+              <label [for]="item.key + $index" class="block font-bold mb-3">{{
+                item.label
+              }}</label>
               <input
                 type="number"
                 pInputText

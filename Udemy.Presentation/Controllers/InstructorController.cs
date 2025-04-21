@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -143,6 +144,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Update(int id, [FromBody] InstructorUTO instructorDto)
         {
             if (instructorDto == null)
@@ -157,6 +159,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Delete(int id)
         {
             var isDeleted = await _serviceManager.InstructorService.DeleteAsync(id);
