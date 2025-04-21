@@ -5,6 +5,7 @@ using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
 using Udemy.Infrastructure.Extensions;
+using Udemy.Service.IService;
 
 namespace Udemy.Infrastructure.Repository
 {
@@ -12,7 +13,7 @@ namespace Udemy.Infrastructure.Repository
     {
         public async Task DeleteAsync(int id)
         {
-            var course = await GetByIdAsync(id, true) ??
+            var course = await GetByIdAsync(id , true) ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
 
             course.IsDeleted = true;
@@ -21,7 +22,7 @@ namespace Udemy.Infrastructure.Repository
 
         public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges)
         {
-            return await FindByCondition(c => !c.IsDeleted, trackChanges).ToListAsync();
+            return await FindByCondition(c => !c.IsDeleted , trackChanges).ToListAsync();
         }
 
 
@@ -58,14 +59,14 @@ namespace Udemy.Infrastructure.Repository
         }
 
 
-        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq, DeletionType deletionType, bool trackChanges)
+        public async Task<PaginatedRes<Course>> GetPageAsync(PaginatedSearchReq searchReq , DeletionType deletionType , bool trackChanges)
         {
 
             IQueryable<Course> query;
 
             if (searchReq.SearchTerm!.Length > 0)
             {
-                query = FindAll(trackChanges, deletionType)
+                query = FindAll(trackChanges , deletionType)
                 .Where(x =>
                     x.Title.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
                     x.SubCategory.Name.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
@@ -74,7 +75,7 @@ namespace Udemy.Infrastructure.Repository
             }
             else
             {
-                query = FindAll(trackChanges, deletionType);
+                query = FindAll(trackChanges , deletionType);
             }
 
 
@@ -88,31 +89,31 @@ namespace Udemy.Infrastructure.Repository
 
             var response = new PaginatedRes<Course>
             {
-                CurrentPage = searchReq.PageNumber,
-                PageSize = searchReq.PageSize,
-                TotalItems = await query.CountAsync(),
-                Data = courses,
+                CurrentPage = searchReq.PageNumber ,
+                PageSize = searchReq.PageSize ,
+                TotalItems = await query.CountAsync() ,
+                Data = courses ,
             };
             return response;
         }
 
 
-        public async Task<Course> GetByIdAsync(int id, bool trackChanges)
+        public async Task<Course> GetByIdAsync(int id , bool trackChanges)
         {
-            return await FindByCondition(c => c.Id == id && !c.IsDeleted, trackChanges)
+            return await FindByCondition(c => c.Id == id && !c.IsDeleted , trackChanges)
                 .FirstOrDefaultAsync() ??
                 throw new NotFoundException($"Course with id: {id} doesn't exist");
         }
 
-        public async Task<Course?> GetByTitleAsync(string title, bool trackChanges)
+        public async Task<Course?> GetByTitleAsync(string title , bool trackChanges)
         {
-            return await FindByCondition(c => c.Title == title, trackChanges)
+            return await FindByCondition(c => c.Title == title , trackChanges)
                 .FirstOrDefaultAsync();
         }
 
         public async Task ToggleApprovedAsync(int id)
         {
-            var course = await GetByIdAsync(id, true) ??
+            var course = await GetByIdAsync(id , true) ??
                 throw new NotFoundException($"Course with id: {id} not found");
 
             course.IsApproved = !course.IsApproved;
@@ -124,7 +125,19 @@ namespace Udemy.Infrastructure.Repository
             return await context.Courses.AnyAsync(c => c.Id == id);
         }
 
-
+        public async Task<Course> GetCourseDetailsAsync(int id , bool trackChanges)
+        {
+            return await context.Courses.Where(c => c.Id == id)
+                        .Include(c => c.Instructor)
+                        .Include(c => c.SubCategory)
+                        .ThenInclude(sc => sc.Category)
+                        .Include(c => c.CourseGoals)
+                        .Include(c => c.Instructor)
+                        .Include(c => c.CourseRequirements)
+                        .Include(c => c.Sections.Where(s => s.IsDeleted == false))
+                        .ThenInclude(s => s.Lessons.Where(l => l.IsDeleted == false))
+                        .FirstOrDefaultAsync();
+        }
 
         public async Task<IEnumerable<Course>> GetAllByCategoryId(int categoryId)
         {
@@ -142,17 +155,20 @@ namespace Udemy.Infrastructure.Repository
         public async Task<IEnumerable<Course>> GetAllWithSearchAsync(CourseRequestParameter requestParamter)
         {
             var courses = await FindAll(false)
-                            .Where(x =>
-                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
-                            )
-                            .Include(c => c.Instructor)
-                            .Include(c => c.CourseGoals)
-                            .Sort(requestParamter.OrderBy)
-                            .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
-                            .Take(requestParamter.PageSize)
-                            .ToListAsync();
+                    .Where(x =>
+                        x.IsApproved &&
+                        (
+                            x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                            x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                            x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
+                        )
+                    )
+                    .Include(c => c.Instructor)
+                    .Include(c => c.CourseGoals)
+                    .Sort(requestParamter.OrderBy)
+                    .Skip((requestParamter.PageNumber - 1) * requestParamter.PageSize)
+                    .Take(requestParamter.PageSize)
+                    .ToListAsync();
 
             return courses;
         }
@@ -160,14 +176,17 @@ namespace Udemy.Infrastructure.Repository
         public async Task<int> GetAllWithSearchCountAsync(CourseRequestParameter requestParamter)
         {
             var coursesCount = await FindAll(false)
-                            .Where(x =>
-                                x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
-                                x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
-                            )
-                            .Include(c => c.Instructor)
-                            .Include(c => c.CourseGoals)
-                            .CountAsync();
+                    .Where(x =>
+                        x.IsApproved &&
+                        (
+                            x.Title.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                            x.SubCategory.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower()) ||
+                            x.SubCategory.Category.Name.ToLower().Contains(requestParamter.SearchTerm.Trim().ToLower())
+                        )
+                    )
+                    .Include(c => c.Instructor)
+                    .Include(c => c.CourseGoals)
+                    .CountAsync();
 
             return coursesCount;
         }

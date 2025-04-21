@@ -42,16 +42,19 @@ namespace Udemy.Service.Service
 
         public async Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges)
         {
-            var course = await repository.Courses.FindByCondition(c => c.Id == id, trackChanges)
-                        .Include(c => c.Instructor)
-                        .Include(c => c.SubCategory)
-                        .ThenInclude(sc => sc.Category)
-                        .Include(c => c.CourseGoals)
-                        .Include(c => c.Instructor)
-                        .Include(c => c.CourseRequirements)
-                        .Include(c => c.Sections.Where(s => s.IsDeleted == false))
-                        .ThenInclude(s => s.Lessons.Where(l => l.IsDeleted == false))
-                        .FirstOrDefaultAsync();
+            //var course = await repository.Courses.FindByCondition(c => c.Id == id, trackChanges)
+            //            .Include(c => c.Instructor)
+            //            .Include(c => c.SubCategory)
+            //            .ThenInclude(sc => sc.Category)
+            //            .Include(c => c.CourseGoals)
+            //            .Include(c => c.Instructor)
+            //            .Include(c => c.CourseRequirements)
+            //            .Include(c => c.Sections.Where(s => s.IsDeleted == false))
+            //            .ThenInclude(s => s.Lessons.Where(l => l.IsDeleted == false))
+            //            .FirstOrDefaultAsync();
+
+            var course = await repository.Courses.GetCourseDetailsAsync(id, trackChanges);
+
             var courseRating= await repository.Enrollments.FindByCondition(e => e.CourseId == id, trackChanges).AverageAsync(e => e.Rating);
 
             if(course is not null) 
