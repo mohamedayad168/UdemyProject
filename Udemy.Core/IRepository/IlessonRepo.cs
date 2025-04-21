@@ -15,5 +15,6 @@ namespace Udemy.Core.IRepository
         public Task<IEnumerable<Lesson>> GetLessonsBySectionIdAsync(int sectionId, bool trackChanges);
       public  Task CreatelessonAsync(Lesson lesson);
      public   Task DeletelesssonAsync(Lesson lesson);
+        Task<int> GetLessonInstructorId(int lessonId);
     }
 }

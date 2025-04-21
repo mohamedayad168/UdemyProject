@@ -74,7 +74,7 @@ export class SectionLessonupdateComponent implements OnInit {
   removeSection(index: number): void {
     const section = this.sections.at(index);
     const sectionId = section.value.id;
-  
+
     if (sectionId && sectionId > 0) {
       this.sectionService.deleteSection(sectionId).subscribe({
         next: () => {
@@ -83,13 +83,13 @@ export class SectionLessonupdateComponent implements OnInit {
         error: (err) => {
           console.error('Failed to delete section:', err);
           alert('Failed to delete section from database.');
-        }
+        },
       });
     } else {
       this.sections.removeAt(index);
     }
   }
-  
+
   getLessons(sectionIndex: number): FormArray {
     return this.sections.at(sectionIndex).get('lessons') as FormArray;
   }
@@ -113,7 +113,7 @@ export class SectionLessonupdateComponent implements OnInit {
     const lessons = this.getLessons(sectionIndex);
     const lesson = lessons.at(lessonIndex);
     const lessonId = lesson.value.id;
-  
+
     if (lessonId && lessonId > 0) {
       this.lessonService.deleteLesson(lessonId).subscribe({
         next: () => {
@@ -122,7 +122,7 @@ export class SectionLessonupdateComponent implements OnInit {
         error: (err) => {
           console.error('Failed to delete lesson:', err);
           alert('Failed to delete lesson from database.');
-        }
+        },
       });
     } else {
       lessons.removeAt(lessonIndex);

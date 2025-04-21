@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Update;
 using Udemy.Service.IService;
@@ -49,8 +51,11 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> CreateSection([FromBody] SectionCDTO sectioncDto)
         {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -62,6 +67,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> UpdateSection(int id, [FromBody] SectionUDTO sectionDto)
         {
             if (!ModelState.IsValid)
@@ -77,6 +83,7 @@ namespace Udemy.Presentation.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> DeleteSection(int id)
         {
             var result = await _service.SectionService.DeleteSectionAsync(id);

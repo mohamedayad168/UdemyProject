@@ -14,6 +14,6 @@ namespace Udemy.Service.IService
         Task<Lesson> CreatelessonAsync(LessonCDto lessonc);
         Task<bool> UpdateAsync(int id, LessonUDto lessonD);
         Task<bool> DeletelesssonAsync(int id);
-
+        Task<int> GetLessonInstructorId(int lessonId);
     }
 }

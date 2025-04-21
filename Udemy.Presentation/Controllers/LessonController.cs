@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.DataTransferObjects.Update;
@@ -72,21 +73,29 @@ namespace Udemy.Presentation.Controllers
 
         // PUT: api/Lesson/{id}
         [HttpPut]
+        [Authorize(Roles = "Instructor")]
         public async Task<ActionResult> UpdateLesson(LessonUDto lessonUDto)
         {
 
-
-            var isUpdated = await _serviceManager.LessonService.UpdateAsync(lessonUDto.Id, lessonUDto);
-            if (isUpdated)
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var InstructorId = await _serviceManager.LessonService.GetLessonInstructorId(lessonUDto.Id);
+            if (userId == InstructorId)
             {
-                return NoContent();
-            }
+                var isUpdated = await _serviceManager.LessonService.UpdateAsync(lessonUDto.Id, lessonUDto);
+                if (isUpdated)
+                {
+                    return NoContent();
+                }
 
+                return NotFound();
+            }
             return NotFound();
+
         }
 
         // DELETE: api/Lesson/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Instructor")]
         public async Task<ActionResult> DeleteLesson(int id)
         {
             var lesson = await _serviceManager.LessonService.GetByIdAsync(id, trackchange: false);
