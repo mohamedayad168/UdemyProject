@@ -33,7 +33,7 @@ export interface CourseDetail {
     };
     instructor: {
         id: number;
-        name: string;
+        userName: string;
         title: string;
         bio: string;
         totalCourses: number | null;
@@ -113,7 +113,7 @@ export const dummyCourseDetails: CourseDetail = {
     },
     instructor: {
         id: 22222,
-        name: "Instructor Instructor",
+        userName: "Instructor Instructor",
         title: "Super Awesome Title",
         bio: "bioheehhe",
         totalCourses: null,
