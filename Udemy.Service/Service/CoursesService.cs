@@ -135,6 +135,18 @@ namespace Udemy.Service.Service
                 throw new NotFoundException($"Course with ID {courseDto.Id} not found");
             }
 
+            string? imageUrl = null;
+            string? videoUrl = null;
+
+            if (courseDto.ImageUrl != null)
+                imageUrl = await cloudService.UploadImageAsync(courseDto.ImageUrl);
+
+            if (courseDto.VideoUrl != null)
+                videoUrl = await cloudService.UploadVideoAsync(courseDto.VideoUrl);
+
+            course.ImageUrl = imageUrl;
+            course.VideoUrl = videoUrl;
+
             mapper.Map(courseDto, course);
 
 

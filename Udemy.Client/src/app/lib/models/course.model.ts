@@ -37,8 +37,8 @@ export interface CourseUpdateDTO {
   discount: number;
   price: number;
   language: string;
-  imageUrl: string;
-  videoUrl: string;
+  imageUrl: File;
+  videoUrl: File;
   subCategoryId: number;
   instructorId: number;
   goals: string;
@@ -65,7 +65,7 @@ export interface SectionCDTO {
   lessons: LessonCDto[];
 }
 export interface LessonUDto {
-  id: number; 
+  id: number;
   title: string;
   videoUrl: string;
   sectionId: number;
