@@ -58,10 +58,10 @@ namespace Udemy.Presentation.Controllers
             try
             {
                 var result = await _serviceManager.LessonService.CreatelessonAsync(lessonCDto);
-                if (!result)
+                if (result == null)
                     return StatusCode(500, "Failed to create lesson");
 
-                return Ok("lesson created successfully");
+                return Ok(result);
             }
             catch (Exception ex)
             {

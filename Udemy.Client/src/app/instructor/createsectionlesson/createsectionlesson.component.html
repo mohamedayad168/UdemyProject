@@ -1,59 +1,199 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6 p-6 max-w-4xl mx-auto bg-white shadow-md rounded-xl">
-  <div formArrayName="sections" class="space-y-8">
-    <div *ngFor="let section of sections.controls; let sectionIndex = index" [formGroupName]="sectionIndex" class="border border-gray-300 rounded-lg p-5 bg-gray-50">
-    
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-semibold text-blue-600">Section {{ sectionIndex + 1 }}</h3>
-        <button type="button" (click)="removeSection(sectionIndex)" class="text-red-500 hover:underline text-sm">Remove Section</button>
-      </div>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">Create Course Sections and Lessons</h1>
+  
+  <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ errorMessage }}
+  </div>
 
-      <input formControlName="title" placeholder="Section Title" class="w-full mb-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
-  
-      <div formArrayName="lessons" class="space-y-6">
-        <div *ngFor="let lesson of getLessons(sectionIndex).controls; let lessonIndex = index" [formGroupName]="lessonIndex" class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
-  
-          <div class="flex justify-between items-center mb-2">
-            <h5 class="font-medium text-gray-700">Lesson {{ lessonIndex + 1 }}</h5>
-            <button type="button" (click)="removeLesson(sectionIndex, lessonIndex)" class="text-sm text-red-500 hover:underline">Remove Lesson</button>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div formArrayName="sections" class="space-y-8">
+      <div *ngFor="let section of sections.controls; let sectionIndex = index" 
+           [formGroupName]="sectionIndex" 
+           class="border border-gray-200 rounded-lg p-6 bg-white shadow-sm">
+        
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-blue-600">Section {{ sectionIndex + 1 }}</h2>
+          <button type="button" 
+                  (click)="removeSection(sectionIndex)"
+                  class="text-red-500 hover:text-red-700 text-sm font-medium">
+            Remove Section
+          </button>
+        </div>
+
+        <div class="mb-4">
+          <label for="section-title-{{sectionIndex}}" class="block text-sm font-medium text-gray-700 mb-1">
+            Section Title *
+          </label>
+          <input type="text" 
+                 id="section-title-{{sectionIndex}}"
+                 formControlName="title"
+                 placeholder="Enter section title"
+                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <div *ngIf="sections.at(sectionIndex).get('title')?.invalid && 
+                     (sections.at(sectionIndex).get('title')?.dirty || sections.at(sectionIndex).get('title')?.touched)"
+               class="text-red-500 text-sm mt-1">
+            <span *ngIf="sections.at(sectionIndex).get('title')?.errors?.['required']">
+              Section title is required
+            </span>
+            <span *ngIf="sections.at(sectionIndex).get('title')?.errors?.['maxlength']">
+              Title must be less than 20 characters
+            </span>
           </div>
-  
-          <input formControlName="title" placeholder="Lesson Title" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md" />
-          
-          <!-- Updated file input for video -->
-          <input 
-            type="file"
-            accept="video/*"
-            (change)="onFileSelected($event, sectionIndex, lessonIndex)"
-            class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md bg-white"
-          />
+        </div>
 
-          <!-- Optional video preview -->
-          <video 
-            *ngIf="lesson.get('videoUrl')?.value" 
-            [src]="lesson.get('videoUrl')?.value" 
-            controls 
-            class="w-full mb-3 rounded-md max-h-64"
-          ></video>
+        <div formArrayName="lessons" class="space-y-4">
+          <div *ngFor="let lesson of getLessons(sectionIndex).controls; let lessonIndex = index" 
+               [formGroupName]="lessonIndex"
+               class="border border-gray-100 rounded-md p-4 bg-gray-50">
+            
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-md font-medium text-gray-700">Lesson {{ lessonIndex + 1 }}</h3>
+              <button type="button" 
+                      (click)="removeLesson(sectionIndex, lessonIndex)"
+                      class="text-red-500 hover:text-red-700 text-sm font-medium">
+                Remove Lesson
+              </button>
+            </div>
 
-          <textarea formControlName="articleContent" placeholder="Article Content" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md resize-none"></textarea>
-          <input formControlName="duration" type="number" placeholder="Duration (in minutes)" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md" />
+            <div class="grid grid-cols-1 gap-4">
+              <!-- Lesson Title -->
+              <div>
+                <label [for]="'lesson-title-' + sectionIndex + '-' + lessonIndex" 
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                  Lesson Title *
+                </label>
+                <input type="text"
+                       [id]="'lesson-title-' + sectionIndex + '-' + lessonIndex"
+                       formControlName="title"
+                       placeholder="Enter lesson title"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <div *ngIf="getLessons(sectionIndex).at(lessonIndex).get('title')?.invalid && 
+                           (getLessons(sectionIndex).at(lessonIndex).get('title')?.dirty || 
+                            getLessons(sectionIndex).at(lessonIndex).get('title')?.touched)"
+                     class="text-red-500 text-sm mt-1">
+                  Lesson title is required
+                </div>
+              </div>
 
-          <select formControlName="type" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700">
-            <option value="video">Video</option>
-            <option value="article">Article</option>
-          </select>
+              <!-- Lesson Type -->
+              <div>
+                <label [for]="'lesson-type-' + sectionIndex + '-' + lessonIndex" 
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                  Lesson Type *
+                </label>
+                <select [id]="'lesson-type-' + sectionIndex + '-' + lessonIndex"
+                        formControlName="type"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                  <option value="video">Video Lesson</option>
+                  <option value="article">Article</option>
+                </select>
+              </div>
+
+              <!-- Video Upload (shown when type is video) -->
+              <div *ngIf="getLessons(sectionIndex).at(lessonIndex).get('type')?.value === 'video'">
+                <label [for]="'lesson-video-' + sectionIndex + '-' + lessonIndex" 
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                  Video File *
+                </label>
+                <input type="file"
+                       [id]="'lesson-video-' + sectionIndex + '-' + lessonIndex"
+                       accept="video/*"
+                       (change)="onFileSelected($event, sectionIndex, lessonIndex)"
+                       class="block w-full text-sm text-gray-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-md file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-blue-50 file:text-blue-700
+                              hover:file:bg-blue-100">
+                <div *ngIf="!getLessons(sectionIndex).at(lessonIndex).get('videoFile')?.value && 
+                           getLessons(sectionIndex).at(lessonIndex).get('type')?.value === 'video'"
+                     class="text-red-500 text-sm mt-1">
+                  Video file is required for video lessons
+                </div>
+                
+                <!-- Video Preview -->
+                <div *ngIf="getLessons(sectionIndex).at(lessonIndex).get('videoUrl')?.value" 
+                     class="mt-2">
+                  <video [src]="getLessons(sectionIndex).at(lessonIndex).get('videoUrl')?.value" 
+                         controls
+                         class="w-full max-h-64 rounded-md border border-gray-200">
+                  </video>
+                </div>
+              </div>
+
+              <!-- Article Content (shown when type is article) -->
+              <div *ngIf="getLessons(sectionIndex).at(lessonIndex).get('type')?.value === 'article'">
+                <label [for]="'lesson-article-' + sectionIndex + '-' + lessonIndex" 
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                  Article Content
+                </label>
+                <textarea [id]="'lesson-article-' + sectionIndex + '-' + lessonIndex"
+                          formControlName="articleContent"
+                          rows="4"
+                          placeholder="Enter article content here..."
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </textarea>
+              </div>
+
+              <!-- Duration -->
+              <div>
+                <label [for]="'lesson-duration-' + sectionIndex + '-' + lessonIndex" 
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                  Duration (minutes) *
+                </label>
+                <input type="number"
+                       [id]="'lesson-duration-' + sectionIndex + '-' + lessonIndex"
+                       formControlName="duration"
+                       min="1"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <div *ngIf="getLessons(sectionIndex).at(lessonIndex).get('duration')?.invalid && 
+                           (getLessons(sectionIndex).at(lessonIndex).get('duration')?.dirty || 
+                            getLessons(sectionIndex).at(lessonIndex).get('duration')?.touched)"
+                     class="text-red-500 text-sm mt-1">
+                  <span *ngIf="getLessons(sectionIndex).at(lessonIndex).get('duration')?.errors?.['required']">
+                    Duration is required
+                  </span>
+                  <span *ngIf="getLessons(sectionIndex).at(lessonIndex).get('duration')?.errors?.['min']">
+                    Duration must be at least 1 minute
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <button type="button" 
+                  (click)="addLesson(sectionIndex)"
+                  class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add Lesson
+          </button>
         </div>
       </div>
-  
-      <div class="mt-4">
-        <button type="button" (click)="addLesson(sectionIndex)" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">+ Add Lesson</button>
-      </div>
     </div>
-  </div>
-  
-  <div class="flex flex-col sm:flex-row justify-between gap-4 mt-6">
-    <button type="button" (click)="addSection()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">+ Add Section</button>
-  
-    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200">Submit All</button>
-  </div>
-</form>
+
+    <div class="flex flex-wrap gap-4">
+      <button type="button" 
+              (click)="addSection()"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Add Section
+      </button>
+
+      <button type="submit" 
+              [disabled]="isLoading || form.invalid"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        {{ isLoading ? 'Processing...' : 'Submit All' }}
+      </button>
+    </div>
+  </form>
+</div>
