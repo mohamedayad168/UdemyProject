@@ -14,6 +14,7 @@ import { CategoryService } from '../../lib/services/category.service';
 import { Category, SubCategory } from '../../lib/models/category.model';
 import { AccountService } from '../../lib/services/account.service';
 import { map, Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-createcoursebage',
@@ -92,7 +93,9 @@ export class CreatecoursebageComponent implements OnInit {
     private categoryService: CategoryService,
     private courseService: CourseService,
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+     private router: Router,
+  private route: ActivatedRoute,
   ) {
     this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
@@ -256,6 +259,8 @@ export class CreatecoursebageComponent implements OnInit {
         this.courseForm.reset();
         this.imageFile = null;
         this.videoFile = null;
+        const courseId = response.id; // Or response.data.id if wrapped
+        this.router.navigate([`/instructor/createsection&lesson`, courseId]);
       },
       error: (err) => {
         console.log(formData.values);
