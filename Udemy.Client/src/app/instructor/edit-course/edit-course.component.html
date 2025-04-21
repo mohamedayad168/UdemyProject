@@ -1,16 +1,18 @@
 <div class="container mt-4 px-4">
-  <h2 class="text-2xl font-semibold mb-4">Choose From Your Courses The Course You Want To Edit</h2>
+  <h2 class="text-2xl font-semibold mb-4">
+    Choose From Your Courses The Course You Want To Edit
+  </h2>
 
   <!-- Search Bar with Icon -->
   <div class="mb-4 flex items-center space-x-4">
     <!-- Search Icon -->
     <i class="fas fa-search text-gray-600"></i>
     <!-- Search Input -->
-    <input 
-      type="text" 
-      [(ngModel)]="searchQuery" 
-      (input)="filterCourses()" 
-      placeholder="Search courses by name" 
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="filterCourses()"
+      placeholder="Search courses by name"
       class="w-2/3 px-4 py-2 border border-gray-300 rounded-md"
     />
   </div>
@@ -22,34 +24,62 @@
 
   <div *ngIf="filteredCourses.length > 0; else noCourses">
     <div class="space-y-4">
-      <div class="flex flex-wrap justify-between gap-4" *ngFor="let course of filteredCourses">
-        <div class="w-full sm:w-full md:w-full bg-white shadow-lg rounded-lg overflow-hidden">
-          <div class="p-4 flex items-center justify-between">
+      <div
+        class="flex flex-wrap justify-between gap-4"
+        *ngFor="let course of filteredCourses"
+      >
+        <div
+          class="w-full sm:w-full md:w-full bg-white shadow-lg rounded-lg overflow-hidden"
+        >
+          <div
+            class="p-4 flex flex-col sm:flex-row items-center justify-between"
+          >
             <!-- Course Image -->
-            <div class="w-20 h-20 bg-gray-200 rounded-full overflow-hidden mr-4">
-              <img *ngIf="course.imageUrl" [src]="course.imageUrl" alt="Course Image" class="w-full h-full object-cover">
+            <div
+              class="w-20 h-20 bg-gray-200 rounded-full overflow-hidden mr-4 flex-shrink-0"
+            >
+              <img
+                *ngIf="course.imageUrl"
+                [src]="course.imageUrl"
+                alt="Course Image"
+                class="w-full h-full object-cover"
+              />
             </div>
 
             <!-- Course Info -->
-            <div class="flex-grow">
-              <h5 class="text-xl font-semibold">{{ course.title }}</h5>
-              <p class="text-gray-600 text-sm">{{ course.description }}</p>
+            <div class="flex-grow min-w-0 mr-4">
+              <h5 class="text-xl font-semibold truncate">{{ course.title }}</h5>
+              <p class="text-gray-600 text-sm line-clamp-2">
+                {{ course.description }}
+              </p>
             </div>
 
-            <!-- View Course Button (Icon) -->
-            <a [routerLink]="['/courses', course.id]" class="!text-blue-600 px-4 hover:text-blue-700 transition duration-300">
-              <i class="fas fa-eye">View      </i> <!-- Eye Icon -->
-            </a>
+            <!-- Action Buttons -->
+            <div class="flex flex-shrink-0 space-x-2 mt-2 sm:mt-0">
+              <!-- View Course Button (Icon) -->
+              <a
+                [routerLink]="['/courses', course.id]"
+                class="!text-blue-600 px-2 hover:text-blue-700 transition duration-300 whitespace-nowrap"
+              >
+                <i class="fas fa-eye">View </i>
+              </a>
 
-            <!-- Edit Course Button (Icon) -->
-            <a [routerLink]="['/updatecoursedetails', course.id]" class="!text-yellow-600 px-4 hover:text-yellow-700 transition duration-300">
-              <i class="fas fa-edit"> Edit      </i> <!-- Edit Icon -->
-            </a>
+              <!-- Edit Course Button (Icon) -->
+              <a
+                [routerLink]="['/updatecoursedetails', course.id]"
+                class="!text-yellow-600 px-2 hover:text-yellow-700 transition duration-300 whitespace-nowrap"
+              >
+                <i class="fas fa-edit"> Edit </i>
+              </a>
 
-            <!-- Delete Course Button (Icon) -->
-            <button (click)="deleteCourse(course.id)" class="!text-red-600 px-4 hover:text-red-700 transition duration-300">
-              <i class="fas fa-trash-alt">Delete      </i> <!-- Trash Icon -->
-            </button>
+              <!-- Delete Course Button (Icon) -->
+              <button
+                (click)="deleteCourse(course.id)"
+                class="!text-red-600 px-2 hover:text-red-700 transition duration-300 whitespace-nowrap"
+              >
+                <i class="fas fa-trash-alt">Delete </i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

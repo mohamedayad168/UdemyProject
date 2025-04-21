@@ -129,7 +129,7 @@ export class CreatesectionlessonComponent implements OnInit {
     this.errorMessage = null;
 
     try {
-      // Process sections sequentially
+
       for (
         let sectionIndex = 0;
         sectionIndex < this.sections.length;
@@ -156,10 +156,13 @@ export class CreatesectionlessonComponent implements OnInit {
         for (let lessonIndex = 0; lessonIndex < lessons.length; lessonIndex++) {
           const lessonGroup = lessons.at(lessonIndex) as FormGroup; // Explicit cast
           await this.processLesson(lessonGroup, sectionId);
+         
+
         }
       }
 
-      this.router.navigate(['/course', this.courseId]);
+     // this.router.navigate(['/instructors/details', this.instructorId]);
+
     } catch (error: any) {
       console.error('Error:', error);
       this.errorMessage =

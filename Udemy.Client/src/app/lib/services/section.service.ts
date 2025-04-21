@@ -37,5 +37,5 @@ export class SectionService {
  deleteSection(sectionId: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}/${sectionId}`, { responseType: 'text' });
 }
-  }
+}
 
