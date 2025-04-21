@@ -56,10 +56,17 @@ namespace Udemy.Service.Service
 
         public async Task<bool> UpdateAsync(int id, LessonUDto lessonDto)
         {
-            var lesson = await _repository.Lessons.GetByIdAsync(id, trackchange: true);
+            var lesson = await _repository.Lessons.GetByIdAsync(id, false);
             if (lesson is null) return false;
+            string? videoUrl = null;
 
-            _mapper.Map(lessonDto, lesson);
+
+            if (lessonDto.VideoUrl != null)
+                videoUrl = await cloudService.UploadVideoAsync(lessonDto.VideoUrl);
+            var updatedLesson = _mapper.Map<Lesson>(lessonDto);
+            updatedLesson.VideoUrl = videoUrl;
+
+            _repository.Lessons.Update(updatedLesson);
             await _repository.SaveAsync();
             return (true);
         }
