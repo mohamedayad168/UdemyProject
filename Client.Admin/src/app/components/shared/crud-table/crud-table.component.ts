@@ -41,7 +41,7 @@ export interface IActionButton {
   label: string;
   severity: Severity;
   icon: string;
-  action: () => void;
+  action: (any?: any) => void;
 }
 
 export type FieldType =
@@ -84,11 +84,20 @@ export interface FormFieldConfig {
 export interface IColumnConfig {
   key: string;
   width?: string;
-  type: 'money' | 'text' | 'date' | 'image' | 'tag' | 'rating' | 'status'; //sepcify for tags
+  type:
+    | 'money'
+    | 'text'
+    | 'date'
+    | 'image'
+    | 'tag'
+    | 'rating'
+    | 'status'
+    | 'button'; //sepcify for tags
   tags?: { label: string; value: any; color: string; bgColor: string }[];
   statuses?: { label: string; value: any; color: string; bgColor: string }[];
   header: string;
   sortable?: boolean;
+  button?: IActionButton;
 }
 
 interface Column {

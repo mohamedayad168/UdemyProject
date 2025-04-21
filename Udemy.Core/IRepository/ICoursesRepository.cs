@@ -25,5 +25,6 @@ namespace Udemy.Core.IRepository
         Task<bool> CheckIfCourseExistsAsync(int id);
         Task<IEnumerable<Course>> GetAllWithSearchAsync(CourseRequestParameter requestParamter);
         Task<int> GetAllWithSearchCountAsync(CourseRequestParameter requestParamter);
+        Task<Course> GetCourseDetailsAsync(int id , bool trackChanges);
     }
 }

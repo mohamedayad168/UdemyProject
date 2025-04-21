@@ -1,13 +1,14 @@
 <aside
   class="fixed md:static w-full md:w-fit z-50 md:flex flex-col gap-4 border-e border-gray-950/30 md:border-e-0 md:shadow h-full  md:bg-sidenav -translate-x-full md:translate-x-0 transition-none duration-300 transition-[translate]!"
   *ngIf="authService.authState().isAuthenticated"
-  [class.-translate-x-0!]="!UiStateService.sideNavOpen()"
-  [class]="{
-    'bg-gray-950/50!': !UiStateService.sideNavOpen(),
-    'bg-transparent!':  UiStateService.sideNavOpen(),
+   [class]="{
+    'translate-x-0!': UiStateService.sideNavOpen(),
+    'bg-black/40!': UiStateService.sideNavOpen(),
+    'bg-transparent!':  !UiStateService.sideNavOpen(),
   }"
+  (click)="UiStateService.closeSideNav()"
 >
-  <nav class="w-fit min-w-2/3 h-full md:w-full bg-sidenav md:bg-transparent">
+  <nav class="w-fit min-w-2/3 h-full md:w-full bg-sidenav md:bg-transparent" (click)="$event.stopPropagation()">
     <p-menu
       [model]="userNavItems"
       class="flex justify-center [&_.p-menu-separator]:border-none"

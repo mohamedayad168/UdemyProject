@@ -1,0 +1,36 @@
+@if(course){
+<div
+  routerLink="/courses/{{ course.id }}"
+  class="flex-col group cursor-pointer"
+>
+  <img
+    [src]="course.imageUrl"
+    class="w-full h-full object-cover group-hover:brightness-60 duration-300"
+    alt="course image"
+  />
+  <div
+    class="text-start leading-tight font-bold duration-300 group-hover:text-purple-700"
+  >
+    {{ course.title }}
+  </div>
+
+  <div class="text-start">
+    <span class="font-bold text-yellow-800 mr-1">{{ course.rating ?? 0 }}</span>
+    <ngb-rating
+      [(rate)]="course.rating!"
+      [readonly]="true"
+      [max]="5"
+      class="text-yellow-600 font-"
+    />
+  </div>
+  <div class="flex gap-1.5 text-gray-500">
+    <div>{{ course.duration }} total hours</div>
+    <div>.</div>
+    <div>{{ course.courseLevel }}</div>
+  </div>
+  <div class="text-start font-bold">
+    {{ course.price | currency }}
+  </div>
+</div>
+
+}

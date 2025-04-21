@@ -13,4 +13,8 @@ export class UiStateService {
     this.sideNavOpen.update(value => !value)
   }
 
+  closeSideNav() {
+    this.sideNavOpen.set(false)
+  }
+
 }
