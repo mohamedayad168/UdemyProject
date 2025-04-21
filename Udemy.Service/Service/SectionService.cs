@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Udemy.Core.Entities;
 using Udemy.Core.IRepository;
 using Udemy.Service.DataTransferObjects.Create;
@@ -29,12 +24,12 @@ namespace Udemy.Service.Service
             return _mapper.Map<IEnumerable<SectionRDTO>>(sections);
         }
 
-        public async Task<bool> CreateSectionAsync(SectionCDTO sectionCDto)
+        public async Task<Section> CreateSectionAsync(SectionCDTO sectionCDto)
         {
             var section = _mapper.Map<Section>(sectionCDto);
             await _repository.Section.CreatesectionAsync(section);
             await _repository.SaveAsync();
-            return true;
+            return section;
         }
 
         public async Task<bool> DeleteSectionAsync(int id)
@@ -64,7 +59,7 @@ namespace Udemy.Service.Service
 
         public async Task<bool> UpdateAsync(int id, SectionUDTO sectionDto)
         {
-         
+
             var existingSection = await _repository.Section.GetByIdAsync(id, trackchange: true);
             if (existingSection == null) return false;
 

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -92,7 +93,8 @@ export class CreatecoursebageComponent implements OnInit {
     private categoryService: CategoryService,
     private courseService: CourseService,
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private router: Router
   ) {
     this.currentUserId = this.accountService.currentUser()?.id;
     this.courseForm = this.fb.group({
@@ -256,6 +258,8 @@ export class CreatecoursebageComponent implements OnInit {
         this.courseForm.reset();
         this.imageFile = null;
         this.videoFile = null;
+        const CourseId = response.id;
+        this.router.navigate([`/instructor/createsection&lesson`, CourseId]);
       },
       error: (err) => {
         console.log(formData.values);

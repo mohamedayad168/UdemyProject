@@ -27,7 +27,6 @@ export interface Course {
 
   courseGoals: string[];
   courseRequirements: string[];
-
 }
 export interface CourseUpdateDTO {
   id: number;
@@ -50,22 +49,20 @@ export interface CourseUpdateDTO {
 export interface LessonCDto {
   articleContent: string;
   title: string;
-  videoUrl: string;
+  videoUrl: File;
   duration: number;
-  isDeleted: boolean | null;
+  isDeleted: false;
   type: string;
-  id?: number; 
+
   sectionId: number;
- 
 }
 
 export interface SectionCDTO {
-  id?:number;
+  id?: number;
   title: string;
   courseId: number;
   noLessons: number;
   lessons: LessonCDto[];
-  
 }
 export interface LessonUDto {
   id: number; // لازم للتمييز عند التحديث
@@ -78,10 +75,9 @@ export interface LessonUDto {
   isDeleted?: boolean;
 }
 export interface SectionUDTO {
-  id:number; 
+  id: number;
   title: string;
   duration: number;
   noLessons: number;
   courseId: number;
 }
-
