@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { IAuthState, IUser } from '../../types/auth';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -25,9 +25,10 @@ export class AuthService {
     return this._authState.asReadonly();
   }
 
-  get isOwner(): boolean {
+  public isOwner = computed(() => {
+    console.log('[computed] checking isOwner', this._authState().user?.roles);
     return this._authState().user?.roles.includes('Owner') ?? false;
-  }
+  });
 
   logout() {
     //clear set cookies from browser
@@ -70,15 +71,18 @@ export class AuthService {
       .subscribe({
         next: (user) => {
           console.log(user);
-          if (!user?.roles.includes('Admin') && !user?.roles.includes('Owner')) {
+          if (
+            !user?.roles.includes('Admin') &&
+            !user?.roles.includes('Owner')
+          ) {
             throw new Error('Access Denied');
           }
 
-          this._authState.update((pre) => {
-            pre.user = user;
-            pre.isAuthenticated = true;
-            pre.dialogVisible = false;
-            return pre;
+          this._authState.set({
+            user: user,
+            error: '',
+            isAuthenticated: true,
+            dialogVisible: false,
           });
           console.log('login success', user);
           this.router.navigate(['/']);
@@ -87,7 +91,7 @@ export class AuthService {
           console.error(error);
 
           this._authState.update((pre) => {
-            pre.error = error?.error?? error.message;
+            pre.error = error?.error ?? error.message;
             return pre;
           });
         },
@@ -127,7 +131,7 @@ export class AuthService {
         this.router.navigate(['/login']);
         console.error('rrr');
         this._authState.update((pre) => {
-          pre.error = error?.error?? error.message;
+          pre.error = error?.error ?? error.message;
           return pre;
         });
       },

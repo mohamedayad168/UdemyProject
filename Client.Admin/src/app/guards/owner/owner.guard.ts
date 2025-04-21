@@ -7,7 +7,7 @@ export const ownerGuard: CanActivateFn = (route, state) => {
   let router = inject(Router);
 
   if (
-    authService.isOwner
+    authService.isOwner()
   ) {
     return true;
   } else {
