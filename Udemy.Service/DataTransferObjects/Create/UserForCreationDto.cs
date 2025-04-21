@@ -40,7 +40,7 @@ public class UserForCreationDto
     public string City { get; set; }
 
     [StringLength(20, ErrorMessage = "Maximum length for the State is 20 characters.")]
-    public string? State { get; set; }
+    public string State { get; set; }
 
     [Required(ErrorMessage = "Age Is Required Field")]
     [Range(minimum: 16, maximum: 65, ErrorMessage = "The Age must be between 16 and 65.")]

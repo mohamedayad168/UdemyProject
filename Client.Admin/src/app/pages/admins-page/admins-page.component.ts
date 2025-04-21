@@ -4,7 +4,7 @@ import {
   CrudTableComponent,
   FormFieldConfig,
   IColumnConfig,
- } from '../../components/shared/crud-table/crud-table.component';
+} from '../../components/shared/crud-table/crud-table.component';
 import { IAdmin } from '../../types/admin';
 
 @Component({
@@ -73,58 +73,81 @@ export class AdminsPageComponent {
   createFormConfigs: FormFieldConfig[] = [
     {
       key: 'email',
-      type: 'text',
+      type: 'email',
       label: 'Email',
+      required: true,
     },
     {
       key: 'userName',
       type: 'text',
       label: 'UserName',
+      required: true,
     },
     {
       key: 'password',
       type: 'password',
       label: 'Password',
+      required: true,
     },
     {
       key: 'confirmPassword',
       type: 'password',
       label: 'Confirm Password',
+      required: true,
     },
     {
       key: 'phoneNumber',
       type: 'text',
       label: 'Phone Number',
+      required: true,
     },
     {
       key: 'firstName',
       type: 'text',
       label: 'First Name',
+      required: true,
     },
     {
       key: 'lastName',
       type: 'text',
       label: 'Last Name',
+      required: true,
     },
     {
       key: 'countryName',
       type: 'text',
       label: 'Country Name',
+      required: true,
     },
     {
       key: 'city',
       type: 'text',
       label: 'City',
+      required: true,
+    },
+    {
+      key: 'state',
+      type: 'text',
+      label: 'State',
+      required: true,
     },
     {
       key: 'age',
-      type: 'text',
+      type: 'number',
       label: 'Age',
+      required: true,
+      min: 12,
+      max: 60,
     },
     {
       key: 'gender',
-      type: 'text',
+      type: 'radio',
       label: 'Gender',
+      required: true,
+      options: [
+        { label: 'Male', value: 'M' },
+        { label: 'Female', value: 'F' },
+      ],
     },
   ];
 

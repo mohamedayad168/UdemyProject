@@ -19,4 +19,5 @@ namespace Udemy.Service.DataTransferObjects.Create
 
         public List<LessonCDto> Lessons { get; set; } = new List<LessonCDto>();
     }
+
 }

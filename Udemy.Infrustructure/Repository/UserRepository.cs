@@ -32,21 +32,27 @@ public class UserRepository(
                                where Role.Name == roleName
                                select user;
 
-      
+        query = query.Where(user =>
+            deletionType == DeletionType.All ? true :
+            deletionType == DeletionType.Deleted ? user.IsDeleted :
+            !user.IsDeleted
+);
+
         if (searchReq.SearchTerm!.Length > 0)
         {
-            query = FindAll(trackChanges, deletionType)
-            .Where(x => 
-                x.FirstName.ToLower().Contains(searchReq.SearchTerm!.Trim().ToLower()) ||
-                x.LastName.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
-                x.Email.ToLower().Contains(searchReq.SearchTerm.Trim().ToLower()) ||
-                EF.Functions.Like(x.PhoneNumber, searchReq.SearchTerm!.Trim())
-             );
+            string term = searchReq.SearchTerm.Trim().ToLower();
+
+            query = query.Where(x =>
+                x.FirstName.ToLower().Contains(term) ||
+                x.LastName.ToLower().Contains(term) ||
+                x.Email.ToLower().Contains(term) ||
+                EF.Functions.Like(x.PhoneNumber, $"%{term}%")
+            );
         }
-        else
-        {
-            query = FindAll(trackChanges, deletionType);
-        }
+        //else
+        //{
+        //    query = FindAll(trackChanges, deletionType);
+        //}
 
 
         var courses = await query

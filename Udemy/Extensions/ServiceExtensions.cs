@@ -32,6 +32,7 @@ public static class ServiceExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("Default"));
+            options.EnableSensitiveDataLogging();
         });
     }
     public static void ConfigureRepositoryManager(this IServiceCollection services)

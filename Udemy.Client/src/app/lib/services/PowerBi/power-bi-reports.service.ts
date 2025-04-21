@@ -24,7 +24,18 @@ export class PowerBiReportsService {
       "'";
     return reportUrl;
   }
+  getInstructorReportUrl(): string | null {
+    // Get the current user's report URL from the environment variables
+    const powerBiApiUrl = environment.instructorReportUrl;
+    const currentUser = this.accoutService.currentUser;
+    console.log('Current user:', currentUser());
+    const reportUrl =
+    powerBiApiUrl +
+      "&$filter=DimInstructor/Id eq " +
+      currentUser()?.id ;
 
+    return reportUrl;
+  }
 
 
 

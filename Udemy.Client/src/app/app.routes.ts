@@ -36,6 +36,11 @@ import { CreatesectionlessonComponent } from './instructor/createsectionlesson/c
 
 import { instructorGurdGuard } from './gurds/instructor-gurd.guard';
 import { UserAuthGuard } from './gurds/user-gurd.guard';
+import { InstructorAddExamComponent } from './instructor/instructor-add-exam/instructor-add-exam.component';
+import { InstructorBioComponent } from './lib/components/page-specefic/course-details/instructor-bio/instructor-bio.component';
+import { InstructorReportComponent } from './instructor/instructor-report/instructor-report.component';
+import { authGuard } from './lib/gaurds/auth.guard';
+import { studentGurdGuard } from './gurds/student-gurd.guard';
 
 export const routes: Routes = [
   {
@@ -79,18 +84,22 @@ export const routes: Routes = [
   {
     title: 'Cart',
     path: 'cart',
+    canActivate:[authGuard],
     component: CartPageComponent,
   },
   {
     path: 'checkout',
+    canActivate:[authGuard],
     component: CheckoutComponent,
   },
   {
     path: 'checkout/success',
+    canActivate:[authGuard],
     component: CheckoutSuccessComponent,
   },
   {
     title: 'My Learning',
+    canActivate:[authGuard,studentGurdGuard],
     path: 'my-learning',
     component: MyLearningPageComponent,
   },
@@ -103,6 +112,10 @@ export const routes: Routes = [
     path: 'instructor/get-started',
     component: InstructorGetstartedComponent,
     canActivate: [instructorGurdGuard],
+  },
+  {
+    path: 'instructor/report',
+    component: InstructorReportComponent,
   },
   {
     path: 'instructor/instructor-audiance',
@@ -140,6 +153,7 @@ export const routes: Routes = [
   },
   {
     path: 'course/view/:id',
+    canActivate:[authGuard,studentGurdGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
@@ -164,14 +178,20 @@ export const routes: Routes = [
   },
   {
     path: 'course/view/:id/lesson/:lessonId',
+    canActivate:[authGuard,studentGurdGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
   },
   { path: 'instructors/details/:id', component: InstructordetailsComponent },
   {
     path: 'course/view/:id',
+    canActivate:[authGuard,studentGurdGuard],
     component: CourseViewComponent,
     data: { hideHeader: true },
+  },
+  {
+    path: 'instructor/courses/:courseId/add-exam',
+    component: InstructorAddExamComponent,
   },
   {
     path: 'course/view/:id/lesson',
@@ -188,7 +208,9 @@ export const routes: Routes = [
     component: EditCourseComponent,
     canActivate: [instructorGurdGuard],
   },
-  { path: 'edit-instructor-Page', component: EditinstructorPageComponent, 
+  {
+    path: 'edit-instructor-Page',
+    component: EditinstructorPageComponent,
     canActivate: [instructorGurdGuard],
   },
   {

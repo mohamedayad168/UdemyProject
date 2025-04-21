@@ -10,6 +10,7 @@ using Udemy.Core.Entities;
 using Udemy.Core.Exceptions;
 using Udemy.Core.IRepository;
 using Udemy.Core.ReadOptions;
+using Udemy.Service.DataTransferObjects.Create;
 using Udemy.Service.DataTransferObjects.Read;
 using Udemy.Service.IService;
 
@@ -88,5 +89,49 @@ namespace Udemy.Service.Service
 
             return quizDto;
         }
+
+        public async Task<QuizWithAnswersRDTO> CreateQuizAsync(QuizCDTO quizCDTO)
+        {
+            //check course exists
+            var course = await _repositoryManager.Courses.FindByCondition(c => c.Id == quizCDTO.CourseId, false).FirstOrDefaultAsync()
+                ?? throw new NotFoundException($"Course with id: {quizCDTO.CourseId} doesn't exist.");
+            //check if course has a quiz
+            var q =await _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == quizCDTO.CourseId, false).AnyAsync();
+            if (q)
+            {
+                throw new BadRequestException($"Course with id: {quizCDTO.CourseId} already has a quiz.");
+            }
+            //create new quiz
+            var newQuiz = quizCDTO.MapToEntity();
+
+
+             _repositoryManager.Quizzes.Create(newQuiz);
+            await _repositoryManager.SaveAsync();
+
+            return new QuizWithAnswersRDTO(newQuiz);
+
+
+        }
+
+        public async Task DeleteQuizAsync(int courseId)
+        {
+            //check course exists
+            var course = await _repositoryManager.Courses.FindByCondition(c => c.Id == courseId, false).FirstOrDefaultAsync()
+                ?? throw new NotFoundException($"Course with id: {courseId} doesn't exist.");
+            //check if course has a quiz
+            var q = await _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == courseId, false).AnyAsync();
+            if (!q)
+            {
+                throw new BadRequestException($"Course with id: {courseId} doesn't have a quiz.");
+            }
+            //delete quiz
+            var quiz = await _repositoryManager.Quizzes.FindByCondition(q => q.CourseId == courseId, true).Include(q => q.QuizQuestion).FirstOrDefaultAsync();
+               
+
+             _repositoryManager.Quizzes.DeleteQuizWithQuestionsAsync(quiz);
+            await _repositoryManager.SaveAsync();
+        }
+
+
     }
 }

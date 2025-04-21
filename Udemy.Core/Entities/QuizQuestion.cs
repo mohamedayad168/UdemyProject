@@ -15,8 +15,9 @@ namespace Udemy.Core.Entities
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
 
+        //Multiple choice True or False
         [Required]
-        public string Type { get; set; }
+        public string Type { get; set; } 
 
 
         [Required]
@@ -31,6 +32,7 @@ namespace Udemy.Core.Entities
 
         [Required]
         public string AnswerTxt { get; set; }
+        //A B C or True False
 
     }
 }
