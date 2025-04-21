@@ -39,7 +39,7 @@ namespace Udemy.Service.Service
             return _mapper.Map<IEnumerable<LessonRDto>>(lessons);
         }
 
-        public async Task<bool> CreatelessonAsync(LessonCDto lessoncDto)
+        public async Task<Lesson> CreatelessonAsync(LessonCDto lessoncDto)
         {
 
             string? videoUrl = null;
@@ -51,7 +51,7 @@ namespace Udemy.Service.Service
             lesson.VideoUrl = videoUrl;
             await _repository.Lessons.CreatelessonAsync(lesson);
             await _repository.SaveAsync();
-            return (true);
+            return (lesson);
         }
 
         public async Task<bool> UpdateAsync(int id, LessonUDto lessonDto)

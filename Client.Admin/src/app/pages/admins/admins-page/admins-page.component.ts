@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { AdminsService } from '../../services/admins/admins.service';
+import { AdminsService } from '../../../services/admins/admins.service';
 import {
   CrudTableComponent,
   FormFieldConfig,
+  IActionButton,
   IColumnConfig,
-} from '../../components/shared/crud-table/crud-table.component';
-import { IAdmin } from '../../types/admin';
+} from '../../../components/shared/crud-table/crud-table.component';
+import { IAdmin } from '../../../types/admin';
 
 @Component({
   selector: 'app-admins-page',
@@ -29,6 +30,44 @@ export class AdminsPageComponent {
     gender: '',
     roles: ['Admin'],
   };
+
+  buttons: IActionButton[] = [
+    {
+      label: 'Deleted Admins',
+      icon: 'pi pi-trash',
+      severity: 'danger',
+      action: () => {
+        this.adminsService.apiRoute = 'api/admins/deleted';
+
+        this.adminsService.getPage({
+          orderBy: 'id',
+          pageNumber: 1,
+          pageSize: 10,
+          searchTerm: '',
+        });
+
+        this.adminsService.deletable.set(false);
+        this.adminsService.editable.set(false);
+      },
+    },
+    {
+      label: 'Active Admins',
+      icon: 'pi pi-user',
+      severity: 'success',
+      action: () => {
+        this.adminsService.apiRoute = 'api/admins';
+
+        this.adminsService.getPage({
+          orderBy: 'id',
+          pageNumber: 1,
+          pageSize: 10,
+          searchTerm: '',
+        });
+        this.adminsService.editable.set(true);
+        this.adminsService.deletable.set(true);
+      },
+    },
+  ];
 
   columnConfigs: IColumnConfig[] = [
     {

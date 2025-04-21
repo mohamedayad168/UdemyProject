@@ -1,3 +1,15 @@
-<div class="bg-secondary flex flex-col md:flex-row gap-4">
-    
+<div class="bg-secondary flex flex-col gap-4 p-4 rounded">
+  @for (KeyConfig of KeysConfig(); track $index) {
+  <div
+    class="grid md:grid-cols-2 justify-between gap-1 w-full border-gray-500/30 p-4"
+    [class.border-b]="!$last"
+  >
+    <div class="text-sm  text-primary">
+      {{ KeyConfig.label }}
+    </div>
+    <div class="text font-semibold text-secondary">
+      {{ item()[KeyConfig.key] }}
+    </div>
+  </div>
+  }
 </div>
