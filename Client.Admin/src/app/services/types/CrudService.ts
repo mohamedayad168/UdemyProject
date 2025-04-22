@@ -171,7 +171,7 @@ export class CrudService<T> {
   // }
 
   checkLoading() {
-    if (this.isLoading()) throw new Error(this.loadingMessage);
-    this.isLoading.set(true);
+    // if (this.isLoading()) throw new Error(this.loadingMessage);
+    // this.isLoading.set(true);
   }
 }

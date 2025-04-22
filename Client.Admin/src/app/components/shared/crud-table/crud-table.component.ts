@@ -174,6 +174,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   emptyItem = input.required<T>();
   isPaginated = input<boolean>(true);
   showToolbar = input<boolean>(false);
+  addBtn = input<boolean>(false);
 
   newItem!: any;
   itemDetailsLinkConfig = input<{ key: string; route: string } | null>(null);

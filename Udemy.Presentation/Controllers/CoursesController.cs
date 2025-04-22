@@ -53,6 +53,9 @@ namespace Udemy.Presentation.Controllers
         [Authorize(Roles = "Admin, Owner")]
         public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetDeletedPage([FromQuery] PaginatedSearchReq searchReq)
         {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
             var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
             return Ok(paginatedResponse);
         }

@@ -44,10 +44,12 @@ export class AdminsPageComponent {
           pageNumber: 1,
           pageSize: 10,
           searchTerm: '',
-        });
+        }).add(() => {
+          this.adminsService.deletable.set(false);
+          this.adminsService.editable.set(false);
+        })
 
-        this.adminsService.deletable.set(false);
-        this.adminsService.editable.set(false);
+        
       },
     },
     {
@@ -62,9 +64,11 @@ export class AdminsPageComponent {
           pageNumber: 1,
           pageSize: 10,
           searchTerm: '',
-        });
-        this.adminsService.editable.set(true);
-        this.adminsService.deletable.set(true);
+        }).add(() => {
+          this.adminsService.editable.set(true);
+          this.adminsService.deletable.set(true);
+        })
+        
       },
     },
   ];

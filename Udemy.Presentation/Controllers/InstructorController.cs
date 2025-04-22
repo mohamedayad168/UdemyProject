@@ -159,7 +159,7 @@ namespace Udemy.API.Controllers
 
 
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = "Instructor,Owner,Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var isDeleted = await _serviceManager.InstructorService.DeleteAsync(id);
