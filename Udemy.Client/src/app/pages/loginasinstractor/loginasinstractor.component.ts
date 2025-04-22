@@ -29,8 +29,9 @@ export class LoginasinstractorComponent {
 
     this.accountService.loginIns(this.loginForm.value).subscribe({
       next: () => {
-        this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl('/instructor/home');
+        this.accountService.getUserInfo().subscribe({
+          next: () => this.router.navigateByUrl('instructor/home'),
+        });
       },
       error: (error) => (this.errorMessage = 'invalid email or password'),
     });

@@ -14,6 +14,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../../lib/interceptors/snackbar.service';
 
 @Component({
   selector: 'app-add-instructor',
@@ -27,6 +28,7 @@ export class AddInstructorComponent {
   private InstructorService = inject(InstructorService);
   isCheckingEmail = false;
   isCheckingUsername = false;
+  snackbarService = inject(SnackbarService);
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.profileForm = this.fb.group(
@@ -149,8 +151,10 @@ export class AddInstructorComponent {
         this.InstructorService.saveSocialMediaLinks(socialMediaLinks).subscribe(
           {
             next: () => {
-              alert('Profile and social media links saved successfully!');
-              this.router.navigate(['instructor/home']);
+              // alert('Profile and social media links saved successfully!');
+              // this.router.navigate(['instructor/home']);
+              this.snackbarService.success('Instructor Created Successfully');
+              this.router.navigateByUrl('loginasinstrctor');
             },
             error: (err) => {
               console.error('Error saving social media links:', err);
