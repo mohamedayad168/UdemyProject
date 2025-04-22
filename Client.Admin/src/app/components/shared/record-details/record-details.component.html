@@ -1,15 +1,96 @@
-<div class="bg-secondary flex flex-col gap-4 p-4 rounded">
-  @for (KeyConfig of KeysConfig(); track $index) {
+<div class="flex flex-col gap-4">
+  <!-- optional side bar -->
   <div
-    class="grid md:grid-cols-2 justify-between gap-1 w-full border-gray-500/30 p-4"
-    [class.border-b]="!$last"
+    *ngIf="sideBarConfig()"
+    class="bg-secondary flex flex-col gap-4 p-4 rounded  h-fit"
   >
-    <div class="text-sm  text-primary">
-      {{ KeyConfig.label }}
-    </div>
-    <div class="text font-semibold text-secondary">
-      {{ item()[KeyConfig.key] }}
-    </div>
+    @for (KeyConfig of sideBarConfig()?.items; track $index){
+    <p-button
+      label="{{ KeyConfig.label }}"
+      icon="pi pi-plus"
+      class=""
+      icon=""
+      outlined
+      severity="info"
+       (onClick)="handleNavigation(KeyConfig)"
+    />
+
+    }
   </div>
-  }
+
+  <div class="bg-secondary flex flex-col gap-4 p-4 rounded flex-1">
+    @for (KeyConfig of KeysConfig(); track $index) { @switch (KeyConfig.type) {
+    @case ("array") {
+    <div
+      class="grid gap-4 w-full border-gray-500/30 p-4"
+      [class.border-b]="!$last"
+    >
+      <div
+        class="text-sm text-primary border-b border-gray-500/70 p-2 max-w-28"
+      >
+        {{ KeyConfig.label }}
+      </div>
+      @for (section of item()[KeyConfig.key!]; track $index) {
+      <div class="border-yellow-500/70" [class.border-b]="!$last">
+        <!--  -->
+        @for (key of KeyConfig.items; track $index) {
+        <div class="grid md:grid-cols-2 justify-between gap-1 w-full p-1">
+          <div class="text-sm text-primary">
+            {{ key.label }}
+          </div>
+          <div class="text font-semibold text-secondary">
+            {{ section[key.key!] }}
+          </div>
+        </div>
+        }
+        <!--  -->
+      </div>
+      }
+    </div>
+    }
+    <!--  -->
+    @case("image") {
+    <div
+      class="grid md:grid-cols-2 justify-between gap-1 w-full border-gray-500/30 p-4"
+      [class.border-b]="!$last"
+    >
+      <div class="text-sm text-primary">
+        {{ KeyConfig.label }}
+      </div>
+      <img src="{{ item()[KeyConfig.key!] }}" alt="">
+    </div>
+    }
+    <!--  -->
+    @case("video") {
+    <div
+      class="grid md:grid-cols-2 justify-between gap-1 w-full border-gray-500/30 p-4"
+      [class.border-b]="!$last"
+    >
+      <div class="text-sm text-primary">
+        {{ KeyConfig.label }}
+      </div>
+      <video controls class="w-full h-32 object-cover">
+        <source src="{{ item()[KeyConfig.key!] }}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+    </div>
+    }
+    <!--  -->
+    @default {
+    <div
+      class="grid md:grid-cols-2 justify-between gap-1 w-full border-gray-500/30 p-4"
+      [class.border-b]="!$last"
+    >
+      <div class="text-sm text-primary">
+        {{ KeyConfig.label }}
+      </div>
+      <div class="text font-semibold text-secondary">
+        {{ item()[KeyConfig.key!] }}
+      </div>
+    </div>
+    }
+    <!--  -->
+    } }
+  </div>
 </div>

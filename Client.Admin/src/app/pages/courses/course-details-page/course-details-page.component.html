@@ -1,1 +1,7 @@
-<p>course-details-page works!</p>
+<div>
+  <!-- <div class="flex flex-col gap-4 mb-4">
+        <a [routerLink]="[`/instructors/${id()}/courses`]" routerLinkActive="router-link-active"  href="">Courses</a>
+    </div> -->
+  <app-record-details [sideBarConfig]="sideBarConfig" [apiRoute]="`api/courses/${id()}?detailed=true`" [KeysConfig]="keysConfig" />
+
+</div>

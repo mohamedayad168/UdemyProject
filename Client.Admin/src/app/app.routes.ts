@@ -12,6 +12,7 @@ import { ownerGuard } from './guards/owner/owner.guard';
 import { AppComponent } from './app.component';
 import { InstructorDetailsPageComponent } from './pages/instructors/instructor-details-page/instructor-details-page.component';
 import { InstructorCoursesPageComponent } from './pages/instructors/instructor-courses-page/instructor-courses-page.component';
+import { CourseDetailsPageComponent } from './pages/courses/course-details-page/course-details-page.component';
 
 export const routes: Routes = [
   {
@@ -38,8 +39,19 @@ export const routes: Routes = [
       {
         path: 'courses',
         title: 'Courses',
-        component: CoursesPageComponent,
-      },
+        children:[
+          {
+            path: '',
+            title: 'Courses',
+            component: CoursesPageComponent,
+          },
+          {
+            path: ':id',
+            title: 'Course Details',
+            component: CourseDetailsPageComponent,
+          },
+        ],
+       },
       {
         path: 'students',
         title: 'Students',

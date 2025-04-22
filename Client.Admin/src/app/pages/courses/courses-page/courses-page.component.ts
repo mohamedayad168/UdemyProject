@@ -129,16 +129,13 @@ export class CoursesPageComponent implements OnInit {
         label: 'change',
         severity: 'info',
         icon: 'check',
-        action: (item) => {
+        action: (event,item) => {
+          event!.stopPropagation();
           this.coursesService.toggleApproval(item.id).subscribe({
             next: (data) => {
               this.coursesService.isLoading.set(false);
               this.loadingService.loading.set(false);
-              this.coursesService.getPage({
-                pageNumber: 1,
-                pageSize: 10,
-                orderBy: 'id',
-              })
+              this.coursesService.getPage()
             },
             error: (error) => {
               console.error(error);
@@ -148,6 +145,12 @@ export class CoursesPageComponent implements OnInit {
       },
     },
   ];
+
+
+  itemDetailsLinkConfig={
+    route: '/courses',
+    key: 'id',
+  }
 
   /**
  * [key: string]: any;

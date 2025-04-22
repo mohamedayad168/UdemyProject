@@ -59,6 +59,17 @@ export class InstructorDetailsPageComponent {
     },
   ];
 
+  sideBarConfig = {
+    title: 'Courses',
+    items: [
+      {
+        label: 'Courses',
+        key: 'id',
+        route: '/instructors/:id/courses',
+      }
+    ],
+  }
+  
   activatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {

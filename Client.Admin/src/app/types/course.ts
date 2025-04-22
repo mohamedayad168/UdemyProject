@@ -50,3 +50,64 @@ export interface ICourse {
     discount: number;
   }
   
+  export interface ICourseDetails {
+    id:                 number;
+    title:              string;
+    description:        string;
+    status:             string;
+    courseLevel:        string;
+    discount:           number;
+    price:              number;
+    duration:           number;
+    language:           string;
+    imageUrl:           string;
+    videoUrl:           string;
+    noSubscribers:      number;
+    isFree:             boolean;
+    bestSeller:         string;
+    currentPrice:       number;
+    rating:             number;
+    subCategory:        Category;
+    instructor:         Instructor;
+    courseGoals:        string[];
+    courseRequirements: string[];
+    sections:           Section[];
+}
+
+export interface Instructor {
+    id:            number;
+    name:          null;
+    email:         null;
+    userName:      string;
+    title:         string;
+    bio:           string;
+    totalCourses:  null;
+    totalReviews:  null;
+    totalStudents: null;
+}
+
+export interface Section {
+    id:        number;
+    title:     string;
+    duration:  number;
+    noLessons: number;
+    lessons:   Lesson[];
+}
+
+export interface Lesson {
+    id:             number;
+    title:          string;
+    duration:       number;
+    type:           string;
+    videoUrl:       null | string;
+    articleContent: null | string;
+}
+
+export interface Category {
+    id:           number;
+    createdDate:  Date;
+    modifiedDate: null;
+    isDeleted:    boolean;
+    name:         string;
+    category?:    Category;
+}
