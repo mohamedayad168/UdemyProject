@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { AccountService } from '../../lib/services/account.service';
 
 @Component({
   selector: 'app-instructor-home',
@@ -9,6 +10,8 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class InstructorHomeComponent {
   constructor(private router: Router) {}
+
+
   goToCourseCreate(){
     this.router.navigate(['/createcourse/FGCOURSE']);
   }
