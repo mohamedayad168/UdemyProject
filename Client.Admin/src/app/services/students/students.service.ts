@@ -3,10 +3,11 @@ import { IStudent } from '../../types/student';
 import { CrudService } from '../../services/types/CrudService';
 import { environment } from '../../../environments/environment';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudentsService extends CrudService<IStudent> {
-override apiRoute = 'api/students';
+  override apiRoute = 'api/students';
+  override baseDeleteUrl = 'api/students';
 
   override create(newItem: any) {
     const data = new FormData();

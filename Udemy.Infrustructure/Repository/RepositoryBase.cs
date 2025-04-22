@@ -28,8 +28,11 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class, IBaseEntity
             //if deletion type not specified
             switch (deletionType)
             {
-                case DeletionType.Deleted | DeletionType.NotDeleted:
-                    query = dbContext.Set<T>().Where(x => x.IsDeleted == (deletionType == DeletionType.Deleted));
+                case DeletionType.Deleted:
+                    query = dbContext.Set<T>().Where(x => x.IsDeleted );
+                    break;
+                case  DeletionType.NotDeleted:
+                    query = dbContext.Set<T>().Where(x => !x.IsDeleted );
                     break;
                 default:
                     query = dbContext.Set<T>();

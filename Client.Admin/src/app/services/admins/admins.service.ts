@@ -9,6 +9,7 @@ import { finalize } from 'rxjs';
 })
 export class AdminsService extends CrudService<IAdmin> {
   override apiRoute = 'api/admins';
+  override baseDeleteUrl = 'api/admins';
   override create(newItem: any) {
     this.checkLoading();
     const data = new FormData();

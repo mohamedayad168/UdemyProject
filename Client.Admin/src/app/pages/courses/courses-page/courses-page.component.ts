@@ -162,8 +162,7 @@ export class CoursesPageComponent implements OnInit {
             searchTerm: '',
           });
   
-          this.coursesService.deletable.set(false);
-          this.coursesService.editable.set(false);
+           this.coursesService.editable.set(false);
         },
       },
       {
@@ -179,8 +178,7 @@ export class CoursesPageComponent implements OnInit {
             pageSize: 10,
             searchTerm: '',
           });
-          this.coursesService.editable.set(true);
-          this.coursesService.deletable.set(true);
+           this.coursesService.deletable.set(true);
         },
       },
     ];

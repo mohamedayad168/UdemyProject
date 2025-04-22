@@ -7,6 +7,7 @@ import { finalize, Observable } from 'rxjs';
 
 export class CrudService<T> {
   apiRoute: string = '';
+  baseDeleteUrl: string = '';
   isLoading = signal(false);
   loadingMessage = 'A different request is in progress';
   editable = signal(false);
@@ -83,7 +84,7 @@ export class CrudService<T> {
     this.pageConfig = searchRequest;
 
     this.checkLoading();
-
+    console.log(`${this.urls.getPage}?`);
     return this.httpClient
       .get(
         `${this.urls.getPage}?` +
@@ -130,14 +131,14 @@ export class CrudService<T> {
     this.checkLoading();
 
     if (Array.isArray(idOrArgs)) {
-      return this.httpClient.delete(`${this.urls.delete}/${idOrArgs}`).pipe(
+      return this.httpClient.delete(`${environment.apiUrl}/${this.baseDeleteUrl}/${idOrArgs}`).pipe(
         finalize(() => {
           this.isLoading.set(false);
         })
       );
     }
 
-    return this.httpClient.delete(`${this.urls.delete}/${idOrArgs}`).pipe(
+    return this.httpClient.delete(`${environment.apiUrl}/${this.baseDeleteUrl}/${idOrArgs}`).pipe(
       finalize(() => {
         this.isLoading.set(false);
       })

@@ -298,7 +298,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
   deleteProduct(newItem: T) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ?',
+      message: 'Are you sure you want to remove ?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -311,7 +311,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
-                detail: 'Deleted Successfully',
+                detail: 'Removed Successfully',
                 life: 3000,
               });
               this.crudService().page.update((val) => {

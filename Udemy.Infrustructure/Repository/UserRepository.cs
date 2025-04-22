@@ -116,4 +116,11 @@ public class UserRepository(
     {
         user.IsDeleted = true;
     }
+    public async Task DeleteUser(int id)
+    {
+        var user =await dbContext.Users.FindAsync(id);
+        user.IsDeleted = !user.IsDeleted;
+        await dbContext.SaveChangesAsync();
+
+    }
 }

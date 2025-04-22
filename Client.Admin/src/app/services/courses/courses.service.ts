@@ -9,6 +9,7 @@ import { finalize } from 'rxjs';
 })
 export class CoursesService extends CrudService<ICourse> {
   override apiRoute = 'api/courses';
+  override baseDeleteUrl = 'api/courses';
   override create(newItem: any) {
     this.checkLoading();
 

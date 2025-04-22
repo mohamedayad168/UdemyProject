@@ -9,6 +9,7 @@ import { finalize } from 'rxjs';
 })
 export class InstructorsService extends CrudService<IInstructor> {
   override apiRoute = 'api/instructors';
+  override baseDeleteUrl = 'api/instructors';
 
   override create(newItem: any) {
     this.checkLoading();

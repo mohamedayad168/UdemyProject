@@ -55,9 +55,9 @@ namespace Udemy.Service.Service
 
             var course = await repository.Courses.GetCourseDetailsAsync(id, trackChanges);
 
-            var courseRating= await repository.Enrollments.FindByCondition(e => e.CourseId == id, trackChanges).AverageAsync(e => e.Rating);
+            var courseRating = await repository.Enrollments.FindByCondition(e => e.CourseId == id, trackChanges).AverageAsync(e => e.Rating);
 
-            if(course is not null) 
+            if (course is not null)
                 course.Rating = courseRating;
 
             return course is null ?
@@ -171,11 +171,19 @@ namespace Udemy.Service.Service
 
         public async Task DeleteAsync(int id)
         {
-            var course = await repository.Courses.GetByIdAsync(id, true);
+            var course = await repository.Courses.FindAll(true, DeletionType.All).Where(c => c.Id == id).FirstAsync();
             if (course == null)
                 throw new Exception("Course not found");
 
             await repository.Courses.DeleteCourseAsync(course);
+        }
+
+        public async Task<Course> GetByIdAsync2(int id)
+        {
+            var course = await repository.Courses.FindAll(true, DeletionType.All).Where(c => c.Id == id).FirstAsync();
+            if (course == null)
+                throw new Exception("Course not found");
+            return course;
         }
 
         public async Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId)

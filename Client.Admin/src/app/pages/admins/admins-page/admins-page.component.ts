@@ -45,7 +45,7 @@ export class AdminsPageComponent {
           pageSize: 10,
           searchTerm: '',
         }).add(() => {
-          this.adminsService.deletable.set(false);
+          // this.adminsService.deletable.set(false);
           this.adminsService.editable.set(false);
         })
 
@@ -66,7 +66,7 @@ export class AdminsPageComponent {
           searchTerm: '',
         }).add(() => {
           this.adminsService.editable.set(true);
-          this.adminsService.deletable.set(true);
+          // this.adminsService.deletable.set(true);
         })
         
       },

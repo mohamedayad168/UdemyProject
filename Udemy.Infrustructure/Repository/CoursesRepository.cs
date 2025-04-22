@@ -191,9 +191,10 @@ namespace Udemy.Infrastructure.Repository
             return coursesCount;
         }
 
-        public async Task DeleteCourseAsync(Course course)
+        public async Task DeleteCourseAsync(Course courseToDelete)
         {
-            course.IsDeleted = true;
+            var course = await context.Courses.FindAsync(courseToDelete.Id);
+            course!.IsDeleted = !course.IsDeleted;
             context.Courses.Update(course);
             await context.SaveChangesAsync();
         }
