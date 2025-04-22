@@ -179,7 +179,7 @@ export class UpdatecoursedetailsComponent implements OnInit {
       this.courseService.updateCourse(+this.courseId, formData).subscribe(
         () => {
           alert('Course updated successfully');
-          this.router.navigate(['/updatesectionlessondetails', this.courseId]);
+          this.router.navigate(['instructor/home']);
         },
         (error) => {
           console.error('Error updating course:', error);
@@ -195,6 +195,6 @@ export class UpdatecoursedetailsComponent implements OnInit {
       console.log('Form is invalid or missing courseId!');
       alert('Please ensure the form is correctly filled.');
     }
-
+    this.router.navigate(['instructor/home']);
   }
 }

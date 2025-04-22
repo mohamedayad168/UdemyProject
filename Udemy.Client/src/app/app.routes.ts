@@ -123,6 +123,10 @@ export const routes: Routes = [
     component: InstructorAudianceComponent,
     canActivate: [instructorGurdGuard],
   },
+  {
+    path: 'instructor/courses/:courseId/add-exam',
+    component: InstructorAddExamComponent,
+  },
 
   {
     path: 'teach',

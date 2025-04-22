@@ -10,7 +10,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import {
   Question,
@@ -20,6 +20,7 @@ import {
   QuizQuestionCDTO,
 } from '../../lib/models/quiz';
 import { HttpClient } from '@angular/common/http';
+import { AccountService } from '../../lib/services/account.service';
 
 @Component({
   selector: 'app-quiz-management',
@@ -39,9 +40,11 @@ export class InstructorAddExamComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private router: Router,
+    private accountService:AccountService
   ) {}
-
+intructorId :number|undefined
   ngOnInit(): void {
     // Extract courseId from route parameters
     this.route.paramMap.subscribe((params) => {
@@ -49,6 +52,7 @@ export class InstructorAddExamComponent implements OnInit {
       this.courseId = courseId ? +courseId : 0;
       this.newQuiz.CourseId = this.courseId;
       this.fetchQuizzes();
+      this.intructorId = this.accountService.currentUser()?.id
     });
   }
 
@@ -107,6 +111,7 @@ export class InstructorAddExamComponent implements OnInit {
             CourseId: this.courseId,
             QuizQuestions: [],
           };
+          this.router.navigate([`instructors/${this.intructorId}/courses`])
         },
         error: (error) => {
           console.error('Error creating quiz:', error);

@@ -204,7 +204,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
 
       this.searchTerm
         .pipe(
-          debounceTime(500),
+          debounceTime(1500),
           distinctUntilChanged((prev, curr) => {
             // Always allow change if curr is empty (to trigger search)
             console.log('prev: ' + prev, 'cur: ' + curr);

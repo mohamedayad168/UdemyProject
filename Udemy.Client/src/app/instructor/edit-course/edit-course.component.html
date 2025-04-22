@@ -56,6 +56,7 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-shrink-0 space-x-2 mt-2 sm:mt-0">
+
                <!-- View Course Button (Icon) -->
                <a
                [routerLink]="['/instructors/courses/qna', course.id]"
@@ -72,11 +73,18 @@
               </a>
 
               <!-- Edit Course Button (Icon) -->
+
               <a
                 [routerLink]="['/updatecoursedetails', course.id]"
                 class="!text-yellow-600 px-2 hover:text-yellow-700 transition duration-300 whitespace-nowrap"
               >
                 <i class="fas fa-edit"> Edit </i>
+              </a>
+              <a
+                [routerLink]="[`/instructor/courses/${course.id}/add-exam`]"
+                class="!text-yellow-600 px-2 hover:text-yellow-700 transition duration-300 whitespace-nowrap"
+              >
+                <i class="fas fa-edit"> Add Quiz </i>
               </a>
 
               <!-- Delete Course Button (Icon) -->
