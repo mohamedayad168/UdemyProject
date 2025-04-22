@@ -16,7 +16,7 @@ namespace Udemy.Service.IService
         public Task<CourseRDTO?> GetByTitleAsync(string title, bool trackChanges);
         Task<bool> GetByTitleForValidation(string title, bool trackChanges);
         public Task<CourseRDTO> GetByIdAsync(int id, bool trackChanges);
-
+        public   Task<Course> GetByIdAsync2(int id);
         public Task<CourseDetailsRDto> GetCourseDetailsAsync(int id, bool trackChanges);
         Task<IEnumerable<CourseRDTO>> GetAllBySubcategoryId(int subcategoryId);
 

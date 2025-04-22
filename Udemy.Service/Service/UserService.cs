@@ -151,9 +151,9 @@ public class UserService(
 
     public async Task DeleteUserAsync(int id)
     {
-        var user = await GetUserAndCheckIfItExistsAsync(id);
+        //var user = await GetUserAndCheckIfItExistsAsync(id);
 
-        repository.User.DeleteUser(user);
+        await repository.User.DeleteUser(id);
 
         await repository.SaveAsync();
     }

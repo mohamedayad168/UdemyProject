@@ -15,6 +15,7 @@ public interface IUserRepository
     Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role);
     Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password);
     void DeleteUser(ApplicationUser user);
+    Task DeleteUser(int id);
     Task<ApplicationUser?> GetUserByEmailAsync(string email);
     Task<ApplicationUser?> GetUserByIdAsync(int id);
     Task<ApplicationUser?> GetUserByUsernameAsync(string username);

@@ -53,6 +53,9 @@ namespace Udemy.Presentation.Controllers
         [Authorize(Roles = "Admin, Owner")]
         public async Task<ActionResult<PaginatedRes<CourseRDTO>>> GetDeletedPage([FromQuery] PaginatedSearchReq searchReq)
         {
+            searchReq.SearchTerm ??= "";
+            searchReq.OrderBy ??= "title";
+
             var paginatedResponse = await serviceManager.CoursesService.GetPageAsync(searchReq, DeletionType.Deleted, false);
             return Ok(paginatedResponse);
         }
@@ -171,17 +174,27 @@ namespace Udemy.Presentation.Controllers
 
         public async Task<IActionResult> DeleteCourseAsync([FromRoute] int id)
         {
-            var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
-            if (course == null)
+            var course2 = await serviceManager.CoursesService.GetByIdAsync2(id);
+
+            if (course2 == null)
                 return NotFound(new { message = "Course not found." });
 
-            var instructor = await serviceManager.InstructorService.GetByIdAsync(course.InstructorId, true);
+            var instructor = await serviceManager.InstructorService.GetByIdAsync(course2.InstructorId, true);
+
             if (instructor == null)
                 return NotFound(new { message = "Instructor not found." });
 
-            await serviceManager.CoursesService.DeleteAsync(id);
+            if (course2.IsDeleted)
+            {
+                await serviceManager.CoursesService.DeleteAsync(id);
+                instructor.TotalCourses += 1;
+            }
+            else
+            {
+                await serviceManager.CoursesService.DeleteAsync(id);
+                instructor.TotalCourses -= 1;
+            }
 
-            instructor.TotalCourses -= 1;
             var instructorUpdated = await serviceManager.InstructorService.UpdateAsync(instructor.Id.Value, new InstructorUTO
             {
                 TotalCourses = instructor.TotalCourses
@@ -189,6 +202,12 @@ namespace Udemy.Presentation.Controllers
 
             if (!instructorUpdated)
                 return BadRequest(new { message = "Failed to update instructor." });
+
+            //var course = await serviceManager.CoursesService.GetByIdAsync(id, true);
+            //if (course == null)
+            //    return NotFound(new { message = "Course not found." });
+
+                     
 
             return NoContent();
         }

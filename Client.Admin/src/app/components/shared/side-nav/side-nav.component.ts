@@ -70,32 +70,41 @@ export class SideNavComponent {
         separator: true,
         styleClass: 'mt-2',
       },
+      // {
+      //   label: 'Dashboard',
+      //   items: [
+      //     {
+      //       label: 'BI',
+      //       icon: 'pi pi-book',
+      //        command: () => {
+      //         this.UiStateService.closeSideNav();
+      //         this.router.navigate(['/']);
+      //         console.log(this.UiStateService.sideNavOpen());
+      //       },
+      //     },
+      //     {
+      //       label: 'Custom',
+      //       icon: 'pi pi-book',
+      //        command: () => {
+      //         this.UiStateService.closeSideNav();
+      //         this.router.navigate(['/custom']);
+      //       },
+      //     },
+      //   ],
+      // },
+
       {
         label: 'Dashboard',
         items: [
           {
-            label: 'BI',
-            icon: 'pi pi-book',
+            label: 'Home',
+            icon: 'pi pi-chart-bar',
              command: () => {
               this.UiStateService.closeSideNav();
               this.router.navigate(['/']);
               console.log(this.UiStateService.sideNavOpen());
             },
           },
-          {
-            label: 'Custom',
-            icon: 'pi pi-book',
-             command: () => {
-              this.UiStateService.closeSideNav();
-              this.router.navigate(['/custom']);
-            },
-          },
-        ],
-      },
-
-      {
-        label: 'Table',
-        items: [
           {
             label: 'Courses',
             icon: 'pi pi-video',

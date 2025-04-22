@@ -2,7 +2,7 @@
   <p-toast />
   <p-toolbar styleClass="[&>*]:flex [&>*]:gap-2 mb-6" *ngIf="showToolbar()">
     <ng-template #start>
-      <p-button label="New" icon="pi pi-plus" class="" (onClick)="openNew()" />
+      <p-button *ngIf="addBtn()" label="New" icon="pi pi-plus" class="" (onClick)="openNew()" />
       <!-- <p-button
         severity="danger"
         label="Delete"

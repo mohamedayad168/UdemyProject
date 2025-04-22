@@ -78,7 +78,7 @@ public static class ServiceExtensions
             options.AddPolicy("AllowAngularProduction" ,
                 policy =>
                 {
-                    policy.WithOrigins("https://studify-admin-yn.vercel.app")
+                    policy.WithOrigins("https://studify-admin-yn.vercel.app", "https://studify-project-yn.vercel.app")
                           .AllowCredentials()
                           .AllowAnyHeader()
                           .AllowAnyMethod();

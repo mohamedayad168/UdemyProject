@@ -55,11 +55,11 @@ UiStateService = inject(UiStateService);
       {
         label: 'Options',
         items: [
-          {
-            label: 'account',
-            icon: 'pi pi-cog',
-            routerLink: '/account',
-          },
+          // {
+          //   label: 'account',
+          //   icon: 'pi pi-cog',
+          //   routerLink: '/account',
+          // },
           {
             label: 'logout',
             icon: 'pi pi-sign-out',

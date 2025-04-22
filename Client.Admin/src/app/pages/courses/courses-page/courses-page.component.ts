@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   CrudTableComponent,
   FormFieldConfig,
+  IActionButton,
   IColumnConfig,
 } from '../../../components/shared/crud-table/crud-table.component';
 import { CoursesService } from '../../../services/courses/courses.service';
@@ -146,6 +147,41 @@ export class CoursesPageComponent implements OnInit {
     },
   ];
 
+  buttons: IActionButton[] = [
+      {
+        label: 'Deleted Courses',
+        icon: 'pi pi-trash',
+        severity: 'danger',
+        action: () => {
+          this.coursesService.apiRoute = 'api/courses/deleted';
+  
+          this.coursesService.getPage({
+            orderBy: 'id',
+            pageNumber: 1,
+            pageSize: 10,
+            searchTerm: '',
+          });
+  
+           this.coursesService.editable.set(false);
+        },
+      },
+      {
+        label: 'Active Courses',
+        icon: 'pi pi-user',
+        severity: 'success',
+        action: () => {
+          this.coursesService.apiRoute = 'api/courses';
+  
+          this.coursesService.getPage({
+            orderBy: 'id',
+            pageNumber: 1,
+            pageSize: 10,
+            searchTerm: '',
+          });
+           this.coursesService.deletable.set(true);
+        },
+      },
+    ];
 
   itemDetailsLinkConfig={
     route: '/courses',
