@@ -1,13 +1,13 @@
 @if(instructor){
   <div class="instructor-section py-5 border-top">
     <div class="container">
-      <h2 class="mb-4">Instructor</h2>
+      <h2 [routerLink]="['/instructors/details/',instructor.id]" class="h4 mb-1 hover:pointer" >Instructor</h2>
       <div class="row">
         <div class="col-md-8">
           <!-- Instructor Header -->
           <div class="d-flex align-items-start mb-4">
             <div>
-              <h3 class="h4 mb-1">{{ instructor.name }}</h3>
+              <a [routerLink]="['/instructors/details/',instructor.id]" class="h4 mb-1 hover:pointer">{{ instructor.name }}</a>
               <div class="d-flex flex-wrap gap-3">
                 <span class="d-flex align-items-center">
                   <i class="bi bi-chat-square-text-fill text-muted me-1"></i>

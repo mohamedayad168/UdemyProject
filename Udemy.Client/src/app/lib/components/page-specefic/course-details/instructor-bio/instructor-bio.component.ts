@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { dummyInstructor,Instructor } from '../../../../models/instructor.model';
 import { InstructorServiceService } from '../../../../services/instructor-service.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-instructor-bio',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './instructor-bio.component.html',
   styleUrl: './instructor-bio.component.css',
 })
@@ -13,6 +14,8 @@ export class InstructorBioComponent {
   instructorId = input<number>();
   instructor!: Instructor;
   instructorService: InstructorServiceService;
+
+
   constructor(instructorService: InstructorServiceService) {
     this.instructorService = instructorService;
   }
