@@ -138,6 +138,8 @@ namespace Udemy.Service.Service
                 throw new NotFoundException($"Course with ID {courseDto.Id} not found");
             }
 
+            mapper.Map(courseDto, course);
+
             string? imageUrl = null;
             string? videoUrl = null;
 
@@ -150,7 +152,6 @@ namespace Udemy.Service.Service
             course.ImageUrl = imageUrl;
             course.VideoUrl = videoUrl;
 
-            mapper.Map(courseDto, course);
 
 
             await repository.Courses.UpdateAsync(course);
