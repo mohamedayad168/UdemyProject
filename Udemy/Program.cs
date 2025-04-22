@@ -47,6 +47,8 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseCors("AllowAngularProduction");
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseHsts();
 }
 

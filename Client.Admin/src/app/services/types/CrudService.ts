@@ -11,6 +11,12 @@ export class CrudService<T> {
   loadingMessage = 'A different request is in progress';
   editable = signal(false);
   deletable = signal(true);
+  pageConfig: IPaginatedSearchRequest<T> = {
+    pageSize: 10,
+    pageNumber: 1,
+    searchTerm: '',
+    orderBy: 'id',
+  };
 
   get baseUrl(): string {
     return `${environment.apiUrl}/${this.apiRoute}`;
@@ -73,23 +79,18 @@ export class CrudService<T> {
     });
   }
 
-  getPage(searchRequest: IPaginatedSearchRequest<T>) {
-    console.log({
-      pageNumber: searchRequest?.pageNumber ?? 1,
-      pageSize: searchRequest?.pageSize ?? 10,
-      searchTerm: searchRequest?.searchTerm ?? '',
-      orderBy: searchRequest?.orderBy ?? 'id',
-    });
-    console.log(this.urls.getPage);
+  getPage(searchRequest: IPaginatedSearchRequest<T> = this.pageConfig) {
+    this.pageConfig = searchRequest;
+
     this.checkLoading();
 
     return this.httpClient
       .get(
         `${this.urls.getPage}?` +
-          `pageNumber=${searchRequest?.pageNumber ?? 1}&` +
-          `pageSize=${searchRequest?.pageSize ?? 10}&` +
-          `searchTerm=${searchRequest?.searchTerm ?? ''}&` +
-          `orderBy=${searchRequest?.orderBy ?? 'id'}`
+          `pageNumber=${this.pageConfig?.pageNumber ?? 1}&` +
+          `pageSize=${this.pageConfig?.pageSize ?? 10}&` +
+          `searchTerm=${this.pageConfig?.searchTerm ?? ''}&` +
+          `orderBy=${this.pageConfig?.orderBy ?? 'id'}`
       )
       .subscribe({
         next: (data) => {

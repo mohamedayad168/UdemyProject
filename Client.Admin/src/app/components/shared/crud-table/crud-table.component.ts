@@ -41,7 +41,7 @@ export interface IActionButton {
   label: string;
   severity: Severity;
   icon: string;
-  action: (any?: any) => void;
+  action: (event?: Event, any?: any) => void;
 }
 
 export type FieldType =
@@ -173,6 +173,7 @@ export class CrudTableComponent<T extends baseItem> implements OnInit {
   buttons = input<IActionButton[]>([]);
   emptyItem = input.required<T>();
   isPaginated = input<boolean>(true);
+  showToolbar = input<boolean>(false);
 
   newItem!: any;
   itemDetailsLinkConfig = input<{ key: string; route: string } | null>(null);

@@ -1,6 +1,6 @@
 <div class="card">
   <p-toast />
-  <p-toolbar styleClass="[&>*]:flex [&>*]:gap-2 mb-6">
+  <p-toolbar styleClass="[&>*]:flex [&>*]:gap-2 mb-6" *ngIf="showToolbar()">
     <ng-template #start>
       <p-button label="New" icon="pi pi-plus" class="" (onClick)="openNew()" />
       <!-- <p-button
@@ -25,7 +25,7 @@
       }
     </ng-template>
 
-    <ng-template #end>
+    <!-- <ng-template #end>
       <p-fileUpload
         mode="basic"
         accept="image/*"
@@ -43,7 +43,7 @@
         severity="secondary"
         (onClick)="exportCSV()"
       />
-    </ng-template>
+    </ng-template> -->
   </p-toolbar>
 
   <p-table
@@ -181,7 +181,7 @@
             outlined
             [icon]="column.button!.icon"
             [severity]="column.button!.severity"
-            (onClick)="column.button!.action(product)"
+            (onClick)="column.button!.action($event,product)"
           />
           }
           <!--  -->
